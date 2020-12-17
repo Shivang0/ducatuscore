@@ -150,6 +150,11 @@ export class Utils {
         toSatoshis: 1e18,
         maxDecimals: 6,
         minDecimals: 2
+      },
+      jamasy: {
+        toSatoshis: 1e5,
+        maxDecimals: 5,
+        minDecimals: 2
       }
     };
 

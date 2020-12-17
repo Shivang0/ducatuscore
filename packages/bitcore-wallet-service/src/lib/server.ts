@@ -1385,7 +1385,7 @@ export class WalletService {
    * @returns {Address}
    */
   findInfoByAddress(address, cb) {
-  
+
     this.storage.fetchAddress(address, (err, address) => {
       if (err) return cb(err);
       else {

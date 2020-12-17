@@ -130,10 +130,22 @@ export const Constants = {
         maxDecimals: 0,
         minDecimals: 0
       }
+    },
+    jamasy: {
+      toSatoshis: 1e5,
+      full: {
+        maxDecimals: 8,
+        minDecimals: 8
+      },
+      short: {
+        maxDecimals: 6,
+        minDecimals: 2
+      }
     }
   },
-  COINS: ['btc', 'bch', 'eth', 'xrp', 'usdc', 'pax', 'gusd', 'duc', 'ducx'],
+  COINS: ['btc', 'bch', 'eth', 'xrp', 'usdc', 'pax', 'gusd', 'duc', 'ducx', 'jamasy'],
   ERC20: ['usdc', 'pax', 'gusd'],
+  DRC20: ['jamasy'],
   UTXO_COINS: ['btc', 'bch', 'duc'],
   TOKEN_OPTS: {
     '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48': {
@@ -153,6 +165,12 @@ export const Constants = {
       symbol: 'GUSD',
       decimal: 2,
       address: '0x056fd409e1d7a124bd7017459dfea2f387b6d5cd'
+    },
+    '0x986083cd47dbbc931585d2fe2330fd29b3e849b0': {
+      name: 'Jazz Makati 1638',
+      symbol: 'JAMASY',
+      decimal: 5,
+      address: '0x986083cd47dbbc931585d2fe2330fd29b3e849b0'
     }
   }
 };

@@ -10,7 +10,8 @@ module.exports = {
     XRP: 'xrp',
     USDC: 'usdc',
     PAX: 'pax',
-    GUSD: 'gusd'
+    GUSD: 'gusd',
+    JAMASY: 'jamasy'
   },
 
   ERC20: {
@@ -18,7 +19,9 @@ module.exports = {
     PAX: 'pax',
     GUSD: 'gusd'
   },
-
+  DRC20: {
+    JAMASY: 'jamasy'
+  },
   UTXO_COINS: {
     BTC: 'btc',
     BCH: 'bch',
@@ -70,6 +73,12 @@ module.exports = {
       symbol: 'GUSD',
       decimal: 2,
       address: '0x056fd409e1d7a124bd7017459dfea2f387b6d5cd'
+    },
+    '0x986083cd47dbbc931585d2fe2330fd29b3e849b0': {
+      name: 'Jazz Makati 1638',
+      symbol: 'JAMASY',
+      decimal: 5,
+      address: '0x986083cd47dbbc931585d2fe2330fd29b3e849b0'
     }
   }
 };
