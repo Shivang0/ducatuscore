@@ -152,8 +152,8 @@ export class Utils {
         minDecimals: 2
       },
       jamasy: {
-        toSatoshis: 1e5,
-        maxDecimals: 5,
+        toSatoshis: 1e8,
+        maxDecimals: 8,
         minDecimals: 2
       }
     };

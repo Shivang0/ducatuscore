@@ -132,13 +132,13 @@ export const Constants = {
       }
     },
     jamasy: {
-      toSatoshis: 1e5,
+      toSatoshis: 1e8,
       full: {
         maxDecimals: 8,
         minDecimals: 8
       },
       short: {
-        maxDecimals: 6,
+        maxDecimals: 8,
         minDecimals: 2
       }
     }
@@ -166,11 +166,11 @@ export const Constants = {
       decimal: 2,
       address: '0x056fd409e1d7a124bd7017459dfea2f387b6d5cd'
     },
-    '0x986083cd47dbbc931585d2fe2330fd29b3e849b0': {
+    '0xa9CB8e18E4C2C0a1C9Bf4367E7115165ed7e41F0': {
       name: 'Jazz Makati 1638',
       symbol: 'JAMASY',
       decimal: 5,
-      address: '0x986083cd47dbbc931585d2fe2330fd29b3e849b0'
+      address: '0xa9CB8e18E4C2C0a1C9Bf4367E7115165ed7e41F0'
     }
   }
 };
