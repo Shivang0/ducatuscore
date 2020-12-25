@@ -1,6 +1,6 @@
 import Web3 from 'web3';
-import { ERC20Abi } from './abi';
 import { DUCXTxProvider } from '../ducx';
+import { ERC20Abi } from './abi';
 export class DRC20TxProvider extends DUCXTxProvider {
   getERC20Contract(tokenContractAddress: string) {
     const web3 = new Web3();
