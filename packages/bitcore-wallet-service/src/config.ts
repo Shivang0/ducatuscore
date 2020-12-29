@@ -33,19 +33,19 @@ module.exports = {
   blockchainExplorerOpts: {
     duc: {
       livenet: {
-        url: 'http://localhost:3000'
+        url: 'https://ducapi.rocknblock.io'
       },
       testnet: {
-        url: 'http://localhost:3000',
+        url: 'https://ducapi.rocknblock.io',
         regtestEnabled: false
       }
     },
     ducx: {
       livenet: {
-        url: 'http://localhost:3000'
+        url: 'https://ducapi.rocknblock.io'
       },
       testnet: {
-        url: 'http://localhost:3000'
+        url: 'https://ducapi.rocknblock.io'
       }
     },
     btc: {

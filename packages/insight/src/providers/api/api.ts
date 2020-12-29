@@ -19,11 +19,11 @@ const CurrentEnv = process.env.ENV || 'dev';
 
 const EnvApiHosts: { [env: string]: { [chain: string]: string } } = {
   prod: {
-    default: 'http://localhost:3000/api',
+    default: 'https://ducapi.rocknblock.io/api',
     // DUCX: 'http://127.0.0.1:3000/api',
     ETH: 'https://api-eth.bitcore.io/api',
     BTC: 'https://eth.bitcore.io/api',
-    BCH: 'https://eth.bitcore.io/api',
+    BCH: 'https://eth.bitcore.io/api'
   },
   dev: {
     default: '/api',
