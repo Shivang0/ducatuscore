@@ -170,6 +170,11 @@ export class Utils {
         toSatoshis: 1e8,
         maxDecimals: 8,
         minDecimals: 2
+      },
+      pog1: {
+        toSatoshis: 1e8,
+        maxDecimals: 8,
+        minDecimals: 2
       }
     };
 

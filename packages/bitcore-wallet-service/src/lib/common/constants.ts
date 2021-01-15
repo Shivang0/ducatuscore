@@ -14,7 +14,8 @@ module.exports = {
     JAMASY: 'jamasy',
     NUYASA: 'nuyasa',
     SUNOBA: 'sunoba',
-    DSCMED: 'dscmed'
+    DSCMED: 'dscmed',
+    POG1: 'pog1'
   },
 
   ERC20: {
@@ -26,7 +27,8 @@ module.exports = {
     JAMASY: 'jamasy',
     NUYASA: 'nuyasa',
     SUNOBA: 'sunoba',
-    DSCMED: 'dscmed'
+    DSCMED: 'dscmed',
+    POG1: 'pog1'
   },
   UTXO_COINS: {
     BTC: 'btc',
@@ -103,6 +105,12 @@ module.exports = {
       symbol: 'DSCMED',
       decimal: 8,
       address: '0x14460383feFFE73eA1FB4F0F11B941F44c17bDD2'
+    },
+    '0x511e1f8e872c3fe9b3fCefEf58ec7FE4E8130Cc1': {
+      name: 'POG Muscat',
+      symbol: 'POG1',
+      decimal: 8,
+      address: '0x511e1f8e872c3fe9b3fCefEf58ec7FE4E8130Cc1'
     }
   }
 };
