@@ -13,7 +13,8 @@ module.exports = {
     GUSD: 'gusd',
     JAMASY: 'jamasy',
     NUYASA: 'nuyasa',
-    SUNOBA: 'sunoba'
+    SUNOBA: 'sunoba',
+    DSCMED: 'dscmed'
   },
 
   ERC20: {
@@ -24,7 +25,8 @@ module.exports = {
   DRC20: {
     JAMASY: 'jamasy',
     NUYASA: 'nuyasa',
-    SUNOBA: 'sunoba'
+    SUNOBA: 'sunoba',
+    DSCMED: 'dscmed'
   },
   UTXO_COINS: {
     BTC: 'btc',
@@ -95,6 +97,12 @@ module.exports = {
       symbol: 'SUNOBA',
       decimal: 8,
       address: '0xB7A7221E37d12A8Ea92468F283422B16DbC364D9'
+    },
+    '0x14460383feFFE73eA1FB4F0F11B941F44c17bDD2': {
+      name: 'DSC Mediterranea',
+      symbol: 'DSCMED',
+      decimal: 8,
+      address: '0x14460383feFFE73eA1FB4F0F11B941F44c17bDD2'
     }
   }
 };
