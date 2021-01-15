@@ -12,7 +12,8 @@ module.exports = {
     PAX: 'pax',
     GUSD: 'gusd',
     JAMASY: 'jamasy',
-    NUYASA: 'nuyasa'
+    NUYASA: 'nuyasa',
+    SUNOBA: 'sunoba'
   },
 
   ERC20: {
@@ -22,7 +23,8 @@ module.exports = {
   },
   DRC20: {
     JAMASY: 'jamasy',
-    NUYASA: 'nuyasa'
+    NUYASA: 'nuyasa',
+    SUNOBA: 'sunoba'
   },
   UTXO_COINS: {
     BTC: 'btc',
@@ -87,6 +89,12 @@ module.exports = {
       symbol: 'NUYASA',
       decimal: 8,
       address: '0x3D30806b1E1F021Fe12DF506C3A1F96CfB94464a'
+    },
+    '0xB7A7221E37d12A8Ea92468F283422B16DbC364D9': {
+      name: 'Supernova Bali',
+      symbol: 'SUNOBA',
+      decimal: 8,
+      address: '0xB7A7221E37d12A8Ea92468F283422B16DbC364D9'
     }
   }
 };
