@@ -355,14 +355,22 @@ export default [
   },
   {
     inputs: [
-      { internalType: 'uint128', name: 'blockchain', type: 'uint128' },
-      { internalType: 'uint256', name: 'amount', type: 'uint256' },
-      { internalType: 'string', name: 'newAddress', type: 'string' }
+      {
+        internalType: 'uint128',
+        name: 'blockchain',
+        type: 'uint128'
+      },
+      {
+        internalType: 'string',
+        name: 'newAddress',
+        type: 'string'
+      }
     ],
     name: 'transferToOtherBlockchain',
     outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function'
+    stateMutability: 'payable',
+    type: 'function',
+    payable: true
   },
   {
     inputs: [
