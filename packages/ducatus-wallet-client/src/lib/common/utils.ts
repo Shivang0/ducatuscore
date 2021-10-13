@@ -371,7 +371,7 @@ export class Utils {
           : 'ERC20'
         : this.getChain(coin);
 
-      if (txp.tokenAddress === '0xaaa69f1b55052215962ec155a77e2c6d220fbeb8') {
+      if (txp.tokenAddress === '0xd62680378AdeD4277f74ac69fd1A4518586bDd08') {
         chain = 'TOB';
       }
 

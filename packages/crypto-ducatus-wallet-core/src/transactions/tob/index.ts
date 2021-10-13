@@ -5,7 +5,7 @@ import abi from './abi';
 export class TransferDUCXToWDUCXProvider extends DUCXTxProvider {
   getERC20Contract() {
     const web3 = new Web3();
-    const contract = new web3.eth.Contract(abi, '0xaaa69f1b55052215962ec155a77e2c6d220fbeb8');
+    const contract = new web3.eth.Contract(abi, '0xd62680378AdeD4277f74ac69fd1A4518586bDd08');
     return contract;
   }
 

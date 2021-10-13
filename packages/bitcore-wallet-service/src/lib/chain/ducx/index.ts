@@ -40,7 +40,7 @@ export class DucXChain implements IChain {
 
   getWalletBalance(server, wallet, opts, cb) {
     const bc = server._getBlockchainExplorer(wallet.coin, wallet.network);
-    if (opts.tokenAddress && '0xaaa69f1b55052215962ec155a77e2c6d220fbeb8' !== opts.tokenAddress) {
+    if (opts.tokenAddress && '0xd62680378AdeD4277f74ac69fd1A4518586bDd08' !== opts.tokenAddress) {
       wallet.tokenAddress = opts.tokenAddress;
     }
 
@@ -146,7 +146,7 @@ export class DucXChain implements IChain {
 
     let chain = isERC721 ? 'ERC721' : isERC20 ? 'DRC20' : 'DUCX';
 
-    if (txp.tokenAddress === '0xaaa69f1b55052215962ec155a77e2c6d220fbeb8') {
+    if (txp.tokenAddress === '0xd62680378AdeD4277f74ac69fd1A4518586bDd08') {
       chain = 'TOB';
     }
 
