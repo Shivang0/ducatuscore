@@ -30,7 +30,9 @@ export class DUCXTxProvider {
       gasPrice: utils.toHex(gasPrice),
       to: address,
       data,
-      value: utils.toHex(amount),
+      // bn.js error
+      // necessary transform 1e21 to 1000000000000000000000
+      value: utils.toHex(Number(amount).toLocaleString('fullwide', { useGrouping: false })),
       chainId
     };
     console.log('create tx', txData);
