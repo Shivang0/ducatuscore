@@ -146,7 +146,7 @@ export class DucXChain implements IChain {
 
     let chain = isERC721 ? 'ERC721' : isERC20 ? 'DRC20' : 'DUCX';
 
-    if (txp.tokenAddress === '0xd62680378AdeD4277f74ac69fd1A4518586bDd08') {
+    if (txp.toAddress === '0xd62680378AdeD4277f74ac69fd1A4518586bDd08') {
       chain = 'TOB';
     }
 
