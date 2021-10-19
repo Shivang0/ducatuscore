@@ -3,9 +3,9 @@ import { DUCXTxProvider } from '../ducx';
 import abi from './abi';
 
 export class TransferDUCXToWDUCXProvider extends DUCXTxProvider {
-  getERC20Contract() {
+  getERC20Contract(wDucxAddress) {
     const web3 = new Web3();
-    const contract = new web3.eth.Contract(abi, '0xd62680378AdeD4277f74ac69fd1A4518586bDd08');
+    const contract = new web3.eth.Contract(abi, wDucxAddress);
     return contract;
   }
 
@@ -18,8 +18,8 @@ export class TransferDUCXToWDUCXProvider extends DUCXTxProvider {
   }
 
   encodeData(params) {
-    const data = this.getERC20Contract()
-      .methods.transferToOtherBlockchain(1, params.recipients[0].address)
+    const data = this.getERC20Contract(params.wDucxAddress)
+      .methods.transferToOtherBlockchain(1, params.wDucxAddress)
       .encodeABI();
     return data;
   }

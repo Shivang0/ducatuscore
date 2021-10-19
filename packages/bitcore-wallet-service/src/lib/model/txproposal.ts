@@ -67,6 +67,7 @@ export interface ITxProposal {
   tokenAddress?: string;
   destinationTag?: string;
   invoiceID?: string;
+  wDucxAddress?: string;
 }
 
 export class TxProposal {
@@ -123,6 +124,7 @@ export class TxProposal {
   tokenId?: string;
   destinationTag?: string;
   invoiceID?: string;
+  wDucxAddress?: string;
 
   static create(opts) {
     opts = opts || {};
@@ -187,6 +189,9 @@ export class TxProposal {
     x.destinationTag = opts.destinationTag;
     x.invoiceID = opts.invoiceID;
 
+    // DUCX TO wDUCX
+    x.wDucxAddress = opts.wDucxAddress
+
     return x;
   }
 
@@ -245,6 +250,9 @@ export class TxProposal {
     // XRP
     x.destinationTag = obj.destinationTag;
     x.invoiceID = obj.invoiceID;
+
+    // DUCX TO wDUCX
+    x.wDucxAddress = obj.wDucxAddress
 
     if (x.status == 'broadcasted') {
       x.raw = obj.raw;

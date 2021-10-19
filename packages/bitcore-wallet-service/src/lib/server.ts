@@ -2496,7 +2496,8 @@ export class WalletService {
                     tokenAddress: opts.tokenAddress,
                     destinationTag: opts.destinationTag,
                     invoiceID: opts.invoiceID,
-                    tokenId: opts.tokenId
+                    tokenId: opts.tokenId,
+                    wDucxAddress: opts.wDucxAddress
                   };
                   txp = TxProposal.create(txOpts);
                   next();
