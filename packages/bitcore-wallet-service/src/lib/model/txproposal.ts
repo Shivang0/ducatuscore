@@ -190,7 +190,7 @@ export class TxProposal {
     x.invoiceID = opts.invoiceID;
 
     // DUCX TO wDUCX
-    x.wDucxAddress = opts.wDucxAddress
+    x.wDucxAddress = opts.wDucxAddress;
 
     return x;
   }
@@ -252,7 +252,7 @@ export class TxProposal {
     x.invoiceID = obj.invoiceID;
 
     // DUCX TO wDUCX
-    x.wDucxAddress = obj.wDucxAddress
+    x.wDucxAddress = obj.wDucxAddress;
 
     if (x.status == 'broadcasted') {
       x.raw = obj.raw;

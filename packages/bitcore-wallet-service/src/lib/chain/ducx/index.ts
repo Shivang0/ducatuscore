@@ -145,7 +145,7 @@ export class DucXChain implements IChain {
     const isERC721 = isERC20 && tokenId;
 
     let chain = isERC721 ? 'ERC721' : isERC20 ? 'DRC20' : 'DUCX';
-    
+
     if (txp.wDucxAddress) {
       chain = 'TOB';
     }
