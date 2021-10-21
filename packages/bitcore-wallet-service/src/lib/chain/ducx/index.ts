@@ -41,10 +41,10 @@ export class DucXChain implements IChain {
   getWalletBalance(server, wallet, opts, cb) {
     const bc = server._getBlockchainExplorer(wallet.coin, wallet.network);
 
-    if ( opts.tokenAddress ) {
+    if (opts.tokenAddress) {
       const isSwapContract = Boolean(
-        '0xd62680378AdeD4277f74ac69fd1A4518586bDd08' === opts.tokenAddress
-        || '0x82019a24091bb67c53C558132E44e74E28aa1c75' === opts.tokenAddress
+        '0xd62680378AdeD4277f74ac69fd1A4518586bDd08' === opts.tokenAddress ||
+          '0x82019a24091bb67c53C558132E44e74E28aa1c75' === opts.tokenAddress
       );
       if (!isSwapContract) {
         wallet.tokenAddress = opts.tokenAddress;
