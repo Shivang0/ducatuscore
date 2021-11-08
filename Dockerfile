@@ -14,7 +14,7 @@ COPY packages/ducatus-wallet-client ./packages/bitcore-wallet-client/package.jso
 COPY ./packages/bitcore-client/package.json ./packages/bitcore-client/package.json
 COPY ./packages/bitcore-wallet/package.json ./packages/bitcore-wallet/package.json
 COPY packages/ducatus-wallet-client ./packages/bitcore-wallet-client/package.json
-COPY ./packages/bitcore-wallet-service/package.json ./packages/bitcore-wallet-service/package.json
+COPY ./packages/ducatus-wallet-service-rev/package.json ./packages/ducatus-wallet-service-rev/package.json
 COPY ./packages/bitcore-node/package.json ./packages/bitcore-node/package.json
 COPY ./packages/insight/package.json ./packages/insight/package.json
 COPY packages/ducatus-crypto-wallet-core-rev ./packages/ducatus-crypto-wallet-core-rev/package.json

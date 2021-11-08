@@ -12,8 +12,8 @@ See the configuration section to configure a different host/port.
 Use the following steps to Install BWS from the npmjs repository and run it with defaults.
 
 ```sh
-npm install bitcore-wallet-service
-cd bitcore-wallet-service
+npm install ducatus-wallet-service-rev
+cd ducatus-wallet-service-rev
 ```
 
 To change configuration before running, see the Configuration section.
@@ -27,8 +27,8 @@ npm start
 Use the following steps to Install BWS from github source and run it with defaults.
 
 ```sh
-git clone https://github.com/bitpay/bitcore-wallet-service.git
-cd bitcore-wallet-service
+git clone https://github.com/bitpay/ducatus-wallet-service-rev.git
+cd ducatus-wallet-service-rev
 npm install
 ```
 
