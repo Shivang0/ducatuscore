@@ -1,6 +1,6 @@
 'use strict';
 
-var bitcore = require('ducatuscore-lib');
+var bitcore = require('ducatus-core-lib-rev');
 var BloomFilter = require('bloom-filter');
 var BufferReader = bitcore.encoding.BufferReader;
 var BufferWriter = bitcore.encoding.BufferWriter;

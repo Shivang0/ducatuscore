@@ -6,7 +6,7 @@ var chai = require('chai');
 var should = chai.should();
 var expect = chai.expect;
 
-var bitcore = require('ducatuscore-lib');
+var bitcore = require('ducatus-core-lib-rev');
 var P2P = require('../');
 var Peer = P2P.Peer;
 var MessagesData = require('./data/messages');

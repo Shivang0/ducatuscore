@@ -2,7 +2,7 @@
 
 var Message = require('../message');
 var inherits = require('util').inherits;
-var bitcore = require('ducatuscore-lib');
+var bitcore = require('ducatus-core-lib-rev');
 var BufferUtil = bitcore.util.buffer;
 var BloomFilter = require('../../bloomfilter');
 var $ = bitcore.util.preconditions;

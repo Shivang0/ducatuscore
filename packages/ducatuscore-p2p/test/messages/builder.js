@@ -3,7 +3,7 @@
 var should = require('chai').should();
 var P2P = require('../../');
 var builder = P2P.Messages.builder;
-var bitcore = require('ducatuscore-lib');
+var bitcore = require('ducatus-core-lib-rev');
 
 describe('Messages Builder', function() {
 

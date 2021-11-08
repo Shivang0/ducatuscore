@@ -17,7 +17,7 @@ const Bitcore = {
   bch: require('bitcore-lib-cash'),
   eth: require('bitcore-lib'),
   xrp: require('bitcore-lib'),
-  duc: require('ducatuscore-lib'),
+  duc: require('ducatus-core-lib-rev'),
   ducx: require('bitcore-lib')
 };
 

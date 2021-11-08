@@ -1,5 +1,5 @@
 export class DUCTxProvider {
-  lib = require('ducatuscore-lib');
+  lib = require('ducatus-core-lib-rev');
   create({ recipients, utxos, change, fee }) {
     let tx = new this.lib.Transaction().from(utxos).fee(Number(fee));
     for (const recipient of recipients) {

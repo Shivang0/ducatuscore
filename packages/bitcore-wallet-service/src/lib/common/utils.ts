@@ -8,7 +8,7 @@ const Bitcore = require('bitcore-lib');
 const Bitcore_ = {
   btc: Bitcore,
   bch: require('bitcore-lib-cash'),
-  duc: require('ducatuscore-lib')
+  duc: require('ducatus-core-lib-rev')
 };
 
 export class Utils {
