@@ -2,12 +2,12 @@
 
 BIN_PATH:=node_modules/.bin/
 
-all:	ducatus-wallet-client.js
+all:	ducatus-wallet-client-rev.js
 
 clean:
-	rm ducatus-wallet-client.js
+	rm ducatus-wallet-client-rev.js
 
-ducatus-wallet-client.js: index.js lib/*.js
+ducatus-wallet-client-rev.js: index.js lib/*.js
 	${BIN_PATH}browserify $< > $@
 
 cover:
