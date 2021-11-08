@@ -1,6 +1,6 @@
 import * as BitcoreLib from 'bitcore-lib';
 import * as BitcoreLibCash from 'bitcore-lib-cash';
-import * as DucatuscoreLib from 'ducatus-core-lib-rev';
+import * as DucatuscoreLib from '@ducatus/ducatus-core-lib-rev';
 import Web3 from 'web3';
 import Deriver from './derivation';
 import Transactions from './transactions';

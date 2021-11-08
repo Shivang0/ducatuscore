@@ -4,7 +4,7 @@
 
 var should = require('chai').should();
 
-var bitcore = require('ducatus-core-lib-rev');
+var bitcore = require('@ducatus/ducatus-core-lib-rev');
 var P2P = require('../');
 var Inventory = P2P.Inventory;
 var BufferUtils = bitcore.util.buffer;

@@ -3,7 +3,7 @@
 var should = require('chai').should();
 var P2P = require('../../');
 var Message = P2P.Messages.Message;
-var Networks = require('ducatus-core-lib-rev').Networks;
+var Networks = require('@ducatus/ducatus-core-lib-rev').Networks;
 
 describe('Message', function() {
 

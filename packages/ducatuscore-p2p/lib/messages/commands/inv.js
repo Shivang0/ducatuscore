@@ -2,7 +2,7 @@
 
 var Message = require('../message');
 var inherits = require('util').inherits;
-var bitcore = require('ducatus-core-lib-rev');
+var bitcore = require('@ducatus/ducatus-core-lib-rev');
 var utils = require('../utils');
 var BufferReader = bitcore.encoding.BufferReader;
 var BufferWriter = bitcore.encoding.BufferWriter;

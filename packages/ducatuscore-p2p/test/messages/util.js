@@ -4,7 +4,7 @@
 
 var should = require('chai').should();
 var utils = require('../../lib/messages/utils');
-var bitcore = require('ducatus-core-lib-rev');
+var bitcore = require('@ducatus/ducatus-core-lib-rev');
 var BufferReader = bitcore.encoding.BufferReader;
 
 describe('Message Utils', function() {

@@ -6,7 +6,7 @@ The quickest way to get connected is to run the following:
 ```javascript
 
 var Pool = require('litecore-p2p').Pool;
-var Networks = require('ducatus-core-lib-rev').Networks;
+var Networks = require('@ducatus/ducatus-core-lib-rev').Networks;
 
 var pool = new Pool({network: Networks.livenet});
 

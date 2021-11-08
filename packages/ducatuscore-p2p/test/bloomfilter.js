@@ -4,7 +4,7 @@ var chai = require('chai');
 var should = chai.should();
 
 var assert = require('assert');
-var bitcore = require('ducatus-core-lib-rev');
+var bitcore = require('@ducatus/ducatus-core-lib-rev');
 var Data = require('./data/messages');
 var P2P = require('../');
 var BloomFilter = P2P.BloomFilter;

@@ -1,4 +1,4 @@
-const DucatusLib = require('ducatus-core-lib-rev');
+const DucatusLib = require('@ducatus/ducatus-core-lib-rev');
 import { IDeriver } from '..';
 export abstract class AbstractDucatuscoreLibDeriver implements IDeriver {
   public abstract bitcoreLib;
