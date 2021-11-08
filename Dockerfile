@@ -17,7 +17,7 @@ COPY packages/ducatus-wallet-client ./packages/bitcore-wallet-client/package.jso
 COPY ./packages/bitcore-wallet-service/package.json ./packages/bitcore-wallet-service/package.json
 COPY ./packages/bitcore-node/package.json ./packages/bitcore-node/package.json
 COPY ./packages/insight/package.json ./packages/insight/package.json
-COPY packages/crypto-ducatus-wallet-core ./packages/crypto-ducatus-wallet-core/package.json
+COPY packages/ducatus-crypto-wallet-core-rev ./packages/ducatus-crypto-wallet-core-rev/package.json
 
 RUN ./node_modules/.bin/lerna bootstrap
 

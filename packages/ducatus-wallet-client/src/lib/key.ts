@@ -5,7 +5,7 @@ import * as _ from 'lodash';
 import { Constants, Utils } from './common';
 import { Credentials } from './credentials';
 
-import { BitcoreLib, Deriver, Transactions } from 'crypto-ducatus-wallet-core';
+import { BitcoreLib, Deriver, Transactions } from '@ducatus/ducatus-crypto-wallet-core-rev';
 
 var Bitcore = BitcoreLib;
 var Mnemonic = require('bitcore-mnemonic');

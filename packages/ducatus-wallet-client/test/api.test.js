@@ -15,7 +15,7 @@ var mongodb = require('mongodb');
 var config = require('./test-config');
 var oldCredentials = require('./legacyCredentialsExports');
 
-var CWC = require('../../crypto-ducatus-wallet-core');
+var CWC = require('../../ducatus-crypto-wallet-core-rev');
 
 var Bitcore = CWC.BitcoreLib;
 var Bitcore_ = {

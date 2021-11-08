@@ -1,4 +1,4 @@
-import { Deriver } from 'crypto-ducatus-wallet-core';
+import { Deriver } from '@ducatus/ducatus-crypto-wallet-core-rev';
 import _ from 'lodash';
 import { AddressManager } from './addressmanager';
 

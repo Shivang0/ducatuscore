@@ -5,7 +5,7 @@ import * as stream from 'stream';
 import { URL } from 'url';
 let usingBrowser = (global as any).window;
 const URLClass = usingBrowser ? usingBrowser.URL : URL;
-const bitcoreLib = require('crypto-ducatus-wallet-core').BitcoreLib;
+const bitcoreLib = require('@ducatus/ducatus-crypto-wallet-core-rev').BitcoreLib;
 
 export class Client {
   apiUrl: string;

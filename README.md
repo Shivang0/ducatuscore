@@ -170,7 +170,7 @@ npm run node
 - [Bitcore Mnemonic](packages/bitcore-mnemonic) - Implements mnemonic code for generating deterministic keys
 - [Bitcore P2P](packages/bitcore-p2p) - The peer-to-peer networking protocol for BTC
 - [Bitcore P2P Cash](packages/bitcore-p2p-cash) - The peer-to-peer networking protocol for BCH
-- [Crypto Wallet Core](packages/crypto-ducatus-wallet-core) - A coin-agnostic wallet library for creating transactions, signing, and address derivation
+- [Crypto Wallet Core](packages/ducatus-crypto-wallet-core-rev) - A coin-agnostic wallet library for creating transactions, signing, and address derivation
 
 ## Extras
 

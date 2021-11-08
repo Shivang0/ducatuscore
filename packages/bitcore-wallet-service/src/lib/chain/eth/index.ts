@@ -1,4 +1,4 @@
-import { Transactions, Validation } from 'crypto-ducatus-wallet-core';
+import { Transactions, Validation } from '@ducatus/ducatus-crypto-wallet-core-rev';
 import _ from 'lodash';
 import { IAddress } from 'src/lib/model/address';
 import { IChain } from '..';

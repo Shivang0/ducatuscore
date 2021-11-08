@@ -1,6 +1,6 @@
 'use strict';
 
-import * as CWC from 'crypto-ducatus-wallet-core';
+import * as CWC from '@ducatus/ducatus-crypto-wallet-core-rev';
 import { EventEmitter } from 'events';
 import _ from 'lodash';
 import sjcl from 'sjcl';

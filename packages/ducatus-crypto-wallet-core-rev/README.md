@@ -1,10 +1,6 @@
-# Crypto Wallet Core
+# @ducatus/ducatus-crypto-wallet-core-rev
 
 **A coin-agnostic wallet library for creating transactions, signing, and address derivation.**
-
-## Contributing
-
-See [CONTRIBUTING.md](https://github.com/bitpay/bitcore/blob/master/Contributing.md) on the main bitcore repo for information about how to contribute.
 
 ## License
 

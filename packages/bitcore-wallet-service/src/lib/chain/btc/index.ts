@@ -1,4 +1,4 @@
-import { BitcoreLib } from 'crypto-ducatus-wallet-core';
+import { BitcoreLib } from '@ducatus/ducatus-crypto-wallet-core-rev';
 import _ from 'lodash';
 import { IChain } from '..';
 import { ClientError } from '../../errors/clienterror';

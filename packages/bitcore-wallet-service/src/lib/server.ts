@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import * as log from 'npmlog';
 import 'source-map-support/register';
 
-import { Validation } from 'crypto-ducatus-wallet-core';
+import { Validation } from '@ducatus/ducatus-crypto-wallet-core-rev';
 import { BlockChainExplorer } from './blockchainexplorer';
 import { V8 } from './blockchainexplorers/v8';
 import { ChainService } from './chain/index';

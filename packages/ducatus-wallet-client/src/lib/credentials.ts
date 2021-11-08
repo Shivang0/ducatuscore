@@ -1,6 +1,6 @@
 'use strict';
 
-import { BitcoreLib } from '../../../crypto-ducatus-wallet-core';
+import { BitcoreLib } from '../../../ducatus-crypto-wallet-core-rev';
 
 import { Constants, Utils } from './common';
 const $ = require('preconditions').singleton();

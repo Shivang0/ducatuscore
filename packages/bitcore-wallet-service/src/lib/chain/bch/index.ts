@@ -1,4 +1,4 @@
-import { BitcoreLibCash } from 'crypto-ducatus-wallet-core';
+import { BitcoreLibCash } from '@ducatus/ducatus-crypto-wallet-core-rev';
 import { IChain } from '..';
 import { BtcChain } from '../btc';
 

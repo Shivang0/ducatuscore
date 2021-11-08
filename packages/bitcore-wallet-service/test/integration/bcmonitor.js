@@ -2,7 +2,7 @@
 var _ = require('lodash');
 var async = require('async');
 
-const CWC = require('crypto-ducatus-wallet-core');
+const CWC = require('@ducatus/ducatus-crypto-wallet-core-rev');
 var chai = require('chai');
 var sinon = require('sinon');
 var should = chai.should();
