@@ -156,7 +156,7 @@ var livenet = get('livenet');
 addNetwork({
   name: 'testnet',
   alias: 'regtest',
-  prefix: 'tltc',
+  prefix: 'tducatus',
   pubkeyhash: 0x70,
   privatekey: 0xf0,
   scripthash: 0x3b,
