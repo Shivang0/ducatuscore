@@ -1,6 +1,6 @@
 {
   "name": "@ducatus/ducatus-core-p2p-rev",
-  "version": "8.9.3",
+  "version": "8.9.4",
   "author": "Ducatus",
   "scripts": {
     "lint": "gulp lint",
@@ -17,7 +17,7 @@
   "dependencies": {
     "bloom-filter": "^0.2.0",
     "buffers": "github:bitpay/node-buffers#v0.1.2-bitpay",
-    "@ducatus/ducatus-core-lib-rev": "8.16.5",
+    "@ducatus/ducatus-core-lib-rev": "8.16.6",
     "socks5-client": "^0.3.6"
   },
   "description": "Interface to the Ducatus P2P network for bitcore",

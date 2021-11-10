@@ -1,6 +1,6 @@
 {
   "name": "@ducatus/ducatus-crypto-wallet-core-rev",
-  "version": "8.16.31",
+  "version": "8.16.32",
   "description": "A multi-currency support library for address derivation, private key creation, and transaction creation",
   "main": "./ts_build/src/index.js",
   "types": "./ts_build/src/index.d.ts",
@@ -29,7 +29,7 @@
   "dependencies": {
     "bitcore-lib": "^8.16.2",
     "bitcore-lib-cash": "^8.16.2",
-    "@ducatus/ducatus-core-lib-rev": "8.16.5",
+    "@ducatus/ducatus-core-lib-rev": "8.16.6",
     "ethers": "4.0.37",
     "ripple-binary-codec": "0.2.6",
     "ripple-keypairs": "git+https://git@github.com/bitpay/ripple-keypairs.git#8d3a4643a8ddfce8222786e1e5a3e85a89a5b7f5",

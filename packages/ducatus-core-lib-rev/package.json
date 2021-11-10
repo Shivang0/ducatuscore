@@ -1,6 +1,6 @@
 {
   "name": "@ducatus/ducatus-core-lib-rev",
-  "version": "8.16.5",
+  "version": "8.16.6",
   "description": "A pure and powerful JavaScript DucatusCoin library.",
   "author": "Ducatus",
   "main": "index.js",
