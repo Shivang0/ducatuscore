@@ -96,96 +96,101 @@ export class Utils {
 
   static formatAmount(satoshis, unit, opts) {
     const UNITS = {
-      btc: {
+      'btc': {
         toSatoshis: 100000000,
         maxDecimals: 6,
         minDecimals: 2
       },
-      bit: {
+      'bit': {
         toSatoshis: 100,
         maxDecimals: 0,
         minDecimals: 0
       },
-      sat: {
+      'sat': {
         toSatoshis: 1,
         maxDecimals: 0,
         minDecimals: 0
       },
-      bch: {
+      'bch': {
         toSatoshis: 100000000,
         maxDecimals: 6,
         minDecimals: 2
       },
-      duc: {
+      'duc': {
         toSatoshis: 100000000,
         maxDecimals: 6,
         minDecimals: 2
       },
-      eth: {
+      'eth': {
         toSatoshis: 1e18,
         maxDecimals: 6,
         minDecimals: 2
       },
-      xrp: {
+      'xrp': {
         toSatoshis: 1e6,
         maxDecimals: 6,
         minDecimals: 2
       },
-      usdc: {
+      'usdc': {
         toSatoshis: 1e6,
         maxDecimals: 6,
         minDecimals: 2
       },
-      pax: {
+      'pax': {
         toSatoshis: 1e18,
         maxDecimals: 6,
         minDecimals: 2
       },
-      gusd: {
+      'gusd': {
         toSatoshis: 1e2,
         maxDecimals: 6,
         minDecimals: 2
       },
-      ducx: {
+      'ducx': {
         toSatoshis: 1e18,
         maxDecimals: 6,
         minDecimals: 2
       },
-      jamasy: {
+      'jamasy': {
         toSatoshis: 1e8,
         maxDecimals: 8,
         minDecimals: 2
       },
-      nuyasa: {
+      'nuyasa': {
         toSatoshis: 1e8,
         maxDecimals: 8,
         minDecimals: 2
       },
-      sunoba: {
+      'sunoba': {
         toSatoshis: 1e8,
         maxDecimals: 8,
         minDecimals: 2
       },
-      dscmed: {
+      'dscmed': {
         toSatoshis: 1e8,
         maxDecimals: 8,
         minDecimals: 2
       },
-      pog1: {
+      'pog1': {
         toSatoshis: 1e8,
         maxDecimals: 8,
         minDecimals: 2
       },
-      wde: {
+      'wde': {
         toSatoshis: 1e8,
         maxDecimals: 8,
         minDecimals: 2
       },
-      mdxb: {
+      'mdxb': {
         toSatoshis: 1e8,
         maxDecimals: 8,
         minDecimals: 2
-      }
+      },
+      'g.o.l.d.': {
+        toSatoshis: 1e8,
+        maxDecimals: 8,
+        minDecimals: 2
+      },
     };
 
     $.shouldBeNumber(satoshis);
