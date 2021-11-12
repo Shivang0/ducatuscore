@@ -2,22 +2,22 @@
 
 module.exports = {
   COINS: {
-    BTC: 'btc',
-    BCH: 'bch',
-    DUC: 'duc',
-    DUCX: 'ducx',
-    ETH: 'eth',
-    XRP: 'xrp',
-    USDC: 'usdc',
-    PAX: 'pax',
-    GUSD: 'gusd',
-    JAMASY: 'jamasy',
-    NUYASA: 'nuyasa',
-    SUNOBA: 'sunoba',
-    DSCMED: 'dscmed',
-    POG1: 'pog1',
-    WDE: 'wde',
-    MDXB: 'mdxb',
+    'BTC': 'btc',
+    'BCH': 'bch',
+    'DUC': 'duc',
+    'DUCX': 'ducx',
+    'ETH': 'eth',
+    'XRP': 'xrp',
+    'USDC': 'usdc',
+    'PAX': 'pax',
+    'GUSD': 'gusd',
+    'JAMASY': 'jamasy',
+    'NUYASA': 'nuyasa',
+    'SUNOBA': 'sunoba',
+    'DSCMED': 'dscmed',
+    'POG1': 'pog1',
+    'WDE': 'wde',
+    'MDXB': 'mdxb',
     'G.O.L.D.': 'g.o.l.d.'
   },
 
@@ -27,13 +27,13 @@ module.exports = {
     GUSD: 'gusd'
   },
   DRC20: {
-    JAMASY: 'jamasy',
-    NUYASA: 'nuyasa',
-    SUNOBA: 'sunoba',
-    DSCMED: 'dscmed',
-    POG1: 'pog1',
-    WDE: 'wde',
-    MDXB: 'mdxb',
+    'JAMASY': 'jamasy',
+    'NUYASA': 'nuyasa',
+    'SUNOBA': 'sunoba',
+    'DSCMED': 'dscmed',
+    'POG1': 'pog1',
+    'WDE': 'wde',
+    'MDXB': 'mdxb',
     'G.O.L.D.': 'g.o.l.d.'
   },
   UTXO_COINS: {
@@ -133,7 +133,7 @@ module.exports = {
     '0xcDdd562C0cF8c262AD8A5c1A476cdBBE114FcC28': {
       name: 'G.O.L.D.',
       symbol: 'G.O.L.D.',
-      decimal: 8,
+      decimal: 18,
       address: '0xcDdd562C0cF8c262AD8A5c1A476cdBBE114FcC28'
     }
   }

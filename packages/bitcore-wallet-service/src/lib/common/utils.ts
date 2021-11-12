@@ -187,8 +187,8 @@ export class Utils {
         minDecimals: 2
       },
       'g.o.l.d.': {
-        toSatoshis: 1e8,
-        maxDecimals: 8,
+        toSatoshis: 1e18,
+        maxDecimals: 6,
         minDecimals: 2
       },
     };

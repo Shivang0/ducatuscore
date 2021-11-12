@@ -2,7 +2,7 @@
   "name": "ducatus-wallet-client",
   "description": "Client for bitcore-wallet-service",
   "author": "BitPay Inc",
-  "version": "8.17.24",
+  "version": "8.17.25",
   "license": "MIT",
   "main": "ts_build/index.js",
   "types": "ts_build/index.d.js",
@@ -41,7 +41,7 @@
   "devDependencies": {
     "@types/lodash": "^4.14.136",
     "@types/node": "^10.0.2",
-    "ducatus-wallet-service": "^8.16.26",
+    "ducatus-wallet-service": "^8.16.27",
     "browserify": "^13.1.0",
     "chai": "^1.9.1",
     "coveralls": "^3.0.2",
