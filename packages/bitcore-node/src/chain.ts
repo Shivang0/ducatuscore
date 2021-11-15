@@ -9,6 +9,6 @@ module.exports = {
   },
   DUC: {
     lib: require('@ducatus/ducatus-core-lib-rev'),
-    p2p: require(@ducatus/ducatus-core-p2p-rev)
+    p2p: require('@ducatus/ducatus-core-p2p-rev')
   }
 };
