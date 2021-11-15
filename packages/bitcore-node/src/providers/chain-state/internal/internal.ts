@@ -2,7 +2,7 @@ import through2 from 'through2';
 import { StreamTransactionParams } from '../../../types/namespaces/ChainStateProvider';
 import { StreamBlocksParams } from '../../../types/namespaces/ChainStateProvider';
 
-import { Validation } from 'crypto-ducatus-wallet-core';
+import { Validation } from '@ducatus/ducatus-crypto-wallet-core-rev';
 import { ObjectId } from 'mongodb';
 import { LoggifyClass } from '../../../decorators/Loggify';
 import { MongoBound } from '../../../models/base';

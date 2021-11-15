@@ -1,10 +1,10 @@
 import * as Bcrypt from 'bcrypt';
-import { Deriver, Transactions } from 'crypto-ducatus-wallet-core';
+import { Deriver, Transactions } from '@ducatus/ducatus-crypto-wallet-core-rev';
 import 'source-map-support/register';
 import { Client } from './client';
 import { Encryption } from './encryption';
 import { Storage } from './storage';
-const { PrivateKey } = require('crypto-ducatus-wallet-core').BitcoreLib;
+const { PrivateKey } = require('@ducatus/ducatus-crypto-wallet-core-rev').BitcoreLib;
 const Mnemonic = require('bitcore-mnemonic');
 const { ParseApiStream } = require('./stream-util');
 

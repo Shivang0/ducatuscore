@@ -8,7 +8,7 @@ module.exports = {
     p2p: require('bitcore-p2p-cash')
   },
   DUC: {
-    lib: require('ducatuscore-lib'),
-    p2p: require('ducatuscore-p2p')
+    lib: require('@ducatus/ducatus-core-lib-rev'),
+    p2p: require(@ducatus/ducatus-core-p2p-rev)
   }
 };
