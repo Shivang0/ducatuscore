@@ -1,8 +1,22 @@
+const {
+  MODE,
+  NODE_PROD_URL,
+  NODE_DEV_URL,
+  NODE_LOCAL_URL
+} =  process.env;
+const mode: 'prod'|'dev'|'local' = MODE as 'prod'|'dev'|'local' || 'prod';
+const node = {
+  prod: NODE_PROD_URL || 'https://ducapi.rocknblock.io',
+  dev: NODE_DEV_URL || 'http://localhost:3000',
+  local: NODE_LOCAL_URL || 'http://localhost:3000'
+};
+
 module.exports = {
   basePath: '/bws/api',
   disableLogs: false,
   port: 3232,
-  productionMode: false,
+  productionMode: mode === 'prod',
+  nodeUrl: node[mode],
 
   // Uncomment to make BWS a forking server
   // cluster: true,
@@ -34,19 +48,19 @@ module.exports = {
   blockchainExplorerOpts: {
     duc: {
       livenet: {
-        url: 'https://ducapi.rocknblock.io'
+        url: node[mode]
       },
       testnet: {
-        url: 'https://ducapi.rocknblock.io',
+        url: node[mode],
         regtestEnabled: false
       }
     },
     ducx: {
       livenet: {
-        url: 'https://ducapi.rocknblock.io'
+        url: node[mode]
       },
       testnet: {
-        url: 'https://ducapi.rocknblock.io'
+        url: node[mode]
       }
     },
     btc: {
