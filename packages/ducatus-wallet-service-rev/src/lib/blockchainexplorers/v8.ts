@@ -1,5 +1,5 @@
-import * as async from 'async';
 import { Web3 } from '@ducatus/ducatus-crypto-wallet-core-rev';
+import * as async from 'async';
 import _ from 'lodash';
 import * as request from 'request-promise-native';
 import io = require('socket.io-client');

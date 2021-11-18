@@ -1,10 +1,5 @@
-const {
-  MODE,
-  NODE_PROD_URL,
-  NODE_DEV_URL,
-  NODE_LOCAL_URL
-} =  process.env;
-const mode: 'prod'|'dev'|'local' = MODE as 'prod'|'dev'|'local' || 'prod';
+const { MODE, NODE_PROD_URL, NODE_DEV_URL, NODE_LOCAL_URL } = process.env;
+const mode: 'prod' | 'dev' | 'local' = (MODE as 'prod' | 'dev' | 'local') || 'prod';
 const node = {
   prod: NODE_PROD_URL || 'https://ducapi.rocknblock.io',
   dev: NODE_DEV_URL || 'http://localhost:3000',
