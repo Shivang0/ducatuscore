@@ -53,8 +53,8 @@ COPY  ./packages/bitcore-p2p-cash/package-lock.json ./packages/bitcore-p2p-cash/
 COPY  ./packages/bitcore-p2p/package.json ./packages/bitcore-p2p/package.json
 COPY  ./packages/bitcore-p2p/package-lock.json ./packages/bitcore-p2p/package-lock.json
 
-COPY  ./packages/bitcore-wallet-client/package.json ./packages/bitcore-wallet-client/package.json
-COPY  ./packages/bitcore-wallet-client/package-lock.json ./packages/bitcore-wallet-client/package-lock.json
+COPY  ./packages/ducatus-wallet-client-rev/package.json ./packages/ducatus-wallet-client-rev/package.json
+COPY  ./packages/ducatus-wallet-client-rev/package-lock.json ./packages/ducatus-wallet-client-rev/package-lock.json
 
 COPY  ./packages/ducatus-wallet-service-rev/package.json ./packages/ducatus-wallet-service-rev/package.json
 COPY  ./packages/ducatus-wallet-service-rev/package-lock.json ./packages/ducatus-wallet-service-rev/package-lock.json

@@ -11,7 +11,10 @@ export class ETHTxProvider {
     chainId?: number;
     fromAddress?: string;
     tokenId?: number;
+    network?: string;
   }) {
+    params.chainId = this.getChainId(params.network);
+
     const { recipients, nonce, gasPrice, data, gasLimit, chainId = 1 } = params;
     const { address, amount } = recipients[0];
     const txData = {
@@ -64,5 +67,28 @@ export class ETHTxProvider {
     const { tx, key } = params;
     const signature = this.getSignatureObject({ tx, key });
     return this.applySignature({ tx, signature });
+  }
+
+  getChainId(network: string) {
+    let chainId = 1;
+    switch (network) {
+      case 'testnet':
+      case 'kovan':
+        chainId = 42;
+        break;
+      case 'ropsten':
+        chainId = 3;
+        break;
+      case 'rinkeby':
+        chainId = 4;
+        break;
+      case 'regtest':
+        chainId = 17;
+        break;
+      default:
+        chainId = 1;
+        break;
+    }
+    return chainId;
   }
 }

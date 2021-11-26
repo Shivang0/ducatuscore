@@ -207,6 +207,17 @@ export const Constants = {
         maxDecimals: 8,
         minDecimals: 2
       }
+    },
+    'g.o.l.d.': {
+      toSatoshis: 1e18,
+      full: {
+        maxDecimals: 8,
+        minDecimals: 8
+      },
+      short: {
+        maxDecimals: 6,
+        minDecimals: 2
+      }
     }
   },
   COINS: [
@@ -225,10 +236,11 @@ export const Constants = {
     'dscmed',
     'pog1',
     'wde',
-    'mdxb'
+    'mdxb',
+    'g.o.l.d.'
   ],
   ERC20: ['usdc', 'pax', 'gusd'],
-  DRC20: ['jamasy', 'nuyasa', 'sunoba', 'dscmed', 'pog1', 'wde', 'mdxb'],
+  DRC20: ['jamasy', 'nuyasa', 'sunoba', 'dscmed', 'pog1', 'wde', 'mdxb', 'g.o.l.d.'],
   UTXO_COINS: ['btc', 'bch', 'duc'],
   TOKEN_OPTS: {
     '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48': {
@@ -290,6 +302,12 @@ export const Constants = {
       symbol: 'MDXB',
       decimal: 8,
       address: '0x60DFde24CdE54df342E52a72248B2bD54e0ea4A5'
+    },
+    '0xcDdd562C0cF8c262AD8A5c1A476cdBBE114FcC28': {
+      name: 'G.O.L.D.',
+      symbol: 'G.O.L.D.',
+      decimal: 18,
+      address: '0xcDdd562C0cF8c262AD8A5c1A476cdBBE114FcC28'
     }
   }
 };

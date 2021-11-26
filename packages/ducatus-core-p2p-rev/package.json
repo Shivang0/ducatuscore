@@ -7,7 +7,7 @@
     "test": "gulp test",
     "coverage": "gulp coverage",
     "build": "gulp",
-    "pub": "npm publish --access public"
+    "pub": "npm run build && npm publish --access public"
   },
   "contributors": [],
   "repository": {

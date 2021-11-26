@@ -232,9 +232,9 @@ export class DucXChain implements IChain {
             if (err) return next(err);
             const { totalAmount, availableAmount } = ethBalance;
             if (totalAmount < txp.fee) {
-              return cb(Errors.INSUFFICIENT_ETH_FEE);
+              return cb(Errors.INSUFFICIENT_DUCX_FEE);
             } else if (availableAmount < txp.fee) {
-              return cb(Errors.LOCKED_ETH_FEE);
+              return cb(Errors.LOCKED_DUCX_FEE);
             } else {
               return next(server._checkTx(txp));
             }

@@ -23,7 +23,7 @@ var Bitcore_ = {
   bch: CWC.BitcoreLibCash,
 };
 
-var BWS = require('ducatus-wallet-service-rev');
+var BWS = require('@ducatus/ducatus-wallet-service-rev');
 
 var { Constants } = require('../ts_build/lib/common');
 var Client = require('../ts_build').default;

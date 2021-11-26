@@ -6,9 +6,9 @@ var bitcore = module.exports;
 bitcore.version = 'v' + require('./package.json').version;
 bitcore.versionGuard = function(version) {
   if (version !== undefined) {
-    var message = 'More than one instance of ducatus-core-lib-rev found. ' +
-      'Please make sure to require ducatus-core-lib-rev and check that submodules do' +
-      ' not also include their own ducatus-core-lib-rev dependency.';
+    var message = 'More than one instance of @ducatus/ducatus-core-lib-rev found. ' +
+      'Please make sure to require @ducatus/ducatus-core-lib-rev and check that submodules do' +
+      ' not also include their own @ducatus/ducatus-core-lib-rev dependency.';
     throw new Error(message);
   }
 };

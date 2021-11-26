@@ -8,6 +8,9 @@ const Defaults = Common.Defaults;
 let log = require('npmlog');
 log.debug = log.verbose;
 
+const config = require('../config');
+const { nodeUrl } = config;
+
 const PROVIDERS = {
   v8: {
     btc: {
@@ -19,8 +22,8 @@ const PROVIDERS = {
       testnet: 'https://api.bitpay.com'
     },
     duc: {
-      livenet: 'https://ducapi.rocknblock.io',
-      testnet: 'https://ducapi.rocknblock.io'
+      livenet: nodeUrl,
+      testnet: nodeUrl
     },
     eth: {
       livenet: 'https://api-eth.bitcore.io',
@@ -31,8 +34,8 @@ const PROVIDERS = {
       testnet: 'https://api-xrp.bitcore.io'
     },
     ducx: {
-      livenet: 'https://ducapi.rocknblock.io',
-      testnet: 'https://ducapi.rocknblock.io'
+      livenet: nodeUrl,
+      testnet: nodeUrl
     }
   }
 };
