@@ -1,6 +1,6 @@
 {
   "bitcoreNode": {
-    "modules": ["./bitcoin", "./bitcoin-cash", "./ethereum", "./ripple", "./litecoin", "./ducatus", "./ducatusx"], 
+    "modules": ["./ducatus", "./ducatusx"], 
     "services": {
       "api": {
         "wallets": {
@@ -9,67 +9,6 @@
       }
     },
     "chains": {
-      "BTC": {
-        "mainnet": {
-          "chainSource": "p2p",
-          "trustedPeers": [
-            {
-              "host": "178.63.46.253",
-              "port": 9831
-            }
-          ],
-          "rpc": {
-            "host": "178.63.46.253",
-            "port": 9832,
-            "username": "user",
-            "password": "password"
-          }
-        }
-      },
-      "BCH": {
-        "mainnet": {
-          "chainSource": "p2p",
-          "trustedPeers": [
-            {
-              "host": "144.76.34.104",
-              "port": 18332
-            }
-          ],
-          "rpc": {
-            "host": "144.76.34.104",
-            "port": 18333,
-            "username": "btccash",
-            "password": "btccash"
-          }
-        }
-      },
-      "ETH": {
-        "testnet": {
-          "chainSource": "p2p",
-          "trustedPeers": [
-            {
-              "host": "parity",
-              "port": 30303
-            }
-          ],
-          "provider": {
-            "host": "parity",
-            "protocol": "ws",
-            "port": 8546
-          }
-        }
-      },
-      "XRP": {
-        "testnet": {
-          "chainSource": "rpc",
-          "provider": {
-            "host": "rippled",
-            "protocol": "ws",
-            "port": "6006",
-            "dataHost": "rippled"
-          }
-        }
-      },
       "DUC": {
         "mainnet": {
           "chainSource": "p2p",
