@@ -82,7 +82,7 @@ export class DucXChain implements IChain {
     server.getBalance({}, (err, balance) => {
       if (err) return cb(err);
       const { totalAmount, availableAmount } = balance;
-      let fee = opts.feePerKb * Defaults.MIN_GAS_LIMIT;
+      let fee = opts.feePerKb * Defaults.MIN_DUCX_GAS_LIMIT;
       return cb(null, {
         utxosBelowFee: 0,
         amountBelowFee: 0,
@@ -129,17 +129,17 @@ export class DucXChain implements IChain {
               data: output.data,
               gasPrice
             });
-            output.gasLimit = inGasLimit || Defaults.DEFAULT_GAS_LIMIT;
+            output.gasLimit = inGasLimit || Defaults.DEFAULT_DUCX_GAS_LIMIT;
           } catch (err) {
-            output.gasLimit = Defaults.DEFAULT_GAS_LIMIT;
+            output.gasLimit = Defaults.DEFAULT_DUCX_GAS_LIMIT;
           }
         }
         if (_.isNumber(opts.fee)) {
           // This is used for sendmax
-          gasPrice = feePerKb = Number((opts.fee / (inGasLimit || Defaults.DEFAULT_GAS_LIMIT)).toFixed());
+          gasPrice = feePerKb = Number((opts.fee / (inGasLimit || Defaults.DEFAULT_DUCX_GAS_LIMIT)).toFixed());
         }
 
-        const gasLimit = inGasLimit || Defaults.DEFAULT_GAS_LIMIT;
+        const gasLimit = inGasLimit || Defaults.DEFAULT_DUCX_GAS_LIMIT;
         opts.fee = feePerKb * gasLimit;
         return resolve({ feePerKb, gasPrice, gasLimit });
       });
