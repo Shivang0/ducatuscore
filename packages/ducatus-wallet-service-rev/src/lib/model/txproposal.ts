@@ -15,6 +15,38 @@ const Constants = Common.Constants,
   Defaults = Common.Defaults,
   Utils = Common.Utils;
 
+enum SwapStatusesEnum {
+  WaitingForValidation = 'WAITING_FOR_VALIDATION',
+  InsufficientAmount = 'INSUFFICIENT_AMOUNT',
+  WaitingFor_Relay = 'WAITING_FOR_RELAY',
+  InsufficientTokenBalance = 'INSUFFICIENT_TOKEN_BALANCE',
+  InsufficientBalance = 'INSUFFICIENT_BALANCE',
+  Pending = 'PENDING',
+  Success = 'SUCCESS',
+  Revert = 'REVERT',
+  Fail = 'FAIL',
+  WaitingForReturn = 'WAITING_FOR_RETURN',
+  PendingReturn = 'PENDING_RETURN',
+  Return = 'RETURN'
+}
+
+export interface IStatusHistory {
+  status: SwapStatusesEnum;
+  date: string;
+}
+
+export interface ISwapTx {
+  txid: string;
+  status: SwapStatusesEnum;
+  convertedFrom: 'DUC' | 'DUCX' | 'ETH' | 'BTC';
+  convertedFromAmount: string;
+  convertedTo: 'DUC' | 'DUCX' | 'WDUCX';
+  convertedToAmount: string;
+  sentFrom: string;
+  sentTo: string;
+  statusHistory: IStatusHistory[];
+}
+
 export interface ITxProposal {
   type: string;
   creatorName: string;
@@ -68,6 +100,7 @@ export interface ITxProposal {
   destinationTag?: string;
   invoiceID?: string;
   wDucxAddress?: string;
+  swap?: ISwapTx;
 }
 
 export class TxProposal {
@@ -125,6 +158,7 @@ export class TxProposal {
   destinationTag?: string;
   invoiceID?: string;
   wDucxAddress?: string;
+  swap?: ISwapTx;
 
   static create(opts) {
     opts = opts || {};
@@ -192,6 +226,9 @@ export class TxProposal {
     // DUCX TO wDUCX
     x.wDucxAddress = opts.wDucxAddress;
 
+    // SWAP
+    x.swap = opts.swap;
+
     return x;
   }
 
@@ -253,6 +290,9 @@ export class TxProposal {
 
     // DUCX TO wDUCX
     x.wDucxAddress = obj.wDucxAddress;
+
+    // SWAP
+    x.swap = obj.swap;
 
     if (x.status == 'broadcasted') {
       x.raw = obj.raw;

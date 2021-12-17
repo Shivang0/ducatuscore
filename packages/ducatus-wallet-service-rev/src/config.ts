@@ -1,4 +1,4 @@
-const { MODE, NODE_PROD_URL, NODE_DEV_URL, NODE_LOCAL_URL } = process.env;
+const { MODE, NODE_PROD_URL, NODE_DEV_URL, NODE_LOCAL_URL, EXCHANGER_LIVENET_URL, EXCHANGER_TESTNET_URL } = process.env;
 const defaultMode = 'prod';
 const mode: 'prod' | 'dev' | 'local' = (MODE as 'prod' | 'dev' | 'local') || defaultMode;
 const node = {
@@ -13,7 +13,10 @@ module.exports = {
   port: 3232,
   productionMode: mode === 'prod',
   nodeUrl: node[mode],
-
+  exchangerUrl: {
+    livenet: EXCHANGER_LIVENET_URL || 'https://ducsite.rocknblock.io',
+    testnet: EXCHANGER_TESTNET_URL || 'https://devducatus.rocknblock.io'
+  },
   // Uncomment to make BWS a forking server
   // cluster: true,
 
