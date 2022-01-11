@@ -9,7 +9,7 @@ module.exports = {
     eth: 50000000000, // 50 Gwei,
     xrp: 50000000000,
     duc: 10000 * 1000, // 10k sat/b
-    ducx: 50000000000
+    ducx: 80000000000
   },
 
   MIN_TX_FEE: {
