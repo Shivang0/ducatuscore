@@ -14,7 +14,7 @@ module.exports = {
   productionMode: mode === 'prod',
   nodeUrl: node[mode],
   exchangerUrl: {
-    livenet: EXCHANGER_LIVENET_URL || 'https://ducsite.rocknblock.io',
+    livenet: EXCHANGER_LIVENET_URL || 'https://www.ducatuscoins.com',
     testnet: EXCHANGER_TESTNET_URL || 'https://devducatus.rocknblock.io'
   },
   // Uncomment to make BWS a forking server
