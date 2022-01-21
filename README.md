@@ -1,5 +1,4 @@
-# Bitcore
-![Circle CI](https://circleci.com/gh/bitpay/bitcore/tree/master.svg?style=shield)
+# Ducatus-bitcore
 
 **Infrastructure to build Bitcoin and blockchain-based applications for the next generation of financial technology.**
 
@@ -10,12 +9,13 @@
 - Trusted P2P Peer
 - MongoDB Server >= v3.4
 - make g++ gcc 
+- Node.js = v10.24.1
 
 ### Checkout the repo
 
 
 ```sh
-git clone git@github.com:bitpay/bitcore.git
+git clone git@github.com:DUCATUS-revival/ducatus-bitcore.git
 git checkout master
 npm install
 ```
@@ -151,13 +151,21 @@ rpcpassword=password
 npm run node
 ```
 
+### 4. Start DucatusBitcore Wallet Service
+Check ./.env.example
+
+```sh
+npm run bws
+```
+
+
 ## Applications
 
-- [Bitcore Node](packages/bitcore-node) - A full node with extended capabilities using Bitcoin Core
-- [Bitcore Wallet](packages/bitcore-wallet) - A command-line based wallet client
-- [Bitcore Wallet Client](packages/ducatus-wallet-client) - A client for the wallet service
-- [Bitcore Wallet Service](packages/ducatus-wallet-service-rev) - A multisig HD service for wallets
-- [Bitpay Wallet](https://github.com/bitpay/copay) - An easy-to-use, multiplatform, multisignature, secure bitcoin wallet
+- [DucatusBitcore Node](packages/bitcore-node) - A full node with extended capabilities using Ducatus-bitcore Core
+- [DucatusBitcore Wallet](packages/bitcore-wallet) - A command-line based wallet client
+- [DucatusBitcore Wallet Client](packages/ducatus-wallet-client-rev) - A client for the wallet service
+- [DucatusBitcore Wallet Service](packages/ducatus-wallet-service-rev) - A multisig HD service for wallets
+- [DucatusBitcore Wallet](https://github.com/bitpay/copay) - An easy-to-use, multiplatform, multisignature, secure bitcoin wallet
 - [Insight](packages/insight) - A blockchain explorer web user interface
 
 ## Libraries
@@ -170,19 +178,17 @@ npm run node
 - [Bitcore Mnemonic](packages/bitcore-mnemonic) - Implements mnemonic code for generating deterministic keys
 - [Bitcore P2P](packages/bitcore-p2p) - The peer-to-peer networking protocol for BTC
 - [Bitcore P2P Cash](packages/bitcore-p2p-cash) - The peer-to-peer networking protocol for BCH
-- [Crypto Wallet Core](packages/ducatus-crypto-wallet-core-rev) - A coin-agnostic wallet library for creating transactions, signing, and address derivation
+- [Ducatus Crypto Wallet Core](packages/ducatus-crypto-wallet-core-rev) - A coin-agnostic wallet library for creating transactions, signing, and address derivation
+- [DucatusBitcore Lib](packages/ducatus-core-lib-rev) - A pure and powerful JavaScript Ducatus library
+- [DucatusBitcore P2P](packages/ducatus-core-p2p-rev) - The peer-to-peer networking protocol for BTC
 
 ## Extras
 
 - [Bitcore Build](packages/bitcore-build) - A helper to add tasks to gulp
 - [Bitcore Client](packages/bitcore-client) - A helper to create a wallet using the bitcore-v8 infrastructure
 
-## Contributing
-
-See [CONTRIBUTING.md](https://github.com/bitpay/bitcore/blob/master/Contributing.md) on the main bitcore repo for information about how to contribute.
-
 ## License
 
-Code released under [the MIT license](https://github.com/bitpay/bitcore/blob/master/LICENSE).
+Code released under [the MIT license](https://github.com/DUCATUS-revival/ducatus-bitcore/blob/master/LICENSE).
 
-Copyright 2013-2019 BitPay, Inc. Bitcore is a trademark maintained by BitPay, Inc.
+Copyright 2019-2022 Ducatus.
