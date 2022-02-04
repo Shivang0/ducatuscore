@@ -169,9 +169,19 @@ export class XrpChain implements IChain {
 
   selectTxInputs(server, txp, wallet, opts, cb, next) {
     server.getBalance({ wallet }, (err, balance) => {
-      if (err) return next(err);
+      
+      if (err) {
+        return next(err);
+      }
+
       const { totalAmount, availableAmount } = balance;
+      
       if (totalAmount < txp.getTotalAmount()) {
+        return cb(Errors.INSUFFICIENT_FUNDS);
+      } else if (
+        txp.fee 
+        && totalAmount < txp.getTotalAmount() + Number(txp.fee)
+      ) {
         return cb(Errors.INSUFFICIENT_FUNDS);
       } else if (availableAmount < txp.getTotalAmount()) {
         return cb(Errors.LOCKED_FUNDS);
