@@ -269,16 +269,23 @@ export class DucXChain implements IChain {
 
       if (totalAmount < txTotalAmount) {
         return cb(Errors.INSUFFICIENT_FUNDS);
-      } else if (totalAmount < txTotalAmountAndFee) {
-        return cb(Errors.INSUFFICIENT_FUNDS);
-      } else if (availableAmount < txTotalAmount) {
-        return cb(Errors.LOCKED_FUNDS);
-      } else {
-        if (opts.tokenAddress) {
-          // ETH wallet balance
+      } else if (opts.tokenAddress) {
+        
+        if (totalAmount < txTotalAmount) {
+          return cb(Errors.INSUFFICIENT_FUNDS);
+        } else if (availableAmount < txTotalAmount) {
+          return cb(Errors.LOCKED_FUNDS);
+        } else {
           server.getBalance({}, (err, ethBalance) => {
-            if (err) return next(err);
-            const { totalAmount, availableAmount } = ethBalance;
+            if (err) {
+              return next(err);
+            }
+
+            const { 
+              totalAmount, 
+              availableAmount 
+            } = ethBalance;
+            
             if (totalAmount < txp.fee) {
               return cb(Errors.INSUFFICIENT_DUCX_FEE);
             } else if (availableAmount < txp.fee) {
@@ -287,6 +294,12 @@ export class DucXChain implements IChain {
               return next(server._checkTx(txp));
             }
           });
+        }
+      } else {
+        if (totalAmount < txTotalAmountAndFee) {
+          return cb(Errors.INSUFFICIENT_FUNDS);
+        } else if (availableAmount < txTotalAmountAndFee) {
+          return cb(Errors.LOCKED_FUNDS);
         } else {
           return next(server._checkTx(txp));
         }
