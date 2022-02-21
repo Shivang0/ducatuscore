@@ -44,7 +44,7 @@ module.exports = {
   MIN_GAS_LIMIT: 21000,
 
   // DUCX
-  DEFAULT_DUCX_GAS_LIMIT: 200000,
+  DEFAULT_DUCX_GAS_LIMIT: 21000,
   MIN_DUCX_GAS_LIMIT: 21000,
 
   // XRP has a non-refundable mininum activation fee / balance

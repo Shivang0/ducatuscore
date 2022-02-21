@@ -2,7 +2,7 @@
   "name": "@ducatus/ducatus-wallet-service-rev",
   "description": "A service for Mutisig HD Bitcoin Wallets",
   "author": "BitPay Inc",
-  "version": "8.16.28",
+  "version": "8.16.29",
   "license": "MIT",
   "main": "ts_build/index.js",
   "types": "./ts_build/index.d.ts",
@@ -53,7 +53,8 @@
     "socket.io-client": "^2.2.0",
     "source-map-support": "^0.5.13",
     "sticky-session": "^0.1.0",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.2",
+    "big.js": "^6.1.1"
   },
   "devDependencies": {
     "@types/async": "^2.4.1",
