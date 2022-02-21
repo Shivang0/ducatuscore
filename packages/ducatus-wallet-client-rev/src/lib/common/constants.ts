@@ -21,7 +21,7 @@ export const Constants = {
   },
   BIP45_SHARED_INDEX: 0x80000000 - 1,
   UNITS: {
-    btc: {
+    'btc': {
       toSatoshis: 100000000,
       full: {
         maxDecimals: 8,
@@ -32,7 +32,7 @@ export const Constants = {
         minDecimals: 2
       }
     },
-    duc: {
+    'duc': {
       toSatoshis: 100000000,
       full: {
         maxDecimals: 8,
@@ -43,7 +43,7 @@ export const Constants = {
         minDecimals: 2
       }
     },
-    bch: {
+    'bch': {
       toSatoshis: 100000000,
       full: {
         maxDecimals: 8,
@@ -54,7 +54,7 @@ export const Constants = {
         minDecimals: 2
       }
     },
-    eth: {
+    'eth': {
       toSatoshis: 1e18,
       full: {
         maxDecimals: 8,
@@ -65,7 +65,7 @@ export const Constants = {
         minDecimals: 2
       }
     },
-    xrp: {
+    'xrp': {
       toSatoshis: 1e6,
       full: {
         maxDecimals: 6,
@@ -76,7 +76,7 @@ export const Constants = {
         minDecimals: 2
       }
     },
-    ducx: {
+    'ducx': {
       toSatoshis: 1e18,
       full: {
         maxDecimals: 8,
@@ -87,7 +87,7 @@ export const Constants = {
         minDecimals: 2
       }
     },
-    usdc: {
+    'usdc': {
       toSatoshis: 1e6,
       full: {
         maxDecimals: 8,
@@ -98,7 +98,7 @@ export const Constants = {
         minDecimals: 2
       }
     },
-    pax: {
+    'pax': {
       toSatoshis: 1e18,
       full: {
         maxDecimals: 8,
@@ -109,7 +109,7 @@ export const Constants = {
         minDecimals: 2
       }
     },
-    gusd: {
+    'gusd': {
       toSatoshis: 1e2,
       full: {
         maxDecimals: 8,
@@ -120,7 +120,7 @@ export const Constants = {
         minDecimals: 2
       }
     },
-    bit: {
+    'bit': {
       toSatoshis: 100,
       full: {
         maxDecimals: 2,
@@ -131,7 +131,7 @@ export const Constants = {
         minDecimals: 0
       }
     },
-    jamasy: {
+    'jamasy': {
       toSatoshis: 1e8,
       full: {
         maxDecimals: 8,
@@ -142,7 +142,7 @@ export const Constants = {
         minDecimals: 2
       }
     },
-    nuyasa: {
+    'nuyasa': {
       toSatoshis: 1e8,
       full: {
         maxDecimals: 8,
@@ -153,7 +153,7 @@ export const Constants = {
         minDecimals: 2
       }
     },
-    sunoba: {
+    'sunoba': {
       toSatoshis: 1e8,
       full: {
         maxDecimals: 8,
@@ -164,7 +164,7 @@ export const Constants = {
         minDecimals: 2
       }
     },
-    dscmed: {
+    'dscmed': {
       toSatoshis: 1e8,
       full: {
         maxDecimals: 8,
@@ -175,7 +175,7 @@ export const Constants = {
         minDecimals: 2
       }
     },
-    pog1: {
+    'pog1': {
       toSatoshis: 1e8,
       full: {
         maxDecimals: 8,
@@ -186,7 +186,7 @@ export const Constants = {
         minDecimals: 2
       }
     },
-    wde: {
+    'wde': {
       toSatoshis: 1e8,
       full: {
         maxDecimals: 8,
@@ -197,7 +197,7 @@ export const Constants = {
         minDecimals: 2
       }
     },
-    mdxb: {
+    'mdxb': {
       toSatoshis: 1e8,
       full: {
         maxDecimals: 8,
@@ -216,6 +216,17 @@ export const Constants = {
       },
       short: {
         maxDecimals: 6,
+        minDecimals: 2
+      }
+    },
+    'jwan': {
+      toSatoshis: 1e8,
+      full: {
+        maxDecimals: 8,
+        minDecimals: 8
+      },
+      short: {
+        maxDecimals: 8,
         minDecimals: 2
       }
     }
@@ -237,10 +248,11 @@ export const Constants = {
     'pog1',
     'wde',
     'mdxb',
-    'g.o.l.d.'
+    'g.o.l.d.',
+    'jwan'
   ],
   ERC20: ['usdc', 'pax', 'gusd'],
-  DRC20: ['jamasy', 'nuyasa', 'sunoba', 'dscmed', 'pog1', 'wde', 'mdxb', 'g.o.l.d.'],
+  DRC20: ['jamasy', 'nuyasa', 'sunoba', 'dscmed', 'pog1', 'wde', 'mdxb', 'g.o.l.d.', 'jwan'],
   UTXO_COINS: ['btc', 'bch', 'duc'],
   TOKEN_OPTS: {
     '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48': {
@@ -308,6 +320,12 @@ export const Constants = {
       symbol: 'G.O.L.D.',
       decimal: 18,
       address: '0xcDdd562C0cF8c262AD8A5c1A476cdBBE114FcC28'
+    },
+    '0xFCb965D9Da10A15eb87B3Da539383997ce6fA597': {
+      name: 'Jwan',
+      symbol: 'JWAN',
+      decimal: 8,
+      address: '0xFCb965D9Da10A15eb87B3Da539383997ce6fA597'
     }
   }
 };
