@@ -190,6 +190,11 @@ export class Utils {
         toSatoshis: 1e18,
         maxDecimals: 6,
         minDecimals: 2
+      },
+      'jwan': {
+        toSatoshis: 1e8,
+        maxDecimals: 8,
+        minDecimals: 2
       }
     };
 

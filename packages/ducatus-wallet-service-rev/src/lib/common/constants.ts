@@ -18,7 +18,8 @@ module.exports = {
     POG1: 'pog1',
     WDE: 'wde',
     MDXB: 'mdxb',
-    'G.O.L.D.': 'g.o.l.d.'
+    'G.O.L.D.': 'g.o.l.d.',
+    JWAN: 'jwan'
   },
 
   ERC20: {
@@ -34,7 +35,8 @@ module.exports = {
     POG1: 'pog1',
     WDE: 'wde',
     MDXB: 'mdxb',
-    'G.O.L.D.': 'g.o.l.d.'
+    'G.O.L.D.': 'g.o.l.d.',
+    JWAN: 'jwan'
   },
   UTXO_COINS: {
     BTC: 'btc',
@@ -130,11 +132,11 @@ module.exports = {
       decimal: 8,
       address: '0x60DFde24CdE54df342E52a72248B2bD54e0ea4A5'
     },
-    '0xcDdd562C0cF8c262AD8A5c1A476cdBBE114FcC28': {
-      name: 'G.O.L.D.',
-      symbol: 'G.O.L.D.',
-      decimal: 18,
-      address: '0xcDdd562C0cF8c262AD8A5c1A476cdBBE114FcC28'
+    '0xFCb965D9Da10A15eb87B3Da539383997ce6fA597': {
+      name: 'Jwan',
+      symbol: 'Jwan',
+      decimal: 8,
+      address: '0xFCb965D9Da10A15eb87B3Da539383997ce6fA597'
     }
   }
 };
