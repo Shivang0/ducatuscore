@@ -195,6 +195,11 @@ export class Utils {
         toSatoshis: 1e8,
         maxDecimals: 8,
         minDecimals: 2
+      },
+      'tkf': {
+        toSatoshis: 1e8,
+        maxDecimals: 8,
+        minDecimals: 2
       }
     };
 

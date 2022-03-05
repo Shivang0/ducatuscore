@@ -19,7 +19,8 @@ module.exports = {
     WDE: 'wde',
     MDXB: 'mdxb',
     'G.O.L.D.': 'g.o.l.d.',
-    JWAN: 'jwan'
+    JWAN: 'jwan',
+    TKF: 'tkf'
   },
 
   ERC20: {
@@ -36,7 +37,8 @@ module.exports = {
     WDE: 'wde',
     MDXB: 'mdxb',
     'G.O.L.D.': 'g.o.l.d.',
-    JWAN: 'jwan'
+    JWAN: 'jwan',
+    TKF: 'tkf'
   },
   UTXO_COINS: {
     BTC: 'btc',
@@ -137,6 +139,12 @@ module.exports = {
       symbol: 'Jwan',
       decimal: 8,
       address: '0xFCb965D9Da10A15eb87B3Da539383997ce6fA597'
+    },
+    '0xA75185edc9745B000379e8304deBA5DeAbB39f30': {
+      name: 'Takaful',
+      symbol: 'TKF',
+      decimal: 8,
+      address: '0xA75185edc9745B000379e8304deBA5DeAbB39f30'
     }
   }
 };
