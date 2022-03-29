@@ -15,7 +15,7 @@
 
 
 ```sh
-git clone git@github.com:DUCATUS-revival/ducatus-bitcore.git
+git clone git@github.com:DucatusX/ducatus-bitcore.git
 git checkout master
 npm install
 ```
@@ -189,6 +189,6 @@ npm run bws
 
 ## License
 
-Code released under [the MIT license](https://github.com/DUCATUS-revival/ducatus-bitcore/blob/master/LICENSE).
+Code released under [the MIT license](https://github.com/DucatusX/ducatus-bitcore/blob/master/LICENSE).
 
 Copyright 2019-2022 Ducatus.
