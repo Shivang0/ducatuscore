@@ -240,6 +240,17 @@ export const Constants = {
         maxDecimals: 8,
         minDecimals: 2
       }
+    },
+    'aa+': {
+      toSatoshis: 1e5,
+      full: {
+        maxDecimals: 5,
+        minDecimals: 5
+      },
+      short: {
+        maxDecimals: 5,
+        minDecimals: 2
+      }
     }
   },
   COINS: [
@@ -261,10 +272,11 @@ export const Constants = {
     'mdxb',
     'g.o.l.d.',
     'jwan',
-    'tkf'
+    'tkf',
+    'AA+'
   ],
   ERC20: ['usdc', 'pax', 'gusd'],
-  DRC20: ['jamasy', 'nuyasa', 'sunoba', 'dscmed', 'pog1', 'wde', 'mdxb', 'g.o.l.d.', 'jwan', 'tkf'],
+  DRC20: ['jamasy', 'nuyasa', 'sunoba', 'dscmed', 'pog1', 'wde', 'mdxb', 'g.o.l.d.', 'jwan', 'tkf', 'aa+'],
   UTXO_COINS: ['btc', 'bch', 'duc'],
   TOKEN_OPTS: {
     '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48': {
@@ -344,6 +356,12 @@ export const Constants = {
       symbol: 'TKF',
       decimal: 8,
       address: '0xA75185edc9745B000379e8304deBA5DeAbB39f30'
+    },
+    '0x986083CD47dBBC931585D2FE2330FD29B3e849b0': {
+      name: 'AA+',
+      symbol: 'AA+',
+      decimal: 5,
+      address: '0x986083CD47dBBC931585D2FE2330FD29B3e849b0'
     }
   }
 };

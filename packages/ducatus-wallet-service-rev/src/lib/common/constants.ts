@@ -20,7 +20,8 @@ module.exports = {
     MDXB: 'mdxb',
     'G.O.L.D.': 'g.o.l.d.',
     JWAN: 'jwan',
-    TKF: 'tkf'
+    TKF: 'tkf',
+    'AA+': 'aa+'
   },
 
   ERC20: {
@@ -38,7 +39,8 @@ module.exports = {
     MDXB: 'mdxb',
     'G.O.L.D.': 'g.o.l.d.',
     JWAN: 'jwan',
-    TKF: 'tkf'
+    TKF: 'tkf',
+    'AA+': 'aa+'
   },
   UTXO_COINS: {
     BTC: 'btc',
@@ -145,6 +147,12 @@ module.exports = {
       symbol: 'TKF',
       decimal: 8,
       address: '0xA75185edc9745B000379e8304deBA5DeAbB39f30'
+    },
+    '0x986083CD47dBBC931585D2FE2330FD29B3e849b0': {
+      name: 'AA+',
+      symbol: 'AA+',
+      decimal: 5,
+      address: '0x986083CD47dBBC931585D2FE2330FD29B3e849b0'
     }
   }
 };

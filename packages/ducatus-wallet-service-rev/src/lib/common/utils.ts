@@ -200,6 +200,11 @@ export class Utils {
         toSatoshis: 1e8,
         maxDecimals: 8,
         minDecimals: 2
+      },
+      'aa+': {
+        toSatoshis: 1e5,
+        maxDecimals: 5,
+        minDecimals: 2
       }
     };
 
