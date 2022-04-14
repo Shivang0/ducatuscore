@@ -12,7 +12,7 @@
   "contributors": [],
   "repository": {
     "type": "git",
-    "url": "https://github.com/DUCATUS-revival/ducatus-bitcore.git"
+    "url": "https://github.com/DucatusX/ducatus-bitcore.git"
   },
   "dependencies": {
     "bloom-filter": "^0.2.0",
