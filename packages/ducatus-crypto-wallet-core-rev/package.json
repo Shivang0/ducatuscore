@@ -1,6 +1,6 @@
 {
   "name": "@ducatus/ducatus-crypto-wallet-core-rev",
-  "version": "8.16.34",
+  "version": "8.16.35",
   "description": "A multi-currency support library for address derivation, private key creation, and transaction creation",
   "main": "./ts_build/src/index.js",
   "types": "./ts_build/src/index.d.ts",

@@ -1,4 +1,5 @@
 import { Transactions, Validation } from '@ducatus/ducatus-crypto-wallet-core-rev';
+import { Big } from 'big.js';
 import _ from 'lodash';
 import { IAddress } from 'src/lib/model/address';
 import { IChain } from '..';
@@ -122,9 +123,20 @@ export class EthChain implements IChain {
               data: output.data,
               gasPrice
             });
-            output.gasLimit = inGasLimit || Defaults.DEFAULT_GAS_LIMIT;
+
+            if (inGasLimit) {
+              output.gasLimit = inGasLimit;
+            } else if (opts.tokenAddress) {
+              output.gasLimit = Defaults.DEFAULT_ERC20_GAS_LIMIT;
+            } else {
+              output.gasLimit = Defaults.DEFAULT_GAS_LIMIT;
+            }
           } catch (err) {
-            output.gasLimit = Defaults.DEFAULT_GAS_LIMIT;
+            if (opts.tokenAddress) {
+              output.gasLimit = Defaults.DEFAULT_ERC20_GAS_LIMIT;
+            } else {
+              output.gasLimit = Defaults.DEFAULT_GAS_LIMIT;
+            }
           }
         }
         if (_.isNumber(opts.fee)) {
@@ -206,35 +218,48 @@ export class EthChain implements IChain {
       }
 
       const { totalAmount, availableAmount } = balance;
+      const txTotalAmount = txp.getTotalAmount();
+      const txTotalAmountAndFee = new Big(txTotalAmount)
+        .plus(txp.fee || 0)
+        .toNumber();
 
-      if (totalAmount < txp.getTotalAmount()) {
-        return cb(Errors.INSUFFICIENT_FUNDS);
-      } else if (
-        txp.fee 
-        && totalAmount < txp.getTotalAmount() + Number(txp.fee)
-      ) {
-        return cb(Errors.INSUFFICIENT_FUNDS);
-      } else if (availableAmount < txp.getTotalAmount()) {
-        return cb(Errors.LOCKED_FUNDS);
-      } else {
-        
-        if (opts.tokenAddress) {
-          // ETH wallet balance
-          server.getBalance({}, (err, ethBalance) => {
-            if (err) return next(err);
-            const { totalAmount, availableAmount } = ethBalance;
-            if (totalAmount < txp.fee) {
-              return cb(Errors.INSUFFICIENT_ETH_FEE);
-            } else if (availableAmount < txp.fee) {
-              return cb(Errors.LOCKED_ETH_FEE);
-            } else {
-              return next(server._checkTx(txp));
-            }
-          });
+        if (totalAmount < txTotalAmount) {
+          return cb(Errors.INSUFFICIENT_FUNDS);
+        } else if (opts.tokenAddress) {
+          
+          if (totalAmount < txTotalAmount) {
+            return cb(Errors.INSUFFICIENT_FUNDS);
+          } else if (availableAmount < txTotalAmount) {
+            return cb(Errors.LOCKED_FUNDS);
+          } else {
+            server.getBalance({}, (err, ethBalance) => {
+              if (err) {
+                return next(err);
+              }
+  
+              const { 
+                totalAmount, 
+                availableAmount 
+              } = ethBalance;
+              
+              if (totalAmount < txp.fee) {
+                return cb(Errors.INSUFFICIENT_ETH_FEE);
+              } else if (availableAmount < txp.fee) {
+                return cb(Errors.LOCKED_ETH_FEE);
+              } else {
+                return next(server._checkTx(txp));
+              }
+            });
+          }
         } else {
-          return next(server._checkTx(txp));
+          if (totalAmount < txTotalAmountAndFee) {
+            return cb(Errors.INSUFFICIENT_FUNDS);
+          } else if (availableAmount < txTotalAmountAndFee) {
+            return cb(Errors.LOCKED_FUNDS);
+          } else {
+            return next(server._checkTx(txp));
+          }
         }
-      }
     });
   }
 

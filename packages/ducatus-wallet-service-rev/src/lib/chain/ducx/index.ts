@@ -93,17 +93,19 @@ export class DucXChain implements IChain {
       const feePerKb = new Big(opts.feePerKb);
       const fee = feePerKb
         .times(Defaults.DEFAULT_DUCX_GAS_LIMIT)
-        .toNumber();
+        .toNumber()
+        .toFixed();
       const amount = availableAmount
         .minus(fee)
-        .toNumber();
+        .toNumber()
+        .toFixed();
 
       return cb(null, {
         utxosBelowFee: 0,
         amountBelowFee: 0,
-        amount,
+        amount: Number(amount),
         feePerKb: opts.feePerKb,
-        fee
+        fee: Number(fee)
       });
     });
   }
@@ -146,9 +148,21 @@ export class DucXChain implements IChain {
               data: output.data,
               gasPrice
             });
-            output.gasLimit = inGasLimit || Defaults.DEFAULT_DUCX_GAS_LIMIT;
+
+            if (inGasLimit) {
+              output.gasLimit = inGasLimit;
+            } else if (opts.tokenAddress) {
+              output.gasLimit = Defaults.DEFAULT_DRC20_GAS_LIMIT;
+            } else {
+              output.gasLimit = Defaults.DEFAULT_DUCX_GAS_LIMIT;
+            }
+
           } catch (err) {
-            output.gasLimit = Defaults.DEFAULT_DUCX_GAS_LIMIT;
+            if (opts.tokenAddress) {
+              output.gasLimit = Defaults.DEFAULT_DRC20_GAS_LIMIT;
+            } else {
+              output.gasLimit = Defaults.DEFAULT_DUCX_GAS_LIMIT;
+            }
           }
         }
 
@@ -157,15 +171,21 @@ export class DucXChain implements IChain {
           const nFee = new Big(opts.fee);
           gasPrice = feePerKb = nFee
             .div(inGasLimit || Defaults.DEFAULT_DUCX_GAS_LIMIT)
-            .toNumber();
+            .toNumber()
+            .toFixed();
         }
 
         const gasLimit = inGasLimit || Defaults.DEFAULT_DUCX_GAS_LIMIT;
         opts.fee = new Big(feePerKb)
           .times(gasLimit)
-          .toNumber();
+          .toNumber()
+          .toFixed();
 
-        return resolve({ feePerKb, gasPrice, gasLimit });
+        return resolve({ 
+          feePerKb: Number(feePerKb), 
+          gasPrice: Number(gasPrice), 
+          gasLimit: Number(gasLimit)  
+        });
       });
     });
   }
