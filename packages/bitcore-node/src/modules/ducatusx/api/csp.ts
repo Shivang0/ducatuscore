@@ -31,6 +31,7 @@ import { EthBlockStorage } from '../models/block';
 import { EthTransactionStorage } from '../models/transaction';
 import { EthTransactionJSON, IEthBlock } from '../types';
 import { EthListTransactionsStream } from './transform';
+
 interface EventLog<T> {
   event: string;
   address: string;
@@ -61,42 +62,61 @@ export class ETHStateProvider extends InternalStateProvider implements IChainSta
     this.config = Config.chains[this.chain];
   }
 
-  async getWeb3(network: string): Promise<{ rpc: CryptoRpc; web3: Web3 }> {
-    console.log('DUCX_DEBUG: ETHStateProvider, METED: getWeb3, MESSAGE: start, time: ' + new Date().toISOString());
-    try {
-      if (ETHStateProvider.rpcs[network]) {
-        await ETHStateProvider.rpcs[network].web3.eth.getBlockNumber();
+  checkWeb3(network: string): Promise<boolean> {
+    return new Promise(async(resolve) => {
+      try {
+        const timeOut = 1000 * 10;
+        let blockNumber;
+        
+        setTimeout(() => {
+          if (!blockNumber) {
+            resolve(false);
+          }
+        }, timeOut);
+
+        blockNumber = await ETHStateProvider.rpcs[network].web3.eth.getBlockNumber();
+        resolve(true);
+      } catch (e) {
+        resolve(false)
       }
-    } catch (e) {
-      delete ETHStateProvider.rpcs[network];
+    });
+  }
+
+  async getWeb3(network: string): Promise<{ rpc: CryptoRpc; web3: Web3 }> {
+
+    if (ETHStateProvider.rpcs[network]) {
+      const isNormalConnect = await this.checkWeb3(network);
+
+      if (!isNormalConnect) {
+        delete ETHStateProvider.rpcs[network];
+      }
     }
+
     if (!ETHStateProvider.rpcs[network]) {
       console.log('making a new connection');
       const rpcConfig = { ...this.config[network].provider, chain: this.chain, currencyConfig: {} };
       const rpc = new CryptoRpc(rpcConfig, {}).get(this.chain);
       ETHStateProvider.rpcs[network] = { rpc, web3: rpc.web3 };
     }
-    console.log('DUCX_DEBUG: ETHStateProvider, METED: getWeb3, MESSAGE: end, time: ' + new Date().toISOString());
+   
     return ETHStateProvider.rpcs[network];
   }
 
   async erc20For(network: string, address: string) {
-    console.log('DUCX_DEBUG: ETHStateProvider, METED: erc20For, MESSAGE: start, time: ' + new Date().toISOString());
     const { web3 } = await this.getWeb3(network);
     const contract = new web3.eth.Contract(ERC20Abi as AbiItem[], address);
-    console.log('DUCX_DEBUG: ETHStateProvider, METED: erc20For, MESSAGE: end, time: ' + new Date().toISOString());
+    
     return contract;
   }
 
   async getERC20TokenInfo(network: string, tokenAddress: string) {
-    console.log('DUCX_DEBUG: ETHStateProvider, METED: getERC20TokenInfo, MESSAGE: start, time: ' + new Date().toISOString());
     const token = await ETH.erc20For(network, tokenAddress);
     const [name, decimals, symbol] = await Promise.all([
       token.methods.name().call(),
       token.methods.decimals().call(),
       token.methods.symbol().call()
     ]);
-    console.log('DUCX_DEBUG: ETHStateProvider, METED: getERC20TokenInfo, MESSAGE: end, time: ' + new Date().toISOString());
+    
     return {
       name,
       decimals,
@@ -105,9 +125,9 @@ export class ETHStateProvider extends InternalStateProvider implements IChainSta
   }
 
   async getFee(params) {
-    console.log('DUCX_DEBUG: ETHStateProvider, METED: getFee, MESSAGE: start, time: ' + new Date().toISOString());
     let { network, target = 4 } = params;
     const chain = this.chain;
+
     if (network === 'livenet') {
       network = 'mainnet';
     }
@@ -129,25 +149,25 @@ export class ETHStateProvider extends InternalStateProvider implements IChainSta
 
     const roundedGwei = (quartileMedian / 1e9).toFixed(2);
     const feerate = Number(roundedGwei) * 1e9;
-    console.log('DUCX_DEBUG: ETHStateProvider, METED: getFee, MESSAGE: end, time: ' + new Date().toISOString());
+    
     return { feerate, blocks: target };
   }
 
   async getBalanceForAddress(params: GetBalanceForAddressParams) {
-    console.log('DUCX_DEBUG: ETHStateProvider, METED: getBalanceForAddress, MESSAGE: start, time: ' + new Date().toISOString());
     const { network, address } = params;
     const { web3 } = await this.getWeb3(network);
+
     if (params.args) {
       if (params.args.tokenAddress) {
         const token = await this.erc20For(network, params.args.tokenAddress);
         const balance = Number(await token.methods.balanceOf(address).call());
-        console.log('DUCX_DEBUG: ETHStateProvider, METED: getBalanceForAddress, MESSAGE: end, time: ' + new Date().toISOString());
+        
         return { confirmed: balance, unconfirmed: 0, balance };
       }
     }
 
     const balance = Number(await web3.eth.getBalance(address));
-    console.log('DUCX_DEBUG: ETHStateProvider, METED: getBalanceForAddress, MESSAGE: end_1, time: ' + new Date().toISOString());
+    
     return { confirmed: balance, unconfirmed: 0, balance };
   }
 
@@ -156,42 +176,45 @@ export class ETHStateProvider extends InternalStateProvider implements IChainSta
   }
 
   async getTransaction(params: StreamTransactionParams) {
-    console.log('DUCX_DEBUG: ETHStateProvider, METED: getTransaction, MESSAGE: start, time: ' + new Date().toISOString());
     try {
       let { chain, network, txId } = params;
+
       if (typeof txId !== 'string' || !chain || !network) {
         throw new Error('Missing required param');
       }
+
       network = network.toLowerCase();
       let query = { chain, network, txid: txId };
       const tip = await this.getLocalTip(params);
       const tipHeight = tip ? tip.height : 0;
       const found = await EthTransactionStorage.collection.findOne(query);
+
       if (found) {
         let confirmations = 0;
+
         if (found.blockHeight && found.blockHeight >= 0) {
           confirmations = tipHeight - found.blockHeight + 1;
         }
+
         const convertedTx = EthTransactionStorage._apiTransform(found, { object: true }) as EthTransactionJSON;
-        console.log('DUCX_DEBUG: ETHStateProvider, METED: getTransaction, MESSAGE: end_1, time: ' + new Date().toISOString());
+       
         return { ...convertedTx, confirmations } as any;
       } else {
-        console.log('DUCX_DEBUG: ETHStateProvider, METED: getTransaction, MESSAGE: end_2, time: ' + new Date().toISOString());
         return undefined;
       }
     } catch (err) {
       console.error(err);
     }
-    console.log('DUCX_DEBUG: ETHStateProvider, METED: getTransaction, MESSAGE: end_3, time: ' + new Date().toISOString());
+    
     return undefined;
   }
 
   async broadcastTransaction(params: BroadcastTransactionParams) {
-    console.log('DUCX_DEBUG: ETHStateProvider, METED: broadcastTransaction, MESSAGE: start, time: ' + new Date().toISOString());
     const { network, rawTx } = params;
     const { web3 } = await this.getWeb3(network);
     const rawTxs = typeof rawTx === 'string' ? [rawTx] : rawTx;
     const txids = new Array<string>();
+
     for (const tx of rawTxs) {
       const txid = await new Promise<string>((resolve, reject) => {
         web3.eth
@@ -205,35 +228,31 @@ export class ETHStateProvider extends InternalStateProvider implements IChainSta
       });
       txids.push(txid);
     }
-    console.log('DUCX_DEBUG: ETHStateProvider, METED: broadcastTransaction, MESSAGE: end, time: ' + new Date().toISOString());
+    
     return txids.length === 1 ? txids[0] : txids;
   }
 
   async streamAddressTransactions(params: StreamAddressUtxosParams) {
-    console.log('DUCX_DEBUG: ETHStateProvider, METED: streamAddressTransactions, MESSAGE: start, time: ' + new Date().toISOString());
     const { req, res, args, chain, network, address } = params;
     const { limit, since, tokenAddress } = args;
+
     if (!args.tokenAddress) {
       const query = { chain, network, $or: [{ from: address }, { to: address }] };
       Storage.apiStreamingFind(EthTransactionStorage, query, { limit, since, paging: '_id' }, req, res);
     } else {
       try {
         const tokenTransfers = await this.getErc20Transfers(network, address, tokenAddress);
-        console.log('DUCX_DEBUG: ETHStateProvider, METED: streamAddressTransactions, MESSAGE: end, time: ' + new Date().toISOString());
         res.json(tokenTransfers);
       } catch (e) {
-        console.log('DUCX_DEBUG: ETHStateProvider, METED: streamAddressTransactions, MESSAGE: end_1, time: ' + new Date().toISOString());
         res.status(500).send(e);
       }
     }
   }
 
   async streamTransactions(params: StreamTransactionsParams) {
-    console.log('DUCX_DEBUG: ETHStateProvider, METED: streamTransactions, MESSAGE: start, time: ' + new Date().toISOString());
     const { chain, network, req, res, args } = params;
     let { blockHash, blockHeight } = args;
     if (!chain || !network) {
-      console.log('DUCX_DEBUG: ETHStateProvider, METED: streamTransactions, MESSAGE: end, time: ' + new Date().toISOString());
       throw new Error('Missing chain or network');
     }
     let query: any = {
@@ -254,13 +273,12 @@ export class ETHStateProvider extends InternalStateProvider implements IChainSta
         confirmations = tipHeight - t.blockHeight + 1;
       }
       const convertedTx = EthTransactionStorage._apiTransform(t, { object: true }) as Partial<ITransaction>;
-      console.log('DUCX_DEBUG: ETHStateProvider, METED: streamTransactions, MESSAGE: end_1, time: ' + new Date().toISOString());
+    
       return JSON.stringify({ ...convertedTx, confirmations });
     });
   }
 
   async getWalletBalance(params: GetWalletBalanceParams) {
-    console.log('DUCX_DEBUG: ETHStateProvider, METED: getWalletBalance, MESSAGE: start, time: ' + new Date().toISOString());
     const { network } = params;
     if (params.wallet._id === undefined) {
       throw new Error('Wallet balance can only be retrieved for wallets with the _id property');
@@ -280,12 +298,11 @@ export class ETHStateProvider extends InternalStateProvider implements IChainSta
       }),
       { unconfirmed: 0, confirmed: 0, balance: 0 }
     );
-    console.log('DUCX_DEBUG: ETHStateProvider, METED: getWalletBalance, MESSAGE: end, time: ' + new Date().toISOString());
+   
     return balance;
   }
 
   async streamWalletTransactions(params: StreamWalletTransactionsParams) {
-    console.log('DUCX_DEBUG: ETHStateProvider, METED: streamWalletTransactions, MESSAGE: start, time: ' + new Date().toISOString());
     const { chain, network, wallet, res, args } = params;
     const { web3 } = await this.getWeb3(network);
     const query: any = {
@@ -382,8 +399,9 @@ export class ETHStateProvider extends InternalStateProvider implements IChainSta
           })
         );
     }
+
     const listTransactionsStream = new EthListTransactionsStream(wallet);
-    console.log('DUCX_DEBUG: ETHStateProvider, METED: streamWalletTransactions, MESSAGE: end, time: ' + new Date().toISOString());
+    
     transactionStream.pipe(listTransactionsStream).pipe(res);
   }
 
@@ -393,7 +411,6 @@ export class ETHStateProvider extends InternalStateProvider implements IChainSta
     tokenAddress: string,
     args: Partial<StreamWalletTransactionsArgs> = {}
   ): Promise<Array<Partial<Transaction>>> {
-    console.log('DUCX_DEBUG: ETHStateProvider, METED: getErc20Transfers, MESSAGE: start, time: ' + new Date().toISOString());
     const token = await this.erc20For(network, tokenAddress);
     const [sent, received] = await Promise.all([
       token.getPastEvents('Transfer', {
@@ -407,7 +424,7 @@ export class ETHStateProvider extends InternalStateProvider implements IChainSta
         toBlock: args.endBlock || 'latest'
       })
     ]);
-    console.log('DUCX_DEBUG: ETHStateProvider, METED: getErc20Transfers, MESSAGE: end, time: ' + new Date().toISOString());
+    
     return this.convertTokenTransfers([...sent, ...received]);
   }
 
@@ -417,6 +434,7 @@ export class ETHStateProvider extends InternalStateProvider implements IChainSta
 
   convertTokenTransfer(transfer: ERC20Transfer) {
     const { blockHash, blockNumber, transactionHash, returnValues, transactionIndex } = transfer;
+
     return {
       blockHash,
       blockNumber,
@@ -430,10 +448,9 @@ export class ETHStateProvider extends InternalStateProvider implements IChainSta
   }
 
   async getAccountNonce(network: string, address: string) {
-    console.log('DUCX_DEBUG: ETHStateProvider, METED: getAccountNonce, MESSAGE: start, time: ' + new Date().toISOString());
     const { web3 } = await this.getWeb3(network);
     const count = await web3.eth.getTransactionCount(address);
-    console.log('DUCX_DEBUG: ETHStateProvider, METED: getAccountNonce, MESSAGE: end, time: ' + new Date().toISOString());
+  
     return count;
     /*
      *return EthTransactionStorage.collection.countDocuments({
@@ -451,7 +468,6 @@ export class ETHStateProvider extends InternalStateProvider implements IChainSta
     tokenAddress: string,
     args: StreamWalletTransactionsArgs
   ) {
-    console.log('DUCX_DEBUG: ETHStateProvider, METED: getWalletTokenTransactions, MESSAGE: start, time: ' + new Date().toISOString());
     const addresses = await this.getWalletAddresses(walletId);
     const allTokenQueries = Array<Promise<Array<Partial<Transaction>>>>();
     for (const walletAddress of addresses) {
@@ -460,21 +476,19 @@ export class ETHStateProvider extends InternalStateProvider implements IChainSta
     }
     let batches = await Promise.all(allTokenQueries);
     let txs = batches.reduce((agg, batch) => agg.concat(batch));
-    console.log('DUCX_DEBUG: ETHStateProvider, METED: getWalletTokenTransactions, MESSAGE: end, time: ' + new Date().toISOString());
+   
     return txs.sort((tx1, tx2) => tx1.blockNumber! - tx2.blockNumber!);
   }
 
   async estimateGas(params): Promise<number> {
-    console.log('DUCX_DEBUG: ETHStateProvider, METED: estimateGas, MESSAGE: start, time: ' + new Date().toISOString());
     const { network, from, to, value, data, gasPrice } = params;
     const { web3 } = await this.getWeb3(network);
     const gasLimit = await web3.eth.estimateGas({ from, to, value, data, gasPrice });
-    console.log('DUCX_DEBUG: ETHStateProvider, METED: estimateGas, MESSAGE: end, time: ' + new Date().toISOString());
+  
     return gasLimit;
   }
 
   async getBlocks(params: GetBlockParams) {
-    console.log('DUCX_DEBUG: ETHStateProvider, METED: getBlocks, MESSAGE: start, time: ' + new Date().toISOString());
     const { query, options } = this.getBlocksQuery(params);
     let cursor = EthBlockStorage.collection.find(query, options).addCursorFlag('noCursorTimeout', true);
     if (options.sort) {
@@ -491,12 +505,11 @@ export class ETHStateProvider extends InternalStateProvider implements IChainSta
       const convertedBlock = EthBlockStorage._apiTransform(b, { object: true }) as IEthBlock;
       return { ...convertedBlock, confirmations };
     };
-    console.log('DUCX_DEBUG: ETHStateProvider, METED: getBlocks, MESSAGE: end, time: ' + new Date().toISOString());
+   
     return blocks.map(blockTransform);
   }
 
   async updateWallet(params: UpdateWalletParams) {
-    console.log('DUCX_DEBUG: ETHStateProvider, METED: updateWallet, MESSAGE: start, time: ' + new Date().toISOString());
     const { chain, network } = params;
     const addressBatches = partition(params.addresses, 500);
     for (let addressBatch of addressBatches) {
@@ -525,7 +538,6 @@ export class ETHStateProvider extends InternalStateProvider implements IChainSta
         { chain, network, address: { $in: addressBatch }, wallet: params.wallet._id },
         { $set: { processed: true } }
       );
-      console.log('DUCX_DEBUG: ETHStateProvider, METED: updateWallet, MESSAGE: end, time: ' + new Date().toISOString());
     }
   }
 }
