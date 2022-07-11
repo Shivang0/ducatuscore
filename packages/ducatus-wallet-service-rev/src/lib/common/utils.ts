@@ -191,12 +191,12 @@ export class Utils {
         maxDecimals: 6,
         minDecimals: 2
       },
-      'jwan': {
+      jwan: {
         toSatoshis: 1e8,
         maxDecimals: 8,
         minDecimals: 2
       },
-      'tkf': {
+      tkf: {
         toSatoshis: 1e8,
         maxDecimals: 8,
         minDecimals: 2
@@ -204,6 +204,11 @@ export class Utils {
       'aa+': {
         toSatoshis: 1e5,
         maxDecimals: 5,
+        minDecimals: 2
+      },
+      qmn: {
+        toSatoshis: 1e3,
+        maxDecimals: 3,
         minDecimals: 2
       }
     };

@@ -63,11 +63,11 @@ export class ETHStateProvider extends InternalStateProvider implements IChainSta
   }
 
   checkWeb3(network: string): Promise<boolean> {
-    return new Promise(async(resolve) => {
+    return new Promise(async resolve => {
       try {
         const timeOut = 1000 * 10;
         let blockNumber;
-        
+
         setTimeout(() => {
           if (!blockNumber) {
             resolve(false);
@@ -77,13 +77,12 @@ export class ETHStateProvider extends InternalStateProvider implements IChainSta
         blockNumber = await ETHStateProvider.rpcs[network].web3.eth.getBlockNumber();
         resolve(true);
       } catch (e) {
-        resolve(false)
+        resolve(false);
       }
     });
   }
 
   async getWeb3(network: string): Promise<{ rpc: CryptoRpc; web3: Web3 }> {
-
     if (ETHStateProvider.rpcs[network]) {
       const isNormalConnect = await this.checkWeb3(network);
 
@@ -98,14 +97,12 @@ export class ETHStateProvider extends InternalStateProvider implements IChainSta
       const rpc = new CryptoRpc(rpcConfig, {}).get(this.chain);
       ETHStateProvider.rpcs[network] = { rpc, web3: rpc.web3 };
     }
-   
     return ETHStateProvider.rpcs[network];
   }
 
   async erc20For(network: string, address: string) {
     const { web3 } = await this.getWeb3(network);
     const contract = new web3.eth.Contract(ERC20Abi as AbiItem[], address);
-    
     return contract;
   }
 
@@ -116,7 +113,6 @@ export class ETHStateProvider extends InternalStateProvider implements IChainSta
       token.methods.decimals().call(),
       token.methods.symbol().call()
     ]);
-    
     return {
       name,
       decimals,
@@ -149,7 +145,6 @@ export class ETHStateProvider extends InternalStateProvider implements IChainSta
 
     const roundedGwei = (quartileMedian / 1e9).toFixed(2);
     const feerate = Number(roundedGwei) * 1e9;
-    
     return { feerate, blocks: target };
   }
 
@@ -161,13 +156,11 @@ export class ETHStateProvider extends InternalStateProvider implements IChainSta
       if (params.args.tokenAddress) {
         const token = await this.erc20For(network, params.args.tokenAddress);
         const balance = Number(await token.methods.balanceOf(address).call());
-        
         return { confirmed: balance, unconfirmed: 0, balance };
       }
     }
 
     const balance = Number(await web3.eth.getBalance(address));
-    
     return { confirmed: balance, unconfirmed: 0, balance };
   }
 
@@ -197,7 +190,6 @@ export class ETHStateProvider extends InternalStateProvider implements IChainSta
         }
 
         const convertedTx = EthTransactionStorage._apiTransform(found, { object: true }) as EthTransactionJSON;
-       
         return { ...convertedTx, confirmations } as any;
       } else {
         return undefined;
@@ -205,7 +197,6 @@ export class ETHStateProvider extends InternalStateProvider implements IChainSta
     } catch (err) {
       console.error(err);
     }
-    
     return undefined;
   }
 
@@ -228,7 +219,6 @@ export class ETHStateProvider extends InternalStateProvider implements IChainSta
       });
       txids.push(txid);
     }
-    
     return txids.length === 1 ? txids[0] : txids;
   }
 
@@ -273,7 +263,6 @@ export class ETHStateProvider extends InternalStateProvider implements IChainSta
         confirmations = tipHeight - t.blockHeight + 1;
       }
       const convertedTx = EthTransactionStorage._apiTransform(t, { object: true }) as Partial<ITransaction>;
-    
       return JSON.stringify({ ...convertedTx, confirmations });
     });
   }
@@ -298,7 +287,6 @@ export class ETHStateProvider extends InternalStateProvider implements IChainSta
       }),
       { unconfirmed: 0, confirmed: 0, balance: 0 }
     );
-   
     return balance;
   }
 
@@ -401,7 +389,6 @@ export class ETHStateProvider extends InternalStateProvider implements IChainSta
     }
 
     const listTransactionsStream = new EthListTransactionsStream(wallet);
-    
     transactionStream.pipe(listTransactionsStream).pipe(res);
   }
 
@@ -424,7 +411,6 @@ export class ETHStateProvider extends InternalStateProvider implements IChainSta
         toBlock: args.endBlock || 'latest'
       })
     ]);
-    
     return this.convertTokenTransfers([...sent, ...received]);
   }
 
@@ -450,7 +436,6 @@ export class ETHStateProvider extends InternalStateProvider implements IChainSta
   async getAccountNonce(network: string, address: string) {
     const { web3 } = await this.getWeb3(network);
     const count = await web3.eth.getTransactionCount(address);
-  
     return count;
     /*
      *return EthTransactionStorage.collection.countDocuments({
@@ -476,7 +461,6 @@ export class ETHStateProvider extends InternalStateProvider implements IChainSta
     }
     let batches = await Promise.all(allTokenQueries);
     let txs = batches.reduce((agg, batch) => agg.concat(batch));
-   
     return txs.sort((tx1, tx2) => tx1.blockNumber! - tx2.blockNumber!);
   }
 
@@ -484,7 +468,6 @@ export class ETHStateProvider extends InternalStateProvider implements IChainSta
     const { network, from, to, value, data, gasPrice } = params;
     const { web3 } = await this.getWeb3(network);
     const gasLimit = await web3.eth.estimateGas({ from, to, value, data, gasPrice });
-  
     return gasLimit;
   }
 
@@ -505,7 +488,6 @@ export class ETHStateProvider extends InternalStateProvider implements IChainSta
       const convertedBlock = EthBlockStorage._apiTransform(b, { object: true }) as IEthBlock;
       return { ...convertedBlock, confirmations };
     };
-   
     return blocks.map(blockTransform);
   }
 

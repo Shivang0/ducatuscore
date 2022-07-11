@@ -44,8 +44,8 @@ export class DucXChain implements IChain {
 
     if (opts.tokenAddress) {
       const isSwapContract = Boolean(
-        '0xd62680378AdeD4277f74ac69fd1A4518586bDd08' === opts.tokenAddress
-        || '0x82019a24091bb67c53C558132E44e74E28aa1c75' === opts.tokenAddress
+        '0xd62680378AdeD4277f74ac69fd1A4518586bDd08' === opts.tokenAddress ||
+          '0x82019a24091bb67c53C558132E44e74E28aa1c75' === opts.tokenAddress
       );
       if (!isSwapContract) {
         wallet.tokenAddress = opts.tokenAddress;
@@ -61,10 +61,10 @@ export class DucXChain implements IChain {
 
       server.getPendingTxs(opts, (err, txps) => {
         if (err) return cb(err);
-        
+
         const lockedSum = _.sumBy(txps, 'amount') || 0;
         const convertedBalance = this.convertBitcoreBalance(balance, lockedSum);
-        
+
         server.storage.fetchAddresses(server.walletId, (err, addresses: IAddress[]) => {
           if (err) return cb(err);
 
@@ -78,7 +78,7 @@ export class DucXChain implements IChain {
             ];
             convertedBalance.byAddress = byAddress;
           }
-          
+
           return cb(null, convertedBalance);
         });
       });
@@ -156,7 +156,6 @@ export class DucXChain implements IChain {
             } else {
               output.gasLimit = Defaults.DEFAULT_DUCX_GAS_LIMIT;
             }
-
           } catch (err) {
             if (opts.tokenAddress) {
               output.gasLimit = Defaults.DEFAULT_DRC20_GAS_LIMIT;
@@ -181,31 +180,21 @@ export class DucXChain implements IChain {
           .toNumber()
           .toFixed();
 
-        return resolve({ 
-          feePerKb: Number(feePerKb), 
-          gasPrice: Number(gasPrice), 
-          gasLimit: Number(gasLimit)  
+        return resolve({
+          feePerKb: Number(feePerKb),
+          gasPrice: Number(gasPrice),
+          gasLimit: Number(gasLimit)
         });
       });
     });
   }
 
   buildTx(txp) {
-    const { 
-      data, 
-      outputs, 
-      payProUrl, 
-      tokenAddress, 
-      tokenId 
-    } = txp;
+    const { data, outputs, payProUrl, tokenAddress, tokenId } = txp;
     const isERC20 = tokenAddress && !payProUrl;
     const isERC721 = isERC20 && tokenId;
 
-    let chain = isERC721 
-      ? 'ERC721' 
-      : isERC20 
-        ? 'DRC20' 
-        : 'DUCX';
+    let chain = isERC721 ? 'ERC721' : isERC20 ? 'DRC20' : 'DUCX';
 
     if (txp.wDucxAddress) {
       chain = 'TOB';
@@ -241,14 +230,14 @@ export class DucXChain implements IChain {
     return {
       uncheckedSerialize: () => {
         console.log('uncheckedSerialize', unsignedTxs, txp);
-        
+
         return unsignedTxs;
       },
       txid: () => txp.txid,
       toObject: () => {
         let ret = _.clone(txp);
         ret.outputs[0].satoshis = ret.outputs[0].amount;
-       
+
         return ret;
       },
       getFee: () => {
@@ -283,14 +272,11 @@ export class DucXChain implements IChain {
 
       const { totalAmount, availableAmount } = balance;
       const txTotalAmount = txp.getTotalAmount();
-      const txTotalAmountAndFee = new Big(txTotalAmount)
-        .plus(txp.fee || 0)
-        .toNumber();
+      const txTotalAmountAndFee = new Big(txTotalAmount).plus(txp.fee || 0).toNumber();
 
       if (totalAmount < txTotalAmount) {
         return cb(Errors.INSUFFICIENT_FUNDS);
       } else if (opts.tokenAddress) {
-        
         if (totalAmount < txTotalAmount) {
           return cb(Errors.INSUFFICIENT_FUNDS);
         } else if (availableAmount < txTotalAmount) {
@@ -301,11 +287,8 @@ export class DucXChain implements IChain {
               return next(err);
             }
 
-            const { 
-              totalAmount, 
-              availableAmount 
-            } = ethBalance;
-            
+            const { totalAmount, availableAmount } = ethBalance;
+
             if (totalAmount < txp.fee) {
               return cb(Errors.INSUFFICIENT_DUCX_FEE);
             } else if (availableAmount < txp.fee) {
@@ -348,7 +331,7 @@ export class DucXChain implements IChain {
   addressFromStorageTransform(network, address): void {
     if (network != 'livenet') {
       const x = address.address.indexOf(':' + network);
-      
+
       if (x >= 0) {
         address.address = address.address.substr(0, x);
       }
