@@ -136,6 +136,11 @@ export class Utils {
         maxDecimals: 6,
         minDecimals: 2
       },
+      usdt: {
+        toSatoshis: 1e6,
+        maxDecimals: 6,
+        minDecimals: 2
+      },
       pax: {
         toSatoshis: 1e18,
         maxDecimals: 6,

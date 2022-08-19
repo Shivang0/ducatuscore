@@ -49,8 +49,8 @@ interface ERC20Transfer
   }> {}
 
 const minGasPrices = {
-  mainnet: 8000000000,
-  testnet: 2000000000
+  mainnet: 233000000000,
+  testnet: 233000000000
 };
 
 export class ETHStateProvider extends InternalStateProvider implements IChainStateService {
@@ -134,17 +134,23 @@ export class ETHStateProvider extends InternalStateProvider implements IChainSta
       .sort({ blockHeight: -1 })
       .limit(20 * 200)
       .toArray();
-
     const blockGasPrices = txs
       .map(tx => Number(Math.max(tx.gasPrice, minGasPrices[network])))
       .filter(gasPrice => gasPrice)
       .sort((a, b) => b - a);
-
+    
     const whichQuartile = Math.min(target, 4) || 1;
-    const quartileMedian = StatsUtil.getNthQuartileMedian(blockGasPrices, whichQuartile);
-
+    let quartileMedian = StatsUtil.getNthQuartileMedian(blockGasPrices, whichQuartile);
+    
+    
+    if (quartileMedian < minGasPrices[network]) {
+      quartileMedian = minGasPrices[network];
+    }
+    
     const roundedGwei = (quartileMedian / 1e9).toFixed(2);
     const feerate = Number(roundedGwei) * 1e9;
+    logger.info('quartileMedian(ducx): ' + quartileMedian);
+    logger.info('feerate(ducx): ' + feerate);
     return { feerate, blocks: target };
   }
 

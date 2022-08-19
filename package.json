@@ -1,5 +1,5 @@
 {
-  "version": "9.3.3",
+  "version": "9.4.3",
   "prettier": {
     "singleQuote": true,
     "printWidth": 120
@@ -74,7 +74,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run precommit"
+      "pre-commit": "npm run precommit" 
     }
   }
 }

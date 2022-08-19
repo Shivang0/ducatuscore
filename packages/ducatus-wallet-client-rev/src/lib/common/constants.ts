@@ -98,6 +98,17 @@ export const Constants = {
         minDecimals: 2
       }
     },
+    usdt: {
+      toSatoshis: 1e6,
+      full: {
+        maxDecimals: 8,
+        minDecimals: 8
+      },
+      short: {
+        maxDecimals: 6,
+        minDecimals: 2
+      }
+    },
     pax: {
       toSatoshis: 1e18,
       full: {
@@ -270,6 +281,7 @@ export const Constants = {
     'eth',
     'xrp',
     'usdc',
+    'usdt',
     'pax',
     'gusd',
     'duc',
@@ -287,7 +299,7 @@ export const Constants = {
     'AA+',
     'QMN'
   ],
-  ERC20: ['usdc', 'pax', 'gusd'],
+  ERC20: ['usdc', 'usdt', 'pax', 'gusd'],
   DRC20: ['jamasy', 'nuyasa', 'sunoba', 'dscmed', 'pog1', 'wde', 'mdxb', 'g.o.l.d.', 'jwan', 'tkf', 'aa+', 'qmn'],
   UTXO_COINS: ['btc', 'bch', 'duc'],
   TOKEN_OPTS: {
@@ -296,6 +308,12 @@ export const Constants = {
       symbol: 'USDC',
       decimal: 6,
       address: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48'
+    },
+    '0xdac17f958d2ee523a2206206994597c13d831ec7': {
+      name: 'Tether USD',
+      symbol: 'USDT',
+      decimal: 6,
+      address: '0xdac17f958d2ee523a2206206994597c13d831ec7'
     },
     '0x8e870d67f660d95d5be530380d0ec0bd388289e1': {
       name: 'Paxos Standard',
