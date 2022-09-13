@@ -149,7 +149,9 @@ export class DucXChain implements IChain {
               gasPrice
             });
 
-            if (inGasLimit) {
+            if (opts.isContractCall) {
+              output.gasLimit = Defaults.DEFAULT_DUCX_CONTRACT_GAS_LIMIT;
+            } else if (inGasLimit) {
               output.gasLimit = inGasLimit;
             } else if (opts.tokenAddress) {
               output.gasLimit = Defaults.DEFAULT_DRC20_GAS_LIMIT;
@@ -159,6 +161,8 @@ export class DucXChain implements IChain {
           } catch (err) {
             if (opts.tokenAddress) {
               output.gasLimit = Defaults.DEFAULT_DRC20_GAS_LIMIT;
+            } else if (opts.isContractCall) {
+              output.gasLimit = Defaults.DEFAULT_DUCX_CONTRACT_GAS_LIMIT;
             } else {
               output.gasLimit = Defaults.DEFAULT_DUCX_GAS_LIMIT;
             }
@@ -174,7 +178,14 @@ export class DucXChain implements IChain {
             .toFixed();
         }
 
-        const gasLimit = inGasLimit || Defaults.DEFAULT_DUCX_GAS_LIMIT;
+        let gasLimit: number;
+
+        if (opts.isContractCall) {
+          gasLimit = Defaults.DEFAULT_DUCX_CONTRACT_GAS_LIMIT;
+        } else {
+          gasLimit = inGasLimit || Defaults.DEFAULT_DUCX_GAS_LIMIT;
+        }
+
         opts.fee = new Big(feePerKb)
           .times(gasLimit)
           .toNumber()
