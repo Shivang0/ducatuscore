@@ -2,7 +2,7 @@
   "name": "@ducatus/ducatus-wallet-client-rev",
   "description": "Client for @ducatus/ducatus-wallet-service-rev",
   "author": "BitPay Inc",
-  "version": "8.20.31",
+  "version": "8.21.31",
   "license": "MIT",
   "main": "ts_build/index.js",
   "types": "ts_build/index.d.js",
@@ -41,7 +41,7 @@
   "devDependencies": {
     "@types/lodash": "^4.14.136",
     "@types/node": "^10.0.2",
-    "@ducatus/ducatus-wallet-service-rev": "8.19.38",
+    "@ducatus/ducatus-wallet-service-rev": "8.20.38",
     "browserify": "^13.1.0",
     "chai": "^1.9.1",
     "coveralls": "^3.0.2",

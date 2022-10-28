@@ -23,7 +23,8 @@ module.exports = {
     JWAN: 'jwan',
     TKF: 'tkf',
     'AA+': 'aa+',
-    QMN: 'qmn'
+    QMN: 'qmn',
+    MPE: 'mpe'
   },
 
   ERC20: {
@@ -44,7 +45,8 @@ module.exports = {
     JWAN: 'jwan',
     TKF: 'tkf',
     'AA+': 'aa+',
-    QMN: 'qmn'
+    QMN: 'qmn',
+    MPE: 'mpe'
   },
   UTXO_COINS: {
     BTC: 'btc',
@@ -169,6 +171,12 @@ module.exports = {
       symbol: 'QMN',
       decimal: 3,
       address: '0x9Ddc5c88e27231c3DF4424ABd7508c70f748fc4A'
-    }
+    },
+    '0x212bbB33b6A56a7Ee0819dd82bE01c285F64Fb49': {
+      name: 'My Planet Earth',
+      symbol: 'MPE',
+      decimal: 8,
+      address: '0x212bbB33b6A56a7Ee0819dd82bE01c285F64Fb49'
+    },
   }
 };

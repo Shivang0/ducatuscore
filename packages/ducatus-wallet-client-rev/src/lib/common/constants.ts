@@ -273,6 +273,17 @@ export const Constants = {
         maxDecimals: 3,
         minDecimals: 2
       }
+    },
+    mpe: {
+      toSatoshis: 1e8,
+      full: {
+        maxDecimals: 8,
+        minDecimals: 8
+      },
+      short: {
+        maxDecimals: 8,
+        minDecimals: 2
+      }
     }
   },
   COINS: [
@@ -297,10 +308,11 @@ export const Constants = {
     'jwan',
     'tkf',
     'AA+',
-    'QMN'
+    'QMN',
+    'mpe'
   ],
   ERC20: ['usdc', 'usdt', 'pax', 'gusd'],
-  DRC20: ['jamasy', 'nuyasa', 'sunoba', 'dscmed', 'pog1', 'wde', 'mdxb', 'g.o.l.d.', 'jwan', 'tkf', 'aa+', 'qmn'],
+  DRC20: ['jamasy', 'nuyasa', 'sunoba', 'dscmed', 'pog1', 'wde', 'mdxb', 'g.o.l.d.', 'jwan', 'tkf', 'aa+', 'qmn', 'mpe'],
   UTXO_COINS: ['btc', 'bch', 'duc'],
   TOKEN_OPTS: {
     '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48': {
@@ -398,6 +410,12 @@ export const Constants = {
       symbol: 'QMN',
       decimal: 3,
       address: '0x9Ddc5c88e27231c3DF4424ABd7508c70f748fc4A'
-    }
+    },
+    '0x212bbB33b6A56a7Ee0819dd82bE01c285F64Fb49': {
+      name: 'My Planet Earth',
+      symbol: 'MPE',
+      decimal: 8,
+      address: '0x212bbB33b6A56a7Ee0819dd82bE01c285F64Fb49'
+    },
   }
 };
