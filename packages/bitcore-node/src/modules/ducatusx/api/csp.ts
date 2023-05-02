@@ -49,8 +49,8 @@ interface ERC20Transfer
   }> {}
 
 const minGasPrices = {
-  mainnet: 233000000000,
-  testnet: 233000000000
+  mainnet: 47619047619048,
+  testnet: 47619047619048
 };
 
 export class ETHStateProvider extends InternalStateProvider implements IChainStateService {
@@ -138,7 +138,7 @@ export class ETHStateProvider extends InternalStateProvider implements IChainSta
       .map(tx => Number(Math.max(tx.gasPrice, minGasPrices[network])))
       .filter(gasPrice => gasPrice)
       .sort((a, b) => b - a);
-    
+
     const whichQuartile = Math.min(target, 4) || 1;
     let quartileMedian = StatsUtil.getNthQuartileMedian(blockGasPrices, whichQuartile);
 

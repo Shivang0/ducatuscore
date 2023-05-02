@@ -221,6 +221,11 @@ export class Utils {
         maxDecimals: 8,
         minDecimals: 2
       },
+      balisol: {
+        toSatoshis: 1e2,
+        maxDecimals: 2,
+        minDecimals: 2
+      }
     };
 
     $.shouldBeNumber(satoshis);

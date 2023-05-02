@@ -24,7 +24,8 @@ module.exports = {
     TKF: 'tkf',
     'AA+': 'aa+',
     QMN: 'qmn',
-    MPE: 'mpe'
+    MPE: 'mpe',
+    BALISOL: 'balisol'
   },
 
   ERC20: {
@@ -46,7 +47,8 @@ module.exports = {
     TKF: 'tkf',
     'AA+': 'aa+',
     QMN: 'qmn',
-    MPE: 'mpe'
+    MPE: 'mpe',
+    BALISOL: 'balisol'
   },
   UTXO_COINS: {
     BTC: 'btc',
@@ -178,5 +180,11 @@ module.exports = {
       decimal: 8,
       address: '0x212bbB33b6A56a7Ee0819dd82bE01c285F64Fb49'
     },
+    '0x519cb2e8f165c2fc2297f544639c71af33dae148': {
+      name: 'BaliSol',
+      symbol: 'BALISOL',
+      decimal: 2,
+      address: '0x519cb2e8f165c2fc2297f544639c71af33dae148'
+    }
   }
 };

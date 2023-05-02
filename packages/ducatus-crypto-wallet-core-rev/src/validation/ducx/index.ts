@@ -3,13 +3,12 @@ import { IValidation } from '..';
 const utils = require('web3-utils');
 
 export class DucXValidation implements IValidation {
-
   validateAddress(_network: string, address: string): boolean {
     return utils.isAddress(address);
   }
 
   validateUri(addressUri: string): boolean {
-    if ( !addressUri ) {
+    if (!addressUri) {
       return false;
     }
 

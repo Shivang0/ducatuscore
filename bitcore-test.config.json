@@ -11,7 +11,7 @@
     "chains": {
       "DUC": {
         "mainnet": {
-          "chainSource": "p2p",
+          "chainSource": "p2p", 
           "trustedPeers": [
             {
               "host": "194.135.84.108",
