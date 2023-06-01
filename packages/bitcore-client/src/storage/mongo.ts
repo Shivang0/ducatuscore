@@ -36,7 +36,7 @@ export class Mongo {
   async init(params) {
     const { wallet, addresses } = params;
     try {
-      this.client = new MongoClient(this.path, { useNewUrlParser: true });
+      this.client = new MongoClient(this.path, { useNewUrlParser: true, useUnifiedTopology: true });
       await this.client.connect();
       this.db = this.client.db(this.databaseName);
       if (wallet) {
@@ -50,6 +50,22 @@ export class Mongo {
 
   async close() {
     await this.client.close();
+  }
+
+  async testConnection() {
+    try {
+      this.client = new MongoClient(this.path, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        noDelay: true,
+        serverSelectionTimeoutMS: 5000
+      });
+      await this.client.connect();
+      await this.client.close();
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   async listWallets() {
@@ -111,6 +127,13 @@ export class Mongo {
       return;
     }
     return JSON.stringify(wallet);
+  }
+
+  async deleteWallet(params: { name: string }) {
+    await this.init({ wallet: 1 });
+    const { name } = params;
+    await this.collection.deleteOne({ name });
+    await this.close();
   }
 
   async getKey(params: { address: string; name: string; keepAlive: boolean; open: boolean }) {

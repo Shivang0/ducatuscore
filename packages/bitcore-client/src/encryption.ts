@@ -1,5 +1,5 @@
 import { createCipheriv, createDecipheriv, createHash, randomBytes } from 'crypto';
-const bitcore = require('@ducatus/ducatus-crypto-wallet-core-rev').BitcoreLib;
+const bitcore = require('crypto-wallet-core').BitcoreLib;
 const crypto = {
   createHash,
   createCipheriv,

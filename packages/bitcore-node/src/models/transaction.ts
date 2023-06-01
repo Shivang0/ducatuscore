@@ -14,7 +14,7 @@ import { TransformOptions } from '../types/TransformOptions';
 import { partition } from '../utils/partition';
 import { MongoBound } from './base';
 import { BaseTransaction, ITransaction } from './baseTransaction';
-import { CoinStorage } from './coin';
+import { CoinStorage, ICoin } from './coin';
 import { EventStorage } from './events';
 import { IWalletAddress, WalletAddressStorage } from './walletAddress';
 
@@ -57,9 +57,9 @@ export interface MintOp {
         spentHeight?: SpentHeightIndicators;
         wallets?: Array<ObjectID>;
       };
-      $setOnInsert: {
+      $setOnInsert?: {
         spentHeight: SpentHeightIndicators;
-        wallets: Array<ObjectID>;
+        wallets?: Array<ObjectID>;
       };
     };
     upsert: true;
@@ -241,8 +241,8 @@ export class TransactionModel extends BaseTransaction<IBtcTransaction> {
     this.streamSpendOps({ ...params, spentStream });
     await new Promise(r =>
       spentStream
-        .pipe(new MongoWriteStream(CoinStorage.collection))
         .pipe(new PruneMempoolStream(chain, network, initialSyncComplete))
+        .pipe(new MongoWriteStream(CoinStorage.collection))
         .on('finish', r)
     );
 
@@ -355,7 +355,7 @@ export class TransactionModel extends BaseTransaction<IBtcTransaction> {
           // TODO: Fee is negative for mempool txs
           fee = groupedSpends[txid].total - tx.outputAmount;
           if (fee < 0) {
-            logger.debug('negative fee', txid, groupedSpends[txid], tx.outputAmount);
+            logger.debug('Negative fee %o %o %o', txid, groupedSpends[txid], tx.outputAmount);
           }
         }
 
@@ -411,13 +411,13 @@ export class TransactionModel extends BaseTransaction<IBtcTransaction> {
       let addressBatch = new Set<string>();
       let wallets: IWalletAddress[] = [];
 
-      async function findWalletsForAddresses(addresses: Array<string>) {
+      const findWalletsForAddresses = async (addresses: Array<string>) => {
         let partialWallets = await WalletAddressStorage.collection
           .find({ address: { $in: addresses }, chain, network }, { batchSize: 100 })
           .project({ wallet: 1, address: 1 })
           .toArray();
         return partialWallets;
-      }
+      };
 
       for (let mintOp of mintBatch) {
         addressBatch.add(mintOp.updateOne.update.$set.address);
@@ -436,9 +436,11 @@ export class TransactionModel extends BaseTransaction<IBtcTransaction> {
             .filter(wallet => wallet.address === mintOp.updateOne.update.$set.address)
             .map(wallet => wallet.wallet);
           mintOp.updateOne.update.$set.wallets = transformedWallets;
-          delete mintOp.updateOne.update.$setOnInsert.wallets;
-          if (!Object.keys(mintOp.updateOne.update.$setOnInsert).length) {
-            delete mintOp.updateOne.update.$setOnInsert;
+          if (mintOp.updateOne.update.$setOnInsert) {
+            delete mintOp.updateOne.update.$setOnInsert.wallets;
+            if (!Object.keys(mintOp.updateOne.update.$setOnInsert).length) {
+              delete mintOp.updateOne.update.$setOnInsert;
+            }
           }
         }
 
@@ -593,6 +595,36 @@ export class TransactionModel extends BaseTransaction<IBtcTransaction> {
     spendOpsBatch = new Array<SpendOp>();
   }
 
+  async findAllRelatedOutputs(forTx: string) {
+    const seen = {};
+    const allRelatedCoins: ICoin[] = [];
+    const txCoins = await CoinStorage.collection.find({ mintTxid: forTx, mintHeight: { $ne: SpentHeightIndicators.conflicting } }).toArray();
+    for (let coin of txCoins) {
+      allRelatedCoins.push(coin);
+      seen[coin.mintTxid] = true;
+      if (coin.spentTxid && !seen[coin.spentTxid]) {
+        const outputs = await this.findAllRelatedOutputs(coin.spentTxid);
+        allRelatedCoins.push(...outputs);
+      }
+    }
+    return allRelatedCoins;
+  }
+
+  async *yieldRelatedOutputs(forTx: string): AsyncGenerator<ICoin> {
+    const seen = {};
+    const batchStream = CoinStorage.collection.find({ mintTxid: forTx, mintHeight: { $ne: SpentHeightIndicators.conflicting } });
+    let coin: ICoin | null;
+    while (coin = (await batchStream.next())) {
+      seen[coin.mintTxid] = true;
+      yield coin;
+      
+      if (coin.spentTxid && !seen[coin.spentTxid]) {
+        yield * this.yieldRelatedOutputs(coin.spentTxid);
+        seen[coin.spentTxid] = true;
+      }
+    }
+  }
+
   async pruneMempool(params: {
     chain: string;
     network: string;
@@ -603,39 +635,74 @@ export class TransactionModel extends BaseTransaction<IBtcTransaction> {
     if (!initialSyncComplete || !spendOps.length) {
       return;
     }
-    let coins = await CoinStorage.collection
+    let coinStream = await CoinStorage.collection
       .find({
         chain,
         network,
         spentHeight: SpentHeightIndicators.pending,
         mintTxid: { $in: spendOps.map(s => s.updateOne.filter.mintTxid) }
       })
-      .project({ mintTxid: 1, mintIndex: 1, spentTxid: 1 })
-      .toArray();
-    coins = coins.filter(
-      c =>
-        spendOps.findIndex(
-          s =>
-            s.updateOne.filter.mintTxid === c.mintTxid &&
-            s.updateOne.filter.mintIndex === c.mintIndex &&
-            s.updateOne.update.$set.spentTxid !== c.spentTxid
-        ) > -1
-    );
+      .project({ mintTxid: 1, mintIndex: 1, spentTxid: 1 });
 
-    const invalidatedTxids = Array.from(new Set(coins.map(c => c.spentTxid)));
+    const seenTxids = new Set();
+    const invalidatedTxids = new Set();
 
-    await Promise.all([
-      this.collection.update(
-        { chain, network, txid: { $in: invalidatedTxids } },
-        { $set: { blockHeight: SpentHeightIndicators.conflicting } },
-        { multi: true }
-      ),
-      CoinStorage.collection.update(
-        { chain, network, mintTxid: { $in: invalidatedTxids } },
-        { $set: { mintHeight: SpentHeightIndicators.conflicting } },
-        { multi: true }
-      )
-    ]);
+    let coin: ICoin | null;
+    while (coin = (await coinStream.next())) {
+      if (seenTxids.has(coin.spentTxid)) {
+        continue;
+      }
+
+      const txReplaced = spendOps.findIndex(
+        s =>
+          s.updateOne.filter.mintTxid === coin!.mintTxid &&
+          s.updateOne.filter.mintIndex === coin!.mintIndex &&
+          s.updateOne.update.$set.spentTxid !== coin!.spentTxid
+      ) > -1;
+      if (txReplaced) {
+        invalidatedTxids.add(coin.spentTxid);
+      }
+
+      seenTxids.add(coin.spentTxid); // prevents duplication
+    }
+
+    for (const invalidTxid of invalidatedTxids.values() as IterableIterator<string>) {
+      // reset tx's coins to unspent 
+      await CoinStorage.collection.updateMany(
+        { chain, network, spentTxid: invalidTxid, spentHeight: SpentHeightIndicators.pending },
+        { $set: { spentHeight: SpentHeightIndicators.unspent, spentTxid: '' } }
+      );
+
+      // set any spent unconfirmed utxos to conflicting
+      const relatedCoinsGenerator = this.yieldRelatedOutputs(invalidTxid);
+      let coin: IteratorResult<ICoin, null>;
+      let txidsBatch = [invalidTxid];
+      do {
+        coin = await relatedCoinsGenerator.next();
+
+        // If coin.done, the generator/stream has reached the end. Update txs and coins.
+        // Also update txs and coins in batches to keep memory usage down.
+        if (coin.done || txidsBatch.length === 100) {
+          await Promise.all([
+            this.collection.updateMany(
+              { chain, network, txid: { $in: txidsBatch } },
+              { $set: { blockHeight: SpentHeightIndicators.conflicting } }
+            ),
+            CoinStorage.collection.updateMany(
+              { chain, network, mintTxid: { $in: txidsBatch } },
+              { $set: { mintHeight: SpentHeightIndicators.conflicting } }
+            )
+          ]);
+          txidsBatch = [];
+        }
+
+        // Adding this coin to txidsBatch _after_ the updateMany statements is important.
+        // Updating this coin to conflicting before calling relatedCoinsGenerator.next() will cause the generator to return `done` prematurely.
+        if (coin.value?.spentTxid) {
+          txidsBatch.push(coin.value.spentTxid);
+        }
+      } while (!coin.done)
+    }
 
     return;
   }

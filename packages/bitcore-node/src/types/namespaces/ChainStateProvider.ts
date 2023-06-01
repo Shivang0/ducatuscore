@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
 import { ObjectId } from 'mongodb';
 import { MongoBound } from '../../models/base';
-import { IBlock } from '../../models/baseBlock';
 import { IBtcBlock } from '../../models/block';
 import { ICoin } from '../../models/coin';
 import { ITransaction } from '../../models/transaction';
 import { IWallet } from '../../models/wallet';
 import { StreamingFindOptions } from '../../services/storage';
+import { IBlock } from '../../types/Block';
 import { ChainNetwork } from '../../types/ChainNetwork';
 import { AuthheadJSON } from '../Authhead';
 import { CoinListingJSON } from '../Coin';
@@ -80,8 +80,8 @@ export type GetWalletBalanceAtTimeParams = ChainNetwork & {
 
 export type StreamAddressUtxosParams = ChainNetwork & {
   address: string;
-  req: Request;
-  res: Response;
+  req?: Request;
+  res?: Response;
   args: Partial<StreamAddressUtxosArgs & StreamingFindOptions<ICoin> & any>;
 };
 
@@ -151,7 +151,7 @@ export interface IChainStateService {
     params: GetBalanceForAddressParams
   ): Promise<{ confirmed: number; unconfirmed: number; balance: number }>;
   getBlock(params: GetBlockParams): Promise<IBlock>;
-  getBlockBeforeTime(params: GetBlockBeforeTimeParams): Promise<IBlock>;
+  getBlockBeforeTime(params: GetBlockBeforeTimeParams): Promise<IBlock | null>;
   streamBlocks(params: StreamBlocksParams): any;
   getFee(params: GetEstimateSmartFeeParams): any;
   broadcastTransaction(params: BroadcastTransactionParams): Promise<any>;

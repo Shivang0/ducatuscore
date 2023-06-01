@@ -3,13 +3,14 @@ import { PassThrough } from 'stream';
 import { Encryption } from './encryption';
 import { Level } from './storage/level';
 import { Mongo } from './storage/mongo';
+import { TextFile } from './storage/textFile';
 import { KeyImport } from './wallet';
 
-const bitcoreLib = require('@ducatus/ducatus-crypto-wallet-core-rev').BitcoreLib;
+const bitcoreLib = require('crypto-wallet-core').BitcoreLib;
 
 export class Storage {
   path: string;
-  db: Array<Mongo | Level>;
+  db: Array<Mongo | Level | TextFile>;
   collection: 'bitcoreWallets';
   url?: string;
   errorIfExists?: boolean;
@@ -18,15 +19,16 @@ export class Storage {
   constructor(params: { path?: string; createIfMissing: boolean; errorIfExists: boolean; storageType?: string }) {
     const { path, createIfMissing, errorIfExists } = params;
     let { storageType } = params;
-    if (storageType && !['Mongo', 'Level'].includes(storageType)) {
-      throw new Error('Storage Type passed in must be Mongo or Level');
+    if (storageType && !['Mongo', 'Level', 'TextFile'].includes(storageType)) {
+      throw new Error('Storage Type passed in must be Mongo, Level, or TextFile');
     }
     this.path = path;
     this.createIfMissing = createIfMissing;
     this.errorIfExists = errorIfExists;
     const dbMap = {
       Mongo,
-      Level
+      Level,
+      TextFile
     };
     this.db = [];
     if (dbMap[storageType]) {
@@ -39,10 +41,23 @@ export class Storage {
     }
   }
 
+  async verifyDbs(dbs) {
+    for await (let db of dbs) {
+      if (typeof db.testConnection === 'function') {
+        // test mongo connection
+        if (!(await db.testConnection())) {
+          // remove from dbs
+          dbs.splice(dbs.indexOf(db), 1);
+        }
+      }
+    }
+    return dbs;
+  }
+
   async loadWallet(params: { name: string }) {
     const { name } = params;
     let wallet;
-    for (let db of this.db) {
+    for (let db of await this.verifyDbs(this.db)) {
       try {
         wallet = await db.loadWallet({ name });
         if (wallet) {
@@ -58,22 +73,35 @@ export class Storage {
     return JSON.parse(wallet);
   }
 
+  async deleteWallet(params: { name: string }) {
+    const { name } = params;
+    for (let db of await this.verifyDbs(this.db)) {
+      try {
+        await db.deleteWallet({ name });
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }
+
   async listWallets() {
     let passThrough = new PassThrough();
-    for (let db of this.db) {
+    const dbs = await this.verifyDbs(this.db);
+    for (let db of dbs) {
       const listWalletStream = await db.listWallets();
       passThrough = listWalletStream.pipe(passThrough, { end: false });
-      listWalletStream.once('end', () => --this.db.length === 0 && passThrough.end());
+      listWalletStream.once('end', () => --dbs.length === 0 && passThrough.end());
     }
     return passThrough;
   }
 
   async listKeys() {
     let passThrough = new PassThrough();
-    for (let db of this.db) {
+    const dbs = await this.verifyDbs(this.db);
+    for (let db of dbs) {
       const listWalletStream = await db.listKeys();
       passThrough = listWalletStream.pipe(passThrough, { end: false });
-      listWalletStream.once('end', () => --this.db.length === 0 && passThrough.end());
+      listWalletStream.once('end', () => --dbs.length === 0 && passThrough.end());
     }
     return passThrough;
   }

@@ -57,6 +57,7 @@ function get(arg, keys) {
  * @param {Number} data.pubkeyhash - The publickey hash prefix
  * @param {Number} data.privatekey - The privatekey prefix
  * @param {Number} data.scripthash - The scripthash prefix
+ * @param {string} data.bech32prefix - The native segwit prefix
  * @param {Number} data.xpubkey - The extended public key magic
  * @param {Number} data.xprivkey - The extended private key magic
  * @param {Number} data.networkMagic - The network magic number
@@ -74,6 +75,7 @@ function addNetwork(data) {
     pubkeyhash: data.pubkeyhash,
     privatekey: data.privatekey,
     scripthash: data.scripthash,
+    scripthash2: data.scripthash2,
     xpubkey: data.xpubkey,
     xprivkey: data.xprivkey
   });
@@ -82,6 +84,7 @@ function addNetwork(data) {
     JSUtil.defineImmutable(network, {
       networkMagic: BufferUtil.integerAsBuffer(data.networkMagic)
     });
+    networkMaps[network.networkMagic.toString('hex')] = network;
   }
 
   if (data.port) {
@@ -95,6 +98,13 @@ function addNetwork(data) {
       dnsSeeds: data.dnsSeeds
     });
   }
+
+  if (data.bech32prefix) {
+    JSUtil.defineImmutable(network, {
+      bech32prefix: data.bech32prefix
+    });
+  }
+
   _.each(network, function(value) {
     if (!_.isUndefined(value) && !_.isObject(value)) {
       networkMaps[value] = network;
@@ -114,26 +124,38 @@ function addNetwork(data) {
  * @param {Network} network
  */
 function removeNetwork(network) {
+  if (typeof network !== 'object') {
+    network = get(network);
+  }
   for (var i = 0; i < networks.length; i++) {
     if (networks[i] === network) {
       networks.splice(i, 1);
     }
   }
   for (var key in networkMaps) {
-    if (networkMaps[key] === network) {
+    if (networkMaps[key].length) {
+      const index = networkMaps[key].indexOf(network);
+      if (index >= 0) {
+        networkMaps[key].splice(index, 1);
+      }
+      if (networkMaps[key].length === 0) {
+        delete networkMaps[key];
+      }
+    } else if (networkMaps[key] === network) {
       delete networkMaps[key];
     }
-  }
-}
+  }}
 
 addNetwork({
   name: 'livenet',
   alias: 'mainnet',
-  pubkeyhash: 0x30,
-  privatekey: 0xb0,
-  scripthash: 0x32,
-  xpubkey: 0x019da462,
-  xprivkey: 0x019d9cfe,
+  pubkeyhash: 0x30, // 48
+  privatekey: 0xb0, // 176
+  scripthash: 0x32, // 50
+  scripthash2: 0x05, // 5
+  bech32prefix: 'ltc',
+  xpubkey: 0x0488b21e,
+  xprivkey: 0x0488ade4,
   networkMagic: 0xfbc0b6db,
   port: 9333,
   dnsSeeds: [
@@ -155,11 +177,12 @@ var livenet = get('livenet');
 addNetwork({
   name: 'testnet',
   alias: 'regtest',
-  pubkeyhash: 0x6f,
-  privatekey: 0xef,
-  scripthash: 0x3a,
-  xpubkey: 0x0436f6e1,
-  xprivkey: 0x0436ef7d
+  pubkeyhash: 0x6f, // 111
+  privatekey: 0xef, // 239
+  scripthash: 0x3a, // 58
+  scripthash2: 0xc4, // 196
+  xpubkey: 0x043587cf,
+  xprivkey: 0x04358394
 });
 
 /**
@@ -176,7 +199,8 @@ var TESTNET = {
   DNS_SEEDS: [
     'testnet-seed.litecointools.com',
     'seed-b.litecoin.loshan.co.uk'
-  ]
+  ],
+  BECH32_PREFIX: 'tltc'
 };
 
 for (var key in TESTNET) {
@@ -184,11 +208,13 @@ for (var key in TESTNET) {
     networkMaps[TESTNET[key]] = testnet;
   }
 }
+networkMaps[TESTNET.NETWORK_MAGIC.toString('hex')] = testnet;
 
 var REGTEST = {
   PORT: 19444,
   NETWORK_MAGIC: BufferUtil.integerAsBuffer(0xfabfb5da),
-  DNS_SEEDS: []
+  DNS_SEEDS: [],
+  BECH32_PREFIX: 'rltc'
 };
 
 for (var key in REGTEST) {
@@ -196,6 +222,7 @@ for (var key in REGTEST) {
     networkMaps[REGTEST[key]] = testnet;
   }
 }
+networkMaps[REGTEST.NETWORK_MAGIC.toString('hex')] = testnet;
 
 Object.defineProperty(testnet, 'port', {
   enumerable: true,
@@ -232,6 +259,18 @@ Object.defineProperty(testnet, 'dnsSeeds', {
     }
   }
 });
+
+Object.defineProperty(testnet, 'bech32prefix', {
+  enumerable: true,
+  configurable: false,
+  get: function() {
+    if (this.regtestEnabled) {
+      return REGTEST.BECH32_PREFIX
+    } else {
+      return TESTNET.BECH32_PREFIX
+    }
+  }
+})
 
 /**
  * @function

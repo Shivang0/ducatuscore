@@ -43,7 +43,6 @@ export function LogMiddleware() {
     openConnections++;
     LogPhase(req, res, 'START');
     res.on('finish', () => {
-      openConnections--;
       LogPhase(req, res, 'END');
     });
     res.on('close', () => {
@@ -98,14 +97,11 @@ export function RateLimiter(method: string, perSecond: number, perMinute: number
         method
       );
       if (
-        false &&
-        (perSecondResult.value!.count > perSecond ||
-          perMinuteResult.value!.count > perMinute ||
-          perHourResult.value!.count > perHour)
+        perSecondResult.value!.count > perSecond ||
+        perMinuteResult.value!.count > perMinute ||
+        perHourResult.value!.count > perHour
       ) {
         return res.status(429).send('Rate Limited');
-      } else {
-        return next();
       }
     } catch (err) {
       logger.error('Rate Limiter failed');

@@ -3,9 +3,9 @@ node_modules/
 .env
 *bitcore.config.*
 .vscode
+.idea
 .DS_Store
 *.swp
-.history
 
 # VIM ignore
 [._]*.s[a-w][a-z]
@@ -16,3 +16,4 @@ Session.vim
 *~
 ts_build
 bitcore-lib.js
+

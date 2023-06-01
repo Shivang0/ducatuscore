@@ -84,6 +84,14 @@ export class BitcoinP2PWorker extends BaseP2PWorker<IBtcBlock> {
       );
     });
 
+    this.pool.on('peerconnect', peer => {
+      logger.info(
+        `${timestamp()} | Connected to peer: ${peer.host}:${peer.port.toString().padEnd(5)} | Chain: ${
+          this.chain
+        } | Network: ${this.network}`
+      );
+    });
+
     this.pool.on('peerdisconnect', peer => {
       logger.warn(
         `${timestamp()} | Not connected to peer: ${peer.host}:${peer.port.toString().padEnd(5)} | Chain: ${
@@ -94,7 +102,7 @@ export class BitcoinP2PWorker extends BaseP2PWorker<IBtcBlock> {
 
     this.pool.on('peertx', async (peer, message) => {
       const hash = message.transaction.hash;
-      logger.debug('peer tx received', {
+      logger.debug('peer tx received: %o', {
         peer: `${peer.host}:${peer.port}`,
         chain: this.chain,
         network: this.network,
@@ -110,7 +118,7 @@ export class BitcoinP2PWorker extends BaseP2PWorker<IBtcBlock> {
     this.pool.on('peerblock', async (peer, message) => {
       const { block } = message;
       const { hash } = block;
-      logger.debug('peer block received', {
+      logger.debug('peer block received: %o', {
         peer: `${peer.host}:${peer.port}`,
         chain: this.chain,
         network: this.network,
@@ -132,7 +140,7 @@ export class BitcoinP2PWorker extends BaseP2PWorker<IBtcBlock> {
     });
 
     this.pool.on('peerheaders', (peer, message) => {
-      logger.debug('peerheaders message received', {
+      logger.debug('peerheaders message received: %o', {
         peer: `${peer.host}:${peer.port}`,
         chain: this.chain,
         network: this.network,
@@ -194,7 +202,7 @@ export class BitcoinP2PWorker extends BaseP2PWorker<IBtcBlock> {
     let received = false;
     return new Promise<BitcoinBlockType>(async resolve => {
       this.events.once(hash, (block: BitcoinBlockType) => {
-        logger.debug('Received block, hash:', hash);
+        logger.debug('Received block, hash: %o', hash);
         received = true;
         resolve(block);
       });
@@ -295,7 +303,7 @@ export class BitcoinP2PWorker extends BaseP2PWorker<IBtcBlock> {
             lastLog = now;
           }
         } catch (err) {
-          logger.error(`${timestamp()} | Error syncing | Chain: ${chain} | Network: ${network}`, err);
+          logger.error(`${timestamp()} | Error syncing | Chain: ${chain} | Network: ${network} | %o`, err);
           this.isSyncing = false;
           return this.sync();
         }
