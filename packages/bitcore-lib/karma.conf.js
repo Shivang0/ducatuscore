@@ -30,8 +30,8 @@ module.exports = function(config) {
       'karma-chrome-launcher',
       'karma-firefox-launcher',
       'karma-detect-browsers'
-    ]
-    browsers: ['Chrome', 'Firefox']
+    ],
+    browsers: ['Chrome', 'Firefox'],
   });
 
 };

@@ -13,8 +13,8 @@ An instance of a [PrivateKey](privatekey.md) that also contains information requ
 Sample usage:
 
 ```javascript
-var bitcore = require('bitcore');
-var HDPrivateKey = bitcore.HDPrivateKey;
+var ducatuscore = require('@ducatus/ducatuscore-lib');
+var HDPrivateKey = ducatuscore.HDPrivateKey;
 
 var hdPrivateKey = new HDPrivateKey();
 var retrieved = new HDPrivateKey('xpriv...');
