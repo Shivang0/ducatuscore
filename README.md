@@ -1,50 +1,28 @@
-# Bitcore Monorepo
+# Ducatuscore monorepo
 
-  <p align="center">
-  <img alt="npm" src="https://img.shields.io/npm/v/bitcore-lib">
-  <img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/m/bitpay/bitcore">
-  <a href="https://opensource.org/licenses/MIT/" target="_blank"><img alt="MIT License" src="https://img.shields.io/badge/License-MIT-blue.svg" style="display: inherit;"/></a>
-  <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/bitpay/bitcore">
-  <br>
- <img src="https://circleci.com/gh/bitpay/bitcore.svg?style=shield" alt="master build">
-</p>
-  
 **Infrastructure to build Bitcoin and blockchain-based applications for the next generation of financial technology.**
 
 ## Applications
 
-- [Bitcore Node](packages/bitcore-node) - A standardized API to interact with multiple blockchain networks
-- [Bitcore Wallet](packages/bitcore-wallet) - A command-line based wallet client
-- [Bitcore Wallet Client](packages/bitcore-wallet-client) - A client for the wallet service
-- [Bitcore Wallet Service](packages/bitcore-wallet-service) - A multisig HD service for wallets
-- [Bitpay Wallet](https://github.com/bitpay/wallet) - An easy-to-use, multiplatform, multisignature, secure bitcoin wallet
+- [Ducatuscore Node](packages/ducatuscore-node) - A full node with extended capabilities using Ducatus-bitcore Core
+- [Ducatuscore Wallet](packages/ducatuscore-wallet) - A command-line based wallet client
+- [Ducatuscore Wallet Client](packages/ducatuscore-wallet-client-rev) - A client for the wallet service
+- [Ducatuscore Wallet Service](packages/ducatuscore-wallet-service-rev) - A multisig HD service for wallets
 - [Insight](packages/insight) - A blockchain explorer web user interface
 
 ## Libraries
 
-- [Bitcore Lib](packages/bitcore-lib) - A powerful JavaScript library for Bitcoin
-- [Bitcore Lib Cash](packages/bitcore-lib-cash) - A powerful JavaScript library for Bitcoin Cash
-- [Bitcore Lib Doge](packages/bitcore-lib-doge) - A powerful JavaScript library for Dogecoin
-- [Bitcore Lib Litecoin](packages/bitcore-lib-ltc) - A powerful JavaScript library for Litecoin
-- [Bitcore Mnemonic](packages/bitcore-mnemonic) - Implements mnemonic code for generating deterministic keys
-- [Bitcore P2P](packages/bitcore-p2p) - The peer-to-peer networking protocol for Bitcoin
-- [Bitcore P2P Cash](packages/bitcore-p2p-cash) - The peer-to-peer networking protocol for Bitcoin Cash
-- [Bitcore P2P Doge](packages/bitcore-p2p-doge) **DEPRECATED**[^1] - The peer-to-peer networking protocol for Dogecoin
-- [Crypto Wallet Core](packages/crypto-wallet-core) - A coin-agnostic wallet library for creating transactions, signing, and address derivation
+- [Ducatuscore Lib](packages/ducatuscore-lib) - A powerful JavaScript library for Ducatus
+- [Ducatuscore Lib Cash](packages/ducatuscore-lib-cash) - A powerful JavaScript library for Bitcoin Cash
+- [Ducatuscore Lib Doge](packages/ducatuscore-lib-doge) - A powerful JavaScript library for Dogecoin
+- [Ducatuscore Lib Litecoin](packages/ducatuscore-lib-ltc) - A powerful JavaScript library for Litecoin
+- [Ducatuscore Mnemonic](packages/ducatuscore-mnemonic) - Implements mnemonic code for generating deterministic keys
+- [Ducatuscore P2P](packages/ducatuscore-p2p) - The peer-to-peer networking protocol for Ducatus
+- [Ducatuscore P2P Cash](packages/ducatuscore-p2p-cash) - The peer-to-peer networking protocol for Bitcoin Cash
+- [Ducatuscore P2P Doge](packages/ducatuscore-p2p-doge) **DEPRECATED**[^1] - The peer-to-peer networking protocol for Dogecoin
+- [Ducatuscore Crypto](packages/ducatuscore-crypto) - A coin-agnostic wallet library for creating transactions, signing, and address derivation
 
 ## Extras
 
-- [Bitcore Build](packages/bitcore-build) - A helper to add tasks to gulp
-- [Bitcore Client](packages/bitcore-client) - A helper to create a wallet using the bitcore-v8 infrastructure
-
-## Contributing
-
-See [CONTRIBUTING.md](https://github.com/bitpay/bitcore/blob/master/Contributing.md) on the main bitcore repo for information about how to contribute.
-
-## License
-
-Code released under [the MIT license](https://github.com/bitpay/bitcore/blob/master/LICENSE).
-
-Copyright 2013-2023 BitPay, Inc. Bitcore is a trademark maintained by BitPay, Inc.
-
-[^1]: The Bitcore P2P Doge library is no longer maintained as all the core functionality is contained in Bitcore P2P
+- [Ducatuscore Build](packages/ducatuscore-build) - A helper to add tasks to gulp
+- [Ducatuscore Client](packages/ducatuscore-client) - A helper to create a wallet using the bitcore-v8 infrastructure
