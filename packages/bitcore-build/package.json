@@ -1,46 +1,12 @@
 {
-  "name": "bitcore-build",
-  "version": "10.0.5",
-  "description": "A helper for common tasks to build bitcore modules'",
+  "name": "@ducatus/ducatuscore-build",
+  "version": "10.0.0",
+  "description": "A helper for common tasks to build ducatuscore modules'",
   "main": "index.js",
   "scripts": {
     "test": "gulp test",
     "pub": "npm  publish"
   },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/bitpay/bitcore-build"
-  },
-  "keywords": [
-    "bitcore"
-  ],
-  "contributors": [
-    {
-      "name": "Esteban Ordano",
-      "email": "esteban@bitpay.com"
-    },
-    {
-      "name": "Manuel Araoz",
-      "email": "maraoz@bitpay.com"
-    },
-    {
-      "name": "Braydon Fuller",
-      "email": "braydon@bitpay.com"
-    },
-    {
-      "name": "Yemel Jardi",
-      "email": "yemel@bitpay.com"
-    },
-    {
-      "name": "Matias Alejo Garcia",
-      "email": "ematiu@gmail.com"
-    }
-  ],
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/bitpay/bitcore-build/issues"
-  },
-  "homepage": "https://github.com/bitpay/bitcore-build",
   "dependencies": {
     "@kollavarsham/gulp-coveralls": "^0.2.2",
     "brfs": "^2.0.1",
@@ -57,6 +23,5 @@
     "karma-mocha": "^2.0.1",
     "lodash": "^4.17.15",
     "mocha": "^6.2.0"
-  },
-  "gitHead": "012cc0216a9bc6b195035855bd17149bad41acd1"
+  }
 }
