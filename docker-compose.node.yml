@@ -1,0 +1,34 @@
+version: '3'
+services:
+  database-node:
+    image: mongo:5.0
+    restart: always
+    volumes: 
+      - ./.node_db:/data/node_db
+    networks:
+      - ducatuscore-node-network
+    ports: 
+    - 27017:27017
+    
+  ducatuscore-node:
+    build: .
+    restart: always
+    image: ducatuscore-node
+    volumes: 
+      - ./.node:/data/node
+    links:
+      - database-node
+    networks:
+      - ducatuscore-node-network
+    ports:
+      - 8100:8100
+      - 3000:3000
+    environment:
+      - DB_HOST=database-node
+    env_file: .env
+    command: npm run node
+
+networks:
+  ducatuscore-node-network:
+    name: ducatuscore-node-network
+    driver: bridge

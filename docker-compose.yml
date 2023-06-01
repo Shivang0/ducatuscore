@@ -7,9 +7,9 @@ services:
     volumes: 
     - /data/db:/data/db
     
-  bitcore-node:
+  ducatuscore-node:
     build: .
-    image: bitcore-node
+    image: ducatuscoree-node
     links:
       - database
     ports:
@@ -18,10 +18,3 @@ services:
     environment:
       - DB_HOST=database
     env_file: .env
-
-#insight:
-  #image: insight
-  #links:
-    #- bitcore-node
-  #environment:
-    #- API_URL=bitcore-node
