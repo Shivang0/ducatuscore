@@ -2,13 +2,13 @@
 
 var Message = require('../message');
 var inherits = require('util').inherits;
-var bitcore = require('bitcore-lib');
+var ducatuscore = require('@ducatus/ducatuscore-lib');
 var utils = require('../utils');
-var BufferUtil = bitcore.util.buffer;
-var BufferWriter = bitcore.encoding.BufferWriter;
-var BufferReader = bitcore.encoding.BufferReader;
-var $ = bitcore.util.preconditions;
-var _ = bitcore.deps._;
+var BufferUtil = ducatuscore.util.buffer;
+var BufferWriter = ducatuscore.encoding.BufferWriter;
+var BufferReader = ducatuscore.encoding.BufferReader;
+var $ = ducatuscore.util.preconditions;
+var _ = ducatuscore.deps._;
 
 /**
  * Request peer to add data to a bloom filter already set by 'filterload'

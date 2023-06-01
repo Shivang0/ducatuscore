@@ -2,12 +2,12 @@
 
 var Message = require('../message');
 var inherits = require('util').inherits;
-var bitcore = require('bitcore-lib');
+var ducatuscore = require('@ducatus/ducatuscore-lib');
 var utils = require('../utils');
-var $ = bitcore.util.preconditions;
-var _ = bitcore.deps._;
-var BufferUtil = bitcore.util.buffer;
-var BufferReader = bitcore.encoding.BufferReader;
+var $ = ducatuscore.util.preconditions;
+var _ = ducatuscore.deps._;
+var BufferUtil = ducatuscore.util.buffer;
+var BufferReader = ducatuscore.encoding.BufferReader;
 
 /**
  * A message in response to a ping message.

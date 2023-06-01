@@ -1,9 +1,9 @@
  'use strict';
 
-var bitcore = require('bitcore-lib');
-var BufferUtil = bitcore.util.buffer;
-var Hash = bitcore.crypto.Hash;
-var $ = bitcore.util.preconditions;
+var ducatuscore = require('@ducatus/ducatuscore-lib');
+var BufferUtil = ducatuscore.util.buffer;
+var Hash = ducatuscore.crypto.Hash;
+var $ = ducatuscore.util.preconditions;
 
 /**
  * A factory to build Bitcoin protocol messages.
@@ -27,7 +27,7 @@ function Messages(options) {
   if (!options) {
     options = {};
   }
-  this.network = options.network || bitcore.Networks.defaultNetwork;
+  this.network = options.network || ducatuscore.Networks.defaultNetwork;
 }
 
 Messages.MINIMUM_LENGTH = 20;
