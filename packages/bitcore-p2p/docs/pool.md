@@ -6,8 +6,8 @@ The quickest way to get connected is to run the following:
 
 ```javascript
 
-var Pool = require('bitcore-p2p').Pool;
-var Networks = require('bitcore-lib').Networks;
+var Pool = require('@ducatus/ducatuscore-p2p').Pool;
+var Networks = require('@ducatus/ducatuscore-lib').Networks;
 
 var pool = new Pool({network: Networks.livenet});
 
