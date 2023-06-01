@@ -1,8 +1,7 @@
 {
-  "name": "bitcore-lib",
-  "version": "10.0.5",
+  "name": "@ducatus/ducatuscore-lib",
+  "version": "10.0.0",
   "description": "A pure and powerful JavaScript Bitcoin library.",
-  "author": "BitPay <dev@bitpay.com>",
   "main": "index.js",
   "scripts": {
     "test": "gulp test",
@@ -27,10 +26,6 @@
     "bip70",
     "multisig"
   ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/bitpay/bitcore/tree/master/packages/bitcore-lib"
-  },
   "browser": {
     "request": "browser-request"
   },
@@ -45,12 +40,10 @@
     "lodash": "^4.17.20"
   },
   "devDependencies": {
-    "bitcore-build": "^10.0.5",
+    "@ducatus/ducatuscore-build": "^10.0.0",
     "brfs": "^2.0.1",
     "chai": "^4.2.0",
     "gulp": "^4.0.0",
     "sinon": "^7.1.1"
-  },
-  "license": "MIT",
-  "gitHead": "012cc0216a9bc6b195035855bd17149bad41acd1"
+  }
 }

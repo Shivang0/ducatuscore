@@ -6,11 +6,11 @@ var chai = require('chai');
 var should = chai.should();
 var expect = chai.expect;
 
-var bitcore = require('..');
-var PublicKey = bitcore.PublicKey;
-var Address = bitcore.Address;
-var Script = bitcore.Script;
-var Networks = bitcore.Networks;
+var ducatuscore = require('..');
+var PublicKey = ducatuscore.PublicKey;
+var Address = ducatuscore.Address;
+var Script = ducatuscore.Script;
+var Networks = ducatuscore.Networks;
 
 describe('Witness Address', function() {
 

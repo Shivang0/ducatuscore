@@ -1,10 +1,10 @@
 'use strict';
 
 var should = require('chai').should();
-var bitcore = require('../..');
-var BufferWriter = bitcore.encoding.BufferWriter;
-var BufferReader = bitcore.encoding.BufferReader;
-var BN = bitcore.crypto.BN;
+var ducatuscore = require('../..');
+var BufferWriter = ducatuscore.encoding.BufferWriter;
+var BufferReader = ducatuscore.encoding.BufferReader;
+var BN = ducatuscore.crypto.BN;
 
 describe('BufferReader', function() {
 

@@ -4,8 +4,8 @@ var _ = require('lodash');
 var chai = require('chai');
 var should = chai.should();
 var expect = chai.expect;
-var bitcore = require('..');
-var Opcode = bitcore.Opcode;
+var ducatuscore = require('..');
+var Opcode = ducatuscore.Opcode;
 
 describe('Opcode', function() {
 
