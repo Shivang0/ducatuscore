@@ -1,8 +1,8 @@
 #!/bin/bash
 
-docker container stop $(docker container ls -qf name=bitcore_*)
-docker container rm $(docker container ls -aqf name=bitcore_*)
-docker image rm bitcore-test_runner
-docker image rm bitcore-rippled
-$(dirname "$(readlink -f "$0")")/packages/bitcore-client/bin/wallet-delete --name EthereumWallet-Ci
-$(dirname "$(readlink -f "$0")")/packages/bitcore-client/bin/wallet-delete --name PolygonWallet-Ci
+docker container stop $(docker container ls -qf name=ducatuscore_*)
+docker container rm $(docker container ls -aqf name=ducatuscore_*)
+docker image rm ducatuscore-test_runner
+docker image rm ducatuscore-rippled
+$(dirname "$(readlink -f "$0")")/packages/ducatuscore-client/bin/wallet-delete --name EthereumWallet-Ci
+$(dirname "$(readlink -f "$0")")/packages/ducatuscore-client/bin/wallet-delete --name PolygonWallet-Ci
