@@ -20,18 +20,18 @@ export class Level {
     const { path, createIfMissing, errorIfExists } = params;
     let basePath;
     if (!path) {
-      basePath = `${os.homedir()}/.bitcore`;
+      basePath = `${os.homedir()}/.ducatuscore`;
       try {
         if (!usingBrowser) {
           fs.mkdirSync(basePath);
         }
       } catch (e) {
         if (e.errno !== -17) {
-          console.error('Unable to create bitcore storage directory');
+          console.error('Unable to create ducatuscore storage directory');
         }
       }
     }
-    this.path = path || `${basePath}/bitcoreWallet`;
+    this.path = path || `${basePath}/ducatuscoreWallet`;
     if (!createIfMissing && !usingBrowser) {
       const walletExists =
         fs.existsSync(this.path) && fs.existsSync(this.path + '/LOCK') && fs.existsSync(this.path + '/LOG');

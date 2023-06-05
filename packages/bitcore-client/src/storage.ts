@@ -6,12 +6,12 @@ import { Mongo } from './storage/mongo';
 import { TextFile } from './storage/textFile';
 import { KeyImport } from './wallet';
 
-const bitcoreLib = require('crypto-wallet-core').BitcoreLib;
+const ducatuscoreLib = require('@ducatus/ducatuscore-crypto').DucatuscoreLib;
 
 export class Storage {
   path: string;
   db: Array<Mongo | Level | TextFile>;
-  collection: 'bitcoreWallets';
+  collection: 'ducatuscoreWallets';
   url?: string;
   errorIfExists?: boolean;
   createIfMissing: boolean;
@@ -161,7 +161,7 @@ export class Storage {
     let open = true;
     for (const key of keys) {
       let { pubKey } = key;
-      pubKey = pubKey || new bitcoreLib.PrivateKey(key.privKey).publicKey.toString();
+      pubKey = pubKey || new ducatuscoreLib.PrivateKey(key.privKey).publicKey.toString();
       let payload = {};
       if (pubKey && key.privKey && encryptionKey) {
         const toEncrypt = JSON.stringify(key);

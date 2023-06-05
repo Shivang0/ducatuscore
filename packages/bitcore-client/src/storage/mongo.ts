@@ -24,8 +24,8 @@ export class Mongo {
       }
       this.databaseName = databasePath.pop();
     } else {
-      this.path = 'mongodb://localhost/bitcoreWallet';
-      this.databaseName = 'bitcoreWallets';
+      this.path = 'mongodb://localhost/ducatuscoreWallet';
+      this.databaseName = 'ducatuscoreWallets';
     }
     this.createIfMissing = createIfMissing;
     this.errorIfExists = errorIfExists;

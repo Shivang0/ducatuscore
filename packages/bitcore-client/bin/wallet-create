@@ -14,7 +14,7 @@ program
     '--network <network>',
     'REQUIRED - Network (livenet/testnet/regtest, etc)'
   )
-  .option('--baseUrl [host]', 'optional - Specify custom Bitcore API URL')
+  .option('--baseUrl [host]', 'optional - Specify custom Ducatuscore API URL')
   .option('--path [path]', 'optional - Custom wallet storage path')
   .option('--storageType [storageType]', 'optional - name of the database to use (Mongo | Level | TextFile)')
   .option('--phrase [phrase]', 'optional - Seed using existing backup phrase')

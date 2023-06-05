@@ -4,12 +4,12 @@ const program = require('../ts_build/program');
 const { Wallet } = require('../ts_build/wallet');
 const request = require('request-promise-native');
 const promptly = require('promptly');
-const cwc = require('crypto-wallet-core');
+const cwc = require('@ducatus/ducatuscore-crypto');
 const libs = {
-  BTC: cwc.BitcoreLib,
-  BCH: cwc.BitcoreLibCash,
-  DOGE: cwc.BitcoreLibDoge,
-  LTC: cwc.BitcoreLibLtc
+  BTC: cwc.DucatuscoreLib,
+  BCH: cwc.DucatuscoreLibCash,
+  DOGE: cwc.DucatuscoreLibDoge,
+  LTC: cwc.DucatuscoreLibLtc
 };
 
 program

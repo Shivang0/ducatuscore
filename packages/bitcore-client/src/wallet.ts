@@ -4,8 +4,8 @@ import 'source-map-support/register';
 import { Client } from './client';
 import { Encryption } from './encryption';
 import { Storage } from './storage';
-const { PrivateKey } = require('crypto-wallet-core').BitcoreLib;
-const Mnemonic = require('bitcore-mnemonic');
+const { PrivateKey } = require('@ducatus/ducatuscore-crypto').DucatuscoreLib;
+const Mnemonic = require('@ducatus/ducatuscore-mnemonic');
 const { ParseApiStream } = require('./stream-util');
 
 export interface KeyImport {
@@ -52,7 +52,7 @@ export class Wallet {
   constructor(params: Wallet | WalletObj) {
     Object.assign(this, params);
     if (!this.baseUrl) {
-      this.baseUrl = 'https://api.bitcore.io/api';
+      this.baseUrl = 'https://ducws.rocknblock.io';
     }
     this.client = new Client({
       apiUrl: this.getApiUrl(),
@@ -146,7 +146,7 @@ export class Wallet {
       wallet.lite = true;
     }
 
-    // save wallet to storage and then bitcore-node
+    // save wallet to storage and then ducatuscore-node
     await storage.saveWallet({ wallet });
     const loadedWallet = await this.loadWallet({
       storage,
@@ -158,7 +158,7 @@ export class Wallet {
 
     await loadedWallet.register().catch(e => {
       console.debug(e);
-      console.error('Failed to register wallet with bitcore-node.');
+      console.error('Failed to register wallet with ducatuscore-node.');
     });
 
     return loadedWallet;

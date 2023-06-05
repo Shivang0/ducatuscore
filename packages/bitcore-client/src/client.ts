@@ -5,7 +5,7 @@ import * as stream from 'stream';
 import { URL } from 'url';
 let usingBrowser = (global as any).window;
 const URLClass = usingBrowser ? usingBrowser.URL : URL;
-const bitcoreLib = require('crypto-wallet-core').BitcoreLib;
+const ducatuscoreLib = require('@ducatus/ducatuscore-crypto').DucatuscoreLib;
 
 export class Client {
   apiUrl: string;
@@ -23,7 +23,7 @@ export class Client {
   sign(params: { method: string; url: string; payload?: any }) {
     const message = this.getMessage(params);
     const privateKey = this.authKey.toBuffer();
-    const messageHash = bitcoreLib.crypto.Hash.sha256sha256(Buffer.from(message));
+    const messageHash = ducatuscoreLib.crypto.Hash.sha256sha256(Buffer.from(message));
     return secp256k1.sign(messageHash, privateKey).signature.toString('hex');
   }
 

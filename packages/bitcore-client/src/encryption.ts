@@ -1,5 +1,5 @@
 import { createCipheriv, createDecipheriv, createHash, randomBytes } from 'crypto';
-const bitcore = require('crypto-wallet-core').BitcoreLib;
+const ducatuscore = require('@ducatus/ducatuscore-crypto').DucatuscoreLib;
 const crypto = {
   createHash,
   createCipheriv,
@@ -101,7 +101,7 @@ export function bitcoinCoreDecrypt(
     } else {
       let privKey = decrypt({
         key: master,
-        iv: bitcore.crypto.Hash.sha256sha256(Buffer.from(line.pubKey, 'hex')),
+        iv: ducatuscore.crypto.Hash.sha256sha256(Buffer.from(line.pubKey, 'hex')),
         cipherText
       });
       const address = line.address.split(':');

@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 
 const fs = require('fs');
-const CWC = require('crypto-wallet-core');
+const CWC = require('@ducatus/ducatuscore-crypto');
 const program = require('commander');
 const { Wallet } = require('../../ts_build/wallet');
 const promptly = require('promptly');
-const bitcoreLibs = {
-  BTC: CWC.BitcoreLib,
-  DOGE: CWC.BitcoreLibDoge,
-  LTC: CWC.BitcoreLibLtc,
-  BCH: CWC.BitcoreLibCash
+const ducatuscoreLibs = {
+  BTC: CWC.DucatuscoreLib,
+  DOGE: CWC.DucatuscoreLibDoge,
+  LTC: CWC.DucatuscoreLibLtc,
+  BCH: CWC.DucatuscoreLibCash
 };
 
 program
@@ -47,7 +47,7 @@ const parseKeys = keys => {
 
 function getAddress(publicKeyRing, addressIndex, isChange, m, network, currency) {
   const publicKeys = publicKeyRing.map(function(key) {
-    const xpub = new bitcoreLibs[currency].HDPublicKey(key.xpubkey);
+    const xpub = new ducatuscoreLibs[currency].HDPublicKey(key.xpubkey);
     const changeNum = isChange ? 1 : 0;
     let path = key.path ? key.path : `m/${changeNum}/${addressIndex}`;
     if (key.path) {
@@ -69,7 +69,7 @@ function getAddress(publicKeyRing, addressIndex, isChange, m, network, currency)
     nestedWitness = false;
     type = 'witnessscripthash';
   }
-  return bitcoreLibs[currency].Address.createMultisig(publicKeys, m, network, nestedWitness, type);
+  return ducatuscoreLibs[currency].Address.createMultisig(publicKeys, m, network, nestedWitness, type);
 }
 
 function getAllAddresses(publicKeyRing, numberOfAddresses, isChange, m, network, currency) {

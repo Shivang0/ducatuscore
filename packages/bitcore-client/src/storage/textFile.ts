@@ -12,12 +12,12 @@ export class TextFile {
     const { path, createIfMissing } = params;
     let basePath;
     if (!path) {
-      basePath = `${os.homedir()}/.bitcore/bitcoreWallet/textWallets`;
+      basePath = `${os.homedir()}/.ducatuscore/ducatuscoreWallet/textWallets`;
       try {
         fs.mkdirSync(basePath);
       } catch (e) {
         if (e.errno !== -17) {
-          console.error('Unable to create bitcore storage directory');
+          console.error('Unable to create ducatuscore storage directory');
         }
       }
     }

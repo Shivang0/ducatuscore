@@ -10,12 +10,12 @@ const { StreamUtil } = require('../ts_build/stream-util');
 /**
  * USAGE -
  * Pass in a raw transaction or a jsonl file of rawTransactions
- * Pass in the bitcore wallet name or a jsonl file of encrypted bitcoin core keys or
+ * Pass in the ducatuscore wallet name or a jsonl file of encrypted bitcoin core keys or
  * Pass in the utxos if you want to use specific utxos
  */
 program
   .version(require('../package.json').version)
-  .option('--name <name>', 'REQUIRED - Bitcore Wallet Name')
+  .option('--name <name>', 'REQUIRED - Ducatuscore Wallet Name')
   .option('--path [path]', 'optional - Custom wallet storage path')
   .option('--tx [tx]', 'The raw transaction to sign')
   .option('--txfile [txfile]', 'path to a jsonl file with rawTransaction and utxos')
