@@ -1,17 +1,17 @@
 'use strict';
 
-const bitcore = require('bitcore-lib');
-const BN = bitcore.crypto.BN;
+const ducatuscore = require('@ducatus/ducatuscore-lib');
+const BN = ducatuscore.crypto.BN;
 const unorm = require('unorm');
-const _ = bitcore.deps._;
+const _ = ducatuscore.deps._;
 
 const pbkdf2 = require('./pbkdf2');
 const errors = require('./errors');
 
-const Hash = bitcore.crypto.Hash;
-const Random = bitcore.crypto.Random;
+const Hash = ducatuscore.crypto.Hash;
+const Random = ducatuscore.crypto.Random;
 
-const $ = bitcore.util.preconditions;
+const $ = ducatuscore.util.preconditions;
 
 
 /**
@@ -56,7 +56,7 @@ var Mnemonic = function(data, wordlist) {
   } else if (_.isNumber(data)) {
     ent = data;
   } else if (data) {
-    throw new bitcore.errors.InvalidArgument('data', 'Must be a Buffer, a string or an integer');
+    throw new ducatuscore.errors.InvalidArgument('data', 'Must be a Buffer, a string or an integer');
   }
   ent = ent || 128;
 
@@ -78,7 +78,7 @@ var Mnemonic = function(data, wordlist) {
     throw new errors.InvalidMnemonic(phrase);
   }
   if (ent % 32 !== 0 || ent < 128 || ent > 256) {
-    throw new bitcore.errors.InvalidArgument('ENT', 'Values must be ENT > 128 and ENT < 256 and ENT % 32 == 0');
+    throw new ducatuscore.errors.InvalidArgument('ENT', 'Values must be ENT > 128 and ENT < 256 and ENT % 32 == 0');
   }
 
   phrase = phrase || Mnemonic._mnemonic(ent, wordlist);
@@ -208,7 +208,7 @@ Mnemonic.fromSeed = function(seed, wordlist) {
  */
 Mnemonic.prototype.toHDPrivateKey = function(passphrase, network) {
   var seed = this.toSeed(passphrase);
-  return bitcore.HDPrivateKey.fromSeed(seed, network);
+  return ducatuscore.HDPrivateKey.fromSeed(seed, network);
 };
 
 /**
@@ -296,6 +296,6 @@ Mnemonic._entropyChecksum = function(entropy) {
   return checksum;
 };
 
-Mnemonic.bitcore = bitcore;
+Mnemonic.ducatuscore = ducatuscore;
 
 module.exports = Mnemonic;
