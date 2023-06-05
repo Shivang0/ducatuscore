@@ -8,7 +8,7 @@ var Networks = require('./networks');
 var Unit = require('./unit');
 
 /**
- * Bitcore URI
+ * Ducatuscore URI
  *
  * Instantiate an URI from a bitcoin URI String or an Object. An URI instance
  * can be created with a bitcoin uri string or an object. All instances of

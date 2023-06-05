@@ -1,10 +1,10 @@
-# Bitcore Cash
+# Ducatuscore Cash
 
 ## Principles
 
-Bitcoin is a powerful new peer-to-peer platform for the next generation of financial technology. The decentralized nature of the Bitcoin network allows for highly resilient bitcoin infrastructure, and the developer community needs reliable, open-source tools to implement bitcoin apps and services. Bitcore provides a reliable API for JavaScript apps that need to interface with Bitcoin.
+Bitcoin is a powerful new peer-to-peer platform for the next generation of financial technology. The decentralized nature of the Bitcoin network allows for highly resilient bitcoin infrastructure, and the developer community needs reliable, open-source tools to implement bitcoin apps and services. Ducatuscore provides a reliable API for JavaScript apps that need to interface with Bitcoin.
 
-To get started, just `npm install bitcore` or `bower install bitcore`.
+To get started, just `npm install ducatuscore` or `bower install ducatuscore`.
 
 ## Documentation Index
 
@@ -39,24 +39,24 @@ To get started, just `npm install bitcore` or `bower install bitcore`.
 
 Some functionality is implemented as a module that can be installed separately:
 
-- [Peer to Peer Networking](https://github.com/bitpay/bitcore/tree/master/packages/bitcore-p2p-cash)
+- [Peer to Peer Networking](https://github.com/bitpay/ducatuscore/tree/master/packages/ducatuscore-p2p-cash)
 - [Bitcoin Core JSON-RPC](https://github.com/bitpay/bitcoind-rpc)
-- [Payment Channels](https://github.com/bitpay/bitcore-channel)
-- [Mnemonics](https://github.com/bitpay/bitcore/tree/master/packages/bitcore-mnemonic)
-- [Elliptical Curve Integrated Encryption Scheme](https://github.com/bitpay/bitcore-ecies)
-- [Blockchain Explorers](https://github.com/bitpay/bitcore-explorers)
-- [Signed Messages](https://github.com/bitpay/bitcore-message)
+- [Payment Channels](https://github.com/bitpay/ducatuscore-channel)
+- [Mnemonics](https://github.com/bitpay/ducatuscore/tree/master/packages/ducatuscore-mnemonic)
+- [Elliptical Curve Integrated Encryption Scheme](https://github.com/bitpay/ducatuscore-ecies)
+- [Blockchain Explorers](https://github.com/bitpay/ducatuscore-explorers)
+- [Signed Messages](https://github.com/bitpay/ducatuscore-message)
 
 ## Examples
 
 ### Create and Save a Private Key
 
 ```javascript
-var privateKey = new bitcore.PrivateKey();
+var privateKey = new ducatuscore.PrivateKey();
 
 var exported = privateKey.toWIF();
 // e.g. L3T1s1TYP9oyhHpXgkyLoJFGniEgkv2Jhi138d7R2yJ9F4QdDU2m
-var imported = bitcore.PrivateKey.fromWIF(exported);
+var imported = ducatuscore.PrivateKey.fromWIF(exported);
 var hexa = privateKey.toString();
 // e.g. 'b9de6e778fe92aa7edb69395556f843f1dce0448350112e14906efc2a80fa61a'
 ```
@@ -71,7 +71,7 @@ var address = privateKey.toAddress();
 
 ```javascript
 // Build a 2-of-3 address from public keys
-var p2shAddress = new bitcore.Address([publicKey1, publicKey2, publicKey3], 2);
+var p2shAddress = new ducatuscore.Address([publicKey1, publicKey2, publicKey3], 2);
 ```
 
 ### Request a Payment
@@ -81,7 +81,7 @@ var paymentInfo = {
   address: '1DNtTk4PUCGAdiNETAzQFWZiy2fCHtGnPx',
   amount: 120000 //satoshis
 };
-var uri = new bitcore.URI(paymentInfo).toString();
+var uri = new ducatuscore.URI(paymentInfo).toString();
 ```
 
 ### Create a Transaction

@@ -2,8 +2,8 @@
 
 var expect = require('chai').expect;
 var should = require('chai').should();
-var bitcore = require('..');
-var base32 = bitcore.util.base32;
+var ducatuscore = require('..');
+var base32 = ducatuscore.util.base32;
 
 describe('base32', function() {
 

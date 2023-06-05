@@ -1,72 +1,72 @@
 'use strict';
 
-var bitcore = module.exports;
+var ducatuscore = module.exports;
 
 // module information
-bitcore.version = 'v' + require('./package.json').version;
-bitcore.versionGuard = function(version) {
+ducatuscore.version = 'v' + require('./package.json').version;
+ducatuscore.versionGuard = function(version) {
   if (version !== undefined) {
-    var message = 'More than one instance of bitcore-lib-cash found. ' +
-      'Please make sure to require bitcore-lib and check that submodules do' +
-      ' not also include their own bitcore-lib dependency.';
+    var message = 'More than one instance of ducatuscore-lib-cash found. ' +
+      'Please make sure to require ducatuscore-lib and check that submodules do' +
+      ' not also include their own ducatuscore-lib dependency.';
     throw new Error(message);
   }
 };
-bitcore.versionGuard(global._bitcoreCash);
-global._bitcoreCash = bitcore.version;
+ducatuscore.versionGuard(global._ducatuscoreCash);
+global._ducatuscoreCash = ducatuscore.version;
 
 // crypto
-bitcore.crypto = {};
-bitcore.crypto.BN = require('./lib/crypto/bn');
-bitcore.crypto.ECDSA = require('./lib/crypto/ecdsa');
-bitcore.crypto.Schnorr = require('./lib/crypto/schnorr');
-bitcore.crypto.Hash = require('./lib/crypto/hash');
-bitcore.crypto.Random = require('./lib/crypto/random');
-bitcore.crypto.Point = require('./lib/crypto/point');
-bitcore.crypto.Signature = require('./lib/crypto/signature');
+ducatuscore.crypto = {};
+ducatuscore.crypto.BN = require('./lib/crypto/bn');
+ducatuscore.crypto.ECDSA = require('./lib/crypto/ecdsa');
+ducatuscore.crypto.Schnorr = require('./lib/crypto/schnorr');
+ducatuscore.crypto.Hash = require('./lib/crypto/hash');
+ducatuscore.crypto.Random = require('./lib/crypto/random');
+ducatuscore.crypto.Point = require('./lib/crypto/point');
+ducatuscore.crypto.Signature = require('./lib/crypto/signature');
 
 // encoding
-bitcore.encoding = {};
-bitcore.encoding.Base58 = require('./lib/encoding/base58');
-bitcore.encoding.Base58Check = require('./lib/encoding/base58check');
-bitcore.encoding.BufferReader = require('./lib/encoding/bufferreader');
-bitcore.encoding.BufferWriter = require('./lib/encoding/bufferwriter');
-bitcore.encoding.Varint = require('./lib/encoding/varint');
+ducatuscore.encoding = {};
+ducatuscore.encoding.Base58 = require('./lib/encoding/base58');
+ducatuscore.encoding.Base58Check = require('./lib/encoding/base58check');
+ducatuscore.encoding.BufferReader = require('./lib/encoding/bufferreader');
+ducatuscore.encoding.BufferWriter = require('./lib/encoding/bufferwriter');
+ducatuscore.encoding.Varint = require('./lib/encoding/varint');
 
 // utilities
-bitcore.util = {};
-bitcore.util.buffer = require('./lib/util/buffer');
-bitcore.util.js = require('./lib/util/js');
-bitcore.util.preconditions = require('./lib/util/preconditions');
-bitcore.util.base32 = require('./lib/util/base32');
-bitcore.util.convertBits = require('./lib/util/convertBits');
+ducatuscore.util = {};
+ducatuscore.util.buffer = require('./lib/util/buffer');
+ducatuscore.util.js = require('./lib/util/js');
+ducatuscore.util.preconditions = require('./lib/util/preconditions');
+ducatuscore.util.base32 = require('./lib/util/base32');
+ducatuscore.util.convertBits = require('./lib/util/convertBits');
 
 // errors thrown by the library
-bitcore.errors = require('./lib/errors');
+ducatuscore.errors = require('./lib/errors');
 
 // main bitcoin library
-bitcore.Address = require('./lib/address');
-bitcore.Block = require('./lib/block');
-bitcore.MerkleBlock = require('./lib/block/merkleblock');
-bitcore.BlockHeader = require('./lib/block/blockheader');
-bitcore.HDPrivateKey = require('./lib/hdprivatekey.js');
-bitcore.HDPublicKey = require('./lib/hdpublickey.js');
-bitcore.Networks = require('./lib/networks');
-bitcore.Opcode = require('./lib/opcode');
-bitcore.PrivateKey = require('./lib/privatekey');
-bitcore.PublicKey = require('./lib/publickey');
-bitcore.Script = require('./lib/script');
-bitcore.Transaction = require('./lib/transaction');
-bitcore.URI = require('./lib/uri');
-bitcore.Unit = require('./lib/unit');
+ducatuscore.Address = require('./lib/address');
+ducatuscore.Block = require('./lib/block');
+ducatuscore.MerkleBlock = require('./lib/block/merkleblock');
+ducatuscore.BlockHeader = require('./lib/block/blockheader');
+ducatuscore.HDPrivateKey = require('./lib/hdprivatekey.js');
+ducatuscore.HDPublicKey = require('./lib/hdpublickey.js');
+ducatuscore.Networks = require('./lib/networks');
+ducatuscore.Opcode = require('./lib/opcode');
+ducatuscore.PrivateKey = require('./lib/privatekey');
+ducatuscore.PublicKey = require('./lib/publickey');
+ducatuscore.Script = require('./lib/script');
+ducatuscore.Transaction = require('./lib/transaction');
+ducatuscore.URI = require('./lib/uri');
+ducatuscore.Unit = require('./lib/unit');
 
 // dependencies, subject to change
-bitcore.deps = {};
-bitcore.deps.bnjs = require('bn.js');
-bitcore.deps.bs58 = require('bs58');
-bitcore.deps.Buffer = Buffer;
-bitcore.deps.elliptic = require('elliptic');
-bitcore.deps._ = require('lodash');
+ducatuscore.deps = {};
+ducatuscore.deps.bnjs = require('bn.js');
+ducatuscore.deps.bs58 = require('bs58');
+ducatuscore.deps.Buffer = Buffer;
+ducatuscore.deps.elliptic = require('elliptic');
+ducatuscore.deps._ = require('lodash');
 
 // Internal usage, exposed for testing/advanced tweaking
-bitcore.Transaction.sighash = require('./lib/transaction/sighash');
+ducatuscore.Transaction.sighash = require('./lib/transaction/sighash');

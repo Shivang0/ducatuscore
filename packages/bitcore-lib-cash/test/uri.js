@@ -1,11 +1,11 @@
 'use strict';
 
 var chai = chai || require('chai');
-var bitcore = require('..');
+var ducatuscore = require('..');
 var expect = chai.expect;
-var Networks = bitcore.Networks;
+var Networks = ducatuscore.Networks;
 var should = chai.should();
-var URI = bitcore.URI;
+var URI = ducatuscore.URI;
 
 describe('URI', function() {
   /* jshint maxstatements: 30 */
@@ -283,7 +283,7 @@ describe('URI', function() {
 
     it('parses address', function() {
       uri = new URI('bitcoincash:qzruaav37d2hwqfaqvsktwdqjly502s06qfra0qe9m');
-      uri.address.should.be.instanceof(bitcore.Address);
+      uri.address.should.be.instanceof(ducatuscore.Address);
       uri.network.should.equal(Networks.livenet);
     });
 
@@ -296,7 +296,7 @@ describe('URI', function() {
 
     it('stores unknown parameters as "extras"', function() {
       uri = new URI('bitcoincash:qzruaav37d2hwqfaqvsktwdqjly502s06qfra0qe9m?amount=1.2&other=param');
-      uri.address.should.be.instanceof(bitcore.Address);
+      uri.address.should.be.instanceof(ducatuscore.Address);
       expect(uri.other).to.be.equal(undefined);
       uri.extras.other.should.equal('param');
     });
@@ -310,7 +310,7 @@ describe('URI', function() {
     it('has no false negative when checking supported features', function() {
       uri = new URI('bitcoincash:qzruaav37d2hwqfaqvsktwdqjly502s06qfra0qe9m?amount=1.2&other=param&' +
                     'req-required=param', ['req-required']);
-      uri.address.should.be.instanceof(bitcore.Address);
+      uri.address.should.be.instanceof(ducatuscore.Address);
       uri.amount.should.equal(120000000);
       uri.extras.other.should.equal('param');
       uri.extras['req-required'].should.equal('param');
@@ -323,7 +323,7 @@ describe('URI', function() {
 
     it('parses a testnet address', function() {
       uri = new URI('bchtest:qqkj609un9sl896yezxj0j5hxagk7h7pnyyzaz887x');
-      uri.address.should.be.instanceof(bitcore.Address);
+      uri.address.should.be.instanceof(ducatuscore.Address);
       uri.network.should.equal(Networks.testnet);
     });
 
@@ -336,7 +336,7 @@ describe('URI', function() {
 
     it('stores unknown parameters as "extras"', function() {
       uri = new URI('bchtest:qqkj609un9sl896yezxj0j5hxagk7h7pnyyzaz887x?amount=1.2&other=param');
-      uri.address.should.be.instanceof(bitcore.Address);
+      uri.address.should.be.instanceof(ducatuscore.Address);
       expect(uri.other).to.be.equal(undefined);
       uri.extras.other.should.equal('param');
     });
@@ -350,7 +350,7 @@ describe('URI', function() {
     it('has no false negative when checking supported features', function() {
       uri = new URI('bchtest:qqkj609un9sl896yezxj0j5hxagk7h7pnyyzaz887x?amount=1.2&other=param&' +
                     'req-required=param', ['req-required']);
-      uri.address.should.be.instanceof(bitcore.Address);
+      uri.address.should.be.instanceof(ducatuscore.Address);
       uri.amount.should.equal(120000000);
       uri.extras.other.should.equal('param');
       uri.extras['req-required'].should.equal('param');
@@ -365,13 +365,13 @@ describe('URI', function() {
     uri = new URI({
       address: 'qzruaav37d2hwqfaqvsktwdqjly502s06qfra0qe9m'
     });
-    uri.address.should.be.instanceof(bitcore.Address);
+    uri.address.should.be.instanceof(ducatuscore.Address);
     uri.network.should.equal(Networks.livenet);
 
     uri = new URI({
       address: 'qqkj609un9sl896yezxj0j5hxagk7h7pnyyzaz887x'
     });
-    uri.address.should.be.instanceof(bitcore.Address);
+    uri.address.should.be.instanceof(ducatuscore.Address);
     uri.network.should.equal(Networks.testnet);
 
     uri = new URI({
@@ -379,7 +379,7 @@ describe('URI', function() {
       amount: 120000000,
       other: 'param'
     });
-    uri.address.should.be.instanceof(bitcore.Address);
+    uri.address.should.be.instanceof(ducatuscore.Address);
     uri.amount.should.equal(120000000);
     expect(uri.other).to.be.equal(undefined);
     uri.extras.other.should.equal('param');
@@ -397,7 +397,7 @@ describe('URI', function() {
       other: 'param',
       'req-required': 'param'
     }, ['req-required']);
-    uri.address.should.be.instanceof(bitcore.Address);
+    uri.address.should.be.instanceof(ducatuscore.Address);
     uri.amount.should.equal(120000000);
     uri.extras.other.should.equal('param');
     uri.extras['req-required'].should.equal('param');

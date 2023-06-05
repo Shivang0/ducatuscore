@@ -1,9 +1,9 @@
 'use strict';
 
 var should = require('chai').should();
-var bitcore = require('../..');
+var ducatuscore = require('../..');
 var buffer = require('buffer');
-var Base58 = bitcore.encoding.Base58;
+var Base58 = ducatuscore.encoding.Base58;
 
 describe('Base58', function() {
   var buf = Buffer.from([0, 1, 2, 3, 253, 254, 255]);

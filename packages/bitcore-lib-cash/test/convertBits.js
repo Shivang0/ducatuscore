@@ -2,8 +2,8 @@
 
 var expect = require('chai').expect;
 var should = require('chai').should();
-var bitcore = require('..');
-var convertBits = bitcore.util.convertBits;
+var ducatuscore = require('..');
+var convertBits = ducatuscore.util.convertBits;
 
 describe('convertBits', function() {
 

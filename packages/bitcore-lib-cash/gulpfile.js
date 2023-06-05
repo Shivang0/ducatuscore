@@ -1,3 +1,3 @@
 
-var startGulp = require('bitcore-build');
+var startGulp = require('@ducatus/ducatuscore-build');
 Object.assign(exports, startGulp('lib'))

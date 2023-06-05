@@ -1,9 +1,9 @@
 'use strict';
 
-const bitcore = require('../..');
-const Hash = bitcore.crypto.Hash;
-const Script = bitcore.Script;
-const PublicKey = bitcore.PublicKey;
+const ducatuscore = require('../..');
+const Hash = ducatuscore.crypto.Hash;
+const Script = ducatuscore.Script;
+const PublicKey = ducatuscore.PublicKey;
 
 const Escrow = require('../../lib/script/escrow');
 
