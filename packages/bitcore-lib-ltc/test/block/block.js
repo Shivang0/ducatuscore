@@ -1,15 +1,15 @@
 'use strict';
 
-var bitcore = require('../..');
+var ducatuscore = require('../..');
 var BN = require('../../lib/crypto/bn');
-var BufferReader = bitcore.encoding.BufferReader;
-var BufferWriter = bitcore.encoding.BufferWriter;
-var BlockHeader = bitcore.BlockHeader;
-var Block = bitcore.Block;
+var BufferReader = ducatuscore.encoding.BufferReader;
+var BufferWriter = ducatuscore.encoding.BufferWriter;
+var BlockHeader = ducatuscore.BlockHeader;
+var Block = ducatuscore.Block;
 var chai = require('chai');
 var fs = require('fs');
 var should = chai.should();
-var Transaction = bitcore.Transaction;
+var Transaction = ducatuscore.Transaction;
 
 // https://bitpay.com/insight/#/LTC/testnet/block/07aef8bc5826099057d229b05e1628934bcececb6491d996d2f599ac763d1302
 var dataRawBlockBuffer = fs.readFileSync('test/data/blk1856255-testnet.dat');

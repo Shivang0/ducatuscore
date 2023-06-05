@@ -1,11 +1,11 @@
 'use strict';
 
-const bitcore = require('../..');
+const ducatuscore = require('../..');
 const BN = require('../../lib/crypto/bn');
-const BufferReader = bitcore.encoding.BufferReader;
-const BufferWriter = bitcore.encoding.BufferWriter;
+const BufferReader = ducatuscore.encoding.BufferReader;
+const BufferWriter = ducatuscore.encoding.BufferWriter;
 
-const BlockHeader = bitcore.BlockHeader;
+const BlockHeader = ducatuscore.BlockHeader;
 const fs = require('fs');
 const should = require('chai').should();
 
@@ -40,7 +40,7 @@ describe('BlockHeader', function() {
     bits: bits,
     nonce: nonce
   });
-  var b = bitcore.Block.fromString(blockHex);
+  var b = ducatuscore.Block.fromString(blockHex);
   var bhhex = b.header.toString();
   var bhbuf = Buffer.from(bhhex, 'hex');
 

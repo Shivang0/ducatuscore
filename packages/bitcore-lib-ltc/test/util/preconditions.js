@@ -2,10 +2,10 @@
 
 var should = require('chai').should();
 
-var bitcore = require('../..');
-var errors = bitcore.errors;
-var $ = bitcore.util.preconditions;
-var PrivateKey = bitcore.PrivateKey;
+var ducatuscore = require('../..');
+var errors = ducatuscore.errors;
+var $ = ducatuscore.util.preconditions;
+var PrivateKey = ducatuscore.PrivateKey;
 
 describe('preconditions', function() {
 

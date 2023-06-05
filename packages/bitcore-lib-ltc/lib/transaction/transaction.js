@@ -207,7 +207,7 @@ Transaction.prototype.invalidSatoshis = function() {
  * broadcast this transaction.
  *
  * @param {Object} opts allows to skip certain tests. {@see Transaction#serialize}
- * @return {bitcore.Error}
+ * @return {ducatuscore.Error}
  */
 Transaction.prototype.getSerializationError = function(opts) {
   opts = opts || {};
@@ -571,7 +571,7 @@ Transaction.prototype._newTransaction = function() {
  * to add an input, for more control, use @{link Transaction#addInput}.
  *
  * Can receive, as output information, the output of bitcoind's `listunspent` command,
- * and a slightly fancier format recognized by bitcore:
+ * and a slightly fancier format recognized by ducatuscore:
  *
  * ```
  * {
@@ -582,8 +582,8 @@ Transaction.prototype._newTransaction = function() {
  *  satoshis: 1020000
  * }
  * ```
- * Where `address` can be either a string or a bitcore Address object. The
- * same is true for `script`, which can be a string or a bitcore Script.
+ * Where `address` can be either a string or a ducatuscore Address object. The
+ * same is true for `script`, which can be a string or a ducatuscore Script.
  *
  * Beware that this resets all the signatures for inputs (in further versions,
  * SIGHASH_SINGLE or SIGHASH_NONE signatures will not be reset).

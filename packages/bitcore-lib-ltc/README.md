@@ -63,7 +63,7 @@ gulp browser
 
 This will generate files named `litecore-lib.js` and `litecore-lib.min.js`.
 
-You can also use our pre-generated files, provided for each release along with a PGP signature by one of the project's maintainers. To get them, checkout a release commit (for example, https://github.com/bitpay/bitcore-lib/commit/e33b6e3ba6a1e5830a079e02d949fce69ea33546 for v0.12.6).
+You can also use our pre-generated files, provided for each release along with a PGP signature by one of the project's maintainers.
 
 To verify signatures, use the following PGP keys:
 - @braydonf: https://pgp.mit.edu/pks/lookup?op=get&search=0x9BBF07CAC07A276D `D909 EFE6 70B5 F6CC 89A3 607A 9BBF 07CA C07A 276D`
@@ -88,10 +88,3 @@ gulp test
 
 You can also run just the Node.js tests with `gulp test:node`, just the browser tests with `gulp test:browser`
 or create a test coverage report (you can open `coverage/lcov-report/index.html` to visualize it) with `gulp coverage`.
-
-## License
-
-Code released under [the MIT license](https://github.com/litecoin-project/litecore-lib/blob/master/LICENSE).
-
-Copyright 2013-2015 BitPay, Inc. Bitcore is a trademark maintained by BitPay, Inc.
-Copyright 2016 The Litecoin Core Developers
