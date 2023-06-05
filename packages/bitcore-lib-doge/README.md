@@ -1,2 +1,2 @@
-Bitcore lib for doge. See bitcore-lib-litecoin for details.
+Ducatuscore lib for doge. See ducactuscore-lib-litecoin for details.
 =======

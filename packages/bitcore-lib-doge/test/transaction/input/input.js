@@ -4,13 +4,13 @@ var should = require('chai').should();
 var expect = require('chai').expect;
 var _ = require('lodash');
 
-var bitcore = require('../../..');
-var errors = bitcore.errors;
-var PrivateKey = bitcore.PrivateKey;
-var Address = bitcore.Address;
-var Script = bitcore.Script;
-var Networks = bitcore.Networks;
-var Input = bitcore.Transaction.Input;
+var ducatuscore = require('../../..');
+var errors = ducatuscore.errors;
+var PrivateKey = ducatuscore.PrivateKey;
+var Address = ducatuscore.Address;
+var Script = ducatuscore.Script;
+var Networks = ducatuscore.Networks;
+var Input = ducatuscore.Transaction.Input;
 
 describe('Transaction.Input', function() {
 

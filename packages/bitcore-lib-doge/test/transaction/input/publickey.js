@@ -1,11 +1,11 @@
 'use strict';
 
 var should = require('chai').should();
-var bitcore = require('../../..');
-const Address = require('../../../../bitcore-lib-ltc/lib/address');
-var Transaction = bitcore.Transaction;
-var PrivateKey = bitcore.PrivateKey;
-var Script = bitcore.Script;
+var ducatuscore = require('../../..');
+const Address = require('../../../../ducatuscore-lib-ltc/lib/address');
+var Transaction = ducatuscore.Transaction;
+var PrivateKey = ducatuscore.PrivateKey;
+var Script = ducatuscore.Script;
 
 describe('PublicKeyInput', function() {
 

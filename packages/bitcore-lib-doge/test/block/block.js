@@ -1,15 +1,15 @@
 'use strict';
 
-var bitcore = require('../..');
+var ducatuscore = require('../..');
 var BN = require('../../lib/crypto/bn');
-var BufferReader = bitcore.encoding.BufferReader;
-var BufferWriter = bitcore.encoding.BufferWriter;
-var BlockHeader = bitcore.BlockHeader;
-var Block = bitcore.Block;
+var BufferReader = ducatuscore.encoding.BufferReader;
+var BufferWriter = ducatuscore.encoding.BufferWriter;
+var BlockHeader = ducatuscore.BlockHeader;
+var Block = ducatuscore.Block;
 var chai = require('chai');
 var fs = require('fs');
 var should = chai.should();
-var Transaction = bitcore.Transaction;
+var Transaction = ducatuscore.Transaction;
 
 // https://blockexplorer.one/doge/testnet/blockHash/35ca96202d12b278e9154b1c807c1497ae0ec0a04502d0d4eb7d1de5f7b5818d
 var dataRawBlockBuffer = fs.readFileSync('test/data/blk3086559-testnet.dat');

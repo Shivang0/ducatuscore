@@ -2,8 +2,8 @@
 
 var _ = require('lodash');
 var expect = require('chai').expect;
-var bitcore = require('..');
-var HDPrivateKey = bitcore.HDPrivateKey;
+var ducatuscore = require('..');
+var HDPrivateKey = ducatuscore.HDPrivateKey;
 
 var xprivkey = 'xprv9s21ZrQH143K2n4rV4AtAJFptEmd1tNMKCcSyQBCSuN5eq1dCUhcv6KQJS49joRxu8NNdFxy8yuwTtzCPNYUZvVGC7EPRm2st2cvE7oyTbB';
 
@@ -11,7 +11,7 @@ describe('HDKey cache', function() {
   this.timeout(10000);
 
   /* jshint unused: false */
-  var cache = bitcore._HDKeyCache;
+  var cache = ducatuscore._HDKeyCache;
   var master = new HDPrivateKey(xprivkey);
 
   beforeEach(function() {
