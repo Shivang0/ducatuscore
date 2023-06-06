@@ -1,6 +1,6 @@
 'use strict';
 
-var bitcore = require('bitcore-lib-cash');
+var ducatuscore = require('@ducatus/ducatuscore-lib-cash');
 var Inventory = require('../inventory');
 
 function builder(options) {
@@ -12,13 +12,13 @@ function builder(options) {
   }
 
   if (!options.network) {
-    options.network = bitcore.Networks.defaultNetwork;
+    options.network = ducatuscore.Networks.defaultNetwork;
   }
 
-  options.Block = options.Block || bitcore.Block;
-  options.BlockHeader = options.BlockHeader || bitcore.BlockHeader;
-  options.Transaction = options.Transaction || bitcore.Transaction;
-  options.MerkleBlock = options.MerkleBlock || bitcore.MerkleBlock;
+  options.Block = options.Block || ducatuscore.Block;
+  options.BlockHeader = options.BlockHeader || ducatuscore.BlockHeader;
+  options.Transaction = options.Transaction || ducatuscore.Transaction;
+  options.MerkleBlock = options.MerkleBlock || ducatuscore.MerkleBlock;
   options.protocolVersion = options.protocolVersion || 70001;
 
   var exported = {

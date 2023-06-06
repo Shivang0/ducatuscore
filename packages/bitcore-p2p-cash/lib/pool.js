@@ -2,10 +2,10 @@
 
 var dns = require('dns');
 var EventEmitter = require('events').EventEmitter;
-var bitcore = require('bitcore-lib-cash');
-var sha256 = bitcore.crypto.Hash.sha256;
+var ducatuscore = require('@ducatus/ducatuscore-lib-cash');
+var sha256 = ducatuscore.crypto.Hash.sha256;
 var Peer = require('./peer');
-var Networks = bitcore.Networks;
+var Networks = ducatuscore.Networks;
 var util = require('util');
 var net = require('net');
 

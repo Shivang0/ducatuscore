@@ -2,8 +2,8 @@
 
 var Message = require('../message');
 var inherits = require('util').inherits;
-var bitcore = require('bitcore-lib-cash');
-var BufferUtil = bitcore.util.buffer;
+var ducatuscore = require('@ducatus/ducatuscore-lib-cash');
+var BufferUtil = ducatuscore.util.buffer;
 
 /**
  * A message in response to a version message.

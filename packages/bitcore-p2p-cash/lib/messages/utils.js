@@ -1,9 +1,9 @@
 'use strict';
 
-var bitcore = require('bitcore-lib-cash');
-var BufferUtil = bitcore.util.buffer;
-var $ = bitcore.util.preconditions;
-var _ = bitcore.deps._;
+var ducatuscore = require('@ducatus/ducatuscore-lib-cash');
+var BufferUtil = ducatuscore.util.buffer;
+var $ = ducatuscore.util.preconditions;
+var _ = ducatuscore.deps._;
 var utils;
 
 module.exports = utils = {
@@ -21,7 +21,7 @@ module.exports = utils = {
     }
   },
   getNonce: function getNonce() {
-    return bitcore.crypto.Random.getRandomBuffer(8);
+    return ducatuscore.crypto.Random.getRandomBuffer(8);
   },
   writeIP: function writeIP(ip, bw) {
     var words = ip.v6.split(':').map(function(s) {

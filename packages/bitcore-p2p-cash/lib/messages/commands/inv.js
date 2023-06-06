@@ -2,11 +2,11 @@
 
 var Message = require('../message');
 var inherits = require('util').inherits;
-var bitcore = require('bitcore-lib-cash');
+var ducatuscore = require('@ducatus/ducatuscore-lib-cash');
 var utils = require('../utils');
-var BufferReader = bitcore.encoding.BufferReader;
-var BufferWriter = bitcore.encoding.BufferWriter;
-var _ = bitcore.deps._;
+var BufferReader = ducatuscore.encoding.BufferReader;
+var BufferWriter = ducatuscore.encoding.BufferWriter;
+var _ = ducatuscore.deps._;
 
 /**
  * @param {Array=} arg - An array of inventory
