@@ -1,5 +1,5 @@
-const BitcoreLibLtc = require('bitcore-lib-ltc');
-import { AbstractBitcoreLibDeriver } from '../btc';
-export class LtcDeriver extends AbstractBitcoreLibDeriver {
-  bitcoreLib = BitcoreLibLtc;
+const DucatuscoreLibLtc = require('@ducatus/ducatuscore-lib-ltc');
+import { AbstractDucatuscoreLibDeriver } from '../btc';
+export class LtcDeriver extends AbstractDucatuscoreLibDeriver {
+  ducatuscoreLib = DucatuscoreLibLtc;
 }

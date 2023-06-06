@@ -1,5 +1,5 @@
 import utils from 'web3-utils';
-const BitcoreLib = require('bitcore-lib');
+const DucatuscoreLib = require('@ducatus/ducatuscore-lib');
 import { EthDeriver } from '../eth';
 
 export class MaticDeriver extends EthDeriver {}

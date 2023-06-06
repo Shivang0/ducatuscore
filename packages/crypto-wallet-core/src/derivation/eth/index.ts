@@ -2,7 +2,7 @@ import { IDeriver } from '..';
 
 import utils from 'web3-utils';
 
-const BitcoreLib = require('bitcore-lib');
+const DucatuscoreLib = require('@ducatus/ducatuscore-lib');
 
 export class EthDeriver implements IDeriver {
   padTo32(msg) {
@@ -16,7 +16,7 @@ export class EthDeriver implements IDeriver {
   }
 
   deriveAddress(network, xpubkey, addressIndex, isChange) {
-    const xpub = new BitcoreLib.HDPublicKey(xpubkey, network);
+    const xpub = new DucatuscoreLib.HDPublicKey(xpubkey, network);
     const changeNum = isChange ? 1 : 0;
     const path = `m/${changeNum}/${addressIndex}`;
     const derived = xpub.derive(path).publicKey;
@@ -24,7 +24,7 @@ export class EthDeriver implements IDeriver {
   }
 
   addressFromPublicKeyBuffer(pubKey: Buffer): string {
-    const ecPoint = new BitcoreLib.PublicKey.fromBuffer(pubKey).point;
+    const ecPoint = new DucatuscoreLib.PublicKey.fromBuffer(pubKey).point;
     const x = ecPoint.getX().toBuffer({ size: 32 });
     const y = ecPoint.getY().toBuffer({ size: 32 });
     const paddedBuffer = Buffer.concat([x, y]);
@@ -33,7 +33,7 @@ export class EthDeriver implements IDeriver {
   }
 
   derivePrivateKey(network, xPriv, addressIndex, isChange) {
-    const xpriv = new BitcoreLib.HDPrivateKey(xPriv, network);
+    const xpriv = new DucatuscoreLib.HDPrivateKey(xPriv, network);
     const changeNum = isChange ? 1 : 0;
     const path = `m/${changeNum}/${addressIndex}`;
     const derivedPrivKey = xpriv.derive(path);

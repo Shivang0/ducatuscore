@@ -1,11 +1,11 @@
 import rippleKeypairs from 'ripple-keypairs';
 import { IDeriver } from '..';
 
-import BitcoreLib from 'bitcore-lib';
+import DucatuscoreLib from '@ducatus/ducatuscore-lib';
 
 export class XrpDeriver implements IDeriver {
   deriveAddress(network, xpubkey, addressIndex, isChange) {
-    const xpub = new BitcoreLib.HDPublicKey(xpubkey, network);
+    const xpub = new DucatuscoreLib.HDPublicKey(xpubkey, network);
     const changeNum = isChange ? 1 : 0;
     const path = `m/${changeNum}/${addressIndex}`;
     const pubKey = xpub.derive(path).toObject().publicKey;
@@ -14,7 +14,7 @@ export class XrpDeriver implements IDeriver {
   }
 
   derivePrivateKey(network, xPriv, addressIndex, isChange) {
-    const xpriv = new BitcoreLib.HDPrivateKey(xPriv, network);
+    const xpriv = new DucatuscoreLib.HDPrivateKey(xPriv, network);
     const changeNum = isChange ? 1 : 0;
     const path = `m/${changeNum}/${addressIndex}`;
     const derivedXPriv = xpriv.derive(path);
