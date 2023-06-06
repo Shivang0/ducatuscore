@@ -1,11 +1,11 @@
 'use strict';
 
-var bitcore = require('bitcore-lib-doge');
-var $ = bitcore.util.preconditions;
-var BufferUtil = bitcore.util.buffer;
-var BufferReader = bitcore.encoding.BufferReader;
-var BufferWriter = bitcore.encoding.BufferWriter;
-var _ = bitcore.deps._;
+var ducatuscore = require('@ducatus/ducatuscore-lib-doge');
+var $ = ducatuscore.util.preconditions;
+var BufferUtil = ducatuscore.util.buffer;
+var BufferReader = ducatuscore.encoding.BufferReader;
+var BufferWriter = ducatuscore.encoding.BufferWriter;
+var _ = ducatuscore.deps._;
 
 /**
  * A constructor for inventory related Bitcoin messages such as

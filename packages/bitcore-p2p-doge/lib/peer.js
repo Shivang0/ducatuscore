@@ -4,10 +4,10 @@ var Buffers = require('./buffers');
 var EventEmitter = require('events').EventEmitter;
 var Net = require('net');
 var Socks5Client = require('socks5-client');
-var bitcore = require('bitcore-lib-doge');
-var Networks = bitcore.Networks;
+var ducatuscore = require('@ducatus/ducatuscore-lib-doge');
+var Networks = ducatuscore.Networks;
 var Messages = require('./messages');
-var $ = bitcore.util.preconditions;
+var $ = ducatuscore.util.preconditions;
 var util = require('util');
 
 /**
@@ -65,8 +65,8 @@ function Peer(options) {
 
   this.messages = options.messages || new Messages({
     network: this.network,
-    Block: bitcore.Block,
-    Transaction: bitcore.Transaction
+    Block: ducatuscore.Block,
+    Transaction: ducatuscore.Transaction
   });
 
   this.dataBuffer = new Buffers();

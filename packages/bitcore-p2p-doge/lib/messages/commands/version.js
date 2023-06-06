@@ -2,10 +2,10 @@
 
 var Message = require('../message');
 var inherits = require('util').inherits;
-var bitcore = require('bitcore-lib-doge');
-var BufferWriter = bitcore.encoding.BufferWriter;
-var BufferReader = bitcore.encoding.BufferReader;
-var BN = bitcore.crypto.BN;
+var ducatuscore = require('@ducatus/ducatuscore-lib-doge');
+var BufferWriter = ducatuscore.encoding.BufferWriter;
+var BufferReader = ducatuscore.encoding.BufferReader;
+var BN = ducatuscore.crypto.BN;
 
 var utils = require('../utils');
 var packageInfo = require('../../../package.json');
@@ -37,7 +37,7 @@ function VersionMessage(arg, options) {
   this.nonce = arg.nonce || utils.getNonce();
   this.services = arg.services || new BN(1, 10);
   this.timestamp = arg.timestamp || new Date();
-  this.subversion = arg.subversion || '/bitcore:' + packageInfo.version + '/';
+  this.subversion = arg.subversion || '/ducatuscore:' + packageInfo.version + '/';
   this.startHeight = arg.startHeight || 0;
   this.relay = arg.relay === false ? false : true;
 }

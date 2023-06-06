@@ -2,12 +2,12 @@
 
 var Message = require('../message');
 var inherits = require('util').inherits;
-var bitcore = require('bitcore-lib-doge');
+var ducatuscore = require('@ducatus/ducatuscore-lib-doge');
 var utils = require('../utils');
-var BufferReader = bitcore.encoding.BufferReader;
-var BufferWriter = bitcore.encoding.BufferWriter;
-var _ = bitcore.deps._;
-var $ = bitcore.util.preconditions;
+var BufferReader = ducatuscore.encoding.BufferReader;
+var BufferWriter = ducatuscore.encoding.BufferWriter;
+var _ = ducatuscore.deps._;
+var $ = ducatuscore.util.preconditions;
 
 /**
  * Sent in response to a `getheaders` message. It contains information about

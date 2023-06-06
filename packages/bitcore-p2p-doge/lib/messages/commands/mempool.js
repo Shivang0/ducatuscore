@@ -2,8 +2,8 @@
 
 var Message = require('../message');
 var inherits = require('util').inherits;
-var bitcore = require('bitcore-lib-doge');
-var BufferUtil = bitcore.util.buffer;
+var ducatuscore = require('@ducatus/ducatuscore-lib-doge');
+var BufferUtil = ducatuscore.util.buffer;
 
 /**
  * The mempool message sends a request to a node asking for information about

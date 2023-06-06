@@ -2,8 +2,8 @@
 
 var Message = require('../message');
 var inherits = require('util').inherits;
-var bitcore = require('bitcore-lib-doge');
-var BufferUtil = bitcore.util.buffer;
+var ducatuscore = require('@ducatus/ducatuscore-lib-doge');
+var BufferUtil = ducatuscore.util.buffer;
 
 /**
  * Request peer to clear data for a bloom filter

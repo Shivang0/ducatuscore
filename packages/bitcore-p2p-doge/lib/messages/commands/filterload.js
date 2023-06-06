@@ -2,11 +2,11 @@
 
 var Message = require('../message');
 var inherits = require('util').inherits;
-var bitcore = require('bitcore-lib-doge');
-var BufferUtil = bitcore.util.buffer;
+var ducatuscore = require('@ducatus/ducatuscore-lib-doge');
+var BufferUtil = ducatuscore.util.buffer;
 var BloomFilter = require('../../bloomfilter');
-var $ = bitcore.util.preconditions;
-var _ = bitcore.deps._;
+var $ = ducatuscore.util.preconditions;
+var _ = ducatuscore.deps._;
 
 /**
  * Request peer to send inv messages based on a bloom filter

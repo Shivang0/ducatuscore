@@ -2,10 +2,10 @@
 
 var Message = require('../message');
 var inherits = require('util').inherits;
-var bitcore = require('bitcore-lib-doge');
-var BufferUtil = bitcore.util.buffer;
-var $ = bitcore.util.preconditions;
-var _ = bitcore.deps._;
+var ducatuscore = require('@ducatus/ducatuscore-lib-doge');
+var BufferUtil = ducatuscore.util.buffer;
+var $ = ducatuscore.util.preconditions;
+var _ = ducatuscore.deps._;
 
 /**
  * Contains information about a MerkleBlock

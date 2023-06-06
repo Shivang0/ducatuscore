@@ -6,8 +6,8 @@ The quickest way to get connected is to run the following:
 
 ```javascript
 
-var Pool = require('bitcore-p2p-doge').Pool;
-var Networks = require('bitcore-lib-doge').Networks;
+var Pool = require('@ducatus/ducatuscore-p2p-doge').Pool;
+var Networks = require('@ducatus/ducatuscore-lib-doge').Networks;
 
 var pool = new Pool({network: Networks.livenet});
 

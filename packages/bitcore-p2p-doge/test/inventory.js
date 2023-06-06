@@ -4,12 +4,12 @@
 
 var should = require('chai').should();
 
-var bitcore = require('bitcore-lib-doge');
+var ducatuscore = require('@ducatus/ducatuscore-lib-doge');
 var P2P = require('../');
 var Inventory = P2P.Inventory;
-var BufferUtils = bitcore.util.buffer;
-var BufferWriter = bitcore.encoding.BufferWriter;
-var BufferReader = bitcore.encoding.BufferReader;
+var BufferUtils = ducatuscore.util.buffer;
+var BufferWriter = ducatuscore.encoding.BufferWriter;
+var BufferReader = ducatuscore.encoding.BufferReader;
 
 describe('Inventory', function() {
 
