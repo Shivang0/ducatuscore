@@ -1,6 +1,6 @@
 'use strict';
 
-import * as CWC from 'crypto-wallet-core';
+import * as CWC from '@ducatus/ducatuscore-crypto';
 import { EventEmitter } from 'events';
 import _ from 'lodash';
 import sjcl from 'sjcl';
@@ -17,17 +17,17 @@ var $ = require('preconditions').singleton();
 var util = require('util');
 var async = require('async');
 var events = require('events');
-var Bitcore = CWC.BitcoreLib;
-var Bitcore_ = {
-  btc: CWC.BitcoreLib,
-  bch: CWC.BitcoreLibCash,
-  eth: CWC.BitcoreLib,
-  matic: CWC.BitcoreLib,
-  xrp: CWC.BitcoreLib,
-  doge: CWC.BitcoreLibDoge,
-  ltc: CWC.BitcoreLibLtc
+var Ducatuscore = CWC.DucatuscoreLib;
+var Ducatuscore_ = {
+  btc: CWC.DucatuscoreLib,
+  bch: CWC.DucatuscoreLibCash,
+  eth: CWC.DucatuscoreLib,
+  matic: CWC.DucatuscoreLib,
+  xrp: CWC.DucatuscoreLib,
+  doge: CWC.DucatuscoreLibDoge,
+  ltc: CWC.DucatuscoreLibLtc
 };
-var Mnemonic = require('bitcore-mnemonic');
+var Mnemonic = require('@ducatus/ducatuscore-mnemonic');
 var url = require('url');
 var querystring = require('querystring');
 
@@ -68,11 +68,11 @@ export class API extends EventEmitter {
   static sjcl = sjcl;
   static errors = Errors;
 
-  // Expose bitcore
-  static Bitcore = CWC.BitcoreLib;
-  static BitcoreCash = CWC.BitcoreLibCash;
-  static BitcoreDoge = CWC.BitcoreLibDoge;
-  static BitcoreLtc = CWC.BitcoreLibLtc;
+  // Expose ducatuscore
+  static Ducatuscore = CWC.DucatuscoreLib;
+  static DucatuscoreCash = CWC.DucatuscoreLibCash;
+  static DucatuscoreDoge = CWC.DucatuscoreLibDoge;
+  static DucatuscoreLtc = CWC.DucatuscoreLibLtc;
 
   constructor(opts?) {
     super();
@@ -305,7 +305,7 @@ export class API extends EventEmitter {
       )
         return false;
 
-      var xpub = Bitcore.HDPublicKey.fromString(
+      var xpub = Ducatuscore.HDPublicKey.fromString(
         'xpub6BosfCnifzxcFwrSzQiqu2DBVTshkCXacvNsWGYJVVhhawA7d4R5WSWGFNbi8Aw6ZRc1brxMyWMzG3DSSSSoekkudhUd9yLb6qx39T9nMdj'
       );
       return testMessageSigning(xpriv, xpub);
@@ -324,10 +324,10 @@ export class API extends EventEmitter {
         xpriv = m.toHDPrivateKey(opts.passphrase, c.network);
       }
       if (!xpriv) {
-        xpriv = new Bitcore.HDPrivateKey(c.xPrivKey);
+        xpriv = new Ducatuscore.HDPrivateKey(c.xPrivKey);
       }
       xpriv = xpriv.deriveChild(c.getBaseAddressDerivationPath());
-      var xpub = new Bitcore.HDPublicKey(c.xPubKey);
+      var xpub = new Ducatuscore.HDPublicKey(c.xPubKey);
 
       return testMessageSigning(xpriv, xpub);
     };
@@ -428,13 +428,13 @@ export class API extends EventEmitter {
       return cb(new Error('Could not decrypt BIP38 private key' + ex));
     }
 
-    var privateKey = new Bitcore.PrivateKey(privateKeyWif);
+    var privateKey = new Ducatuscore.PrivateKey(privateKeyWif);
     var address = privateKey.publicKey.toAddress().toString();
     var addrBuff = Buffer.from(address, 'ascii');
-    var actualChecksum = Bitcore.crypto.Hash.sha256sha256(addrBuff)
+    var actualChecksum = Ducatuscore.crypto.Hash.sha256sha256(addrBuff)
       .toString('hex')
       .substring(0, 8);
-    var expectedChecksum = Bitcore.encoding.Base58Check.decode(
+    var expectedChecksum = Ducatuscore.encoding.Base58Check.decode(
       encryptedPrivateKeyBase58
     )
       .toString('hex')
@@ -451,7 +451,7 @@ export class API extends EventEmitter {
       cb = chain;
       chain = 'btc';
     }
-    var B = Bitcore_[chain];
+    var B = Ducatuscore_[chain];
 
     var privateKey = new B.PrivateKey(privateKey);
     var address = privateKey.publicKey.toAddress().toString(true);
@@ -479,7 +479,7 @@ export class API extends EventEmitter {
     if (Constants.EVM_CHAINS.includes(chain))
       return cb(new Error('EVM based chains not supported for this action'));
 
-    var B = Bitcore_[chain];
+    var B = Ducatuscore_[chain];
     var privateKey = B.PrivateKey(privateKey);
     var address = privateKey.publicKey.toAddress().toString(true);
 
@@ -603,10 +603,10 @@ export class API extends EventEmitter {
 
   static _buildSecret(walletId, walletPrivKey, coin, network) {
     if (_.isString(walletPrivKey)) {
-      walletPrivKey = Bitcore.PrivateKey.fromString(walletPrivKey);
+      walletPrivKey = Ducatuscore.PrivateKey.fromString(walletPrivKey);
     }
     var widHex = Buffer.from(walletId.replace(/-/g, ''), 'hex');
-    var widBase58 = new Bitcore.encoding.Base58(widHex).toString();
+    var widBase58 = new Ducatuscore.encoding.Base58(widHex).toString();
     return (
       _.padEnd(widBase58, 22, '0') +
       walletPrivKey.toWIF() +
@@ -632,10 +632,10 @@ export class API extends EventEmitter {
     try {
       var secretSplit = split(secret, [22, 74, 75]);
       var widBase58 = secretSplit[0].replace(/0/g, '');
-      var widHex = Bitcore.encoding.Base58.decode(widBase58).toString('hex');
+      var widHex = Ducatuscore.encoding.Base58.decode(widBase58).toString('hex');
       var walletId = split(widHex, [8, 12, 16, 20]).join('-');
 
-      var walletPrivKey = Bitcore.PrivateKey.fromString(secretSplit[1]);
+      var walletPrivKey = Ducatuscore.PrivateKey.fromString(secretSplit[1]);
       var networkChar = secretSplit[2];
       var coin = secretSplit[3] || 'btc';
 
@@ -668,35 +668,35 @@ export class API extends EventEmitter {
     });
   }
 
-  _addSignaturesToBitcoreTxBitcoin(txp, t, signatures, xpub) {
+  _addSignaturesToDucatuscoreTxBitcoin(txp, t, signatures, xpub) {
     $.checkState(
       txp.coin,
-      'Failed state: txp.coin undefined at _addSignaturesToBitcoreTxBitcoin'
+      'Failed state: txp.coin undefined at _addSignaturesToDucatuscoreTxBitcoin'
     );
     $.checkState(
       txp.signingMethod,
-      'Failed state: txp.signingMethod undefined at _addSignaturesToBitcoreTxBitcoin'
+      'Failed state: txp.signingMethod undefined at _addSignaturesToDucatuscoreTxBitcoin'
     );
 
     var chain = txp.chain?.toLowerCase() || Utils.getChain(txp.coin); // getChain -> backwards compatibility
-    const bitcore = Bitcore_[chain];
+    const ducatuscore = Ducatuscore_[chain];
     if (signatures.length != txp.inputs.length)
       throw new Error('Number of signatures does not match number of inputs');
 
     let i = 0;
-    const x = new bitcore.HDPublicKey(xpub);
+    const x = new ducatuscore.HDPublicKey(xpub);
 
     _.each(signatures, signatureHex => {
       try {
-        const signature = bitcore.crypto.Signature.fromString(signatureHex);
+        const signature = ducatuscore.crypto.Signature.fromString(signatureHex);
         const pub = x.deriveChild(txp.inputPaths[i]).publicKey;
         const s = {
           inputIndex: i,
           signature,
           sigtype:
             // tslint:disable-next-line:no-bitwise
-            bitcore.crypto.Signature.SIGHASH_ALL |
-            bitcore.crypto.Signature.SIGHASH_FORKID,
+            ducatuscore.crypto.Signature.SIGHASH_ALL |
+            ducatuscore.crypto.Signature.SIGHASH_FORKID,
           publicKey: pub
         };
         t.inputs[i].addSignature(t, s, txp.signingMethod);
@@ -707,7 +707,7 @@ export class API extends EventEmitter {
     if (i != txp.inputs.length) throw new Error('Wrong signatures');
   }
 
-  _addSignaturesToBitcoreTx(txp, t, signatures, xpub) {
+  _addSignaturesToDucatuscoreTx(txp, t, signatures, xpub) {
     const { chain, network } = txp;
     switch (chain.toLowerCase()) {
       case 'xrp':
@@ -723,7 +723,7 @@ export class API extends EventEmitter {
           });
           signedTxs.push(signed);
 
-          // bitcore users id for txid...
+          // ducatuscore users id for txid...
           t.id = CWC.Transactions.getHash({
             tx: signed,
             chain: chain.toUpperCase(),
@@ -734,7 +734,7 @@ export class API extends EventEmitter {
         t.serialize = () => signedTxs;
         break;
       default:
-        return this._addSignaturesToBitcoreTxBitcoin(txp, t, signatures, xpub);
+        return this._addSignaturesToDucatuscoreTxBitcoin(txp, t, signatures, xpub);
     }
   }
 
@@ -746,7 +746,7 @@ export class API extends EventEmitter {
 
     var sigs = this._getCurrentSignatures(txp);
     _.each(sigs, x => {
-      this._addSignaturesToBitcoreTx(txp, t, x.signatures, x.xpub);
+      this._addSignaturesToDucatuscoreTx(txp, t, x.signatures, x.xpub);
     });
   }
 
@@ -927,7 +927,7 @@ export class API extends EventEmitter {
       );
     }
 
-    var walletPrivKey = opts.walletPrivKey || new Bitcore.PrivateKey();
+    var walletPrivKey = opts.walletPrivKey || new Ducatuscore.PrivateKey();
 
     var c = this.credentials;
     c.addWalletPrivateKey(walletPrivKey.toString());
@@ -937,7 +937,7 @@ export class API extends EventEmitter {
       name: encWalletName,
       m,
       n,
-      pubKey: new Bitcore.PrivateKey(walletPrivKey).toPublicKey().toString(),
+      pubKey: new Ducatuscore.PrivateKey(walletPrivKey).toPublicKey().toString(),
       coin,
       network,
       singleAddress: !!opts.singleAddress,
@@ -1072,7 +1072,7 @@ export class API extends EventEmitter {
         }
 
         var c = this.credentials;
-        var walletPrivKey = Bitcore.PrivateKey.fromString(c.walletPrivKey);
+        var walletPrivKey = Ducatuscore.PrivateKey.fromString(c.walletPrivKey);
         var walletId = c.walletId;
         var useNativeSegwit = c.addressType === Constants.SCRIPT_TYPES.P2WPKH;
         var supportBIP44AndP2PKH =
@@ -2318,7 +2318,7 @@ export class API extends EventEmitter {
     );
 
     opts = opts || {};
-    var requestPubKey = new Bitcore.PrivateKey(opts.requestPrivKey)
+    var requestPubKey = new Ducatuscore.PrivateKey(opts.requestPrivKey)
       .toPublicKey()
       .toString();
     var copayerId = this.credentials.copayerId;
@@ -2774,7 +2774,7 @@ export class API extends EventEmitter {
       // Find and merge dup keys.
       let credGroups = _.groupBy(newCrededentials, x => {
         $.checkState(x.xPubKey, 'Failed state: no xPubKey at credentials!');
-        let xpub = new Bitcore.HDPublicKey(x.xPubKey);
+        let xpub = new Ducatuscore.HDPublicKey(x.xPubKey);
         let fingerPrint = xpub.fingerPrint.toString('hex');
         return fingerPrint;
       });

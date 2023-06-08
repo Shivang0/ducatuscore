@@ -6,13 +6,13 @@ const query = require('querystring');
 const url = require('url');
 const Errors = require('./errors');
 const dfltTrustedKeys = require('../util/JsonPaymentProtocolKeys.js');
-const Bitcore = require('crypto-wallet-core').BitcoreLib;
+const Ducatuscore = require('crypto-wallet-core').DucatuscoreLib;
 const _ = require('lodash');
-const sha256 = Bitcore.crypto.Hash.sha256;
-const BN = Bitcore.crypto.BN;
-var Bitcore_ = {
-  btc: Bitcore,
-  bch: require('crypto-wallet-core').BitcoreLibCash
+const sha256 = Ducatuscore.crypto.Hash.sha256;
+const BN = Ducatuscore.crypto.BN;
+var Ducatuscore_ = {
+  btc: Ducatuscore,
+  bch: require('@ducatus/ducatuscore-crypto').DucatuscoreLibCash
 };
 var MAX_FEE_PER_KB = {
   btc: 10000 * 1000, // 10k sat/b
@@ -423,9 +423,9 @@ export class PayProV2 {
     let s_r = BN.fromBuffer(sigbuf.slice(0, 32));
     let s_s = BN.fromBuffer(sigbuf.slice(32));
 
-    let pub = Bitcore.PublicKey.fromString(keyData.publicKey);
-    let sig = new Bitcore.crypto.Signature(s_r, s_s);
-    let valid = Bitcore.crypto.ECDSA.verify(hashbuf, sig, pub);
+    let pub = Ducatuscore.PublicKey.fromString(keyData.publicKey);
+    let sig = new Ducatuscore.crypto.Signature(s_r, s_s);
+    let valid = Ducatuscore.crypto.ECDSA.verify(hashbuf, sig, pub);
 
     if (!valid) {
       throw new Error('Response signature invalid');

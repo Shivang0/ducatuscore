@@ -1,13 +1,13 @@
 'use strict';
 
 import {
-  BitcoreLib,
-  BitcoreLibCash,
-  BitcoreLibDoge,
-  BitcoreLibLtc,
+  DucatuscoreLib,
+  DucatuscoreLibCash,
+  DucatuscoreLibDoge,
+  DucatuscoreLibLtc,
   Deriver,
   Transactions
-} from 'crypto-wallet-core';
+} from '@ducatus/ducatuscore-crypto';
 
 import * as _ from 'lodash';
 import { Constants } from './constants';
@@ -17,19 +17,19 @@ const $ = require('preconditions').singleton();
 const sjcl = require('sjcl');
 const Stringify = require('json-stable-stringify');
 
-const Bitcore = BitcoreLib;
-const Bitcore_ = {
-  btc: Bitcore,
-  bch: BitcoreLibCash,
-  eth: Bitcore,
-  matic: Bitcore,
-  xrp: Bitcore,
-  doge: BitcoreLibDoge,
-  ltc: BitcoreLibLtc
+const Ducatuscore = DucatuscoreLib;
+const Ducatuscore_ = {
+  btc: Ducatuscore,
+  bch: DucatuscoreLibCash,
+  eth: Ducatuscore,
+  matic: Ducatuscore,
+  xrp: Ducatuscore,
+  doge: DucatuscoreLibDoge,
+  ltc: DucatuscoreLibLtc
 };
-const PrivateKey = Bitcore.PrivateKey;
-const PublicKey = Bitcore.PublicKey;
-const crypto = Bitcore.crypto;
+const PrivateKey = Ducatuscore.PrivateKey;
+const PublicKey = Ducatuscore.PublicKey;
+const crypto = Ducatuscore.crypto;
 
 let SJCL = {};
 
@@ -112,7 +112,7 @@ export class Utils {
     $.checkArgument(text);
     var buf = Buffer.from(text);
     var ret = crypto.Hash.sha256sha256(buf);
-    ret = new Bitcore.encoding.BufferReader(ret).readReverse();
+    ret = new Ducatuscore.encoding.BufferReader(ret).readReverse();
     return ret;
   }
 
@@ -144,11 +144,11 @@ export class Utils {
   static privateKeyToAESKey(privKey) {
     $.checkArgument(privKey && _.isString(privKey));
     $.checkArgument(
-      Bitcore.PrivateKey.isValid(privKey),
+      Ducatuscore.PrivateKey.isValid(privKey),
       'The private key received is invalid'
     );
-    var pk = Bitcore.PrivateKey.fromString(privKey);
-    return Bitcore.crypto.Hash.sha256(pk.toBuffer())
+    var pk = Ducatuscore.PrivateKey.fromString(privKey);
+    return Ducatuscore.crypto.Hash.sha256(pk.toBuffer())
       .slice(0, 16)
       .toString('base64');
   }
@@ -189,17 +189,17 @@ export class Utils {
     $.checkArgument(_.includes(_.values(Constants.SCRIPT_TYPES), scriptType));
 
     chain = chain || 'btc';
-    var bitcore = Bitcore_[chain];
+    var ducatuscore = Ducatuscore_[chain];
     var publicKeys = _.map(publicKeyRing, item => {
-      var xpub = new bitcore.HDPublicKey(item.xPubKey);
+      var xpub = new ducatuscore.HDPublicKey(item.xPubKey);
       return xpub.deriveChild(path).publicKey;
     });
 
-    var bitcoreAddress;
+    var ducatuscoreAddress;
     switch (scriptType) {
       case Constants.SCRIPT_TYPES.P2WSH:
         const nestedWitness = false;
-        bitcoreAddress = bitcore.Address.createMultisig(
+        ducatuscoreAddress = ducatuscore.Address.createMultisig(
           publicKeys,
           m,
           network,
@@ -209,18 +209,18 @@ export class Utils {
         break;
       case Constants.SCRIPT_TYPES.P2SH:
         if (escrowInputs) {
-          var xpub = new bitcore.HDPublicKey(publicKeyRing[0].xPubKey);
+          var xpub = new ducatuscore.HDPublicKey(publicKeyRing[0].xPubKey);
           const inputPublicKeys = escrowInputs.map(
             input => xpub.deriveChild(input.path).publicKey
           );
-          bitcoreAddress = bitcore.Address.createEscrow(
+          ducatuscoreAddress = ducatuscore.Address.createEscrow(
             inputPublicKeys,
             publicKeys[0],
             network
           );
           publicKeys = [publicKeys[0], ...inputPublicKeys];
         } else {
-          bitcoreAddress = bitcore.Address.createMultisig(
+          ducatuscoreAddress = ducatuscore.Address.createMultisig(
             publicKeys,
             m,
             network
@@ -228,7 +228,7 @@ export class Utils {
         }
         break;
       case Constants.SCRIPT_TYPES.P2WPKH:
-        bitcoreAddress = bitcore.Address.fromPublicKey(
+        ducatuscoreAddress = ducatuscore.Address.fromPublicKey(
           publicKeys[0],
           network,
           'witnesspubkeyhash'
@@ -240,14 +240,14 @@ export class Utils {
           'publicKeys array undefined'
         );
         if (Constants.UTXO_CHAINS.includes(chain)) {
-          bitcoreAddress = bitcore.Address.fromPublicKey(
+          ducatuscoreAddress = ducatuscore.Address.fromPublicKey(
             publicKeys[0],
             network
           );
         } else {
           const { addressIndex, isChange } = this.parseDerivationPath(path);
           const [{ xPubKey }] = publicKeyRing;
-          bitcoreAddress = Deriver.deriveAddress(
+          ducatuscoreAddress = Deriver.deriveAddress(
             chain.toUpperCase(),
             network,
             xPubKey,
@@ -259,14 +259,14 @@ export class Utils {
     }
 
     return {
-      address: bitcoreAddress.toString(true),
+      address: ducatuscoreAddress.toString(true),
       path,
       publicKeys: _.invokeMap(publicKeys, 'toString')
     };
   }
 
   // note that we use the string version of xpub,
-  // serialized by BITCORE BTC.
+  // serialized by DUCATUSCORE BTC.
   // testnet xpub starts with t.
   // livenet xpub starts with x.
   // no matter WHICH chain
@@ -283,14 +283,14 @@ export class Utils {
   }
 
   static signRequestPubKey(requestPubKey, xPrivKey) {
-    var priv = new Bitcore.HDPrivateKey(xPrivKey).deriveChild(
+    var priv = new Ducatuscore.HDPrivateKey(xPrivKey).deriveChild(
       Constants.PATHS.REQUEST_KEY_AUTH
     ).privateKey;
     return this.signMessage(requestPubKey, priv);
   }
 
   static verifyRequestPubKey(requestPubKey, signature, xPubKey) {
-    var pub = new Bitcore.HDPublicKey(xPubKey).deriveChild(
+    var pub = new Ducatuscore.HDPublicKey(xPubKey).deriveChild(
       Constants.PATHS.REQUEST_KEY_AUTH
     ).publicKey;
     return this.verifyMessage(requestPubKey, signature, pub.toString());
@@ -349,9 +349,9 @@ export class Utils {
     var chain = txp.chain?.toLowerCase() || Utils.getChain(txp.coin); // getChain -> backwards compatibility
 
     if (Constants.UTXO_CHAINS.includes(chain)) {
-      var bitcore = Bitcore_[chain];
+      var ducatuscore = Ducatuscore_[chain];
 
-      var t = new bitcore.Transaction();
+      var t = new ducatuscore.Transaction();
 
       if (txp.version >= 4) {
         t.setVersion(2);
@@ -387,7 +387,7 @@ export class Utils {
           );
           if (o.script) {
             t.addOutput(
-              new bitcore.Transaction.Output({
+              new ducatuscore.Transaction.Output({
                 script: o.script,
                 satoshis: o.amount
               })
@@ -427,7 +427,7 @@ export class Utils {
         });
       }
 
-      // Validate inputs vs outputs independently of Bitcore
+      // Validate inputs vs outputs independently of Ducatuscore
       var totalInputs = _.reduce(
         txp.inputs,
         (memo, i) => {

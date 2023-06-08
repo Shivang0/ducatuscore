@@ -1,6 +1,6 @@
 const host = process.env.DB_HOST || 'localhost';
 const port = process.env.DB_PORT || '27017';
-const dbname = 'bwc_test';
+const dbname = 'dwc_test';
 var config = {
   mongoDb: {
     uri: `mongodb://${host}:${port}/${dbname}`,

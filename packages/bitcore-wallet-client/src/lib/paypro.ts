@@ -1,14 +1,14 @@
-import { BitcoreLib, BitcoreLibCash } from 'crypto-wallet-core';
+import { DucatuscoreLib, DucatuscoreLibCash } from '@ducatus/ducatuscore-crypto';
 
 var $ = require('preconditions').singleton();
 const URL = require('url');
 const _ = require('lodash');
 const superagent = require('superagent');
-const Bitcore = BitcoreLib;
+const Ducatuscore = DucatuscoreLib;
 const Errors = require('./errors');
-var Bitcore_ = {
-  btc: Bitcore,
-  bch: BitcoreLibCash
+var Ducatuscore_ = {
+  btc: Ducatuscore,
+  bch: DucatuscoreLibCash
 };
 // const request = require('request');
 const JSON_PAYMENT_REQUEST_CONTENT_TYPE = 'application/payment-request';
@@ -109,15 +109,15 @@ export class PayPro {
     sigbuf.copy(s_r, 0, 0);
     sigbuf.copy(s_s, 0, 32);
 
-    let s_rBN = Bitcore.crypto.BN.fromBuffer(s_r);
-    let s_sBN = Bitcore.crypto.BN.fromBuffer(s_s);
+    let s_rBN = Ducatuscore.crypto.BN.fromBuffer(s_r);
+    let s_sBN = Ducatuscore.crypto.BN.fromBuffer(s_s);
 
-    let pub = Bitcore.PublicKey.fromString(keyData.publicKey);
+    let pub = Ducatuscore.PublicKey.fromString(keyData.publicKey);
 
-    let sig = new Bitcore.crypto.Signature();
+    let sig = new Ducatuscore.crypto.Signature();
     sig.set({ r: s_rBN, s: s_sBN });
 
-    let valid = Bitcore.crypto.ECDSA.verify(hashbuf, sig, pub);
+    let valid = Ducatuscore.crypto.ECDSA.verify(hashbuf, sig, pub);
 
     if (!valid) {
       return callback(new Error('Response signature invalid'));
@@ -175,7 +175,7 @@ export class PayPro {
 
       // Step 1: Check digest from header
       let digest = res.headers.digest.toString().split('=')[1];
-      let hash = Bitcore.crypto.Hash.sha256(Buffer.from(body, 'utf8')).toString(
+      let hash = Ducatuscore.crypto.Hash.sha256(Buffer.from(body, 'utf8')).toString(
         'hex'
       );
 
@@ -213,7 +213,7 @@ export class PayPro {
     opts.trustedKeys = opts.trustedKeys || dfltTrustedKeys;
 
     var coin = opts.coin || 'btc';
-    var bitcore = Bitcore_[coin];
+    var ducatuscore = Ducatuscore_[coin];
 
     var COIN = coin.toUpperCase();
     opts.headers = opts.headers || {
@@ -261,7 +261,7 @@ export class PayPro {
       ret.amount = data.outputs[0].amount;
 
       try {
-        ret.toAddress = new bitcore.Address(data.outputs[0].address).toString(
+        ret.toAddress = new ducatuscore.Address(data.outputs[0].address).toString(
           true
         );
       } catch (e) {

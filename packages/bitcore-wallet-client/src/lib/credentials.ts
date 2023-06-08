@@ -1,12 +1,12 @@
 'use strict';
 
-import { BitcoreLib } from 'crypto-wallet-core';
+import { DucatuscoreLib } from '@ducatus/ducatuscore-crypto';
 
 import { Constants, Utils } from './common';
 const $ = require('preconditions').singleton();
 const _ = require('lodash');
 
-const Bitcore = BitcoreLib;
+const Ducatuscore = DucatuscoreLib;
 const sjcl = require('sjcl');
 
 export class Credentials {
@@ -120,15 +120,15 @@ export class Credentials {
     }
     x.requestPrivKey = opts.requestPrivKey;
 
-    const priv = Bitcore.PrivateKey(x.requestPrivKey);
+    const priv = Ducatuscore.PrivateKey(x.requestPrivKey);
     x.requestPubKey = priv.toPublicKey().toString();
 
     const prefix = 'personalKey';
-    const entropySource = Bitcore.crypto.Hash.sha256(priv.toBuffer()).toString(
+    const entropySource = Ducatuscore.crypto.Hash.sha256(priv.toBuffer()).toString(
       'hex'
     );
     const b = Buffer.from(entropySource, 'hex');
-    const b2 = Bitcore.crypto.Hash.sha256hmac(b, Buffer.from(prefix));
+    const b2 = Ducatuscore.crypto.Hash.sha256hmac(b, Buffer.from(prefix));
     x.personalEncryptingKey = b2.slice(0, 16).toString('base64');
     x.copayerId = Utils.xPubToCopayerId(x.chain, x.xPubKey);
     x.publicKeyRing = [

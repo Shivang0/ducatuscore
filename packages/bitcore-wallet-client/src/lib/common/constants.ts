@@ -1,5 +1,5 @@
 'use strict';
-import * as CWC from 'crypto-wallet-core';
+import * as CWC from '@ducatus/ducatuscore-crypto';
 
 export const Constants = {
   SCRIPT_TYPES: {
@@ -22,7 +22,7 @@ export const Constants = {
   },
   BIP45_SHARED_INDEX: 0x80000000 - 1,
 
-  BITPAY_SUPPORTED_COINS: [
+  DUCATUS_SUPPORTED_COINS: [
     'btc',
     'bch',
     'eth',
@@ -42,7 +42,7 @@ export const Constants = {
     'usdt'
   ],
 
-  BITPAY_SUPPORTED_ETH_ERC20: [
+  DUCATUS_SUPPORTED_ETH_ERC20: [
     'matic',
     'usdc',
     'pax',

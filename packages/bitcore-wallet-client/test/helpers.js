@@ -13,12 +13,12 @@ var request = require('supertest');
 var mongodb = require('mongodb');
 var config = require('./test-config');
 
-var CWC = require('crypto-wallet-core');
+var CWC = require('@ducatus/ducatuscore-crypto');
 
-var Bitcore = CWC.BitcoreLib;
-var Bitcore_ = {
-  btc: Bitcore,
-  bch: CWC.BitcoreLibCash
+var Ducatuscore = CWC.DucatuscoreLib;
+var Ducatuscore_ = {
+  btc: Ducatuscore,
+  bch: CWC.DucatuscoreLibCash
 };
 
 var { Constants } = require('../ts_build/lib/common');
@@ -75,17 +75,17 @@ const helpers = {
             switch (scriptType) {
                 case Constants.SCRIPT_TYPES.P2WSH:
                 case Constants.SCRIPT_TYPES.P2SH:
-                    scriptPubKey = new Bitcore.Script.buildMultisigOut(address.publicKeys, requiredSignatures).toScriptHashOut();
+                    scriptPubKey = new Ducatuscore.Script.buildMultisigOut(address.publicKeys, requiredSignatures).toScriptHashOut();
                     break;
                 case Constants.SCRIPT_TYPES.P2WPKH:
                 case Constants.SCRIPT_TYPES.P2PKH:
-                    scriptPubKey = new Bitcore.Script.buildPublicKeyHashOut(address.address);
+                    scriptPubKey = new Ducatuscore.Script.buildPublicKeyHashOut(address.address);
                     break;
             }
             should.exist(scriptPubKey);
 
             var obj = {
-                txid: new Bitcore.crypto.Hash.sha256(Buffer.alloc(i)).toString('hex'),
+                txid: new Ducatuscore.crypto.Hash.sha256(Buffer.alloc(i)).toString('hex'),
                 vout: 100,
                 satoshis: helpers.toSatoshi(amount),
                 scriptPubKey: scriptPubKey.toBuffer().toString('hex'),
@@ -255,7 +255,7 @@ const blockchainExplorerMock = {
         return cb(null, _.cloneDeep(selected));
     },
     setUtxo: (address, amount, m, confirmations) => {
-        var B = Bitcore_[address.coin];
+        var B = Ducatuscore_[address.coin];
         var scriptPubKey;
         switch (address.type) {
             case Constants.SCRIPT_TYPES.P2SH:
@@ -271,7 +271,7 @@ const blockchainExplorerMock = {
         }
         should.exist(scriptPubKey);
         blockchainExplorerMock.utxos.push({
-            txid: new Bitcore.crypto.Hash.sha256(Buffer.alloc(Math.random() * 100000)).toString('hex'),
+            txid: new Ducatuscore.crypto.Hash.sha256(Buffer.alloc(Math.random() * 100000)).toString('hex'),
             outputIndex: 0,
             amount: amount,
             satoshis: amount * 1e8,
@@ -291,7 +291,7 @@ const blockchainExplorerMock = {
 
         let hash;
         try {
-            let tx = new Bitcore.Transaction(raw);
+            let tx = new Ducatuscore.Transaction(raw);
             if (_.isEmpty(tx.outputs)) {
                 throw 'no bitcoin';
             }

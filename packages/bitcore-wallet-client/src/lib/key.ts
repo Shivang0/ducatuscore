@@ -2,18 +2,18 @@
 
 var $ = require('preconditions').singleton();
 import {
-  BitcoreLib,
-  BitcoreLibCash,
+  DucatuscoreLib,
+  DucatuscoreLibCash,
   Deriver,
   Transactions
-} from 'crypto-wallet-core';
+} from '@ducatus/ducatuscore-crypto';
 import * as _ from 'lodash';
 import 'source-map-support/register';
 import { Constants, Utils } from './common';
 import { Credentials } from './credentials';
 
-var Bitcore = BitcoreLib;
-var Mnemonic = require('bitcore-mnemonic');
+var Ducatuscore = DucatuscoreLib;
+var Mnemonic = require('@ducatus/ducatuscore-mnemonic');
 var sjcl = require('sjcl');
 var log = require('./log');
 const async = require('async');
@@ -119,7 +119,7 @@ export class Key {
 
         let xpriv;
         try {
-          xpriv = new Bitcore.HDPrivateKey(x);
+          xpriv = new Ducatuscore.HDPrivateKey(x);
         } catch (e) {
           throw new Error('Invalid argument');
         }
@@ -292,7 +292,7 @@ export class Key {
 
         // update fingerPrint if not set.
         if (!this.fingerPrint) {
-          let xpriv = new Bitcore.HDPrivateKey(keys.xPrivKey);
+          let xpriv = new Ducatuscore.HDPrivateKey(keys.xPrivKey);
           this.fingerPrint = xpriv.fingerPrint.toString('hex');
           fingerPrintUpdated = true;
         }
@@ -349,7 +349,7 @@ export class Key {
 
   derive = function (password, path) {
     $.checkArgument(path, 'no path at derive()');
-    var xPrivKey = new Bitcore.HDPrivateKey(
+    var xPrivKey = new Ducatuscore.HDPrivateKey(
       this.get(password).xPrivKey,
       NETWORK
     );
@@ -446,7 +446,7 @@ export class Key {
       delete x.xprivkey;
       delete x.checksum;
       x.privateKey = _.padStart(x.privateKey, 64, '0');
-      xPrivKey = new Bitcore.HDPrivateKey(x);
+      xPrivKey = new Ducatuscore.HDPrivateKey(x);
     }
 
     return Credentials.fromDerivedKey({
@@ -474,7 +474,7 @@ export class Key {
     opts = opts || {};
     $.shouldBeString(opts.path);
 
-    var requestPrivKey = new Bitcore.PrivateKey(opts.requestPrivKey || null);
+    var requestPrivKey = new Ducatuscore.PrivateKey(opts.requestPrivKey || null);
     var requestPubKey = requestPrivKey.toPublicKey().toString();
 
     var xPriv = this.derive(password, opts.path);
@@ -496,7 +496,7 @@ export class Key {
     var derived: any = {};
 
     var derived = this.derive(password, rootPath);
-    var xpriv = new Bitcore.HDPrivateKey(derived);
+    var xpriv = new Ducatuscore.HDPrivateKey(derived);
 
     var t = Utils.buildTx(txp);
 

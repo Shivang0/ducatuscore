@@ -1,5 +1,5 @@
 /**
- * The official client library for bitcore-wallet-service.
+ * The official client library for ducatuscore-wallet-service.
  * @module Client
  */
 

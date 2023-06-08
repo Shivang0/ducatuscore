@@ -2,10 +2,10 @@ import * as _ from 'lodash';
 import { Constants, Utils } from './common';
 var $ = require('preconditions').singleton();
 
-import { BitcoreLib, BitcoreLibCash } from 'crypto-wallet-core';
+import { DucatuscoreLib, DucatuscoreLibCash } from '@ducatus/ducatuscore-crypto';
 
-var Bitcore = BitcoreLib;
-var BCHAddress = BitcoreLibCash.Address;
+var Ducatuscore = DucatuscoreLib;
+var BCHAddress = DucatuscoreLibCash.Address;
 
 var log = require('./log');
 
@@ -55,7 +55,7 @@ export class Verifier {
       credentials.walletPrivKey,
       'Failed state: credentials at <checkCopayers>'
     );
-    var walletPubKey = Bitcore.PrivateKey.fromString(credentials.walletPrivKey)
+    var walletPubKey = Ducatuscore.PrivateKey.fromString(credentials.walletPrivKey)
       .toPublicKey()
       .toString();
 

@@ -1,38 +1,34 @@
-# bitcore-wallet-client
+# ducatuscore-wallet-client
 
-[![NPM Package](https://img.shields.io/npm/v/bitcore-wallet-client.svg?style=flat-square)](https://www.npmjs.org/package/bitcore-wallet-client)
-[![Build Status](https://img.shields.io/travis/bitpay/bitcore-wallet-client.svg?branch=master&style=flat-square)](https://travis-ci.org/bitpay/bitcore-wallet-client)
-[![Coverage Status](https://coveralls.io/repos/bitpay/bitcore-wallet-client/badge.svg)](https://coveralls.io/r/bitpay/bitcore-wallet-client)
-
-The *official* client library for [bitcore-wallet-service](https://github.com/bitpay/bitcore-wallet-service).
+The *official* client library for [ducatuscore-wallet-service](https://google.com).
 
 ## Description
 
-This package communicates with BWS [Bitcore wallet service](https://github.com/bitpay/bitcore-wallet-service) using the REST API. All REST endpoints are wrapped as simple async methods. All relevant responses from BWS are checked independently by the peers, thus the importance of using this library when talking to a third party BWS instance.
+This package communicates with DWS [Ducatuscore wallet service](https://google.com) using the REST API. All REST endpoints are wrapped as simple async methods. All relevant responses from DWS are checked independently by the peers, thus the importance of using this library when talking to a third party DWS instance.
 
-See [Bitcore-wallet] (https://github.com/bitpay/bitcore-wallet) for a simple CLI wallet implementation that relays on BWS and uses bitcore-wallet-client.
+See [Ducatuscore-wallet] (https://google.com) for a simple CLI wallet implementation that relays on DWS and uses ducatuscore-wallet-client.
 
 ## Get Started
 
-You can start using bitcore-wallet-client via [NPM](https://www.npmjs.com/package/bitcore-wallet-client): by running `npm install bitcore-wallet-client` from your console.
+You can start using ducatuscore-wallet-client via [NPM](https://www.npmjs.com/package/@ducatus/ducatuscore-wallet-client): by running `npm install @ducatus/ducatuscore-wallet-client` from your console.
 
 ## Example
 
-Start your own local [Bitcore wallet service](https://github.com/bitpay/bitcore-wallet-service) instance. In this example we assume you have `bitcore-wallet-service` running on your `localhost:3232`.
+Start your own local [Ducatuscore wallet service](https://google.com) instance. In this example we assume you have `ducatuscore-wallet-service` running on your `localhost:3232`.
 
 Then create two files `irene.js` and `tomas.js` with the content below:
 
 ### **irene.js**
 
 ``` javascript
-var Client = require('bitcore-wallet-client');
+var Client = require('@ducatus/ducatuscore-wallet-client');
 
 
 var fs = require('fs');
-var BWS_INSTANCE_URL = 'https://bws.bitpay.com/bws/api'
+var DWS_INSTANCE_URL = 'https://localhost:3232/';
 
 var client = new Client({
-  baseUrl: BWS_INSTANCE_URL,
+  baseUrl: DWS_INSTANCE_URL,
   verbose: false,
 });
 
@@ -51,11 +47,11 @@ client.createWallet("My Wallet", "Irene", 2, 2, {network: 'testnet'}, function(e
 
 ``` javascript
 
-var Client = require('bitcore-wallet-client');
+var Client = require('@ducatus/ducatuscore-wallet-client');
 
 
 var fs = require('fs');
-var BWS_INSTANCE_URL = 'https://bws.bitpay.com/bws/api'
+var DWS_INSTANCE_URL = 'https://localhost:3232';
 
 var secret = process.argv[2];
 if (!secret) {
@@ -65,7 +61,7 @@ if (!secret) {
 }
 
 var client = new Client({
-  baseUrl: BWS_INSTANCE_URL,
+  baseUrl: DWS_INSTANCE_URL,
   verbose: false,
 });
 
@@ -101,10 +97,10 @@ client.joinWallet(secret, "Tomas", {}, function(err, wallet) {
 });
 ```
 
-Install `bitcore-wallet-client` before start:
+Install `@ducatus/ducatuscore-wallet-client` before start:
 
 ```sh
-npm i bitcore-wallet-client
+npm i @ducatus/ducatuscore-wallet-client
 ```
 
 Create a new wallet with the first script:
@@ -128,5 +124,3 @@ Creating first address:
 Return: [...]
 
 ```
-
-Note that the scripts created two files named `irene.dat` and `tomas.dat`. With these files you can get status, generate addresses, create proposals, sign transactions, etc.

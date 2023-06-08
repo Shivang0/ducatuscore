@@ -3,7 +3,7 @@
 var _ = require('lodash');
 var chai = require('chai');
 var should = chai.should();
-var Bitcore = require('crypto-wallet-core').BitcoreLib;
+var Ducatuscore = require('crypto-wallet-core').DucatuscoreLib;
 var { Utils } = require('../ts_build/lib/common');
 
 describe('Utils', () => {
@@ -17,13 +17,13 @@ describe('Utils', () => {
 
   describe('#xPubToCopayerId', () => {
     it('should generate copayerId BTC', () => {
-      var xpub = Bitcore.HDPublicKey.fromString('xpub6BosfCnifzxcFwrSzQiqu2DBVTshkCXacvNsWGYJVVhhawA7d4R5WSWGFNbi8Aw6ZRc1brxMyWMzG3DSSSSoekkudhUd9yLb6qx39T9nMdj');
+      var xpub = Ducatuscore.HDPublicKey.fromString('xpub6BosfCnifzxcFwrSzQiqu2DBVTshkCXacvNsWGYJVVhhawA7d4R5WSWGFNbi8Aw6ZRc1brxMyWMzG3DSSSSoekkudhUd9yLb6qx39T9nMdj');
       var res = Utils.xPubToCopayerId('btc', xpub);
       res.should.equal('8b5ae039f102653a49be29ab1625c2e77a987bcbad60715dea147976386e8fa7');
     });
 
     it('should generate copayerId BCH', () => {
-      var xpub = Bitcore.HDPublicKey.fromString('xpub6BosfCnifzxcFwrSzQiqu2DBVTshkCXacvNsWGYJVVhhawA7d4R5WSWGFNbi8Aw6ZRc1brxMyWMzG3DSSSSoekkudhUd9yLb6qx39T9nMdj');
+      var xpub = Ducatuscore.HDPublicKey.fromString('xpub6BosfCnifzxcFwrSzQiqu2DBVTshkCXacvNsWGYJVVhhawA7d4R5WSWGFNbi8Aw6ZRc1brxMyWMzG3DSSSSoekkudhUd9yLb6qx39T9nMdj');
       var res = Utils.xPubToCopayerId('bch', 'xpub');
       res.should.equal('5ea2f70a79027e385fea0e47df952db5763d7a749679f639a9f1c7235c86de4b');
     });
@@ -311,7 +311,7 @@ describe('Utils', () => {
 
   describe('#privateKeyToAESKey', () => {
     it('should be ok', () => {
-      var privKey = new Bitcore.PrivateKey('09458c090a69a38368975fb68115df2f4b0ab7d1bc463fc60c67aa1730641d6c').toString();
+      var privKey = new Ducatuscore.PrivateKey('09458c090a69a38368975fb68115df2f4b0ab7d1bc463fc60c67aa1730641d6c').toString();
       Utils.privateKeyToAESKey(privKey).should.be.equal('2HvmUYBSD0gXLea6z0n7EQ==');
     });
     it('should fail if pk has invalid values', () => {
@@ -334,9 +334,9 @@ describe('Utils', () => {
 
   describe('#verifyRequestPubKey', () => {
     it('should generate and check request pub key', () => {
-      var reqPubKey = (new Bitcore.PrivateKey).toPublicKey();
-      var xPrivKey = new Bitcore.HDPrivateKey();
-      var xPubKey = new Bitcore.HDPublicKey(xPrivKey);
+      var reqPubKey = (new Ducatuscore.PrivateKey).toPublicKey();
+      var xPrivKey = new Ducatuscore.HDPrivateKey();
+      var xPubKey = new Ducatuscore.HDPublicKey(xPrivKey);
 
 
       var sig = Utils.signRequestPubKey(reqPubKey.toString(), xPrivKey);
@@ -346,12 +346,12 @@ describe('Utils', () => {
 
     it('should fail to check a request pub key with wrong key', () => {
       var reqPubKey = '02c2c1c6e75cfc50235ff4a2eb848385c2871b8c94e285ee82eaced1dcd5dd568e';
-      var xPrivKey = new Bitcore.HDPrivateKey();
-      var xPubKey = new Bitcore.HDPublicKey(xPrivKey);
+      var xPrivKey = new Ducatuscore.HDPrivateKey();
+      var xPubKey = new Ducatuscore.HDPublicKey(xPrivKey);
       var sig = Utils.signRequestPubKey(reqPubKey, xPrivKey);
 
-      var xPrivKey2 = new Bitcore.HDPrivateKey();
-      var xPubKey2 = new Bitcore.HDPublicKey(xPrivKey2);
+      var xPrivKey2 = new Ducatuscore.HDPrivateKey();
+      var xPubKey2 = new Ducatuscore.HDPublicKey(xPrivKey2);
       var valid = Utils.verifyRequestPubKey(reqPubKey, sig, xPubKey2);
       valid.should.be.equal(false);
     });

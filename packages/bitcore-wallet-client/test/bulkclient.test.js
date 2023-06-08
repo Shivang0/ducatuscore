@@ -7,13 +7,13 @@ var sinon = require('sinon');
 var should = chai.should();
 var log = require('../ts_build/lib/log');
 
-var BWS = require('bitcore-wallet-service');
+var DWS = require('@ducatus/ducatuscore-wallet-service');
 
 var Client = require('../ts_build').default;
 var Key = Client.Key;
 
-var ExpressApp = BWS.ExpressApp;
-var Storage = BWS.Storage;
+var ExpressApp = DWS.ExpressApp;
+var Storage = DWS.Storage;
 
 var { helpers, blockchainExplorerMock } = require('./helpers');
 
