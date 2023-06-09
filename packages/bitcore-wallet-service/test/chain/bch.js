@@ -5,7 +5,7 @@ var async = require('async');
 var chai = require('chai');
 var mongodb = require('mongodb');
 var should = chai.should();
-const { BitcoreLibCash } = require ('crypto-wallet-core');
+const { DucatuscoreLibCash } = require ('@ducatus/ducatuscore-crypto');
 const { ChainService } = require('../../ts_build/lib/chain');
 const { BchChain } = require('../../ts_build/lib/chain/bch');
 const { TxProposal } = require('../../ts_build/lib/model/txproposal');
@@ -29,11 +29,11 @@ describe('Chain BCH', function() {
         address: fromAddress,
         txId: 'a477af6b2667c29670467e4e0728b685ee07b240235771862318e29ddbe58458',
         outputIndex: 0,
-        script: BitcoreLibCash.Script.buildPublicKeyHashOut(fromAddress).toString(),
+        script: DucatuscoreLibCash.Script.buildPublicKeyHashOut(fromAddress).toString(),
         satoshis: 1e8,
       };
 
-      const privKey = new BitcoreLibCash.PrivateKey();
+      const privKey = new DucatuscoreLibCash.PrivateKey();
 
     });
     it('1  input p2pkh,1 output p2pkh: Margin should be 10%  ', function() {
@@ -44,7 +44,7 @@ describe('Chain BCH', function() {
       const estimatedLength = bch.getEstimatedSize(x);
 
       // Create a similar TX.
-      let tx = new BitcoreLibCash.Transaction();
+      let tx = new DucatuscoreLibCash.Transaction();
       tx.from(simpleUtxoWith1BTC)
         .to([{address: toAddress, satoshis: 1e8-7000}])
         .sign(privateKey);

@@ -3,7 +3,7 @@
 const  _ = require('lodash');
 const chai = require('chai');
 const should = chai.should();
-const { BitcoreLibDoge } = require ('crypto-wallet-core');
+const { DucatuscoreLibDoge } = require ('@ducatus/ducatuscore-crypto');
 const { ChainService } = require('../../ts_build/lib/chain');
 const { DogeChain } = require('../../ts_build/lib/chain/doge');
 const { TxProposal } = require('../../ts_build/lib/model/txproposal');
@@ -12,27 +12,27 @@ const { Common } = require('../../ts_build/lib/common');
 const Constants = Common.Constants;
 
 describe('Chain DOGE', () => {
-  describe('#getBitcoreTx', () => {
+  describe('#getDucatuscoreTx', () => {
     it('should create a valid bitcore TX', () => {
       const txp = TxProposal.fromObj(aTXP());
-      const t = ChainService.getBitcoreTx(txp);
+      const t = ChainService.getDucatuscoreTx(txp);
       should.exist(t);
     });
     it('should order outputs as specified by outputOrder', () => {
       const txp = TxProposal.fromObj(aTXP());
 
       txp.outputOrder = [0, 1, 2];
-      const t = ChainService.getBitcoreTx(txp);
+      const t = ChainService.getDucatuscoreTx(txp);
       t.getChangeOutput().should.deep.equal(t.outputs[2]);
 
       txp.outputOrder = [2, 0, 1];
-      const t2 = ChainService.getBitcoreTx(txp);
+      const t2 = ChainService.getDucatuscoreTx(txp);
       t2.getChangeOutput().should.deep.equal(t2.outputs[0]);
     });
 
     it('should create a valid signed bitcore TX', () => {
       const txp = TxProposal.fromObj(signedTxp);
-      const t = ChainService.getBitcoreTx(txp);
+      const t = ChainService.getDucatuscoreTx(txp);
       should.exist(t);
 
       // should serialized
@@ -42,7 +42,7 @@ describe('Chain DOGE', () => {
 
     it('should create a valid unsigned bitcore TX', () => {
       const txp = TxProposal.fromObj(signedTxp);
-      const t = ChainService.getBitcoreTx(txp, { signed: false } );
+      const t = ChainService.getDucatuscoreTx(txp, { signed: false } );
       should.exist(t);
 
       // should serialized
@@ -66,11 +66,11 @@ describe('Chain DOGE', () => {
         address: fromAddress,
         txId: '0820f0d4aafe9f142d18c6400ed3d58af5f0834b4b05ae41b3adbef61d6b7e1b',
         outputIndex: 0,
-        script: BitcoreLibDoge.Script.buildPublicKeyHashOut(fromAddress).toString(),
+        script: DucatuscoreLibDoge.Script.buildPublicKeyHashOut(fromAddress).toString(),
         satoshis: 1e9,
       };
 
-      const privKey = new BitcoreLibDoge.PrivateKey();
+      const privKey = new DucatuscoreLibDoge.PrivateKey();
     });
 
     it('1 input p2pkh,1 output p2pkh: Margin should be 10%', () => {
@@ -81,7 +81,7 @@ describe('Chain DOGE', () => {
       const estimatedLength = doge.getEstimatedSize(x);
 
       // Create a similar TX.
-      let tx = new BitcoreLibDoge.Transaction();
+      let tx = new DucatuscoreLibDoge.Transaction();
       tx.from(simpleUtxo)
         .to([{ address: toAddress, satoshis: 1e9 - 1e8 }])
         .sign(privateKey);
@@ -92,12 +92,12 @@ describe('Chain DOGE', () => {
       ((Math.abs(actualLength-estimatedLength))/actualLength).should.not.be.above(0.05);
     });
 
-    const p2shPrivateKey1 = BitcoreLibDoge.PrivateKey.fromWIF('QQu6YLUqhPdHSGDyPWk1nB3225NTpMg9HE6eecFmE4169dTjtxjX');
+    const p2shPrivateKey1 = DucatuscoreLibDoge.PrivateKey.fromWIF('QQu6YLUqhPdHSGDyPWk1nB3225NTpMg9HE6eecFmE4169dTjtxjX');
     const p2shPublicKey1 = p2shPrivateKey1.toPublicKey();
-    const p2shPrivateKey2 = BitcoreLibDoge.PrivateKey.fromWIF('QQrWAEuSPk8TZF9rakoHGNiKmmhzshSEYkRp2J59TrhCXTkraP65');
+    const p2shPrivateKey2 = DucatuscoreLibDoge.PrivateKey.fromWIF('QQrWAEuSPk8TZF9rakoHGNiKmmhzshSEYkRp2J59TrhCXTkraP65');
     const p2shPublicKey2 = p2shPrivateKey2.toPublicKey();
 
-    const p2shAddress = BitcoreLibDoge.Address.createMultisig([
+    const p2shAddress = DucatuscoreLibDoge.Address.createMultisig([
       p2shPublicKey1,
       p2shPublicKey2,
     ], 2, 'testnet');
@@ -105,7 +105,7 @@ describe('Chain DOGE', () => {
       address: p2shAddress.toString(),
       txId: '0820f0d4aafe9f142d18c6400ed3d58af5f0834b4b05ae41b3adbef61d6b7e1b',
       outputIndex: 0,
-      script: BitcoreLibDoge.Script(p2shAddress).toString(),
+      script: DucatuscoreLibDoge.Script(p2shAddress).toString(),
       satoshis: 3e9
     };
 
@@ -113,7 +113,7 @@ describe('Chain DOGE', () => {
       let x = TxProposal.fromObj(aTXP());
 
       // Create a similar TX.
-      let tx = new BitcoreLibDoge.Transaction();
+      let tx = new DucatuscoreLibDoge.Transaction();
       tx.from(p2shUtxoWithDOGE, [p2shPublicKey1, p2shPublicKey2], 2)
         .to([{ address: toAddress, satoshis: 1e9 }, { address: toAddress, satoshis: 2e8 }])
         .change(changeAddress)

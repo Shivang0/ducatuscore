@@ -1,9 +1,9 @@
 import { ExpressApp } from './lib/expressapp';
 import { Storage } from './lib/storage';
 
-const BWS = {
+const DWS = {
   ExpressApp,
   Storage
 };
 
-module.exports = BWS;
+module.exports = DWS;

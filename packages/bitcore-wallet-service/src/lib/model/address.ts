@@ -1,4 +1,4 @@
-import { Deriver } from 'crypto-wallet-core';
+import { Deriver } from '@ducatus/ducatuscore-crypto';
 import _ from 'lodash';
 import { ChainService } from '../chain/index';
 import { Common } from '../common';
@@ -42,11 +42,11 @@ export class Address {
   hasActivity: boolean;
   beRegistered: boolean;
 
-  static Bitcore = {
-    btc: require('bitcore-lib'),
-    bch: require('bitcore-lib-cash'),
-    doge: require('bitcore-lib-doge'),
-    ltc: require('bitcore-lib-ltc')
+  static Ducatuscore = {
+    btc: require('@ducatus/ducatuscore-lib'),
+    bch: require('@ducatus/ducatuscore-lib-cash'),
+    doge: require('@ducatus/ducatuscore-lib-doge'),
+    ltc: require('@ducatus/ducatuscore-lib-ltc')
   };
 
   static create(opts) {
@@ -67,8 +67,8 @@ export class Address {
     x.publicKeys = opts.publicKeys;
     x.coin = opts.coin;
     x.chain = opts.chain;
-    x.network = Address.Bitcore[opts.chain]
-      ? Address.Bitcore[opts.chain].Address(x.address).toObject().network
+    x.network = Address.Ducatuscore[opts.chain]
+      ? Address.Ducatuscore[opts.chain].Address(x.address).toObject().network
       : opts.network;
     x.type = opts.type || Constants.SCRIPT_TYPES.P2SH;
     x.hasActivity = undefined;
@@ -100,17 +100,17 @@ export class Address {
     $.checkArgument(Utils.checkValueInCollection(scriptType, Constants.SCRIPT_TYPES));
 
     let publicKeys = _.map(publicKeyRing, item => {
-      const xpub = Address.Bitcore[chain]
-        ? new Address.Bitcore[chain].HDPublicKey(item.xPubKey)
-        : new Address.Bitcore.btc.HDPublicKey(item.xPubKey);
+      const xpub = Address.Ducatuscore[chain]
+        ? new Address.Ducatuscore[chain].HDPublicKey(item.xPubKey)
+        : new Address.Ducatuscore.btc.HDPublicKey(item.xPubKey);
       return xpub.deriveChild(path).publicKey;
     });
 
-    let bitcoreAddress;
+    let ducatuscoreAddress;
     switch (scriptType) {
       case Constants.SCRIPT_TYPES.P2WSH:
         const nestedWitness = false;
-        bitcoreAddress = Address.Bitcore[chain].Address.createMultisig(
+        ducatuscoreAddress = Address.Ducatuscore[chain].Address.createMultisig(
           publicKeys,
           m,
           network,
@@ -120,16 +120,16 @@ export class Address {
         break;
       case Constants.SCRIPT_TYPES.P2SH:
         if (escrowInputs) {
-          var xpub = new Address.Bitcore[chain].HDPublicKey(publicKeyRing[0].xPubKey);
+          var xpub = new Address.Ducatuscore[chain].HDPublicKey(publicKeyRing[0].xPubKey);
           const inputPublicKeys = escrowInputs.map(input => xpub.deriveChild(input.path).publicKey);
-          bitcoreAddress = Address.Bitcore[chain].Address.createEscrow(inputPublicKeys, publicKeys[0], network);
+          ducatuscoreAddress = Address.Ducatuscore[chain].Address.createEscrow(inputPublicKeys, publicKeys[0], network);
           publicKeys = [publicKeys[0], ...inputPublicKeys];
         } else {
-          bitcoreAddress = Address.Bitcore[chain].Address.createMultisig(publicKeys, m, network);
+          ducatuscoreAddress = Address.Ducatuscore[chain].Address.createMultisig(publicKeys, m, network);
         }
         break;
       case Constants.SCRIPT_TYPES.P2WPKH:
-        bitcoreAddress = Address.Bitcore[chain].Address.fromPublicKey(publicKeys[0], network, 'witnesspubkeyhash');
+        ducatuscoreAddress = Address.Ducatuscore[chain].Address.fromPublicKey(publicKeys[0], network, 'witnesspubkeyhash');
         break;
       case Constants.SCRIPT_TYPES.P2PKH:
         $.checkState(
@@ -137,19 +137,19 @@ export class Address {
           'Failed state: publicKeys length < 1 or publicKeys not an array at <_deriveAddress()>'
         );
 
-        if (Address.Bitcore[chain]) {
-          bitcoreAddress = Address.Bitcore[chain].Address.fromPublicKey(publicKeys[0], network);
+        if (Address.Ducatuscore[chain]) {
+          ducatuscoreAddress = Address.Ducatuscore[chain].Address.fromPublicKey(publicKeys[0], network);
         } else {
           const { addressIndex, isChange } = new AddressManager().parseDerivationPath(path);
           const [{ xPubKey }] = publicKeyRing;
-          bitcoreAddress = Deriver.deriveAddress(chain.toUpperCase(), network, xPubKey, addressIndex, isChange);
+          ducatuscoreAddress = Deriver.deriveAddress(chain.toUpperCase(), network, xPubKey, addressIndex, isChange);
         }
         break;
     }
 
-    let addrStr = bitcoreAddress.toString(true);
+    let addrStr = ducatuscoreAddress.toString(true);
     if (noNativeCashAddr && chain == 'bch') {
-      addrStr = bitcoreAddress.toLegacyAddress();
+      addrStr = ducatuscoreAddress.toLegacyAddress();
     }
 
     return {

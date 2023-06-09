@@ -1,4 +1,4 @@
-import { Transactions, Validation } from 'crypto-wallet-core';
+import { Transactions, Validation } from '@ducatus/ducatuscore-crypto';
 import _ from 'lodash';
 import { Common } from '../../common';
 import { ClientError } from '../../errors/clienterror';
@@ -10,13 +10,13 @@ const Errors = require('../../errors/errordefinitions');
 
 export class MaticChain extends EthChain {
   /**
-   * Converts Bitcore Balance Response.
-   * @param {Object} bitcoreBalance - { unconfirmed, confirmed, balance }
+   * Converts Ducatuscore Balance Response.
+   * @param {Object} ducatuscoreBalance - { unconfirmed, confirmed, balance }
    * @param {Number} locked - Sum of txp.amount
    * @returns {Object} balance - Total amount & locked amount.
    */
 
-  getBitcoreTx(txp, opts = { signed: true }) {
+  getDucatuscoreTx(txp, opts = { signed: true }) {
     const { data, outputs, payProUrl, tokenAddress, multisigContractAddress, isTokenSwap } = txp;
     const isERC20 = tokenAddress && !payProUrl && !isTokenSwap;
     const isMATICMULTISIG = multisigContractAddress;
@@ -62,14 +62,14 @@ export class MaticChain extends EthChain {
     if (opts.signed) {
       const sigs = txp.getCurrentSignatures();
       sigs.forEach(x => {
-        this.addSignaturesToBitcoreTx(tx, txp.inputs, txp.inputPaths, x.signatures, x.xpub);
+        this.addSignaturesToDucatuscoreTx(tx, txp.inputs, txp.inputPaths, x.signatures, x.xpub);
       });
     }
 
     return tx;
   }
 
-  addSignaturesToBitcoreTx(tx, inputs, inputPaths, signatures, xpub) {
+  addSignaturesToDucatuscoreTx(tx, inputs, inputPaths, signatures, xpub) {
     if (signatures.length === 0) {
       throw new Error('Signatures Required');
     }
@@ -85,7 +85,7 @@ export class MaticChain extends EthChain {
       });
       signedTxs.push(signed);
 
-      // bitcore users id for txid...
+      // ducatuscore users id for txid...
       tx.id = Transactions.getHash({ tx: signed, chain });
     }
     tx.uncheckedSerialize = () => signedTxs;

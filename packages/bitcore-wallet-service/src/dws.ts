@@ -6,7 +6,7 @@ import logger from './lib/logger';
 import { ExpressApp } from './lib/expressapp';
 
 const config = require('./config');
-const port = process.env.BWS_PORT || config.port || 3232;
+const port = process.env.DWS_PORT || config.port || 3232;
 const cluster = require('cluster');
 const serverModule = config.https ? require('https') : require('http');
 
@@ -48,14 +48,14 @@ function startInstance() {
 
   expressApp.start(config, err => {
     if (err) {
-      logger.error('Could not start BWS instance: %o', err);
+      logger.error('Could not start DWS instance: %o', err);
       return;
     }
 
     server.listen(port);
 
     const instanceInfo = cluster.worker ? ' [Instance:' + cluster.worker.id + ']' : '';
-    logger.info('BWS running ' + instanceInfo);
+    logger.info('DWS running ' + instanceInfo);
     return;
   });
 }

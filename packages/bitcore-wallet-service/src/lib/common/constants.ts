@@ -1,5 +1,5 @@
 'use strict';
-import * as CWC from 'crypto-wallet-core';
+import * as CWC from '@ducatus/ducatuscore-crypto';
 
 export const Constants = {
   CHAINS: {

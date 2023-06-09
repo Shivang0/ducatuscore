@@ -1,5 +1,5 @@
 import * as async from 'async';
-import { BitcoreLibDoge } from 'crypto-wallet-core';
+import { DucatuscoreLibDoge } from '@ducatus/ducatuscore-crypto';
 import _ from 'lodash';
 import { IChain } from '..';
 import logger from '../../logger';
@@ -15,8 +15,8 @@ const Defaults = Common.Defaults;
 const Errors = require('../../errors/errordefinitions');
 
 export class DogeChain extends BtcChain implements IChain {
-  constructor(private bitcoreLibDoge = BitcoreLibDoge) {
-    super(BitcoreLibDoge);
+  constructor(private ducatuscoreLibDoge = DucatuscoreLibDoge) {
+    super(DucatuscoreLibDoge);
   }
 
   selectTxInputs(server, txp, wallet, opts, cb) {
@@ -131,7 +131,7 @@ export class DogeChain extends BtcChain implements IChain {
 
         const txpSize = baseTxpSize + selected.length * sizePerInput;
         fee = Math.round(baseTxpFee + selected.length * feePerInput);
-        fee = Math.max(fee, this.bitcoreLibDoge.Transaction.DUST_AMOUNT);
+        fee = Math.max(fee, this.ducatuscoreLibDoge.Transaction.DUST_AMOUNT);
 
         logger.debug('Tx size: ' + Utils.formatSize(txpSize) + ', Tx fee: ' + Utils.formatAmountInBtc(fee));
 
@@ -174,7 +174,7 @@ export class DogeChain extends BtcChain implements IChain {
           const changeAmount = Math.round(total - txpAmount - fee);
           logger.debug('Tx change: %o', Utils.formatAmountInBtc(changeAmount));
 
-          const dustThreshold = Math.max(Defaults.MIN_OUTPUT_AMOUNT, this.bitcoreLibDoge.Transaction.DUST_AMOUNT);
+          const dustThreshold = Math.max(Defaults.MIN_OUTPUT_AMOUNT, this.ducatuscoreLibDoge.Transaction.DUST_AMOUNT);
           if (changeAmount > 0 && changeAmount <= dustThreshold) {
             logger.debug(
               'Change below dust threshold (' +
@@ -203,7 +203,7 @@ export class DogeChain extends BtcChain implements IChain {
           logger.debug('Using big input: %o', Utils.formatUtxos(input));
           total = input.satoshis;
           fee = Math.round(baseTxpFee + feePerInput);
-          fee = Math.max(fee, this.bitcoreLibDoge.Transaction.DUST_AMOUNT);
+          fee = Math.max(fee, this.ducatuscoreLibDoge.Transaction.DUST_AMOUNT);
           netTotal = total - fee;
           selected = [input];
         }

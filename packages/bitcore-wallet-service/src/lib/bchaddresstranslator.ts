@@ -1,17 +1,17 @@
 import _ from 'lodash';
-const Bitcore_ = {
-  btc: require('bitcore-lib'),
-  bch: require('bitcore-lib-cash')
+const Ducatuscore_ = {
+  btc: require('@ducatus/ducatuscore-lib'),
+  bch: require('@ducatus/ducatuscore-lib-cash')
 };
 
 export class BCHAddressTranslator {
   static getAddressCoin(address) {
     try {
-      new Bitcore_['btc'].Address(address);
+      new Ducatuscore_['btc'].Address(address);
       return 'legacy';
     } catch (e) {
       try {
-        const a = new Bitcore_['bch'].Address(address);
+        const a = new Ducatuscore_['bch'].Address(address);
         if (a.toLegacyAddress() == address) return 'copay';
         return 'cashaddr';
       } catch (e) {
@@ -35,21 +35,21 @@ export class BCHAddressTranslator {
     } else {
       ret = _.filter(
         _.map(addresses, x => {
-          const bitcore = Bitcore_[from == 'legacy' ? 'btc' : 'bch'];
+          const ducatuscore = Ducatuscore_[from == 'legacy' ? 'btc' : 'bch'];
           let orig;
 
           try {
-            orig = new bitcore.Address(x).toObject();
+            orig = new ducatuscore.Address(x).toObject();
           } catch (e) {
             return null;
           }
 
           if (to == 'cashaddr') {
-            return Bitcore_['bch'].Address.fromObject(orig).toCashAddress(true);
+            return Ducatuscore_['bch'].Address.fromObject(orig).toCashAddress(true);
           } else if (to == 'copay') {
-            return Bitcore_['bch'].Address.fromObject(orig).toLegacyAddress();
+            return Ducatuscore_['bch'].Address.fromObject(orig).toLegacyAddress();
           } else if (to == 'legacy') {
-            return Bitcore_['btc'].Address.fromObject(orig).toString();
+            return Ducatuscore_['btc'].Address.fromObject(orig).toString();
           }
         })
       );

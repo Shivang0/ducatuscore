@@ -3,7 +3,7 @@ import * as request from 'request-promise-native';
 import { URL } from 'url';
 import logger from '../../logger';
 
-const bitcoreLib = require('bitcore-lib');
+const ducatuscoreLib = require('@ducatus/ducatuscore-lib');
 const secp256k1 = require('secp256k1');
 export class Client {
   authKey: { bn: { toBuffer: (arg) => Buffer } };
@@ -22,11 +22,11 @@ export class Client {
   sign(params: { method: string; url: string; payload?: any }) {
     const message = this.getMessage(params);
     const privateKey = this.authKey.bn.toBuffer({ size: 32 });
-    const messageHash = bitcoreLib.crypto.Hash.sha256sha256(Buffer.from(message));
+    const messageHash = ducatuscoreLib.crypto.Hash.sha256sha256(Buffer.from(message));
 
-    // TODO: Should use bitcore-lib instead of an external dependency. Will want to add tests.
-    // const privateKey = bitcoreLib.PrivateKey.fromBuffer(this.authKey.bn.toBuffer({ size: 32 }));
-    // const sig = bitcoreLib.crypto.ECDSA.sign(messageHash, privateKey);
+    // TODO: Should use ducatuscore-lib instead of an external dependency. Will want to add tests.
+    // const privateKey = ducatuscoreLib.PrivateKey.fromBuffer(this.authKey.bn.toBuffer({ size: 32 }));
+    // const sig = ducatuscoreLib.crypto.ECDSA.sign(messageHash, privateKey);
     // return Buffer.concat([ sig.r.toBuffer(), sig.s.toBuffer() ]);
     return Buffer.from(secp256k1.ecdsaSign(messageHash, privateKey).signature).toString('hex');
   }

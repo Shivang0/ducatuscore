@@ -1,4 +1,4 @@
-import { Transactions, Validation } from 'crypto-wallet-core';
+import { Transactions, Validation } from '@ducatus/ducatuscore-crypto';
 import _ from 'lodash';
 import { IAddress } from 'src/lib/model/address';
 import { IChain, INotificationData } from '..';
@@ -11,13 +11,13 @@ const Errors = require('../../errors/errordefinitions');
 
 export class XrpChain implements IChain {
   /**
-   * Converts Bitcore Balance Response.
-   * @param {Object} bitcoreBalance - { unconfirmed, confirmed, balance }
+   * Converts Ducatuscore Balance Response.
+   * @param {Object} ducatuscoreBalance - { unconfirmed, confirmed, balance }
    * @param {Number} locked - Sum of txp.amount
    * @returns {Object} balance - Total amount & locked amount.
    */
-  private convertBitcoreBalance(bitcoreBalance, locked) {
-    const { unconfirmed, confirmed, balance } = bitcoreBalance;
+  private convertDucatuscoreBalance(ducatuscoreBalance, locked) {
+    const { unconfirmed, confirmed, balance } = ducatuscoreBalance;
     let activatedLocked = locked;
     // If XRP address has a min balance of 10 XRP, subtract activation fee for true spendable balance.
     if (balance > 0) {
@@ -56,7 +56,7 @@ export class XrpChain implements IChain {
       server.getPendingTxs(opts, (err, txps) => {
         if (err) return cb(err);
         const lockedSum = _.sumBy(txps, 'amount') || 0;
-        const convertedBalance = this.convertBitcoreBalance(balance, lockedSum);
+        const convertedBalance = this.convertDucatuscoreBalance(balance, lockedSum);
         server.storage.fetchAddresses(server.walletId, (err, addresses: IAddress[]) => {
           if (err) return cb(err);
           if (addresses.length > 0) {
@@ -124,7 +124,7 @@ export class XrpChain implements IChain {
     });
   }
 
-  getBitcoreTx(txp, opts = { signed: true }) {
+  getDucatuscoreTx(txp, opts = { signed: true }) {
     const { destinationTag, outputs } = txp;
     const chain = 'XRP';
     const recipients = outputs.map(output => {
@@ -161,7 +161,7 @@ export class XrpChain implements IChain {
     if (opts.signed) {
       const sigs = txp.getCurrentSignatures();
       sigs.forEach(x => {
-        this.addSignaturesToBitcoreTx(tx, txp.inputs, txp.inputPaths, x.signatures, x.xpub);
+        this.addSignaturesToDucatuscoreTx(tx, txp.inputs, txp.inputPaths, x.signatures, x.xpub);
       });
     }
 
@@ -174,7 +174,7 @@ export class XrpChain implements IChain {
 
   checkTx(txp) {
     try {
-      this.getBitcoreTx(txp);
+      this.getDucatuscoreTx(txp);
     } catch (ex) {
       logger.warn('Error building XRP transaction: %o', ex);
       return ex;
@@ -229,7 +229,7 @@ export class XrpChain implements IChain {
     if (network != 'livenet') address.address += ':' + network;
   }
 
-  addSignaturesToBitcoreTx(tx, inputs, inputPaths, signatures, xpub) {
+  addSignaturesToDucatuscoreTx(tx, inputs, inputPaths, signatures, xpub) {
     if (signatures.length === 0) {
       throw new Error('Signatures Required');
     }
@@ -246,7 +246,7 @@ export class XrpChain implements IChain {
       });
       signedTxs.push(signed);
 
-      // bitcore users id for txid...
+      // ducatuscore users id for txid...
       tx.id = Transactions.getHash({ tx: signed, chain, network });
     }
     tx.uncheckedSerialize = () => signedTxs;

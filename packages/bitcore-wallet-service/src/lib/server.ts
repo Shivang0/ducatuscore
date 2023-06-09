@@ -38,16 +38,16 @@ const serverMessages = require('../serverMessages');
 const BCHAddressTranslator = require('./bchaddresstranslator');
 const EmailValidator = require('email-validator');
 
-import { Validation } from 'crypto-wallet-core';
-const Bitcore = require('bitcore-lib');
-const Bitcore_ = {
-  btc: Bitcore,
-  bch: require('bitcore-lib-cash'),
-  eth: Bitcore,
-  matic: Bitcore,
-  xrp: Bitcore,
-  doge: require('bitcore-lib-doge'),
-  ltc: require('bitcore-lib-ltc')
+import { Validation } from '@ducatus/ducatuscore-crypto';
+const Ducatuscore = require('@ducatus/ducatuscore-lib');
+const Ducatuscore_ = {
+  btc: Ducatuscore,
+  bch: require('@ducatus/ducatuscore-lib-cash'),
+  eth: Ducatuscore,
+  matic: Ducatuscore,
+  xrp: Ducatuscore,
+  doge: require('@ducatus/ducatuscore-lib-doge'),
+  ltc: require('@ducatus/ducatuscore-lib-ltc')
 };
 
 const Utils = Common.Utils;
@@ -101,7 +101,7 @@ function boolToNum(x: boolean) {
   return x ? 1 : 0;
 }
 /**
- * Creates an instance of the Bitcore Wallet Service.
+ * Creates an instance of the Ducatuscore Wallet Service.
  * @constructor
  */
 export class WalletService implements IWalletService {
@@ -140,11 +140,11 @@ export class WalletService implements IWalletService {
     this.request = request;
   }
   /**
-   * Gets the current version of BWS
+   * Gets the current version of DWS
    */
   static getServiceVersion() {
     if (!serviceVersion) {
-      serviceVersion = 'bws-' + require('../../package').version;
+      serviceVersion = 'dws-' + require('../../package').version;
     }
 
     return serviceVersion;
@@ -272,9 +272,9 @@ export class WalletService implements IWalletService {
     opts = opts || {};
 
     const version = Utils.parseVersion(opts.clientVersion);
-    if (version && version.agent === 'bwc') {
+    if (version && version.agent === 'dwc') {
       if (version.major === 0 || (version.major === 1 && version.minor < 2)) {
-        throw new ClientError(Errors.codes.UPGRADE_NEEDED, 'BWC clients < 1.2 are no longer supported.');
+        throw new ClientError(Errors.codes.UPGRADE_NEEDED, 'DWC clients < 1.2 are no longer supported.');
       }
     }
 
@@ -545,7 +545,7 @@ export class WalletService implements IWalletService {
     }
 
     try {
-      pubKey = new Bitcore.PublicKey.fromString(opts.pubKey);
+      pubKey = new Ducatuscore.PublicKey.fromString(opts.pubKey);
     } catch (ex) {
       return cb(new ClientError('Invalid public key'));
     }
@@ -812,7 +812,7 @@ export class WalletService implements IWalletService {
    * @param xPubKey
    */
   _verifyRequestPubKey(requestPubKey, signature, xPubKey) {
-    const pub = new Bitcore.HDPublicKey(xPubKey).deriveChild(Constants.PATHS.REQUEST_KEY_AUTH).publicKey;
+    const pub = new Ducatuscore.HDPublicKey(xPubKey).deriveChild(Constants.PATHS.REQUEST_KEY_AUTH).publicKey;
     return Utils.verifyMessage(requestPubKey, signature, pub.toString());
   }
 
@@ -1062,7 +1062,7 @@ export class WalletService implements IWalletService {
 
     let xPubKey;
     try {
-      xPubKey = Bitcore_[opts.chain].HDPublicKey(opts.xPubKey);
+      xPubKey = Ducatuscore_[opts.chain].HDPublicKey(opts.xPubKey);
     } catch (ex) {
       return cb(new ClientError('Invalid extended public key'));
     }
@@ -1613,7 +1613,7 @@ export class WalletService implements IWalletService {
         next => {
           if (!wallet.isComplete()) return next();
 
-          const dustThreshold = Bitcore_[wallet.chain].Transaction.DUST_AMOUNT;
+          const dustThreshold = Ducatuscore_[wallet.chain].Transaction.DUST_AMOUNT;
           const isEscrowPayment = wallet.isZceCompatible() && opts.instantAcceptanceEscrow ? true : false;
           const replaceTxByFee = opts.replaceTxByFee ? true : false;
           bc.getUtxos(
@@ -1772,7 +1772,7 @@ export class WalletService implements IWalletService {
         }
 
         const address = opts.addresses[0];
-        const A = Bitcore_[wallet.chain].Address;
+        const A = Ducatuscore_[wallet.chain].Address;
         let addrObj: { network?: { name?: string } } = {};
         try {
           addrObj = new A(address);
@@ -2209,7 +2209,7 @@ export class WalletService implements IWalletService {
 
             let newAddr;
             try {
-              newAddr = Bitcore_['bch'].Address(x.toAddress).toLegacyAddress();
+              newAddr = Ducatuscore_['bch'].Address(x.toAddress).toLegacyAddress();
             } catch (e) {
               return next(e);
             }
@@ -2870,7 +2870,7 @@ export class WalletService implements IWalletService {
               this.logw('Client version:', this.clientVersion);
               this.logw('Arguments:', JSON.stringify(opts));
               this.logw('Transaction proposal:', JSON.stringify(txp));
-              const raw = ChainService.getBitcoreTx(txp).uncheckedSerialize();
+              const raw = ChainService.getDucatuscoreTx(txp).uncheckedSerialize();
               this.logw('Raw tx:', raw);
               return cb(Errors.BAD_SIGNATURES);
             }
@@ -3457,7 +3457,7 @@ export class WalletService implements IWalletService {
         bc.getCheckData(wallet, (err, serverCheck) => {
           // If there is an error, just ignore it (server does not support walletCheck)
           if (err) {
-            this.logw('Error at bitcore WalletCheck, ignoring' + err);
+            this.logw('Error at ducatuscore WalletCheck, ignoring' + err);
             return cb();
           }
 
@@ -3581,7 +3581,7 @@ export class WalletService implements IWalletService {
         amount = amountOut;
         action = 'moved';
       } else {
-        // BWS standard sent
+        // DWS standard sent
         // (amountIn > 0 && amountOutChange >0 && outputs.length <= 2)
         amount = amountIn - amountOut - amountOutChange - (amountIn > 0 && amountOutChange > 0 ? tx.fees : 0);
         action = amount > 0 ? 'sent' : 'received';
@@ -4745,7 +4745,7 @@ export class WalletService implements IWalletService {
 
     const URL_SEARCH: string = `?${qs.join('&')}`;
 
-    const URLSignatureHash: string = Bitcore.crypto.Hash.sha256hmac(
+    const URLSignatureHash: string = Ducatuscore.crypto.Hash.sha256hmac(
       Buffer.from(URL_SEARCH),
       Buffer.from(SECRET_KEY)
     ).toString('base64');
@@ -5360,7 +5360,7 @@ export class WalletService implements IWalletService {
 
       const URL: string = `${keys.API}/v3/orders/quote/partner?timestamp=${Date.now().toString()}`;
       const XApiSignature: string = URL + JSON.stringify(req.body);
-      const XApiSignatureHash: string = Bitcore.crypto.Hash.sha256hmac(
+      const XApiSignatureHash: string = Ducatuscore.crypto.Hash.sha256hmac(
         Buffer.from(XApiSignature),
         Buffer.from(keys.SECRET_API_KEY)
       ).toString('hex');
@@ -5415,7 +5415,7 @@ export class WalletService implements IWalletService {
 
       const URL: string = `${keys.API}/v3/orders/reserve?timestamp=${Date.now().toString()}`;
       const XApiSignature: string = URL + JSON.stringify(req.body);
-      const XApiSignatureHash: string = Bitcore.crypto.Hash.sha256hmac(
+      const XApiSignatureHash: string = Ducatuscore.crypto.Hash.sha256hmac(
         Buffer.from(XApiSignature),
         Buffer.from(keys.SECRET_API_KEY)
       ).toString('hex');
@@ -5484,7 +5484,7 @@ export class WalletService implements IWalletService {
   changellySignRequests(message, secret: string) {
     if (!message || !secret) throw new Error('Missing parameters to sign Changelly v1 request');
 
-    const sign: string = Bitcore.crypto.Hash.sha512hmac(
+    const sign: string = Ducatuscore.crypto.Hash.sha512hmac(
       Buffer.from(JSON.stringify(message)),
       Buffer.from(secret)
     ).toString('hex');

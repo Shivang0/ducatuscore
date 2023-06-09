@@ -9,15 +9,15 @@ import logger from '../logger';
 import { Client } from './v8/client';
 
 const $ = require('preconditions').singleton();
-const Bitcore = require('bitcore-lib');
-const Bitcore_ = {
-  btc: Bitcore,
-  bch: require('bitcore-lib-cash'),
-  eth: Bitcore,
-  matic: Bitcore,
-  xrp: Bitcore,
-  doge: require('bitcore-lib-doge'),
-  ltc: require('bitcore-lib-ltc')
+const Ducatuscore = require('@ducatus/ducatuscore-lib');
+const Ducatuscore_ = {
+  btc: Ducatuscore,
+  bch: require('@ducatus/ducatuscore-lib-cash'),
+  eth: Ducatuscore,
+  matic: Ducatuscore,
+  xrp: Ducatuscore,
+  doge: require('@ducatus/ducatuscore-lib-doge'),
+  ltc: require('@ducatus/ducatuscore-lib-ltc')
 };
 const config = require('../../config');
 const Constants = Common.Constants,
@@ -84,7 +84,7 @@ export class V8 {
     $.checkState(wallet.beAuthPrivateKey2, 'Failed state: wallet.beAuthPrivateKey2 at <_getAuthClient()>');
     return new this.Client({
       baseUrl: this.baseUrl,
-      authKey: Bitcore_[this.chain].PrivateKey(wallet.beAuthPrivateKey2)
+      authKey: Ducatuscore_[this.chain].PrivateKey(wallet.beAuthPrivateKey2)
     });
   }
 
@@ -560,7 +560,7 @@ export class V8 {
 
       if (!authKey) throw new Error('provide authKey');
 
-      const authKeyObj = new Bitcore.PrivateKey(authKey);
+      const authKeyObj = new Ducatuscore.PrivateKey(authKey);
       const pubKey = authKeyObj.toPublicKey().toString();
       const authClient = new Client({ baseUrl: host, authKey: authKeyObj });
       const payload = { method: 'socket', url: host };

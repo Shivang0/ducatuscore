@@ -3,7 +3,7 @@ import { logger } from './lib/logger';
 
 const Config = () => {
   let defaultConfig = {
-    basePath: '/bws/api',
+    basePath: '/dws/api',
     disableLogs: false,
     port: 3232,
 
@@ -26,7 +26,7 @@ const Config = () => {
     storageOpts: {
       mongoDb: {
         uri: 'mongodb://localhost:27017/bws',
-        dbname: 'bws'
+        dbname: 'dws'
       }
     },
     messageBrokerOpts: {
@@ -146,137 +146,12 @@ const Config = () => {
     },
     suspendedChains: [],
     staticRoot: '/tmp/static'
-    // moonpay: {
-    //   sandbox: {
-    //     apiKey: 'moonpay_sandbox_api_key_here',
-    //     api: 'https://api.moonpay.com',
-    //     widgetApi: 'https://buy-sandbox.moonpay.com',
-    //     secretKey: 'moonpay_sandbox_secret_key_here',
-    //   },
-    //   production: {
-    //     apiKey: 'moonpay_production_api_key_here',
-    //     api: 'https://api.moonpay.com',
-    //     widgetApi: 'https://buy.moonpay.com',
-    //     secretKey: 'moonpay_production_secret_key_here',
-    //   },
-    //   sandboxWeb: {
-    //     apiKey: 'moonpay_sandbox_web_api_key_here',
-    //     api: 'https://api.moonpay.com',
-    //     widgetApi: 'https://buy-sandbox.moonpay.com',
-    //     secretKey: 'moonpay_sandbox_web_secret_key_here',
-    //   },
-    //   productionWeb: {
-    //     apiKey: 'moonpay_production_web_api_key_here',
-    //     api: 'https://api.moonpay.com',
-    //     widgetApi: 'https://buy.moonpay.com',
-    //     secretKey: 'moonpay_production_web_secret_key_here',
-    //   }
-    // },
-    // ramp: {
-    //   sandbox: {
-    //     apiKey: 'ramp_sandbox_api_key_here',
-    //     api: 'https://api.demo.ramp.network/api',
-    //     widgetApi: 'https://app.demo.ramp.network/',
-    //   },
-    //   production: {
-    //     apiKey: 'ramp_production_api_key_here',
-    //     api: 'https://api-instant.ramp.network/api',
-    //     widgetApi: 'https://buy.ramp.network',
-    //   },
-    //   sandboxWeb: {
-    //     apiKey: 'ramp_sandbox_web_api_key_here',
-    //     api: 'https://api.demo.ramp.network/api',
-    //     widgetApi: 'https://app.demo.ramp.network/',
-    //   },
-    //   productionWeb: {
-    //     apiKey: 'ramp_production_web_api_key_here',
-    //     api: 'https://api-instant.ramp.network/api',
-    //     widgetApi: 'https://buy.ramp.network',
-    //   }
-    // },
-    // sardine: {
-    //   sandbox: {
-    //     api: 'https://api.sandbox.sardine.ai',
-    //     secretKey: 'sardine_sandbox_secret_key_here',
-    //     clientId: 'sardine_sandbox_client_id_here',
-    //   },
-    //   production: {
-    //     api: 'https://api.sardine.ai/v1',
-    //     secretKey: 'sardine_production_secret_key_here',
-    //     clientId: 'sardine_production_client_id_here',
-    //   },
-    //   sandboxWeb: {
-    //     api: 'https://api.sandbox.sardine.ai',
-    //     secretKey: 'sardine_sandbox_web_secret_key_here',
-    //     clientId: 'sardine_sandbox_web_client_id_here',
-    //   },
-    //   productionWeb: {
-    //     api: 'https://api.sardine.ai/v1',
-    //     secretKey: 'sardine_production_web_secret_key_here',
-    //     clientId: 'sardine_production_web_client_id_here',
-    //   }
-    // },
-    // simplex: {
-    //   sandbox: {
-    //     apiKey: 'simplex_sandbox_api_key_here',
-    //     api: 'https://sandbox.test-simplexcc.com',
-    //     appProviderId: 'simplex_provider_id_here'
-    //   },
-    //   production: {
-    //     apiKey: 'simplex_production_api_key_here',
-    //     api: 'https://backend-wallet-api.simplexcc.com',
-    //     appProviderId: 'simplex_provider_id_here'
-    //   },
-    //   sandboxWeb: {
-    //     apiKey: 'simplex_sandbox_web_api_key_here',
-    //     api: 'https://sandbox.test-simplexcc.com',
-    //     appProviderId: 'bitpaywidget'
-    //   },
-    //   productionWeb: {
-    //     apiKey: 'simplex_production_web_api_key_here',
-    //     api: 'https://backend-wallet-api.simplexcc.com',
-    //     appProviderId: 'simplex_web_provider_id_here'
-    //   }
-    // },
-    // wyre: {
-    //   sandbox: {
-    //     apiKey: 'wyre_sandbox_api_key_here',
-    //     secretApiKey: 'wyre_sandbox_secret_api_key_here',
-    //     api: 'https://api.testwyre.com',
-    //     widgetUrl: 'https://pay.testwyre.com',
-    //     appProviderAccountId: 'wyre_provider_sandbox_account_id_here'
-    //   },
-    //   production: {
-    //     apiKey: 'wyre_production_api_key_here',
-    //     secretApiKey: 'wyre_production_secret_api_key_here',
-    //     api: 'https://api.sendwyre.com',
-    //     widgetUrl: 'https://pay.sendwyre.com/',
-    //     appProviderAccountId: 'wyre_provider_production_account_id_here'
-    //   }
-    // },
-    // changelly: {
-    //   v1: {
-    //     apiKey: 'changelly_api_key',
-    //     secret: 'changelly_secret',
-    //     api: 'https://api.changelly.com'
-    //   },
-    //   v2: {
-    //     secret: 'changelly_secret_v2',
-    //     api: 'https://api.changelly.com/v2'
-    //   }
-    // },
-    // oneInch: {
-    //   api: 'https://bitpay.api.enterprise.1inch.exchange',
-    //   referrerAddress: 'one_inch_referrer_address', // ETH
-    //   referrerFee: 'one_inch_referrer_fee', // min: 0; max: 3; (represents percentage)
-    // },
-    // To use email notifications uncomment this:
     // emailOpts: {
     //  host: 'localhost',
     //  port: 25,
     //  ignoreTLS: true,
     //  subjectPrefix: '[Wallet Service]',
-    //  from: 'wallet-service@bitcore.io',
+    //  from: 'wallet-service@some.io',
     //  templatePath: 'templates',
     //  defaultLanguage: 'en',
     //  defaultUnit: 'btc',
@@ -316,12 +191,12 @@ const Config = () => {
     // mailer: sgMail,
   };
 
-  // Override default values with bws.config.js' values, if present
+  // Override default values with dws.config.js' values, if present
   try {
-    const bwsConfig = require('../bws.config');
-    defaultConfig = _.merge(defaultConfig, bwsConfig);
+    const dwsConfig = require('../dws.config');
+    defaultConfig = _.merge(defaultConfig, dwsConfig);
   } catch {
-    logger.info('bws.config.js not found, using default configuration values');
+    logger.info('dws.config.js not found, using default configuration values');
   }
   return defaultConfig;
 };

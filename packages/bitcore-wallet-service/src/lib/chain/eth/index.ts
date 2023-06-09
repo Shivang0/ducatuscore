@@ -1,5 +1,5 @@
-import { Transactions, Validation } from 'crypto-wallet-core';
-import { Web3 } from 'crypto-wallet-core';
+import { Transactions, Validation } from '@ducatus/ducatuscore-crypto';
+import { Web3 } from '@ducatus/ducatuscore-crypto';
 import _ from 'lodash';
 import { IAddress } from 'src/lib/model/address';
 import { IChain, INotificationData } from '..';
@@ -33,12 +33,12 @@ function getInvoiceDecoder() {
 
 export class EthChain implements IChain {
   /**
-   * Converts Bitcore Balance Response.
-   * @param {Object} bitcoreBalance - { unconfirmed, confirmed, balance }
+   * Converts Ducatuscore Balance Response.
+   * @param {Object} ducatuscoreBalance - { unconfirmed, confirmed, balance }
    * @param {Number} locked - Sum of txp.amount
    * @returns {Object} balance - Total amount & locked amount.
    */
-  private convertBitcoreBalance(bitcoreBalance, locked) {
+  private convertDucatuscoreBalance(bitcoreBalance, locked) {
     const { unconfirmed, confirmed, balance } = bitcoreBalance;
     // we ASUME all locked as confirmed, for ETH.
     const convertedBalance = {
@@ -89,7 +89,7 @@ export class EthChain implements IChain {
         if (err) return cb(err);
         // Do not lock eth multisig amount
         const lockedSum = opts.multisigContractAddress ? 0 : _.sumBy(txps, 'amount') || 0;
-        const convertedBalance = this.convertBitcoreBalance(balance, lockedSum);
+        const convertedBalance = this.convertDucatuscoreBalance(balance, lockedSum);
         server.storage.fetchAddresses(server.walletId, (err, addresses: IAddress[]) => {
           if (err) return cb(err);
           if (addresses.length > 0) {
@@ -226,7 +226,7 @@ export class EthChain implements IChain {
     });
   }
 
-  getBitcoreTx(txp, opts = { signed: true }) {
+  getDucatuscoreTx(txp, opts = { signed: true }) {
     const {
       data,
       outputs,
@@ -288,7 +288,7 @@ export class EthChain implements IChain {
     if (opts.signed) {
       const sigs = txp.getCurrentSignatures();
       sigs.forEach(x => {
-        this.addSignaturesToBitcoreTx(tx, txp.inputs, txp.inputPaths, x.signatures, x.xpub);
+        this.addSignaturesToDucatuscoreTx(tx, txp.inputs, txp.inputPaths, x.signatures, x.xpub);
       });
     }
 
@@ -324,9 +324,9 @@ export class EthChain implements IChain {
 
   checkTx(txp) {
     try {
-      const tx = this.getBitcoreTx(txp);
+      const tx = this.getDucatuscoreTx(txp);
     } catch (ex) {
-      logger.debug('Error building Bitcore transaction: %o', ex);
+      logger.debug('Error building Ducatuscore transaction: %o', ex);
       return ex;
     }
 
@@ -489,7 +489,7 @@ export class EthChain implements IChain {
     if (network != 'livenet') address.address += ':' + network;
   }
 
-  addSignaturesToBitcoreTx(tx, inputs, inputPaths, signatures, xpub) {
+  addSignaturesToDucatuscoreTx(tx, inputs, inputPaths, signatures, xpub) {
     if (signatures.length === 0) {
       throw new Error('Signatures Required');
     }

@@ -16,12 +16,12 @@ var config = require('../test-config');
 //   memStore: true
 // });
 
-var Bitcore = require('bitcore-lib');
-var Bitcore_ = {
-  btc: Bitcore,
-  bch: require('bitcore-lib-cash'),
-  doge: require('bitcore-lib-doge'),
-  ltc: require('bitcore-lib-ltc')
+var Ducatuscore = require('@ducatus/ducatuscore-lib');
+var Ducatuscore_ = {
+  btc: Ducatuscore,
+  bch: require('@ducatus/ducatuscore-lib-cash'),
+  doge: require('@ducatus/ducatuscore-lib-doge'),
+  ltc: require('@ducatus/ducatuscore-lib-ltc')
 };
 
 var { ChainService } = require('../../ts_build/lib/chain/index');
@@ -148,14 +148,14 @@ helpers.getStorage = function() {
 };
 
 helpers.signMessage = function(message, privKey) {
-  var priv = new Bitcore.PrivateKey(privKey);
+  var priv = new Ducatuscore.PrivateKey(privKey);
   const flattenedMessage = _.isArray(message)? _.join(message) : message;
   var hash = Utils.hashMessage(flattenedMessage);
-  return Bitcore.crypto.ECDSA.sign(hash, priv, 'little').toString();
+  return Ducatuscore.crypto.ECDSA.sign(hash, priv, 'little').toString();
 };
 
 helpers.signRequestPubKey = function(requestPubKey, xPrivKey) {
-  var priv = new Bitcore.HDPrivateKey(xPrivKey).deriveChild(Constants.PATHS.REQUEST_KEY_AUTH).privateKey;
+  var priv = new Ducatuscore.HDPrivateKey(xPrivKey).deriveChild(Constants.PATHS.REQUEST_KEY_AUTH).privateKey;
   return helpers.signMessage(requestPubKey, priv);
 };
 
@@ -190,20 +190,20 @@ helpers._generateCopayersTestData = function() {
 
   console.log('var copayers = [');
   _.each(xPrivKeys, function(xPrivKeyStr, c) {
-    var xpriv = Bitcore.HDPrivateKey(xPrivKeyStr);
-    var xpub = Bitcore.HDPublicKey(xpriv);
+    var xpriv = Ducatuscore.HDPrivateKey(xPrivKeyStr);
+    var xpub = Ducatuscore.HDPublicKey(xpriv);
 
     var xpriv_45H = xpriv.deriveChild(45, true);
-    var xpub_45H = Bitcore.HDPublicKey(xpriv_45H);
+    var xpub_45H = Ducatuscore.HDPublicKey(xpriv_45H);
     var id45 = Model.Copayer._xPubToCopayerId('btc', xpub_45H.toString());
 
     var xpriv_44H_0H_0H = xpriv.deriveChild(44, true).deriveChild(0, true).deriveChild(0, true);
-    var xpub_44H_0H_0H = Bitcore.HDPublicKey(xpriv_44H_0H_0H);
+    var xpub_44H_0H_0H = Ducatuscore.HDPublicKey(xpriv_44H_0H_0H);
     var id44btc = Model.Copayer._xPubToCopayerId('btc', xpub_44H_0H_0H.toString());
     var id44bch = Model.Copayer._xPubToCopayerId('bch', xpub_44H_0H_0H.toString());
 
     var xpriv_1H = xpriv.deriveChild(1, true);
-    var xpub_1H = Bitcore.HDPublicKey(xpriv_1H);
+    var xpub_1H = Ducatuscore.HDPublicKey(xpriv_1H);
     var priv = xpriv_1H.deriveChild(0).privateKey;
     var pub = xpub_1H.deriveChild(0).publicKey;
 
@@ -309,7 +309,7 @@ helpers.createAndJoinWallet = function(m, n, opts, cb) {
 
 
 helpers.randomTXID = function() {
-  return Bitcore.crypto.Hash.sha256(Buffer.from((Math.random() * 100000).toString())).toString('hex');;
+  return Ducatuscore.crypto.Hash.sha256(Buffer.from((Math.random() * 100000).toString())).toString('hex');;
 };
 
 helpers.toSatoshi = function(btc) {
@@ -392,7 +392,7 @@ helpers.stubUtxos = function(server, wallet, amounts, opts, cb) {
 
   if (!helpers._utxos) helpers._utxos = {};
 
-  var S = Bitcore_[wallet.coin].Script;
+  var S = Ducatuscore_[wallet.coin].Script;
   async.waterfall([
 
     function(next) {
@@ -582,7 +582,7 @@ helpers.clientSign = function(txp, derivedXPrivKey) {
   var derived = {};
   var signatures;
 
-  var xpriv = new Bitcore.HDPrivateKey(derivedXPrivKey, txp.network);
+  var xpriv = new Ducatuscore.HDPrivateKey(derivedXPrivKey, txp.network);
 
   switch(txp.coin) {
     case 'eth':
@@ -591,7 +591,7 @@ helpers.clientSign = function(txp, derivedXPrivKey) {
       // For eth => account, 0, change = 0
       const priv =  xpriv.derive('m/0/0').privateKey;
       const privKey = priv.toString('hex');
-      let tx = ChainService.getBitcoreTx(txp).uncheckedSerialize();
+      let tx = ChainService.getDucatuscoreTx(txp).uncheckedSerialize();
       const isERC20 = txp.tokenAddress && !txp.payProUrl;
       const chain = isERC20 ? ChainService.getChain(txp.coin) + 'ERC20' : ChainService.getChain(txp.coin);
       tx = typeof tx === 'string'? [tx] : tx;
@@ -613,7 +613,7 @@ helpers.clientSign = function(txp, derivedXPrivKey) {
         }
       });
 
-      var t = ChainService.getBitcoreTx(txp);
+      var t = ChainService.getDucatuscoreTx(txp);
       signatures = _.map(privs, function(priv, i) {
         return t.getSignatures(priv, undefined, txp.signingMethod);
       });

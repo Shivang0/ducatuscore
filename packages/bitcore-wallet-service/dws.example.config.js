@@ -1,5 +1,5 @@
 module.exports = {
-  basePath: '/bws/api',
+  basePath: '/dws/api',
   disableLogs: false,
   port: 3232,
 
@@ -21,8 +21,8 @@ module.exports = {
 
   storageOpts: {
     mongoDb: {
-      uri: 'mongodb://localhost:27017/bws',
-      dbname: 'bws'
+      uri: 'mongodb://localhost:27017/dws',
+      dbname: 'dws'
     }
   },
   messageBrokerOpts: {
@@ -103,51 +103,13 @@ module.exports = {
   },
   suspendedChains: [],
   staticRoot: '/tmp/static'
-  // simplex: {
-  //   sandbox: {
-  //     apiKey: 'simplex_sandbox_api_key_here',
-  //     api: 'https://sandbox.test-simplexcc.com',
-  //     appProviderId: 'simplex_provider_id_here'
-  //   },
-  //   production: {
-  //     apiKey: 'simplex_production_api_key_here',
-  //     api: 'https://backend-wallet-api.simplexcc.com',
-  //     appProviderId: 'simplex_provider_id_here'
-  //   }
-  // },
-  // wyre: {
-  //   sandbox: {
-  //     apiKey: 'wyre_sandbox_api_key_here',
-  //     secretApiKey: 'wyre_sandbox_secret_api_key_here',
-  //     api: 'https://api.testwyre.com',
-  //     widgetUrl: 'https://pay.testwyre.com',
-  //     appProviderAccountId: 'wyre_provider_sandbox_account_id_here'
-  //   },
-  //   production: {
-  //     apiKey: 'wyre_production_api_key_here',
-  //     secretApiKey: 'wyre_production_secret_api_key_here',
-  //     api: 'https://api.sendwyre.com',
-  //     widgetUrl: 'https://pay.sendwyre.com/',
-  //     appProviderAccountId: 'wyre_provider_production_account_id_here'
-  //   }
-  // },
-  // changelly: {
-  //   apiKey: 'changelly_api_key',
-  //   secret: 'changelly_secret',
-  //   api: 'https://api.changelly.com'
-  // },
-  // oneInch: {
-  //   api: 'https://api.1inch.exchange',
-  //   referrerAddress: 'one_inch_referrer_address', // ETH
-  //   referrerFee: 'one_inch_referrer_fee', // min: 0; max: 3; (represents percentage)
-  // },
   // To use email notifications uncomment this:
   // emailOpts: {
   //  host: 'localhost',
   //  port: 25,
   //  ignoreTLS: true,
   //  subjectPrefix: '[Wallet Service]',
-  //  from: 'wallet-service@bitcore.io',
+  //  from: 'wallet-service@some.io',
   //  templatePath: 'templates',
   //  defaultLanguage: 'en',
   //  defaultUnit: 'btc',

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const request = require('request');
-const Bitcore = require('bitcore-lib');
+const Ducatuscore = require('@ducatus/ducatuscore-lib');
 import { Client } from '../lib//blockchainexplorers/v8/client';
 
 const coin = process.argv[2];
@@ -22,11 +22,11 @@ if (!authKey) throw new Error('provide authKey');
 
 // ====================
 //
-const authKeyObj = Bitcore.PrivateKey(authKey);
+const authKeyObj = Ducatuscore.PrivateKey(authKey);
 
 let tmp = authKeyObj.toObject();
 tmp.compressed = false;
-const pubKey = Bitcore.PrivateKey(tmp).toPublicKey();
+const pubKey = Ducatuscore.PrivateKey(tmp).toPublicKey();
 
 const BASE = {
   BTC: `https://api.bitcore.io/api/${coin}/${network}`,

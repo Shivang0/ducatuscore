@@ -12,14 +12,14 @@ const config = require('../../config');
 const Constants = Common.Constants,
   Defaults = Common.Defaults,
   Utils = Common.Utils;
-const Bitcore = {
-  btc: require('bitcore-lib'),
-  bch: require('bitcore-lib-cash'),
-  eth: require('bitcore-lib'),
-  matic: require('bitcore-lib'),
-  xrp: require('bitcore-lib'),
-  doge: require('bitcore-lib-doge'),
-  ltc: require('bitcore-lib-ltc')
+const Ducatuscore = {
+  btc: require('@ducatus/ducatuscore-lib'),
+  bch: require('@ducatus/ducatuscore-lib-cash'),
+  eth: require('@ducatus/ducatuscore-lib'),
+  matic: require('@ducatus/ducatuscore-lib'),
+  xrp: require('@ducatus/ducatuscore-lib'),
+  doge: require('@ducatus/ducatuscore-lib-doge'),
+  ltc: require('@ducatus/ducatuscore-lib-ltc')
 };
 
 export interface IWallet {
@@ -197,7 +197,7 @@ export class Wallet {
     $.checkState(this.isComplete(), 'Failed state: wallet incomplete at <updateBEKeys()>');
 
     const chain = this.chain || ChainService.getChain(this.coin); // getChain -> backwards compatibility
-    const bitcore = Bitcore[chain];
+    const ducatuscore = Ducatuscore[chain];
     const salt = config.BE_KEY_SALT || Defaults.BE_KEY_SALT;
 
     var seed =
@@ -207,8 +207,8 @@ export class Wallet {
       this.network +
       this.coin +
       salt;
-    seed = bitcore.crypto.Hash.sha256(Buffer.from(seed));
-    const priv = bitcore.PrivateKey(seed, this.network);
+    seed = ducatuscore.crypto.Hash.sha256(Buffer.from(seed));
+    const priv = ducatuscore.PrivateKey(seed, this.network);
 
     this.beAuthPrivateKey2 = priv.toString();
     // WARN!! => this will generate an uncompressed pub key.

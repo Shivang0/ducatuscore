@@ -1,4 +1,4 @@
-import { BitcoreLib, BitcoreLibCash } from 'crypto-wallet-core';
+import { DucatuscoreLib, DucatuscoreLibCash } from '@ducatus/ducatuscore-crypto';
 import _ from 'lodash';
 import { IChain } from '..';
 import { BtcChain } from '../btc';
@@ -8,7 +8,7 @@ const Errors = require('../../errors/errordefinitions');
 
 export class BchChain extends BtcChain implements IChain {
   constructor() {
-    super(BitcoreLibCash);
+    super(DucatuscoreLibCash);
     this.sizeEstimationMargin = config.bch?.sizeEstimationMargin ?? 0.01;
     this.inputSizeEstimationMargin = config.bch?.inputSizeEstimationMargin ?? 2;
   }
@@ -21,7 +21,7 @@ export class BchChain extends BtcChain implements IChain {
   }
 
   validateAddress(wallet, inaddr, opts) {
-    const A = BitcoreLibCash.Address;
+    const A = DucatuscoreLibCash.Address;
     let addr: {
       network?: string;
       toString?: (cashAddr: boolean) => string;

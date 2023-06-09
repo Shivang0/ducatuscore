@@ -5,7 +5,7 @@ var async = require('async');
 var chai = require('chai');
 var mongodb = require('mongodb');
 var should = chai.should();
-const { BitcoreLib } = require ('crypto-wallet-core');
+const { DucatuscoreLib } = require ('@ducatus/ducatuscore-crypto');
 const { ChainService } = require('../../ts_build/lib/chain');
 const { BtcChain } = require('../../ts_build/lib/chain/btc');
 const { TxProposal } = require('../../ts_build/lib/model/txproposal');
@@ -18,27 +18,27 @@ const segWitToAddress = 'BC1QW508D6QEJXTDG4Y5R3ZARVARY0C5XW7KV8F3T4'; //'bc1qar0
 
 describe('Chain BTC', function() {
  
-  describe('#getBitcoreTx', function() {
+  describe('#getDucatuscoreTx', function() {
     it('should create a valid bitcore TX', function() {
       var txp = TxProposal.fromObj(aTXP());
-      var t = ChainService.getBitcoreTx(txp);
+      var t = ChainService.getDucatuscoreTx(txp);
       should.exist(t);
     });
     it('should order outputs as specified by outputOrder', function() {
       var txp = TxProposal.fromObj(aTXP());
 
       txp.outputOrder = [0, 1, 2];
-      var t = ChainService.getBitcoreTx(txp);
+      var t = ChainService.getDucatuscoreTx(txp);
       t.getChangeOutput().should.deep.equal(t.outputs[2]);
 
       txp.outputOrder = [2, 0, 1];
-      var t2 = ChainService.getBitcoreTx(txp);
+      var t2 = ChainService.getDucatuscoreTx(txp);
       t2.getChangeOutput().should.deep.equal(t2.outputs[0]);
     });
 
     it('should create a valid signed bitcore TX', function() {
       var txp = TxProposal.fromObj(signedTxp);
-      var t = ChainService.getBitcoreTx(txp);
+      var t = ChainService.getDucatuscoreTx(txp);
       should.exist(t);
 
       // should serialized
@@ -48,7 +48,7 @@ describe('Chain BTC', function() {
 
     it('should create a valid unsigned bitcore TX', function() {
       var txp = TxProposal.fromObj(signedTxp);
-      var t = ChainService.getBitcoreTx(txp, {signed: false} );
+      var t = ChainService.getDucatuscoreTx(txp, {signed: false} );
       should.exist(t);
 
       // should serialized
@@ -76,7 +76,7 @@ describe('Chain BTC', function() {
         address: fromAddress,
         txId: 'a477af6b2667c29670467e4e0728b685ee07b240235771862318e29ddbe58458',
         outputIndex: 0,
-        script: BitcoreLib.Script.buildPublicKeyHashOut(fromAddress).toString(),
+        script: DucatuscoreLib.Script.buildPublicKeyHashOut(fromAddress).toString(),
         satoshis: 1e8,
       };
 
@@ -84,10 +84,10 @@ describe('Chain BTC', function() {
          address: witnessFromAddress,
          txId: '7e6b603779c8af58284566cf1b655395fffbefaf1c0a080d9aff43f0af05d873',
          outputIndex: 0,
-         script: BitcoreLib.Script.fromAddress(witnessFromAddress).toString(),
+         script: DucatuscoreLib.Script.fromAddress(witnessFromAddress).toString(),
          satoshis: 1e8
        };
-      const privKey = new BitcoreLib.PrivateKey();
+      const privKey = new DucatuscoreLib.PrivateKey();
 
     });
     it('1  input p2pkh,1 output p2pkh  ', function() {
@@ -98,7 +98,7 @@ describe('Chain BTC', function() {
       const estimatedLength = btc.getEstimatedSize(x);
 
       // Create a similar TX.
-      let tx = new BitcoreLib.Transaction();
+      let tx = new DucatuscoreLib.Transaction();
       tx.from(simpleUtxoWith1BTC)
         .to([{address: toAddress, satoshis: 1e8-7000}])
         .sign(privateKey);
@@ -115,7 +115,7 @@ describe('Chain BTC', function() {
       const estimatedLength = btc.getEstimatedSize(x);
 
       // Create a similar TX.
-      let tx = new BitcoreLib.Transaction();
+      let tx = new DucatuscoreLib.Transaction();
       tx.from(simpleUtxoWith1BTC)
         .to([{address: toAddress, satoshis: 1e7}, {address: toAddress, satoshis: 1e6}])
         .change(changeAddress)
@@ -126,14 +126,14 @@ describe('Chain BTC', function() {
     });
 
 
-    const p2shPrivateKey1 = BitcoreLib.PrivateKey.fromWIF('cNuW8LX2oeQXfKKCGxajGvqwhCgBtacwTQqiCGHzzKfmpHGY4TE9');
+    const p2shPrivateKey1 = DucatuscoreLib.PrivateKey.fromWIF('cNuW8LX2oeQXfKKCGxajGvqwhCgBtacwTQqiCGHzzKfmpHGY4TE9');
     const p2shPublicKey1 = p2shPrivateKey1.toPublicKey();
-    const p2shPrivateKey2 = BitcoreLib.PrivateKey.fromWIF('cTtLHt4mv6zuJytSnM7Vd6NLxyNauYLMxD818sBC8PJ1UPiVTRSs');
+    const p2shPrivateKey2 = DucatuscoreLib.PrivateKey.fromWIF('cTtLHt4mv6zuJytSnM7Vd6NLxyNauYLMxD818sBC8PJ1UPiVTRSs');
     const p2shPublicKey2 = p2shPrivateKey2.toPublicKey();
-    const p2shPrivateKey3 = BitcoreLib.PrivateKey.fromWIF('cQFMZ5gP9CJtUZPc9X3yFae89qaiQLspnftyxxLGvVNvM6tS6mYY');
+    const p2shPrivateKey3 = DucatuscoreLib.PrivateKey.fromWIF('cQFMZ5gP9CJtUZPc9X3yFae89qaiQLspnftyxxLGvVNvM6tS6mYY');
     const p2shPublicKey3 = p2shPrivateKey3.toPublicKey();
 
-    const p2shAddress = BitcoreLib.Address.createMultisig([
+    const p2shAddress = DucatuscoreLib.Address.createMultisig([
       p2shPublicKey1,
       p2shPublicKey2,
 //      p2shPublicKey3
@@ -142,20 +142,20 @@ describe('Chain BTC', function() {
       address: p2shAddress.toString(),
       txId: 'a477af6b2667c29670467e4e0728b685ee07b240235771862318e29ddbe58458',
       outputIndex: 0,
-      script: BitcoreLib.Script(p2shAddress).toString(),
+      script: DucatuscoreLib.Script(p2shAddress).toString(),
       satoshis: 1e8
     };
 
-    const p2wshAddress = BitcoreLib.Address.createMultisig([
+    const p2wshAddress = DucatuscoreLib.Address.createMultisig([
       p2shPublicKey1,
       p2shPublicKey2,
 //      p2shPublicKey3
-    ], 2, 'testnet', null, BitcoreLib.Address.PayToWitnessScriptHash);
+    ], 2, 'testnet', null, DucatuscoreLib.Address.PayToWitnessScriptHash);
     const p2wshUtxoWith1BTC = {
       address: p2wshAddress.toString(),
       txId: 'a477af6b2667c29670467e4e0728b685ee07b240235771862318e29ddbe58458',
       outputIndex: 0,
-      script: BitcoreLib.Script(p2wshAddress).toString(),
+      script: DucatuscoreLib.Script(p2wshAddress).toString(),
       satoshis: 1e8
     };
 
@@ -163,7 +163,7 @@ describe('Chain BTC', function() {
       let x = TxProposal.fromObj(aTXP());
 
       // Create a similar TX.
-      let tx = new BitcoreLib.Transaction();
+      let tx = new DucatuscoreLib.Transaction();
       tx.from(p2shUtxoWith1BTC, [p2shPublicKey1, p2shPublicKey2], 2)
         .to([{address: toAddress, satoshis: 1e7}, {address: toAddress, satoshis: 1e6}])
         .change(changeAddress)

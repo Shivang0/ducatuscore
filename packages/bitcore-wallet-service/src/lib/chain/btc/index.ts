@@ -1,5 +1,5 @@
 import * as async from 'async';
-import { BitcoreLib } from 'crypto-wallet-core';
+import { DucatuscoreLib } from '@ducatus/ducatuscore-crypto';
 import _ from 'lodash';
 import { IChain, INotificationData } from '..';
 import { Common } from '../../common';
@@ -18,7 +18,7 @@ export class BtcChain implements IChain {
   protected sizeEstimationMargin: number;
   protected inputSizeEstimationMargin: number;
 
-  constructor(private bitcoreLib = BitcoreLib) {
+  constructor(private ducatuscoreLib = DucatuscoreLib) {
     this.sizeEstimationMargin = config.btc?.sizeEstimationMargin ?? 0.01;
     this.inputSizeEstimationMargin = config.btc?.inputSizeEstimationMargin ?? 2;
   }
@@ -159,7 +159,7 @@ export class BtcChain implements IChain {
   }
 
   getDustAmountValue() {
-    return this.bitcoreLib.Transaction.DUST_AMOUNT;
+    return this.ducatuscoreLib.Transaction.DUST_AMOUNT;
   }
 
   getTransactionCount() {
@@ -202,7 +202,7 @@ export class BtcChain implements IChain {
   }
 
   checkDust(output) {
-    const dustThreshold = Math.max(Defaults.MIN_OUTPUT_AMOUNT, this.bitcoreLib.Transaction.DUST_AMOUNT);
+    const dustThreshold = Math.max(Defaults.MIN_OUTPUT_AMOUNT, this.ducatuscoreLib.Transaction.DUST_AMOUNT);
 
     if (output.amount < dustThreshold) {
       return Errors.DUST_AMOUNT;
@@ -240,7 +240,7 @@ export class BtcChain implements IChain {
   getEstimatedSizeForSingleOutput(address?: string) {
     let addressType = '';
     if (address) {
-      const a = this.bitcoreLib.Address(address);
+      const a = this.ducatuscoreLib.Address(address);
       addressType = a.type;
     }
     return this.getEstimatedSizeForAddressType(addressType);
@@ -312,7 +312,7 @@ export class BtcChain implements IChain {
 
     if (!fee) {
       fee = (txp.feePerKb * this.getEstimatedSize(txp, opts)) / 1000;
-      fee = Math.max(fee, this.bitcoreLib.Transaction.DUST_AMOUNT);
+      fee = Math.max(fee, this.ducatuscoreLib.Transaction.DUST_AMOUNT);
     }
     return parseInt(fee.toFixed(0));
   }
@@ -325,8 +325,8 @@ export class BtcChain implements IChain {
     });
   }
 
-  getBitcoreTx(txp, opts = { signed: true }) {
-    const t = new this.bitcoreLib.Transaction();
+  getDucatuscoreTx(txp, opts = { signed: true }) {
+    const t = new this.ducatuscoreLib.Transaction();
 
     // BTC tx version
     if (txp.version <= 3) {
@@ -358,7 +358,7 @@ export class BtcChain implements IChain {
       case Constants.SCRIPT_TYPES.P2WSH:
       case Constants.SCRIPT_TYPES.P2SH:
         _.each(inputs, i => {
-          $.checkState(i.publicKeys, 'Failed state: Inputs should include public keys at <getBitcoreTx()>');
+          $.checkState(i.publicKeys, 'Failed state: Inputs should include public keys at <getDucatuscoreTx()>');
           t.from(i, i.publicKeys, txp.requiredSignatures);
         });
         break;
@@ -371,11 +371,11 @@ export class BtcChain implements IChain {
     _.each(txp.outputs, o => {
       $.checkState(
         o.script || o.toAddress,
-        'Failed state: Output should have either toAddress or script specified at <getBitcoreTx()>'
+        'Failed state: Output should have either toAddress or script specified at <getDucatuscoreTx()>'
       );
       if (o.script) {
         t.addOutput(
-          new this.bitcoreLib.Transaction.Output({
+          new this.ducatuscoreLib.Transaction.Output({
             script: o.script,
             satoshis: o.amount
           })
@@ -404,7 +404,7 @@ export class BtcChain implements IChain {
       });
       $.checkState(
         t.outputs.length == outputOrder.length,
-        'Failed state: t.outputs.length not equal to outputOrder.length at <getBitcoreTx()>'
+        'Failed state: t.outputs.length not equal to outputOrder.length at <getDucatuscoreTx()>'
       );
       t.sortOutputs(outputs => {
         return _.map(outputOrder, i => {
@@ -413,23 +413,23 @@ export class BtcChain implements IChain {
       });
     }
 
-    // Validate actual inputs vs outputs independently of Bitcore
+    // Validate actual inputs vs outputs independently of Ducatuscore
     const totalInputs = _.sumBy(t.inputs, 'output.satoshis');
     const totalOutputs = _.sumBy(t.outputs, 'satoshis');
 
     $.checkState(
       totalInputs > 0 && totalOutputs > 0 && totalInputs >= totalOutputs,
-      'Failed state: not-enough-inputs at <getBitcoreTx()>'
+      'Failed state: not-enough-inputs at <getDucatuscoreTx()>'
     );
     $.checkState(
       totalInputs - totalOutputs <= Defaults.MAX_TX_FEE[txp.coin],
-      'Failed state: fee-too-high at <getBitcoreTx()>'
+      'Failed state: fee-too-high at <getDucatuscoreTx()>'
     );
 
     if (opts.signed) {
       const sigs = txp.getCurrentSignatures();
       _.each(sigs, x => {
-        this.addSignaturesToBitcoreTx(t, txp.inputs, txp.inputPaths, x.signatures, x.xpub, txp.signingMethod);
+        this.addSignaturesToDucatuscoreTx(t, txp.inputs, txp.inputPaths, x.signatures, x.xpub, txp.signingMethod);
       });
     }
     return t;
@@ -440,7 +440,7 @@ export class BtcChain implements IChain {
   }
 
   checkTx(txp) {
-    let bitcoreError;
+    let ducatuscoreError;
     const MAX_TX_SIZE_IN_KB = Defaults.MAX_TX_SIZE_IN_KB_BTC;
 
     if (this.getEstimatedSize(txp, { conservativeEstimation: true }) / 1000 > MAX_TX_SIZE_IN_KB)
@@ -454,17 +454,17 @@ export class BtcChain implements IChain {
     if (_.isEmpty(txp.inputPaths)) return Errors.NO_INPUT_PATHS;
 
     try {
-      const bitcoreTx = this.getBitcoreTx(txp);
-      bitcoreError = bitcoreTx.getSerializationError(serializationOpts);
-      if (!bitcoreError) {
-        txp.fee = bitcoreTx.getFee();
+      const ducatuscoreTx = this.getDucatuscoreTx(txp);
+      ducatuscoreError = ducatuscoreTx.getSerializationError(serializationOpts);
+      if (!ducatuscoreError) {
+        txp.fee = ducatuscoreTx.getFee();
       }
     } catch (ex) {
-      logger.warn('Error building Bitcore transaction: %o', ex);
+      logger.warn('Error building Ducatuscore transaction: %o', ex);
       return ex;
     }
 
-    if (bitcoreError instanceof this.bitcoreLib.errors.Transaction.FeeError) {
+    if (ducatuscoreError instanceof this.ducatuscoreLib.errors.Transaction.FeeError) {
       return new ClientError(
         Errors.codes.INSUFFICIENT_FUNDS_FOR_FEE,
         `${Errors.INSUFFICIENT_FUNDS_FOR_FEE.message}. RequiredFee: ${txp.fee} Coin: ${txp.coin} feePerKb: ${txp.feePerKb} Err1`,
@@ -475,8 +475,8 @@ export class BtcChain implements IChain {
         }
       );
     }
-    if (bitcoreError instanceof this.bitcoreLib.errors.Transaction.DustOutputs) return Errors.DUST_AMOUNT;
-    return bitcoreError;
+    if (ducatuscoreError instanceof this.ducatuscoreLib.errors.Transaction.DustOutputs) return Errors.DUST_AMOUNT;
+    return ducatuscoreError;
   }
 
   checkTxUTXOs(server, txp, opts, cb) {
@@ -698,7 +698,7 @@ export class BtcChain implements IChain {
           const changeAmount = Math.round(total - fullTxpAmount - fee);
           logger.debug('Tx change: %o', Utils.formatAmountInBtc(changeAmount));
 
-          const dustThreshold = Math.max(Defaults.MIN_OUTPUT_AMOUNT, this.bitcoreLib.Transaction.DUST_AMOUNT);
+          const dustThreshold = Math.max(Defaults.MIN_OUTPUT_AMOUNT, this.ducatuscoreLib.Transaction.DUST_AMOUNT);
           if (changeAmount > 0 && changeAmount <= dustThreshold) {
             logger.debug(
               'Change below dust threshold (' +
@@ -903,21 +903,21 @@ export class BtcChain implements IChain {
 
   addressToStorageTransform(network, address) {}
 
-  addSignaturesToBitcoreTx(tx, inputs, inputPaths, signatures, xpub, signingMethod) {
+  addSignaturesToDucatuscoreTx(tx, inputs, inputPaths, signatures, xpub, signingMethod) {
     signingMethod = signingMethod || 'ecdsa';
     if (signatures.length != inputs.length) throw new Error('Number of signatures does not match number of inputs');
 
     let i = 0;
-    const x = new this.bitcoreLib.HDPublicKey(xpub);
+    const x = new this.ducatuscoreLib.HDPublicKey(xpub);
 
     for (const signatureHex of signatures) {
       try {
-        const signature = this.bitcoreLib.crypto.Signature.fromString(signatureHex);
+        const signature = this.ducatuscoreLib.crypto.Signature.fromString(signatureHex);
         const pub = x.deriveChild(inputPaths[i]).publicKey;
         const s = {
           inputIndex: i,
           signature,
-          sigtype: this.bitcoreLib.crypto.Signature.SIGHASH_ALL | this.bitcoreLib.crypto.Signature.SIGHASH_FORKID,
+          sigtype: this.ducatuscoreLib.crypto.Signature.SIGHASH_ALL | this.ducatuscoreLib.crypto.Signature.SIGHASH_FORKID,
           publicKey: pub
         };
         tx.inputs[i].addSignature(tx, s, signingMethod);
@@ -929,7 +929,7 @@ export class BtcChain implements IChain {
   }
 
   validateAddress(wallet, inaddr, opts) {
-    const A = this.bitcoreLib.Address;
+    const A = this.ducatuscoreLib.Address;
     let addr: {
       network?: string;
       toString?: (cashAddr: boolean) => string;

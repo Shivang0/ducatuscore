@@ -3,15 +3,15 @@ import _ from 'lodash';
 import { logger } from '../logger';
 
 const $ = require('preconditions').singleton();
-const bitcore = require('bitcore-lib');
-const crypto = bitcore.crypto;
+const ducatuscore = require('@ducatus/ducatuscore-lib');
+const crypto = ducatuscore.crypto;
 const secp256k1 = require('secp256k1');
-const Bitcore = require('bitcore-lib');
-const Bitcore_ = {
-  btc: Bitcore,
-  bch: require('bitcore-lib-cash'),
-  doge: require('bitcore-lib-doge'),
-  ltc: require('bitcore-lib-ltc')
+const Ducatuscore = require('@ducatus/ducatuscore-lib');
+const Ducatuscore_ = {
+  btc: Ducatuscore,
+  bch: require('@ducatus/ducatuscore-lib-cash'),
+  doge: require('@ducatus/ducatuscore-lib-doge'),
+  ltc: require('@ducatus/ducatuscore-lib-ltc')
 };
 
 export class Utils {
@@ -41,7 +41,7 @@ export class Utils {
     const buf = Buffer.from(text);
     let ret = crypto.Hash.sha256sha256(buf);
     if (!noReverse) {
-      ret = new bitcore.encoding.BufferReader(ret).readReverse();
+      ret = new ducatuscore.encoding.BufferReader(ret).readReverse();
     }
     return ret;
   }
@@ -84,7 +84,7 @@ export class Utils {
       if (!Buffer.isBuffer(signature)) {
         signatureBuffer = Buffer.from(signature, 'hex');
       }
-      // uses the native module (c++) for performance vs bitcore lib (javascript)
+      // uses the native module (c++) for performance vs ducatuscore lib (javascript)
       return secp256k1.signatureImport(signatureBuffer);
     } catch (e) {
       logger.error('_tryImportSignature encountered an error: %o', e);
@@ -94,7 +94,7 @@ export class Utils {
 
   static _tryVerifyMessage(hash, sig, publicKeyBuffer) {
     try {
-      // uses the native module (c++) for performance vs bitcore lib (javascript)
+      // uses the native module (c++) for performance vs ducatuscore lib (javascript)
       return secp256k1.ecdsaVerify(sig, hash, publicKeyBuffer);
     } catch (e) {
       logger.error('_tryVerifyMessage encountered an error: %o', e);
@@ -243,19 +243,19 @@ export class Utils {
 
   static getAddressCoin(address) {
     try {
-      new Bitcore_['btc'].Address(address);
+      new Ducatuscore_['btc'].Address(address);
       return 'btc';
     } catch (e) {
       try {
-        new Bitcore_['bch'].Address(address);
+        new Ducatuscore_['bch'].Address(address);
         return 'bch';
       } catch (e) {
         try {
-          new Bitcore_['doge'].Address(address);
+          new Ducatuscore_['doge'].Address(address);
           return 'doge';
         } catch (e) {
           try {
-            new Bitcore_['ltc'].Address(address);
+            new Ducatuscore_['ltc'].Address(address);
             return 'ltc';
           } catch (e) {
             return;
@@ -267,10 +267,10 @@ export class Utils {
 
   static translateAddress(address, coin) {
     const origCoin = Utils.getAddressCoin(address);
-    const origAddress = new Bitcore_[origCoin].Address(address);
+    const origAddress = new Ducatuscore_[origCoin].Address(address);
     const origObj = origAddress.toObject();
 
-    const result = Bitcore_[coin].Address.fromObject(origObj);
+    const result = Ducatuscore_[coin].Address.fromObject(origObj);
     return coin == 'bch' ? result.toLegacyAddress() : result.toString();
   }
 }

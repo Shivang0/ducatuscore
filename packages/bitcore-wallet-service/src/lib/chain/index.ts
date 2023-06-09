@@ -42,7 +42,7 @@ export interface IChain {
   getChangeAddress(server: WalletService, wallet: IWallet, opts: { changeAddress: string } & any);
   checkDust(output: { amount: number; toAddress: string; valid: boolean }, opts: { outputs: any[] } & any);
   getFee(server: WalletService, wallet: IWallet, opts: { fee: number; feePerKb: number } & any);
-  getBitcoreTx(txp: TxProposal, opts: { signed: boolean });
+  getDucatuscoreTx(txp: TxProposal, opts: { signed: boolean });
   convertFeePerKb(p: number, feePerKb: number);
   checkTx(server: WalletService, txp: ITxProposal);
   checkTxUTXOs(server: WalletService, txp: ITxProposal, opts: { noCashAddr: boolean } & any, cb);
@@ -53,7 +53,7 @@ export interface IChain {
   isSingleAddress(): boolean;
   supportsMultisig(): boolean;
   notifyConfirmations(network: string): boolean;
-  addSignaturesToBitcoreTx(
+  addSignaturesToDucatuscoreTx(
     tx: string,
     inputs: any[],
     inputPaths: any[],
@@ -132,8 +132,8 @@ class ChainProxy {
     return this.get(wallet.chain).getFee(server, wallet, opts);
   }
 
-  getBitcoreTx(txp: TxProposal, opts = { signed: true }) {
-    return this.get(txp.chain).getBitcoreTx(txp, { signed: opts.signed });
+  getDucatuscoreTx(txp: TxProposal, opts = { signed: true }) {
+    return this.get(txp.chain).getDucatuscoreTx(txp, { signed: opts.signed });
   }
 
   convertFeePerKb(chain, p, feePerKb) {
@@ -184,8 +184,8 @@ class ChainProxy {
     return this.get(chain).supportsMultisig();
   }
 
-  addSignaturesToBitcoreTx(chain, tx, inputs, inputPaths, signatures, xpub, signingMethod) {
-    this.get(chain).addSignaturesToBitcoreTx(tx, inputs, inputPaths, signatures, xpub, signingMethod);
+  addSignaturesToDucatuscoreTx(chain, tx, inputs, inputPaths, signatures, xpub, signingMethod) {
+    this.get(chain).addSignaturesToDucatuscoreTx(tx, inputs, inputPaths, signatures, xpub, signingMethod);
   }
 
   validateAddress(wallet, inaddr, opts) {

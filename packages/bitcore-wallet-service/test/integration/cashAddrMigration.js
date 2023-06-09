@@ -9,10 +9,10 @@ var should = chai.should();
 var log = require('npmlog');
 log.debug = log.verbose;
 
-var Bitcore = require('bitcore-lib');
-var Bitcore_ = {
-  btc: Bitcore,
-  bch: require('bitcore-lib-cash')
+var Ducatuscore = require('@ducatus/ducatuscore-lib');
+var Ducatuscore_ = {
+  btc: Ducatuscore,
+  bch: require('@ducatus/ducatuscore-lib-cash')
 };
 
 

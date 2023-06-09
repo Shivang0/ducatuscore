@@ -10,7 +10,7 @@ var scripts = [
   'emailservice/emailservice.js',
   'pushnotificationsservice/pushnotificationsservice.js',
   'fiatrateservice/fiatrateservice.js',
-  'bws.js'
+  'dws.js'
 ];
 
 async.eachSeries(scripts, function(script, callback) {

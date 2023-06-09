@@ -5,7 +5,7 @@ var chai = require('chai');
 var sinon = require('sinon');
 var should = chai.should();
 var { Advertisement } = require('../../ts_build/lib/model/advertisement');
-var Bitcore = require('bitcore-lib');
+var Ducatuscore = require('@ducatus/ducatuscore-lib');
 
 describe("#Advertisement", function() {
   describe("#create", function() {

@@ -1,19 +1,19 @@
 # Installation
 
-The following document is a step-by-step guide to run BWS.
+The following document is a step-by-step guide to run DWS.
 
 ## Prerequisites
 
 Ensure MongoDB (2.6+) is installed and running. This document assumes that mongod is running at the default port 27017.
 See the configuration section to configure a different host/port.
 
-## Install BWS from NPM
+## Install DWS from NPM
 
-Use the following steps to Install BWS from the npmjs repository and run it with defaults.
+Use the following steps to Install DWS from the npmjs repository and run it with defaults.
 
 ```sh
-npm install bitcore-wallet-service
-cd bitcore-wallet-service
+npm install @ducatus/ducatuscore-wallet-service
+cd @ducatus/ducatuscore-wallet-service
 ```
 
 To change configuration before running, see the Configuration section.
@@ -22,13 +22,12 @@ To change configuration before running, see the Configuration section.
 npm start
 ```
 
-## Install BWS from github source
+## Install DWS from github source
 
-Use the following steps to Install BWS from github source and run it with defaults.
+Use the following steps to Install DWS from github source and run it with defaults.
 
 ```sh
-git clone https://github.com/bitpay/bitcore-wallet-service.git
-cd bitcore-wallet-service
+cd ducatuscore-wallet-service
 npm install
 ```
 
@@ -40,13 +39,11 @@ npm start
 
 ## Configuration
 
-Configuration for all required modules can be specified in https://github.com/bitpay/bitcore-wallet-service/blob/master/config.js
-
-BWS is composed of 4 separate node services -
+DWS is composed of 4 separate node services -
 Message Broker - messagebroker/messagebroker.js
 Blockchain Monitor - bcmonitor/bcmonitor.js (This service talks to the Blockchain Explorer service configured under blockchainExplorerOpts - see Configure blockchain service below.)
 Email Service - emailservice/emailservice.js
-Bitcore Wallet Service - bws.js
+Ducatuscore Wallet Service - dws.js
 
 ### Configure MongoDB
 
@@ -55,7 +52,7 @@ Example configuration for connecting to the MongoDB instance:
 ```javascript
   storageOpts: {
     mongoDb: {
-      uri: 'mongodb://localhost:27017/bws',
+      uri: 'mongodb://localhost:27017/dws',
     },
   }
 ```
@@ -72,9 +69,9 @@ Example configuration for connecting to message broker service:
   }
 ```
 
-### Configure blockchain service. Bitcore v8 is required.
+### Configure blockchain service. Ducatuscore v8 is required.
 
-Note: this service will be used by blockchain monitor service as well as by BWS itself.
+Note: this service will be used by blockchain monitor service as well as by DWS itself.
 An example of this configuration is:
 
 ```javascript
@@ -82,11 +79,11 @@ An example of this configuration is:
       'btc': {
         livenet: {
             provider: 'v8',
-            url: 'https://insight.bitpay.com:443',
+            url: 'https://localhost:3000',
          },
         testnet: {
             provider: 'v8',
-            url: 'https://test-insight.bitpay.com:443',
+            url: 'https://localhost:3000',
          },
       },
   }
@@ -102,7 +99,7 @@ Example configuration for connecting to email service (using postfix):
     port: 25,
     ignoreTLS: true,
     subjectPrefix: '[Wallet Service]',
-    from: 'wallet-service@bitcore.io',
+    from: 'wallet-service@some.io',
   }
 ```
 

@@ -15,14 +15,14 @@ const { logger, transport } = require('../../ts_build/lib/logger.js');
 const { ChainService } = require('../../ts_build/lib/chain/index');
 
 var config = require('../../ts_build/config.js');
-const Bitcore = require('bitcore-lib');
-const Bitcore_ = {
-  btc: Bitcore,
-  bch: require('bitcore-lib-cash'),
-  eth: Bitcore,
-  xrp: Bitcore,
-  doge: require('bitcore-lib-doge'),
-  ltc: require('bitcore-lib-ltc')
+const Ducatuscore = require('@ducatus/ducatuscore-lib');
+const Ducatuscore_ = {
+  btc: Ducatuscore,
+  bch: require('@ducatus/ducatuscore-lib-cash'),
+  eth: Ducatuscore,
+  xrp: Ducatuscore,
+  doge: require('@ducatus/ducatuscore-lib-doge'),
+  ltc: require('@ducatus/ducatuscore-lib-ltc')
 };
 
 const { WalletService } = require('../../ts_build/lib/server');
@@ -677,7 +677,7 @@ describe('Wallet service', function() {
           pubKey: TestData.keyPair.pub,
         };
 
-        var pub = (new Bitcore.PrivateKey()).toPublicKey();
+        var pub = (new Ducatuscore.PrivateKey()).toPublicKey();
         opts.m = pair.m;
         opts.n = pair.n;
         opts.pubKey = pub.toString();
@@ -2920,7 +2920,7 @@ describe('Wallet service', function() {
     };
 
     beforeEach(function() {
-      reqPrivKey = new Bitcore.PrivateKey();
+      reqPrivKey = new Ducatuscore.PrivateKey();
       var requestPubKey = reqPrivKey.toPublicKey();
 
       var xPrivKey = TestData.copayers[0].xPrivKey_44H_0H_0H;
@@ -2982,7 +2982,7 @@ describe('Wallet service', function() {
           should.not.exist(err);
           server.getBalance(res.wallet.walletId, function(err, bal) {
             should.not.exist(err);
-            var privKey = new Bitcore.PrivateKey();
+            var privKey = new Ducatuscore.PrivateKey();
             (getAuthServer(opts.copayerId, privKey, function(err, server2) {
               err.code.should.equal('NOT_AUTHORIZED');
               done();
@@ -4080,7 +4080,7 @@ describe('Wallet service', function() {
                   server.createTx(txOpts, function(err, tx) {
                     should.not.exist(err);
                     should.exist(tx);
-                    var t = ChainService.getBitcoreTx(tx);
+                    var t = ChainService.getDucatuscoreTx(tx);
 
                     t.getChangeOutput().script.toAddress().toString(true).should.equal(txOpts.changeAddress);
                   done();
@@ -4092,7 +4092,7 @@ describe('Wallet service', function() {
 
               helpers.stubUtxos(server, wallet, [1, 2], function(utxos) {
 
-                var addr = (new Bitcore_[coin].PrivateKey()).toAddress();
+                var addr = (new Ducatuscore_[coin].PrivateKey()).toAddress();
                 var txOpts = {
                   outputs: [{
                     toAddress: addressStr,
@@ -4127,7 +4127,7 @@ describe('Wallet service', function() {
                   tx.amount.should.equal(helpers.toSatoshi(1));
                   should.not.exist(tx.feePerKb);
                   tx.fee.should.equal(1000e2);
-                  var t = ChainService.getBitcoreTx(tx);
+                  var t = ChainService.getDucatuscoreTx(tx);
                   t.getFee().should.equal(1000e2);
                   t.getChangeOutput().satoshis.should.equal(3e8 - 1e8 - 1000e2);
                   done();
@@ -4897,7 +4897,7 @@ describe('Wallet service', function() {
             server.createTx(txOpts, function(err, txp) {
               should.not.exist(err);
               should.exist(txp);
-              var t = ChainService.getBitcoreTx(txp).toObject();
+              var t = ChainService.getDucatuscoreTx(txp).toObject();
               t.outputs.length.should.equal(1);
               t.outputs[0].satoshis.should.equal(max);
               done();
@@ -4935,10 +4935,10 @@ describe('Wallet service', function() {
           }
           helpers.stubUtxos(server, wallet, 2, { coin }, function() {
             sandbox.stub(CWC.Transactions, 'create').throws(new Error('dummy exception'));
-            sandbox.stub(Bitcore_.btc, 'Transaction').throws(new Error('dummy exception'));
-            sandbox.stub(Bitcore_.bch, 'Transaction').throws(new Error('dummy exception'));
-            sandbox.stub(Bitcore_.doge, 'Transaction').throws(new Error('dummy exception'));
-            sandbox.stub(Bitcore_.ltc, 'Transaction').throws(new Error('dummy exception'));
+            sandbox.stub(Ducatuscore_.btc, 'Transaction').throws(new Error('dummy exception'));
+            sandbox.stub(Ducatuscore_.bch, 'Transaction').throws(new Error('dummy exception'));
+            sandbox.stub(Ducatuscore_.doge, 'Transaction').throws(new Error('dummy exception'));
+            sandbox.stub(Ducatuscore_.ltc, 'Transaction').throws(new Error('dummy exception'));
             var txOpts = {
               outputs: [{
                 toAddress: addressStr,
@@ -5056,7 +5056,7 @@ describe('Wallet service', function() {
               server.createTx(txOpts, function(err, tx) {
                 should.not.exist(err);
                 should.exist(tx);
-                var bitcoreTx = ChainService.getBitcoreTx(tx);
+                var bitcoreTx = ChainService.getDucatuscoreTx(tx);
                 bitcoreTx.outputs.length.should.equal(1);
                 bitcoreTx.outputs[0].satoshis.should.equal(tx.amount);
                 done();
@@ -5158,7 +5158,7 @@ describe('Wallet service', function() {
               should.not.exist(tx.changeAddress);
               tx.amount.should.equal(3 * TO_SAT[coin] - tx.fee);
 
-              var t = ChainService.getBitcoreTx(tx);
+              var t = ChainService.getDucatuscoreTx(tx);
               t.getFee().should.equal(tx.fee);
               should.not.exist(t.getChangeOutput());
               t.toObject().inputs.length.should.equal(tx.inputs.length);
@@ -5202,7 +5202,7 @@ describe('Wallet service', function() {
                   }, function(err, txp) {
                     txp.amount.should.equal(3 * TO_SAT[coin] - txp.fee);
 
-                    var t = ChainService.getBitcoreTx(txp);
+                    var t = ChainService.getDucatuscoreTx(txp);
                     t.getFee().should.equal(txp.fee);
 
                     const actualFeeRate = t.getFee() / (txp.raw.length/2);
@@ -5216,7 +5216,7 @@ describe('Wallet service', function() {
 
           if(coin !== 'doge' && coin !== 'ltc') { // TODO
           it('should accept a tx proposal signed with a custom key', function(done) {
-            var reqPrivKey = new Bitcore.PrivateKey();
+            var reqPrivKey = new Ducatuscore.PrivateKey();
             var reqPubKey = reqPrivKey.toPublicKey().toString();
 
             var xPrivKey = TestData.copayers[0].xPrivKey_44H_0H_0H;
@@ -5289,7 +5289,7 @@ describe('Wallet service', function() {
               server.createTx(txOpts, function(err, txp) {
                 should.not.exist(err);
                 should.exist(txp);
-                var t = ChainService.getBitcoreTx(txp);
+                var t = ChainService.getDucatuscoreTx(txp);
                 var changeOutput = t.getChangeOutput().satoshis;
                 var outputs = _.without(_.map(t.outputs, 'satoshis'), changeOutput);
 
@@ -5300,7 +5300,7 @@ describe('Wallet service', function() {
                   should.not.exist(err);
                   should.exist(txp);
 
-                  t = ChainService.getBitcoreTx(txp);
+                  t = ChainService.getDucatuscoreTx(txp);
                   changeOutput = t.getChangeOutput().satoshis;
                   outputs = _.without(_.map(t.outputs, 'satoshis'), changeOutput);
 
@@ -5881,7 +5881,7 @@ describe('Wallet service', function() {
               should.not.exist(err);
               txp.inputs.length.should.equal(1);
               (_.sumBy(txp.inputs, 'satoshis') - txp.outputs[0].amount - txp.fee).should.equal(0);
-              var changeOutput = ChainService.getBitcoreTx(txp).getChangeOutput();
+              var changeOutput = ChainService.getDucatuscoreTx(txp).getChangeOutput();
               should.not.exist(changeOutput);
               done();
             });
@@ -6923,7 +6923,7 @@ describe('Wallet service', function() {
       server.createTx(txOpts, function(err, tx) {
         should.not.exist(err);
         should.exist(tx);
-        var t = ChainService.getBitcoreTx(tx);
+        var t = ChainService.getDucatuscoreTx(tx);
         t.toObject().inputs.length.should.equal(info.inputs.length);
         t.getFee().should.equal(info.fee);
         should.not.exist(t.getChangeOutput());
@@ -7557,7 +7557,7 @@ describe('Wallet service', function() {
           txp.status.should.equal('accepted');
           //console.log('[server.js.6981:txp:]',txp); // TODO
 
-          var t = ChainService.getBitcoreTx(txp);
+          var t = ChainService.getDucatuscoreTx(txp);
           const vSize = x.vSize || t._estimateSize(); // use given vSize if available
           // Check size and fee rate
           const actualSize = txp.raw.length / 2;
@@ -7713,7 +7713,7 @@ describe('Wallet service', function() {
           txp.status.should.equal('accepted');
           //console.log('[server.js.6981:txp:]',txp); // TODO
 
-          var t = ChainService.getBitcoreTx(txp);
+          var t = ChainService.getDucatuscoreTx(txp);
           const vSize = x.vSize || t._estimateSize(); // use given vSize if available
           // Check size and fee rate
           const actualSize = txp.raw.length / 2;
@@ -7722,9 +7722,9 @@ describe('Wallet service', function() {
           console.log(`Wire Size:${actualSize} vSize: ${vSize} (Segwit: ${x.fromSegwit})  Fee: ${t.getFee()} ActualRate:${Math.round(actualFeeRate)} RequiredRate:${x.requiredFeeRate}`);
 
           // Fee should be more than min relay fee
-          t.getFee().should.be.gte(CWC.BitcoreLibDoge.Transaction.DUST_AMOUNT);
+          t.getFee().should.be.gte(CWC.DucatuscoreLibDoge.Transaction.DUST_AMOUNT);
 
-          if (t.getFee() > CWC.BitcoreLibDoge.Transaction.DUST_AMOUNT) {
+          if (t.getFee() > CWC.DucatuscoreLibDoge.Transaction.DUST_AMOUNT) {
             // size should be above (or equal) the required FeeRate
             actualFeeRate.should.not.be.below(x.requiredFeeRate);
             actualFeeRate.should.be.below(x.requiredFeeRate * 1.5); // no more that 50% extra
@@ -8346,7 +8346,7 @@ describe('Wallet service', function() {
           should.not.exist(err);
 
           should.exist(txp.raw);
-          const tx = new Bitcore.Transaction(txp.raw);
+          const tx = new Ducatuscore.Transaction(txp.raw);
           clock.restore();
           done();
         });
