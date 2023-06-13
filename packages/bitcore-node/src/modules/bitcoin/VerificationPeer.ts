@@ -76,7 +76,7 @@ export class VerificationPeer extends BitcoinP2PWorker implements IVerificationP
 
     this.pool.on('peerinv', (peer, message) => {
       const filtered = message.inventory.filter(inv => {
-        const hash = this.bitcoreLib.encoding
+        const hash = this.ducatuscoreLib.encoding
           .BufferReader(inv.hash)
           .readReverse()
           .toString('hex');

@@ -9,7 +9,7 @@ import { XrpVerificationPeer } from './p2p/verification';
 export default class XRPModule extends BaseModule {
   static startMonitor: EventEmitter;
   static endMonitor: EventEmitter;
-  constructor(services: BaseModule['bitcoreServices']) {
+  constructor(services: BaseModule['ducatuscoreServices']) {
     super(services);
     services.CSP.registerService('XRP', new RippleStateProvider());
     services.Api.app.use(XrpRoutes);

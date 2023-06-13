@@ -6,25 +6,25 @@ let program = parseArgv([], ['config']);
 
 function findConfig(): ConfigType | undefined {
   let foundConfig;
-  const envConfigPath = process.env.BITCORE_CONFIG_PATH;
+  const envConfigPath = process.env.DUCATUSCORE_CONFIG_PATH;
   const argConfigPath = program.config;
-  const configFileName = 'bitcore.config.json';
-  let bitcoreConfigPaths = [
+  const configFileName = 'ducatuscore.config.json';
+  let ducatuscoreConfigPaths = [
     `${homedir()}/${configFileName}`,
     `../../../../${configFileName}`,
     `../../${configFileName}`
   ];
   const overrideConfig = argConfigPath || envConfigPath;
   if (overrideConfig) {
-    bitcoreConfigPaths.unshift(overrideConfig);
+    ducatuscoreConfigPaths.unshift(overrideConfig);
   }
-  // No config specified. Search home, bitcore and cur directory
-  for (let path of bitcoreConfigPaths) {
+  // No config specified. Search home, ducatuscore and cur directory
+  for (let path of ducatuscoreConfigPaths) {
     if (!foundConfig) {
       try {
         const expanded = path[0] === '~' ? path.replace('~', homedir()) : path;
-        const bitcoreConfig = require(expanded) as { bitcoreNode: ConfigType };
-        foundConfig = bitcoreConfig.bitcoreNode;
+        const ducatuscoreConfig = require(expanded) as { ducatuscoreNode: ConfigType };
+        foundConfig = ducatuscoreConfig.ducatuscoreNode;
       } catch (e) {
         foundConfig = undefined;
       }
@@ -56,7 +56,7 @@ const Config = function(): ConfigType {
     port: 3000,
     dbUrl: process.env.DB_URL || '',
     dbHost: process.env.DB_HOST || '127.0.0.1',
-    dbName: process.env.DB_NAME || 'bitcore',
+    dbName: process.env.DB_NAME || 'ducatuscore',
     dbPort: process.env.DB_PORT || '27017',
     dbUser: process.env.DB_USER || '',
     dbPass: process.env.DB_PASS || '',

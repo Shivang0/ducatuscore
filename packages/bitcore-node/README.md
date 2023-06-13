@@ -1,4 +1,4 @@
-# Bitcore Node
+# Ducatuscore Node
 
 **A standardized API to interact with multiple blockchain networks**
 
@@ -18,24 +18,24 @@ Currently supporting:
 
 
 ```sh
-git clone git@github.com:bitpay/bitcore.git
+git clone google.com
 git checkout master
 npm install
 ```
 
 ## Setup Guide
 
-### 1. Setup Bitcore config
+### 1. Setup Ducatuscore config
 
 The definition for all the chain configuration can be found in `src/types/Config.ts`
 
 <details>
-<summary>Example bitcore.config.json</summary>
+<summary>Example ducatuscore.config.json</summary>
 <br>
 
 ```json
 {
-  "bitcoreNode": {
+  "ducatuscoreNode": {
     "chains": {
       "BTC": {
         "mainnet": {
@@ -150,13 +150,13 @@ rpcpassword=password
 
 </details>
 
-### 4. Start Bitcore
+### 4. Start Ducatuscore
 
 ```sh
 npm run node
 ```
 
-Bitcore will begin using your blockchain nodes to synchronize its own database so that you can use standardized queries to get data from each of your supported blockchains.
+Ducatuscore will begin using your blockchain nodes to synchronize its own database so that you can use standardized queries to get data from each of your supported blockchains.
 
 ## API Documentation
 
@@ -164,14 +164,4 @@ Bitcore will begin using your blockchain nodes to synchronize its own database s
 
 - [Websockets API namespaces, event names and parameters](./docs/sockets-api.md)
 
-- [Testing Bitcore-node in RegTest](./docs/wallet-guide.md)
-
-## Contributing
-
-See [CONTRIBUTING.md](../../Contributing.md) on the main bitcore repo for information about how to contribute.
-
-## License
-
-Code released under [the MIT license](https://github.com/bitpay/bitcore/blob/master/LICENSE).
-
-Copyright 2013-2023 BitPay, Inc. Bitcore is a trademark maintained by BitPay, Inc.
+- [Testing Ducatuscore-node in RegTest](./docs/wallet-guide.md)

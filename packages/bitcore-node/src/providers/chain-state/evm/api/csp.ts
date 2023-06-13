@@ -1,4 +1,4 @@
-import { CryptoRpc } from 'crypto-rpc';
+import { CryptoRpc } from '@ducatus/crypto-rpc';
 import { ObjectID } from 'mongodb';
 import { Readable } from 'stream';
 import Web3 from 'web3';
@@ -515,7 +515,7 @@ export class BaseEVMStateProvider extends InternalStateProvider implements IChai
             }
           ],
           jsonrpc: '2.0',
-          id: 'bitcore-' + Date.now()
+          id: 'ducatuscore-' + Date.now()
         };
 
         let provider = web3.currentProvider as any;

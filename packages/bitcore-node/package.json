@@ -1,16 +1,10 @@
 {
-  "name": "bitcore-node",
-  "description": "A blockchain indexing node with extended capabilities using bitcore",
+  "name": "ductuscore-node",
+  "description": "A blockchain indexing node with extended capabilities using ducatuscore",
   "engines": {
     "node": ">=18.0.0"
   },
-  "version": "10.0.5",
-  "author": "Justin Langston <nitsujlangston@gmail.com>",
-  "contributors": [
-    "Justin Langston <nitsujlangston@gmail.com>",
-    "Micah Riggan <micahriggan@gmail.com>",
-    "Kenny Joseph <kajoseph2@msn.com>"
-  ],
+  "version": "10.0.0",
   "main": "build/src/server.js",
   "bin": "bin/start",
   "scripts": {
@@ -51,15 +45,6 @@
     ],
     "all": true
   },
-  "keywords": [
-    "bitcore-node",
-    "typescript",
-    "bitcoin",
-    "bitcoin-cash",
-    "ethereum",
-    "node"
-  ],
-  "license": "MIT",
   "devDependencies": {
     "@types/bn.js": "4.11.5",
     "@types/chai": "4.1.3",
@@ -90,19 +75,19 @@
   },
   "dependencies": {
     "abi-decoder": "2.4.0",
-    "bitcore-client": "^10.0.5",
-    "bitcore-lib": "^10.0.5",
-    "bitcore-lib-cash": "^10.0.5",
-    "bitcore-lib-doge": "^10.0.5",
-    "bitcore-lib-ltc": "^10.0.5",
-    "bitcore-p2p": "^10.0.5",
-    "bitcore-p2p-cash": "^10.0.5",
-    "bitcore-p2p-doge": "^10.0.5",
-    "bitcore-wallet-client": "^10.0.5",
+    "@ducatus/ducatuscore-client": "^10.0.0",
+    "@ducatus/ducatuscore-lib": "^10.0.0",
+    "@ducatus/ducatuscore-lib-cash": "^10.0.0",
+    "@ducatus/ducatuscore-lib-doge": "^10.0.0",
+    "@ducatus/ducatuscore-lib-ltc": "^10.0.0",
+    "@ducatus/ducatuscore-p2p": "^10.0.0",
+    "@ducatus/ducatuscore-p2p-cash": "^10.0.0",
+    "@ducatus/ducatuscore-p2p-doge": "^10.0.0",
+    "@ducatus/ducatuscore-wallet-client": "^10.0.0",
     "body-parser": "1.18.3",
     "cors": "2.8.4",
-    "crypto-rpc": "https://github.com/bitpay/crypto-rpc.git#e8106ed18740b0257a90365e830726cd66e912f6",
-    "crypto-wallet-core": "^10.0.5",
+    "@ducatus/crypto-rpc": "^1.0.0",
+    "@ducatus/ducatuscore-crypto": "^10.0.0",
     "heapdump": "0.3.15",
     "http": "0.0.0",
     "lodash": "4.17.11",
@@ -116,6 +101,5 @@
     "underscore": "1.8.3",
     "web3": "1.7.0",
     "winston": "3.2.0"
-  },
-  "gitHead": "ec2b236995f5208772518fa9e0a48c461ae0b3e3"
+  }
 }

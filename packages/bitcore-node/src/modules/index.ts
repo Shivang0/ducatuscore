@@ -18,7 +18,7 @@ export interface IService {
 export class BaseModule implements IService {
   internalServices = new Array<IService>();
   constructor(
-    protected bitcoreServices: {
+    protected ducatuscoreServices: {
       P2P: typeof P2P;
       Storage: typeof Storage;
       Event: typeof Event;
@@ -63,7 +63,7 @@ class ModuleManager extends BaseModule {
 
     const registerModuleClass = modulePath => {
       const moduleClass = require(modulePath).default || (require(modulePath) as Class<BaseModule>);
-      this.internalServices.push(new moduleClass(this.bitcoreServices));
+      this.internalServices.push(new moduleClass(this.ducatuscoreServices));
     };
 
     // Register all configured modules (in case users want to add custom modules)

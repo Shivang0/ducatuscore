@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as crypto from 'crypto';
-import { BitcoreLib } from 'crypto-wallet-core';
+import { DucatuscoreLib } from '@ducatus/ducatuscore-crypto';
 import { CoinStorage, ICoin } from '../../../src/models/coin';
 import { IBtcTransaction, SpendOp, TransactionStorage } from '../../../src/models/transaction';
 import { SpentHeightIndicators } from '../../../src/types/Coin';
@@ -137,7 +137,7 @@ describe('Coin Model', function() {
   });
 
   it('should appropriately mark coins related to transactions that are RBFed', async () => {
-    const privateKey = new BitcoreLib.PrivateKey('L1uyy5qTuGrVXrmrsvHWHgVzW9kKdrp27wBC7Vs6nZDTF2BRUVwy');
+    const privateKey = new DucatuscoreLib.PrivateKey('L1uyy5qTuGrVXrmrsvHWHgVzW9kKdrp27wBC7Vs6nZDTF2BRUVwy');
 
     const utxo1 = {
       txId: createNewTxid(),
@@ -148,7 +148,7 @@ describe('Coin Model', function() {
     };
 
     // create tx with mutliple outputs
-    const tx1 = new BitcoreLib.Transaction()
+    const tx1 = new DucatuscoreLib.Transaction()
       .from(utxo1)
       .to('1Gokm82v6DmtwKEB8AiVhm82hyFSsEvBDK', 15000)
       .to('1Gokm82v6DmtwKEB8AiVhm82hyFSsEvBDK', 13000)
@@ -200,7 +200,7 @@ describe('Coin Model', function() {
         satoshis: 15000
       }
     ];
-    const tx2 = new BitcoreLib.Transaction()
+    const tx2 = new DucatuscoreLib.Transaction()
       .from(utxo2)
       .to('bc1qm0jxvjvj6pzcc64lu4k7vccsg2x22pj60zke6c', 15000)
       .sign(privateKey);

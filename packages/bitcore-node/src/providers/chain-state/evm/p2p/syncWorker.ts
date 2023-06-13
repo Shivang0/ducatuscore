@@ -1,4 +1,4 @@
-import { CryptoRpc } from 'crypto-rpc';
+import { CryptoRpc } from '@ducatus/crypto-rpc';
 import Web3 from 'web3';
 import * as worker from 'worker_threads';
 import logger from '../../../../logger';

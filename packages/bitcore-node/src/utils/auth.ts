@@ -8,7 +8,7 @@ import { Config } from '../services/config';
 import { ChainNetwork } from '../types/ChainNetwork';
 
 const secp256k1 = require('secp256k1');
-const bitcoreLib = require('bitcore-lib');
+const ducatuscoreLib = require('@ducatus/ducatuscore-lib');
 
 export interface VerificationPayload {
   message: string;
@@ -19,10 +19,10 @@ type SignedApiRequest = ChainNetwork & VerificationPayload;
 
 export function verifyRequestSignature(params: VerificationPayload): boolean {
   const { message, pubKey, signature } = params;
-  const pub = new bitcoreLib.PublicKey(pubKey).toBuffer();
-  const messageHash = bitcoreLib.crypto.Hash.sha256sha256(Buffer.from(message));
+  const pub = new ducatuscoreLib.PublicKey(pubKey).toBuffer();
+  const messageHash = ducatuscoreLib.crypto.Hash.sha256sha256(Buffer.from(message));
   if (typeof signature === 'string') {
-    // TODO we should use bitcoreLib.crypto.ECDSA.verify() instead of external dependency.
+    // TODO we should use ducatuscoreLib.crypto.ECDSA.verify() instead of external dependency.
     return secp256k1.ecdsaVerify(Buffer.from(signature, 'hex'), messageHash, pub);
   } else {
     throw new Error('Signature must exist');

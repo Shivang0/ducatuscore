@@ -183,9 +183,9 @@ export class XrpP2pWorker extends BaseP2PWorker<any> {
                 const blockCoins = new Array<IXrpCoin>();
 
                 for (const tx of txs) {
-                  const bitcoreTx = this.provider.transform(tx, network) as IXrpTransaction;
-                  const bitcoreCoins = this.provider.transformToCoins(tx, network);
-                  const { transaction, coins } = await this.provider.tag(chain, network, bitcoreTx, bitcoreCoins);
+                  const ducatuscoreTx = this.provider.transform(tx, network) as IXrpTransaction;
+                  const ducatuscoreCoins = this.provider.transformToCoins(tx, network);
+                  const { transaction, coins } = await this.provider.tag(chain, network, ducatuscoreTx, ducatuscoreCoins);
                   blockTxs.push(transaction);
                   blockCoins.push(...coins);
                 }

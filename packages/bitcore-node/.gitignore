@@ -23,7 +23,7 @@ src/dist
 build/
 build-test/
 config.json
-*bitcore.config.*
+*ducatuscore.config.*
 .nyc_output
 coverage
 scripts/*.log

@@ -39,7 +39,7 @@ Ensure Mongod is running
 mongod
 ```
 
-Start the Bitcore node in the /bitcore/ project root directory
+Start the Ducatuscore node in the /ducatuscore/ project root directory
 
 ```sh
 npm run node
@@ -52,7 +52,7 @@ To run RegTest Bitcoin Core RegTest Client
 bitcoinregtest
 ```
 
-> If successful Bitcore logo should be blue and syncing blocks on mongod in the background
+> If successful Ducatuscore logo should be blue and syncing blocks on mongod in the background
 
 ## How to Generate Blocks
 

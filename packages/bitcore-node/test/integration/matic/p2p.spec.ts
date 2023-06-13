@@ -1,4 +1,4 @@
-import * as BitcoreClient from 'bitcore-client';
+import * as DucatuscoreClient from '@ducatus/ducatuscore-client';
 import { expect } from 'chai';
 import { Web3 } from 'crypto-wallet-core';
 import sinon from 'sinon';
@@ -12,7 +12,7 @@ import { wait } from '../../../src/utils/wait';
 import { resetDatabase } from '../../helpers';
 import { intAfterHelper, intBeforeHelper } from '../../helpers/integration';
 
-const { StreamUtil } = BitcoreClient;
+const { StreamUtil } = DucatuscoreClient;
 const chain = 'MATIC';
 const network = 'regtest';
 const chainConfig = config.chains[chain][network] as IEVMNetworkConfig;
@@ -25,15 +25,15 @@ const accounts = { geth: '0xeC12CD1Ab86F83C1B26C5caa38126Bc4299b6CBa' };
 const privKeys = { geth: '0xf9ad2207e910cd649c9a32063dea3656380c32fa07d6bb9be853687ca585a015' };
 
 async function getWallet() {
-  let wallet: BitcoreClient.Wallet;
+  let wallet: DucatuscoreClient.Wallet;
   try {
-    wallet = await BitcoreClient.Wallet.loadWallet({ name, storageType });
+    wallet = await DucatuscoreClient.Wallet.loadWallet({ name, storageType });
     await wallet.register();
     await wallet.syncAddresses();
     return wallet;
   } catch (e) {
     console.log('Creating a new matic wallet');
-    wallet = await BitcoreClient.Wallet.create({
+    wallet = await DucatuscoreClient.Wallet.create({
       name,
       chain,
       network,

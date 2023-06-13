@@ -58,19 +58,19 @@ describe('Ripple Api', function() {
     expect(tip.hash).to.eq('528f01c17829622ed6a4af51b3b3f6c062f304fa60e66499c9cbb8622c8407f7');
   });
 
-  it('should transform a ripple rpc response into a bitcore transaction', async () => {
+  it('should transform a ripple rpc response into a ducatuscore transaction', async () => {
     const txs = (RippleTxs as any) as Array<FormattedTransactionType>;
     for (const tx of txs) {
-      const bitcoreTx = (await XRP.transform(tx, 'testnet')) as IXrpTransaction;
-      expect(bitcoreTx).to.have.property('chain');
-      expect(tx.address).to.eq(bitcoreTx.from);
-      expect(tx.outcome.ledgerVersion).to.eq(bitcoreTx.blockHeight);
-      expect(tx.outcome.fee).to.eq((bitcoreTx.fee / 1e6).toString());
-      expect(Number(tx.outcome.balanceChanges[bitcoreTx.from][0].value)).to.be.lt(0);
+      const ducatuscoreTx = (await XRP.transform(tx, 'testnet')) as IXrpTransaction;
+      expect(ducatuscoreTx).to.have.property('chain');
+      expect(tx.address).to.eq(ducatuscoreTx.from);
+      expect(tx.outcome.ledgerVersion).to.eq(ducatuscoreTx.blockHeight);
+      expect(tx.outcome.fee).to.eq((ducatuscoreTx.fee / 1e6).toString());
+      expect(Number(tx.outcome.balanceChanges[ducatuscoreTx.from][0].value)).to.be.lt(0);
       if (tx.outcome.deliveredAmount) {
-        expect(Object.keys(tx.outcome.balanceChanges)).to.contain(bitcoreTx.to!);
-        expect(tx.outcome.deliveredAmount!.value).to.eq((bitcoreTx.value / 1e6).toString());
-        expect(Number(tx.outcome.balanceChanges[bitcoreTx.to!][0].value)).to.be.gt(0);
+        expect(Object.keys(tx.outcome.balanceChanges)).to.contain(ducatuscoreTx.to!);
+        expect(tx.outcome.deliveredAmount!.value).to.eq((ducatuscoreTx.value / 1e6).toString());
+        expect(Number(tx.outcome.balanceChanges[ducatuscoreTx.to!][0].value)).to.be.gt(0);
       }
     }
   });
@@ -90,9 +90,9 @@ describe('Ripple Api', function() {
       processed: true
     });
     for (const tx of txs) {
-      const bitcoreTx = (await XRP.transform(tx, network)) as IXrpTransaction;
-      const bitcoreCoins = XRP.transformToCoins(tx, network);
-      const { transaction, coins } = await XRP.tag(chain, network, bitcoreTx, bitcoreCoins);
+      const ducatuscoreTx = (await XRP.transform(tx, network)) as IXrpTransaction;
+      const ducatuscoreCoins = XRP.transformToCoins(tx, network);
+      const { transaction, coins } = await XRP.tag(chain, network, ducatuscoreTx, ducatuscoreCoins);
       expect(transaction.wallets.length).eq(1);
       expect(transaction.wallets[0].equals(wallet));
       let hasACoin = false;
@@ -126,9 +126,9 @@ describe('Ripple Api', function() {
     const blockCoins = new Array<IXrpCoin>();
 
     for (const tx of txs) {
-      const bitcoreTx = XRP.transform(tx, network) as IXrpTransaction;
-      const bitcoreCoins = XRP.transformToCoins(tx, network);
-      const { transaction, coins } = await XRP.tag(chain, network, bitcoreTx, bitcoreCoins);
+      const ducatuscoreTx = XRP.transform(tx, network) as IXrpTransaction;
+      const ducatuscoreCoins = XRP.transformToCoins(tx, network);
+      const { transaction, coins } = await XRP.tag(chain, network, ducatuscoreTx, ducatuscoreCoins);
       blockTxs.push(transaction);
       blockCoins.push(...coins);
     }

@@ -420,10 +420,10 @@ curl -v localhost:3000/api/BTC/mainnet/block/tip
 
 ### Wallet
 
-**To test wallet api routes change allowUnauthenticatedCalls: true inside bitcore.config.json**
+**To test wallet api routes change allowUnauthenticatedCalls: true inside ducatuscore.config.json**
 
 ```json
-"bitcoreNode": {
+"ducatuscoreNode": {
     "services": {
         "api": {
             "wallets": {
@@ -437,10 +437,10 @@ curl -v localhost:3000/api/BTC/mainnet/block/tip
 
 **Create 5 Sample Wallets with transactions, addresses, and UTXOS**
 
-Inside the project root directory /bitcore/ run:
+Inside the project root directory /ducatuscore/ run:
 
 ```sh
-node packages/bitcore-node/build/test/benchmark/wallet-benchmark.js
+node packages/ducatuscore-node/build/test/benchmark/wallet-benchmark.js
 ```
 
 ### Add Wallet

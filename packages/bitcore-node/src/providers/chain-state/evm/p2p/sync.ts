@@ -1,4 +1,4 @@
-import { CryptoRpc } from 'crypto-rpc';
+import { CryptoRpc } from '@ducatus/crypto-rpc';
 import { EventEmitter } from 'events';
 import * as os from 'os';
 import { threadId, Worker as Thread } from 'worker_threads';

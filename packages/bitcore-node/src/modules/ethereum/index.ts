@@ -5,7 +5,7 @@ import { EthRoutes } from './api/eth-routes';
 import { EthP2pWorker } from './p2p/p2p';
 
 export default class ETHModule extends BaseModule {
-  constructor(services: BaseModule['bitcoreServices']) {
+  constructor(services: BaseModule['ducatuscoreServices']) {
     super(services);
     services.P2P.register('ETH', EthP2pWorker);
     services.CSP.registerService('ETH', new ETHStateProvider());

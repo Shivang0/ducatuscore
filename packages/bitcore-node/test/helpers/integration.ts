@@ -5,7 +5,7 @@ import { wait } from '../../src/utils/wait';
 
 const storageArgs = {
   dbHost: config.dbHost,
-  dbName: 'bitcore-integration'
+  dbName: 'ducatuscore-integration'
 };
 
 let loaded = false;

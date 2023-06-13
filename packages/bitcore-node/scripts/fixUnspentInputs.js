@@ -10,9 +10,9 @@
  *** 
  *** By default this will run for BTC on testnet. To change this
  *** use the --chain [CHAIN] and --network [NETWORk] flags.
- *** You must have valid RPC connection specified in bitcore.config.json.
+ *** You must have valid RPC connection specified in ducatuscore.config.json.
  ********************************************/
-const { CryptoRpc } = require('crypto-rpc');
+const { CryptoRpc } = require('@ducatus/crypto-rpc');
 const { TransactionStorage } = require('../build/src/models/transaction');
 const { CoinStorage } = require('../build/src/models/coin');
 const fs = require('fs');

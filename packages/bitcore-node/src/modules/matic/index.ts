@@ -5,7 +5,7 @@ import { MATICStateProvider } from './api/csp';
 import { MaticRoutes } from './api/matic-routes';
 
 export default class MATICModule extends BaseModule {
-  constructor(services: BaseModule['bitcoreServices']) {
+  constructor(services: BaseModule['ducatuscoreServices']) {
     super(services);
     services.P2P.register('MATIC', EVMP2pWorker);
     services.CSP.registerService('MATIC', new MATICStateProvider());

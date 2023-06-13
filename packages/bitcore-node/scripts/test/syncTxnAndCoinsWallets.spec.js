@@ -11,7 +11,7 @@ const { CoinStorage } = require('../../build/src/models/coin');
 describe('syncTxnAndCoinsWallets', function() {
   this.timeout(20000);
 
-  const DB_NAME = 'bitcore_mocha_scripts';
+  const DB_NAME = 'ducatuscore_mocha_scripts';
   before(async function() {
     if (!Storage.connected) {
       await Storage.start({ dbName: DB_NAME });

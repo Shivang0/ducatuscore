@@ -1,6 +1,6 @@
-import * as BitcoreClient from 'bitcore-client';
+import * as DucatuscoreClient from '@ducatus/ducatuscore-client';
 import { expect } from 'chai';
-import { Web3 } from 'crypto-wallet-core';
+import { Web3 } from '@ducatus/ducatuscore-crypto';
 import sinon from 'sinon';
 import config from '../../../src/config';
 import { CacheStorage } from '../../../src/models/cache';
@@ -12,7 +12,7 @@ import { wait } from '../../../src/utils/wait';
 import { resetDatabase } from '../../helpers';
 import { intAfterHelper, intBeforeHelper } from '../../helpers/integration';
 
-const { StreamUtil } = BitcoreClient;
+const { StreamUtil } = DucatuscoreClient;
 const chain = 'ETH';
 const network = 'regtest';
 const chainConfig = config.chains[chain][network] as IEVMNetworkConfig;
@@ -25,15 +25,15 @@ const accounts = { erigon: '0x67b1d87101671b127f5f8714789C7192f7ad340e', geth: '
 const privKeys = { erigon: '26e86e45f6fc45ec6e2ecd128cec80fa1d1505e5507dcd2ae58c3130a7a97b48', geth: '0xf9ad2207e910cd649c9a32063dea3656380c32fa07d6bb9be853687ca585a015' };
 
 async function getWallet() {
-  let wallet: BitcoreClient.Wallet;
+  let wallet: DucatuscoreClient.Wallet;
   try {
-    wallet = await BitcoreClient.Wallet.loadWallet({ name, storageType });
+    wallet = await DucatuscoreClient.Wallet.loadWallet({ name, storageType });
     await wallet.register();
     await wallet.syncAddresses();
     return wallet;
   } catch (e) {
     console.log('Creating a new ethereum wallet');
-    wallet = await BitcoreClient.Wallet.create({
+    wallet = await DucatuscoreClient.Wallet.create({
       name,
       chain,
       network,

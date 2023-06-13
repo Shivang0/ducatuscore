@@ -7,7 +7,7 @@ import { RippleStateProvider } from './csp';
 export class RippleEventAdapter {
   stopping = false;
   clients: RippleAPI[] = [];
-  constructor(protected services: BaseModule['bitcoreServices']) {}
+  constructor(protected services: BaseModule['ducatuscoreServices']) {}
 
   async start() {
     this.stopping = false;

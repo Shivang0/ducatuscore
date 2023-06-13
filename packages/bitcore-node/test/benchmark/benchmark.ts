@@ -1,5 +1,5 @@
-const bitcoreLib = require('bitcore-lib');
-const { Transaction, PrivateKey } = bitcoreLib;
+const ducatuscoreLib = require('@ducatus/ducatuscore-lib');
+const { Transaction, PrivateKey } = ducatuscoreLib;
 const UnspentOutput = Transaction.UnspentOutput;
 
 import config from '../../src/config';
@@ -109,7 +109,7 @@ function newAddress() {
 function startBenchmarkDatabase() {
   const storageArgs = {
     dbHost: config.dbHost,
-    dbName: 'bitcore-benchmark'
+    dbName: 'ducatuscore-benchmark'
   };
 
   return Storage.start(storageArgs);

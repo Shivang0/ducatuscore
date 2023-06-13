@@ -34,7 +34,7 @@ export interface IEVMNetworkConfig extends INetworkConfig {
   providers?: IProvider[]; // Multiple providers can be configured to load balance for the syncing threads
   provider?: IProvider;
   gnosisFactory?: string; // Address of the gnosis multisig contract
-  publicWeb3?: boolean; // Allow web3 rpc to be open via bitcore-node API endpoint
+  publicWeb3?: boolean; // Allow web3 rpc to be open via ducatuscore-node API endpoint
   syncStartHeight?: number; // Start syncing from this block height
   threads?: number; // Defaults to your CPU's capabilities. Currently only available for EVM chains
   mtSyncTipPad?: number; // Default: 100. Multi-threaded sync will sync up to latest block height minus mtSyncTipPad. MT syncing is blind to reorgs. This helps ensure reorgs are accounted for near the tip.

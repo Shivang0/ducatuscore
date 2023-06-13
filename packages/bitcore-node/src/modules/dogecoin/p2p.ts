@@ -11,8 +11,8 @@ import { BitcoinBlockType, BitcoinHeaderObj, BitcoinTransaction } from '../../ty
 import { wait } from '../../utils/wait';
 
 export class DogecoinP2PWorker extends BaseP2PWorker<IBtcBlock> {
-  protected bitcoreLib: any;
-  protected bitcoreP2p: any;
+  protected ducatuscoreLib: any;
+  protected ducatuscoreP2p: any;
   protected chainConfig: any;
   protected messages: any;
   protected connectInterval?: NodeJS.Timer;
@@ -28,31 +28,31 @@ export class DogecoinP2PWorker extends BaseP2PWorker<IBtcBlock> {
     this.blockModel = blockModel;
     this.chain = chain;
     this.network = network;
-    this.bitcoreLib = Libs.get(this.chain).lib;
-    this.bitcoreP2p = Libs.get(this.chain).p2p;
+    this.ducatuscoreLib = Libs.get(this.chain).lib;
+    this.ducatuscoreP2p = Libs.get(this.chain).p2p;
     this.chainConfig = chainConfig;
     this.events = new EventEmitter();
     this.isSyncing = false;
     this.initialSyncComplete = false;
     this.invCache = {};
     this.invCacheLimits = {
-      [this.bitcoreP2p.Inventory.TYPE.BLOCK]: 100,
-      [this.bitcoreP2p.Inventory.TYPE.TX]: 100000
+      [this.ducatuscoreP2p.Inventory.TYPE.BLOCK]: 100,
+      [this.ducatuscoreP2p.Inventory.TYPE.TX]: 100000
     };
 
     if (this.network === 'regtest') {
-      this.bitcoreLib.Networks.enableRegtest();
+      this.ducatuscoreLib.Networks.enableRegtest();
     }
 
-    this.messages = new this.bitcoreP2p.Messages({
+    this.messages = new this.ducatuscoreP2p.Messages({
       protocolVersion: 70003,
-      network: this.bitcoreLib.Networks.get(this.network),
-      Block: this.bitcoreLib.Block,
-      Transaction: this.bitcoreLib.Transaction,
-      BlockHeader: this.bitcoreLib.BlockHeader
+      network: this.ducatuscoreLib.Networks.get(this.network),
+      Block: this.ducatuscoreLib.Block,
+      Transaction: this.ducatuscoreLib.Transaction,
+      BlockHeader: this.ducatuscoreLib.BlockHeader
     });
 
-    this.pool = new this.bitcoreP2p.Pool({
+    this.pool = new this.ducatuscoreP2p.Pool({
       addrs: this.chainConfig.trustedPeers.map(peer => {
         return {
           ip: {
@@ -118,8 +118,8 @@ export class DogecoinP2PWorker extends BaseP2PWorker<IBtcBlock> {
         network: this.network,
         hash
       });
-      if (this.isSyncingNode && !this.isCachedInv(this.bitcoreP2p.Inventory.TYPE.TX, hash)) {
-        this.cacheInv(this.bitcoreP2p.Inventory.TYPE.TX, hash);
+      if (this.isSyncingNode && !this.isCachedInv(this.ducatuscoreP2p.Inventory.TYPE.TX, hash)) {
+        this.cacheInv(this.ducatuscoreP2p.Inventory.TYPE.TX, hash);
         await this.processTransaction(message.transaction);
         this.events.emit('transaction', message.transaction);
       }
@@ -135,10 +135,10 @@ export class DogecoinP2PWorker extends BaseP2PWorker<IBtcBlock> {
         hash
       });
 
-      const blockInCache = this.isCachedInv(this.bitcoreP2p.Inventory.TYPE.BLOCK, hash);
+      const blockInCache = this.isCachedInv(this.ducatuscoreP2p.Inventory.TYPE.BLOCK, hash);
       if (!blockInCache) {
-        block.transactions.forEach(transaction => this.cacheInv(this.bitcoreP2p.Inventory.TYPE.TX, transaction.hash));
-        this.cacheInv(this.bitcoreP2p.Inventory.TYPE.BLOCK, hash);
+        block.transactions.forEach(transaction => this.cacheInv(this.ducatuscoreP2p.Inventory.TYPE.TX, transaction.hash));
+        this.cacheInv(this.ducatuscoreP2p.Inventory.TYPE.BLOCK, hash);
       }
       if (this.isSyncingNode && (!blockInCache || this.isSyncing)) {
         this.events.emit(hash, message.block);
@@ -162,7 +162,7 @@ export class DogecoinP2PWorker extends BaseP2PWorker<IBtcBlock> {
     this.pool.on('peerinv', (peer, message) => {
       if (this.isSyncingNode) {
         const filtered = message.inventory.filter(inv => {
-          const hash = this.bitcoreLib.encoding
+          const hash = this.ducatuscoreLib.encoding
             .BufferReader(inv.hash)
             .readReverse()
             .toString('hex');

@@ -119,7 +119,7 @@ export class AsyncRPC {
 
   constructor(username: string, password: string, host: string, port: number | string) {
     this.rpc = new RPC(username, password, host, port);
-    this.walletName = process.env.LOADED_MOCHA_OPTS === 'true' ? 'MOCHA_BITCORE_WALLET' : undefined;
+    this.walletName = process.env.LOADED_MOCHA_OPTS === 'true' ? 'MOCHA_DUCATUSCORE_WALLET' : undefined;
   }
 
   async call<T = any>(method: string, params: any[], walletName?: string): Promise<T> {

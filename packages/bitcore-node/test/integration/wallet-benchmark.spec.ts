@@ -1,5 +1,5 @@
-import { Wallet } from 'bitcore-client';
-import { ParseApiStream } from 'bitcore-client';
+import { Wallet } from '@ducatus/ducatuscore-client';
+import { ParseApiStream } from '@ducatus/ducatuscore-client';
 import { expect } from 'chai';
 import { ObjectId } from 'mongodb';
 import * as io from 'socket.io-client';
