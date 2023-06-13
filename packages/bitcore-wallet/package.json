@@ -1,25 +1,17 @@
 {
-  "name": "bitcore-wallet",
-  "description": "A CLI Mutisig HD Bitcoin Wallet, demo for Bitcore Wallet Service",
-  "author": "BitPay Inc",
-  "version": "10.0.5",
+  "name": "@ducatus/ducatuscore-wallet",
+  "description": "A CLI Mutisig HD Bitcoin Wallet, demo for Ducatuscore Wallet Service",
+  "version": "10.0.0",
   "keywords": [
     "bitcoin",
     "copay",
     "multisig",
     "wallet"
   ],
-  "repository": {
-    "url": "git@github.com:bitpay/bitcore-wallet.git",
-    "type": "git"
-  },
-  "bugs": {
-    "url": "https://github.com/bitpay/bitcore-wallet/issues"
-  },
   "dependencies": {
     "async": "^2.5.0",
-    "bitcore-lib": "^10.0.5",
-    "bitcore-wallet-client": "^10.0.5",
+    "@ducatus/ducatuscore-lib": "^10.0.0",
+    "@ducatus/ducatuscore-wallet-client": "^10.0.0",
     "commander": "^2.6.0",
     "lodash": "^3.3.1",
     "moment": "^2.9.0",
@@ -37,16 +29,6 @@
     "test": "./node_modules/.bin/mocha",
     "coveralls": "./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
   },
-  "contributors": [
-    {
-      "name": "Ivan Socolsky",
-      "email": "ivan@gmail.com"
-    },
-    {
-      "name": "Matias Alejo Garcia",
-      "email": "ematiu@gmail.com"
-    }
-  ],
   "bin": {
     "wallet": "./bin/wallet",
     "wallet-address": "./bin/wallet-address",
@@ -70,7 +52,5 @@
     "wallet-txproposals": "./bin/wallet-txproposals",
     "wallet-mnemonic": "./bin/wallet-mnemonic",
     "wallet-derive": "./bin/wallet-derive"
-  },
-  "licence": "MIT",
-  "gitHead": "ec2b236995f5208772518fa9e0a48c461ae0b3e3"
+  }
 }

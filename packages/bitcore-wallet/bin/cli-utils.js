@@ -2,7 +2,7 @@ var _ = require('lodash');
 var url = require('url');
 var read = require('read')
 var log = require('npmlog');
-var Client = require('bitcore-wallet-client').default;
+var Client = require('@ducatus/ducatuscore-wallet-client').default;
 const Key = Client.Key;
 var FileStorage = require('./filestorage');
 var sjcl = require('sjcl');
@@ -279,7 +279,7 @@ Utils.configureCommander = function(program) {
   program
     .version('0.0.1')
     .option('-f, --file <filename>', 'Wallet file')
-    .option('-h, --host <host>', 'Bitcore Wallet Service URL (eg: http://localhost:3232/bws/api ')
+    .option('-h, --host <host>', 'Ducatuscore Wallet Service URL (eg: http://localhost:3232/bws/api ')
     .option('-v, --verbose', 'be verbose')
 
   return program;

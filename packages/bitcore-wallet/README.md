@@ -1,8 +1,6 @@
-# Bitcore Wallet
+# Ducatuscore Wallet
 
-[![NPM Package](https://img.shields.io/npm/v/bitcore-wallet.svg?style=flat-square)](https://www.npmjs.org/package/bitcore-wallet)
-
-**A simple Command Line Interface Wallet using [Bitcore Wallet Service](https://github.com/bitpay/bitcore/tree/master/packages/bitcore-wallet-service) and its *official* client lib [Bitcore Wallet Client](https://github.com/bitpay/bitcore/tree/master/packages/bitcore-wallet-client).**
+**A simple Command Line Interface Wallet using [Ducatuscore Wallet Service](https://google.com) and its *official* client lib [Ducatuscore Wallet Client](https://google.com).**
 
 This can be used to operate Bitcoin and Bitcoin Cash wallets.
 
@@ -10,10 +8,6 @@ This can be used to operate Bitcoin and Bitcoin Cash wallets.
 
 ```sh
 # Use -h or BWS_HOST to setup the BWS URL (defaults to localhost:3001)
-#
-# Start a local BWS instance be doing:
-# git clone https://github.com/bitpay/bitcore/tree/master/packages/bitcore-wallet-service.git bws
-# cd bws; npm install; npm start
 
 cd bin
 
@@ -125,13 +119,3 @@ airgapped$ wallet airsign txproposals.dat -o signatures.dat
 proxy$ wallet sign -i signatures.dat
   Transaction 014255.... signed by you.
 ```
-
-## Contributing
-
-See [CONTRIBUTING.md](https://github.com/bitpay/bitcore/blob/master/Contributing.md) on the main bitcore repo for information about how to contribute.
-
-## License
-
-Code released under [the MIT license](https://github.com/bitpay/bitcore/blob/master/LICENSE).
-
-Copyright 2013-2019 BitPay, Inc. Bitcore is a trademark maintained by BitPay, Inc.
