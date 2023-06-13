@@ -41,19 +41,19 @@ var traverseRoot = function (parent, errorsDefinition) {
   return parent;
 };
 
-var bwc: any = {};
-bwc.Error = function () {
+var dwc: any = {};
+dwc.Error = function () {
   this.message = 'Internal error';
   this.stack = this.message + '\n' + new Error().stack;
 };
-bwc.Error.prototype = Object.create(Error.prototype);
-bwc.Error.prototype.name = 'bwc.Error';
+dwc.Error.prototype = Object.create(Error.prototype);
+dwc.Error.prototype.name = 'dwc.Error';
 
 var data = require('./spec');
-traverseRoot(bwc.Error, data);
+traverseRoot(dwc.Error, data);
 
-module.exports = bwc.Error;
+module.exports = dwc.Error;
 
 module.exports.extend = function (spec) {
-  return traverseNode(bwc.Error, spec);
+  return traverseNode(dwc.Error, spec);
 };

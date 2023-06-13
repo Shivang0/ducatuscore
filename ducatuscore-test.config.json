@@ -1,5 +1,5 @@
 {
-  "bitcoreNode": {
+  "ducatuscoreNode": {
     "modules": ["./bitcoin", "./bitcoin-cash", "./ethereum", "./matic", "./ripple"],
     "services": {
       "api": {
@@ -21,7 +21,7 @@
           "rpc": {
             "host": "localhost",
             "port": 8333,
-            "username": "bitcorenodetest",
+            "username": "ducatuscorenodetest",
             "password": "local321"
           }
         }

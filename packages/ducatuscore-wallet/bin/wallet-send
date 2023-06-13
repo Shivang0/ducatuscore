@@ -3,10 +3,10 @@
 var program = require('commander');
 var utils = require('./cli-utils');
 var _ = require('lodash');
-var bwc = require('bitcore-wallet-client');
-var Bitcore_ = {
-  bch: bwc.BitcoreCash,
-  btc: bwc.Bitcore,
+var dwc = require('@ducatus/ducatuscore-wallet-client');
+var Ducatuscore_ = {
+  bch: dwc.DucatuscoreCash,
+  btc: dwc.Ducatuscore,
 };  
 
 program = utils.configureCommander(program);
@@ -80,7 +80,7 @@ utils.getClient(program, {
   mustExist: true
 }, function(client) {
   var coin = client.credentials.coin;
-  var bitcore = Bitcore_[coin];
+  var ducatuscore = Ducatuscore_[coin];
 
   var uri, addr, amount, note;
 
@@ -96,7 +96,7 @@ utils.getClient(program, {
     // BIP21
     try { 
 
-      var parsed = new bitcore.URI(arg1);
+      var parsed = new ducatuscore.URI(arg1);
       if (!parsed.r) {
 
         addr = parsed.address ? parsed.address.toString() : '';

@@ -29,8 +29,8 @@ function getSocket() {
 
 let p2pWorker: BitcoinP2PWorker;
 let socket = getSocket();
-const bwsPrivKey = new PrivateKey();
-const bwsKey = bwsPrivKey.publicKey.toString('hex');
+const dwsPrivKey = new PrivateKey();
+const dwsKey = dwsPrivKey.publicKey.toString('hex');
 const authKey = new PrivateKey();
 const pubKey = authKey.publicKey.toString('hex');
 const address = '2MuYKLUaKCenkEpwPkWUwYpBoDBNA2dgY3t';
@@ -42,7 +42,7 @@ describe('Websockets', function() {
 
   before(async () => {
     intBeforeHelper();
-    sandbox.stub(Socket.serviceConfig, 'bwsKeys').value([bwsKey]);
+    sandbox.stub(Socket.serviceConfig, 'dwsKeys').value([dwsKey]);
     await resetDatabase();
     await Event.start();
     await Api.start();
@@ -200,10 +200,10 @@ describe('Websockets', function() {
   });
 
   it('should get all wallet events', async () => {
-    const authClient = new Client({ apiUrl: 'http://localhost:3000/api', authKey: bwsPrivKey });
+    const authClient = new Client({ apiUrl: 'http://localhost:3000/api', authKey: dwsPrivKey });
     const payload = { method: 'socket', url: 'http://localhost:3000/api' };
     const authPayload = {
-      pubKey: bwsKey,
+      pubKey: dwsKey,
       message: authClient.getMessage(payload),
       signature: authClient.sign(payload)
     };
@@ -248,7 +248,7 @@ describe('Websockets', function() {
     sandbox.restore();
   });
 
-  it('should get an error when the key does not match the bwsKey', async () => {
+  it('should get an error when the key does not match the dwsKey', async () => {
     const pubKey = authKey.publicKey.toString('hex');
     const wrongKey = new PrivateKey();
     const authClient = new Client({ apiUrl: 'http://localhost:3000/api', authKey: wrongKey });

@@ -113,14 +113,14 @@ Utils.getClient = function(args, opts, cb) {
   opts = opts || {};
 
   var filename = args.file || process.env['WALLET_FILE'] || process.env['HOME'] + '/.wallet.json';
-  var host = args.host || 'https://bws.bitpay.com/';
+  var host = args.host || 'https://dws.bitpay.com/';
 
   var storage = new FileStorage({
     filename: filename,
   });
 
   var client = new Client({
-    baseUrl: process.env['BWS_HOST'] || url.resolve(host, '/bws/api'),
+    baseUrl: process.env['DWS_HOST'] || url.resolve(host, '/dws/api'),
     verbose: args.verbose,
     supportStaffWalletId: opts.walletId,
     timeout: 20 * 60 * 1000,
@@ -279,7 +279,7 @@ Utils.configureCommander = function(program) {
   program
     .version('0.0.1')
     .option('-f, --file <filename>', 'Wallet file')
-    .option('-h, --host <host>', 'Ducatuscore Wallet Service URL (eg: http://localhost:3232/bws/api ')
+    .option('-h, --host <host>', 'Ducatuscore Wallet Service URL (eg: http://localhost:3232/dws/api ')
     .option('-v, --verbose', 'be verbose')
 
   return program;

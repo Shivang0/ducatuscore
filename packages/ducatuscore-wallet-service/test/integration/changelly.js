@@ -57,7 +57,7 @@ describe('Changelly integration', () => {
           copayerId: wallet.copayers[0].id,
           message: 'hello world',
           signature: sig,
-          clientVersion: 'bwc-2.0.0',
+          clientVersion: 'dwc-2.0.0',
           walletId: '123',
         }, (err, s) => {
           should.not.exist(err);

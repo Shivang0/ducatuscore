@@ -2,7 +2,7 @@
 
 **The peer-to-peer networking protocol for BCH.**
 
-`bitcore-p2p-cash` adds Bitcoin Cash protocol support for Ducatuscore.
+`ducatuscore-p2p-cash` adds Bitcoin Cash protocol support for Ducatuscore.
 
 See the main ducatuscore repo
 

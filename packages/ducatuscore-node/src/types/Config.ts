@@ -85,7 +85,7 @@ export interface ConfigType {
     };
     socket: {
       disabled?: boolean;
-      bwsKeys: Array<string>;
+      dwsKeys: Array<string>;
     };
     storage: {
       disabled?: boolean;

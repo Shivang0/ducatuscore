@@ -78,7 +78,7 @@ export class ExpressApp {
       if (config.maintenanceOpts.maintenanceMode === true) {
         // send a 503 error, with a message to the bitpay status page
         let errorCode = 503;
-        let errorMessage = 'BWS down for maintenance';
+        let errorMessage = 'DWS down for maintenance';
         res.status(503).send({ code: errorCode, message: errorMessage });
       } else {
         next();
@@ -1903,7 +1903,7 @@ export class ExpressApp {
       next();
     });
 
-    this.app.use(opts.basePath || '/bws/api', router);
+    this.app.use(opts.basePath || '/dws/api', router);
 
     if (config.staticRoot) {
       logger.debug(`Serving static files from ${config.staticRoot}`);

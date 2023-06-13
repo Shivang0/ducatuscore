@@ -504,12 +504,12 @@ export class WalletService implements IWalletService {
 
     if (opts.chain === 'bch' && opts.n > 1) {
       const version = Utils.parseVersion(this.clientVersion);
-      if (version && version.agent === 'bwc') {
+      if (version && version.agent === 'dwc') {
         if (version.major < 8 || (version.major === 8 && version.minor < 3)) {
           return cb(
             new ClientError(
               Errors.codes.UPGRADE_NEEDED,
-              'BWC clients < 8.3 are no longer supported for multisig BCH wallets.'
+              'DWC clients < 8.3 are no longer supported for multisig BCH wallets.'
             )
           );
         }
@@ -1027,7 +1027,7 @@ export class WalletService implements IWalletService {
   _clientSupportsPayProRefund() {
     const version = this._parseClientVersion();
     if (!version) return false;
-    if (version.agent != 'bwc') return true;
+    if (version.agent != 'dwc') return true;
     if (version.major < 1 || (version.major == 1 && version.minor < 2)) return false;
     return true;
   }
@@ -1078,12 +1078,12 @@ export class WalletService implements IWalletService {
 
         if (opts.chain === 'bch' && wallet.n > 1) {
           const version = Utils.parseVersion(this.clientVersion);
-          if (version && version.agent === 'bwc') {
+          if (version && version.agent === 'dwc') {
             if (version.major < 8 || (version.major === 8 && version.minor < 3)) {
               return cb(
                 new ClientError(
                   Errors.codes.UPGRADE_NEEDED,
-                  'BWC clients < 8.3 are no longer supported for multisig BCH wallets.'
+                  'DWC clients < 8.3 are no longer supported for multisig BCH wallets.'
                 )
               );
             }
@@ -1092,7 +1092,7 @@ export class WalletService implements IWalletService {
 
         if (wallet.n > 1 && wallet.usePurpose48) {
           const version = Utils.parseVersion(this.clientVersion);
-          if (version && version.agent === 'bwc') {
+          if (version && version.agent === 'dwc') {
             if (version.major < 8 || (version.major === 8 && version.minor < 4)) {
               return cb(
                 new ClientError(Errors.codes.UPGRADE_NEEDED, 'Please upgrade your client to join this multisig wallet')
@@ -1103,7 +1103,7 @@ export class WalletService implements IWalletService {
 
         if (wallet.n > 1 && wallet.addressType === 'P2WSH') {
           const version = Utils.parseVersion(this.clientVersion);
-          if (version && version.agent === 'bwc') {
+          if (version && version.agent === 'dwc') {
             if (version.major < 8 || (version.major === 8 && version.minor < 17)) {
               return cb(
                 new ClientError(Errors.codes.UPGRADE_NEEDED, 'Please upgrade your client to join this multisig wallet')
@@ -1807,7 +1807,7 @@ export class WalletService implements IWalletService {
   getCoinsForTx(opts, cb) {
     this.getWallet({}, (err, wallet) => {
       if (!ChainService.isUTXOChain(wallet.chain)) {
-        // this prevents old BWC clients to break
+        // this prevents old DWC clients to break
         return cb(null, {
           inputs: [],
           outputs: []
@@ -2501,8 +2501,8 @@ export class WalletService implements IWalletService {
                     noShuffleOutputs: opts.noShuffleOutputs,
                     gasPrice,
                     nonce: opts.nonce,
-                    gasLimit, // Backward compatibility for BWC < v7.1.1
-                    data: opts.data, // Backward compatibility for BWC < v7.1.1
+                    gasLimit, // Backward compatibility for DWC < v7.1.1
+                    data: opts.data, // Backward compatibility for DWC < v7.1.1
                     tokenAddress: opts.tokenAddress,
                     multisigContractAddress: opts.multisigContractAddress,
                     multiSendContractAddress: opts.multiSendContractAddress,

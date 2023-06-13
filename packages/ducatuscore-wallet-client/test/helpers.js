@@ -37,7 +37,7 @@ const helpers = {
     newClient: app => {
         $.checkArgument(app);
         return new Client({
-            baseUrl: '/bws/api',
+            baseUrl: '/dws/api',
             request: request(app),
             bp_partner: 'xxx',
             bp_partner_version: 'yyy'

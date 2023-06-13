@@ -474,7 +474,7 @@ export class Utils {
           gasLimit: output.gasLimit
         };
       });
-      // Backwards compatibility BWC <= 8.9.0
+      // Backwards compatibility DWC <= 8.9.0
       if (data) {
         recipients[0].data = data;
       }

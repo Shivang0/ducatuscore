@@ -4,7 +4,7 @@
 
 ## Applications
 
-- [Ducatuscore Node](packages/ducatuscore-node) - A full node with extended capabilities using Ducatus-bitcore Core
+- [Ducatuscore Node](packages/ducatuscore-node) - A full node with extended capabilities using ducatuscore-node Core
 - [Ducatuscore Wallet](packages/ducatuscore-wallet) - A command-line based wallet client
 - [Ducatuscore Wallet Client](packages/ducatuscore-wallet-client-rev) - A client for the wallet service
 - [Ducatuscore Wallet Service](packages/ducatuscore-wallet-service-rev) - A multisig HD service for wallets
@@ -25,4 +25,4 @@
 ## Extras
 
 - [Ducatuscore Build](packages/ducatuscore-build) - A helper to add tasks to gulp
-- [Ducatuscore Client](packages/ducatuscore-client) - A helper to create a wallet using the bitcore-v8 infrastructure
+- [Ducatuscore Client](packages/ducatuscore-client) - A helper to create a wallet using the ducatuscore-v8 infrastructure

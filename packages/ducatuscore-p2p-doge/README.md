@@ -2,7 +2,7 @@
 
 **The peer-to-peer networking protocol for DOGE.**
 
-`@ducatus/ducatuscore-p2p-doge` adds Dogecoin protocol support for Bitcore.
+`@ducatus/ducatuscore-p2p-doge` adds Dogecoin protocol support for Ducatuscore.
 
 ## Getting Started
 

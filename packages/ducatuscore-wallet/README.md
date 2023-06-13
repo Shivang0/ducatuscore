@@ -7,7 +7,7 @@ This can be used to operate Bitcoin and Bitcoin Cash wallets.
 ## Quick Guide
 
 ```sh
-# Use -h or BWS_HOST to setup the BWS URL (defaults to localhost:3001)
+# Use -h or DWS_HOST to setup the DWS URL (defaults to localhost:3001)
 
 cd bin
 
@@ -79,7 +79,7 @@ Password-based key derivation function 2 ([PBKDF2](https://en.wikipedia.org/wiki
 
 ## Airgapped Operation
 
-Air gapped (non connected) devices are supported. This setup can be useful if maximum security is needed, to prevent private keys from being compromised. In this setup, a device is installed without network access, and transactions are signed off-line. Transactions can be pulled from BWS using a `proxy` device, then downloaded to a pendrive to be moved to the air-gapped device, signed there, and then moved back the `proxy` device to be sent back to BWS. Note that Private keys are generated off-line in the airgapped device.
+Air gapped (non connected) devices are supported. This setup can be useful if maximum security is needed, to prevent private keys from being compromised. In this setup, a device is installed without network access, and transactions are signed off-line. Transactions can be pulled from DWS using a `proxy` device, then downloaded to a pendrive to be moved to the air-gapped device, signed there, and then moved back the `proxy` device to be sent back to DWS. Note that Private keys are generated off-line in the airgapped device.
 
 ```sh
 # On the Air-gapped device
@@ -115,7 +115,7 @@ airgapped$ wallet airsign txproposals.dat -o signatures.dat
 
 ## Back to proxy machine
 
-# Send signatures to BWS
+# Send signatures to DWS
 proxy$ wallet sign -i signatures.dat
   Transaction 014255.... signed by you.
 ```

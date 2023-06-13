@@ -63,8 +63,8 @@ export interface ITxProposal {
   lowFees: boolean;
   nonce?: number;
   gasPrice?: number;
-  gasLimit?: number; // Backward compatibility for BWC <= 8.9.0
-  data?: string; // Backward compatibility for BWC <= 8.9.0
+  gasLimit?: number; // Backward compatibility for DWC <= 8.9.0
+  data?: string; // Backward compatibility for DWC <= 8.9.0
   tokenAddress?: string;
   multisigContractAddress?: string;
   destinationTag?: string;
@@ -127,8 +127,8 @@ export class TxProposal {
   raw?: Array<string> | string;
   nonce?: number;
   gasPrice?: number;
-  gasLimit?: number; // Backward compatibility for BWC <= 8.9.0
-  data?: string; // Backward compatibility for BWC <= 8.9.0
+  gasLimit?: number; // Backward compatibility for DWC <= 8.9.0
+  data?: string; // Backward compatibility for DWC <= 8.9.0
   tokenAddress?: string;
   multisigContractAddress?: string;
   multisigTxId?: string;
@@ -217,8 +217,8 @@ export class TxProposal {
     x.gasPrice = opts.gasPrice;
     x.from = opts.from;
     x.nonce = opts.nonce;
-    x.gasLimit = opts.gasLimit; // Backward compatibility for BWC <= 8.9.0
-    x.data = opts.data; // Backward compatibility for BWC <= 8.9.0
+    x.gasLimit = opts.gasLimit; // Backward compatibility for DWC <= 8.9.0
+    x.data = opts.data; // Backward compatibility for DWC <= 8.9.0
     x.tokenAddress = opts.tokenAddress;
     x.multiSendContractAddress = opts.multiSendContractAddress;
     x.isTokenSwap = opts.isTokenSwap;
@@ -288,8 +288,8 @@ export class TxProposal {
     x.gasPrice = obj.gasPrice;
     x.from = obj.from;
     x.nonce = obj.nonce;
-    x.gasLimit = obj.gasLimit; // Backward compatibility for BWC <= 8.9.0
-    x.data = obj.data; // Backward compatibility for BWC <= 8.9.0
+    x.gasLimit = obj.gasLimit; // Backward compatibility for DWC <= 8.9.0
+    x.data = obj.data; // Backward compatibility for DWC <= 8.9.0
     x.tokenAddress = obj.tokenAddress;
     x.isTokenSwap = obj.isTokenSwap;
     x.multiSendContractAddress = obj.multiSendContractAddress;
@@ -342,7 +342,7 @@ export class TxProposal {
   }
 
   getRawTx() {
-    const t = ChainService.getBitcoreTx(this);
+    const t = ChainService.getDucatuscoreTx(this);
     return t.uncheckedSerialize();
   }
 
@@ -405,8 +405,8 @@ export class TxProposal {
   sign(copayerId, signatures, xpub) {
     try {
       // Tests signatures are OK
-      const tx = ChainService.getBitcoreTx(this);
-      ChainService.addSignaturesToBitcoreTx(
+      const tx = ChainService.getDucatuscoreTx(this);
+      ChainService.addSignaturesToDucatuscoreTx(
         this.chain,
         tx,
         this.inputs,

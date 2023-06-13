@@ -151,7 +151,7 @@ export class TxProposalLegacy {
     }
   }
 
-  getBitcoreTx() {
+  getDucatuscoreTx() {
     throwUnsupportedError();
   }
 

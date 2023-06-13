@@ -184,7 +184,7 @@ export class Utils {
       v.agent = version;
       return v;
     }
-    v.agent = _.includes(['bwc', 'bws'], x[0]) ? 'bwc' : x[0];
+    v.agent = _.includes(['dwc', 'dws'], x[0]) ? 'dwc' : x[0];
     x = x[1].split('.');
     v.major = x[0] ? parseInt(x[0]) : null;
     v.minor = x[1] ? parseInt(x[1]) : null;

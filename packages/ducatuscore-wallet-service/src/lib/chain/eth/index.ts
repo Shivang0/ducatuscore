@@ -38,8 +38,8 @@ export class EthChain implements IChain {
    * @param {Number} locked - Sum of txp.amount
    * @returns {Object} balance - Total amount & locked amount.
    */
-  private convertDucatuscoreBalance(bitcoreBalance, locked) {
-    const { unconfirmed, confirmed, balance } = bitcoreBalance;
+  private convertDucatuscoreBalance(ducatuscoreBalance, locked) {
+    const { unconfirmed, confirmed, balance } = ducatuscoreBalance;
     // we ASUME all locked as confirmed, for ETH.
     const convertedBalance = {
       totalAmount: balance,
@@ -247,7 +247,7 @@ export class EthChain implements IChain {
         gasLimit: output.gasLimit
       };
     });
-    // Backwards compatibility BWC <= 8.9.0
+    // Backwards compatibility DWC <= 8.9.0
     if (data) {
       recipients[0].data = data;
     }
@@ -505,7 +505,7 @@ export class EthChain implements IChain {
       });
       signedTxs.push(signed);
 
-      // bitcore users id for txid...
+      // ducatuscore users id for txid...
       tx.id = Transactions.getHash({ tx: signed, chain });
     }
     tx.uncheckedSerialize = () => signedTxs;

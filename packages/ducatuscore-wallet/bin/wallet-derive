@@ -2,7 +2,7 @@
 
 var program = require('commander');
 var utils = require('./cli-utils');
-var Bitcore = require('bitcore-wallet-client').Bitcore;
+var Ducatuscore = require('@ducatus/ducatuscore-wallet-client').Ducatuscore;
 
 program = utils.configureCommander(program);
 
@@ -27,7 +27,7 @@ var path = args[0];
 
 function getExtendedPublicKey(client, path) {
   var xpriv = client.credentials.xPrivKey;
-  var derivedXPriv = new Bitcore.HDPrivateKey(xpriv).derive(path);
+  var derivedXPriv = new Ducatuscore.HDPrivateKey(xpriv).derive(path);
   return derivedXPriv.hdPublicKey.toString();
 };
 
@@ -35,7 +35,7 @@ utils.getClient(program, {
   mustExist: true
 }, function(client) {
   var xpub = getExtendedPublicKey(client, path);
-  var pub = new Bitcore.HDPublicKey(xpub).publicKey;
+  var pub = new Ducatuscore.HDPublicKey(xpub).publicKey;
   var address = pub.toAddress().toString();
   console.log('Derived XPub:', xpub, '\nPublic key:', pub.toString(), '\nAddress:', address);
 });

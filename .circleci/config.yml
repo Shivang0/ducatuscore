@@ -8,11 +8,11 @@ executors:
       image: ubuntu-2004:202201-02
       docker_layer_caching: true
     resource_class: large
-    working_directory: ~/bitcore
+    working_directory: ~/ducatuscore
     environment:
-      - DB_NAME: bitcore-test
+      - DB_NAME: ducatuscore-test
       - DB_PORT: 7357
-      - BITCORE_CONFIG_PATH: ~/bitcore/bitcore-test.config.json
+      - DUCATUSCORE_CONFIG_PATH: ~/ducatuscore/ducatuscore-test.config.json
 
 commands:
   create_concatenated_package_lock:
@@ -52,7 +52,7 @@ commands:
         type: string
     steps:    
       - attach_workspace:
-          at: ~/bitcore
+          at: ~/ducatuscore
       - use_node
       - start_docker_images
       - run:
@@ -90,114 +90,114 @@ jobs:
           key: node_modules-{{ checksum "package-lock.json" }}-{{ checksum "combined-package-lock.txt" }}
           paths:
             - node_modules
-            - packages/bitcore-build/node_modules
-            - packages/bitcore-client/node_modules
-            - packages/bitcore-lib/node_modules
-            - packages/bitcore-lib-cash/node_modules
-            - packages/bitcore-lib-doge/node_modules
-            - packages/bitcore-lib-ltc/node_modules
-            - packages/bitcore-mnemonic/node_modules
-            - packages/bitcore-node/node_modules
-            - packages/bitcore-p2p/node_modules
-            - packages/bitcore-p2p-cash/node_modules
-            - packages/bitcore-p2p-doge/node_modules
-            - packages/bitcore-wallet/node_modules
-            - packages/bitcore-wallet-client/node_modules
-            - packages/bitcore-wallet-service/node_modules
+            - packages/ducatuscore-build/node_modules
+            - packages/ducatuscore-client/node_modules
+            - packages/ducatuscore-lib/node_modules
+            - packages/ducatuscore-lib-cash/node_modules
+            - packages/ducatuscore-lib-doge/node_modules
+            - packages/ducatuscore-lib-ltc/node_modules
+            - packages/ducatuscore-mnemonic/node_modules
+            - packages/ducatuscore-node/node_modules
+            - packages/ducatuscore-p2p/node_modules
+            - packages/ducatuscore-p2p-cash/node_modules
+            - packages/ducatuscore-p2p-doge/node_modules
+            - packages/ducatuscore-wallet/node_modules
+            - packages/ducatuscore-wallet-client/node_modules
+            - packages/ducatuscore-wallet-service/node_modules
             - packages/crypto-wallet-core/node_modules
             - packages/insight/node_modules
       - persist_to_workspace:
-          root: ~/bitcore
+          root: ~/ducatuscore
           paths:
             - .
-  bitcore-node:
+  ducatuscore-node:
     executor: main
     steps:
       - run_test:
-          package: bitcore-node
-  bitcore-wallet-service:
+          package: ducatuscore-node
+  ducatuscore-wallet-service:
     executor: main
     steps:    
       - run_test:
-          package: bitcore-wallet-service
-  bitcore-wallet-client:
+          package: ducatuscore-wallet-service
+  ducatuscore-wallet-client:
     executor: main
     steps:
       - run_test:
-          package: bitcore-wallet-client
+          package: ducatuscore-wallet-client
   crypto-wallet-core:
     executor: main
     steps:
       - run_test:
           package: crypto-wallet-core
-  bitcore-wallet:
+  ducatuscore-wallet:
     executor: main
     steps:
       - run_test:
-          package: bitcore-wallet
-  bitcore-lib:
+          package: ducatuscore-wallet
+  ducatuscore-lib:
     executor: main
     steps:
       - run_test:
-          package: bitcore-lib
-  bitcore-lib-cash:
+          package: ducatuscore-lib
+  ducatuscore-lib-cash:
     executor: main
     steps:
       - run_test:
-          package: bitcore-lib-cash
-  bitcore-lib-doge:
+          package: ducatuscore-lib-cash
+  ducatuscore-lib-doge:
     executor: main
     steps:
       - run_test:
-          package: bitcore-lib-doge
-  bitcore-lib-ltc:
+          package: ducatuscore-lib-doge
+  ducatuscore-lib-ltc:
     executor: main
     steps:
       - run_test:
-          package: bitcore-lib-ltc
-  bitcore-mnemonic:
+          package: ducatuscore-lib-ltc
+  ducatuscore-mnemonic:
     executor: main
     steps:
       - run_test:
-          package: bitcore-mnemonic
-  bitcore-p2p:
+          package: ducatuscore-mnemonic
+  ducatuscore-p2p:
     executor: main
     steps:
       - run_test:
-          package: bitcore-p2p
+          package: ducatuscore-p2p
       
 workflows:
   version: 2
   build_and_test:
     jobs:
       - build
-      - bitcore-node:
+      - ducatuscore-node:
           requires:
             - build
-      - bitcore-wallet-service:
+      - ducatuscore-wallet-service:
           requires:
             - build
-      - bitcore-wallet-client:
+      - ducatuscore-wallet-client:
           requires:
             - build
       - crypto-wallet-core:
           requires:
             - build
-      - bitcore-lib:
+      - ducatuscore-lib:
           requires:
             - build
-      - bitcore-lib-cash:
+      - ducatuscore-lib-cash:
           requires:
             - build
-      - bitcore-lib-doge:
+      - ducatuscore-lib-doge:
           requires:
             - build
-      - bitcore-lib-ltc:
+      - ducatuscore-lib-ltc:
           requires:
             - build
-      - bitcore-mnemonic:
+      - ducatuscore-mnemonic:
           requires:
             - build
-      - bitcore-p2p:
+      - ducatuscore-p2p:
           requires:
             - build

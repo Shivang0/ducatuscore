@@ -17,7 +17,7 @@ module.exports = {
     {name: 'node'},
     {name: 'insight'},
     {name: 'libs'},
-    {name: 'bws'},
+    {name: 'dws'},
     {name: 'client'}
   ],
 }

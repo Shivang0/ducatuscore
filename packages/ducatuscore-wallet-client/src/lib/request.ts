@@ -33,7 +33,7 @@ export class Request {
 
   getHeaders(method: string, url: string, args: any, useSession?: boolean) {
     var headers = {
-      'x-client-version': 'bwc-' + Package.version
+      'x-client-version': 'dwc-' + Package.version
     };
     if (this.supportStaffWalletId) {
       headers['x-wallet-id'] = this.supportStaffWalletId;

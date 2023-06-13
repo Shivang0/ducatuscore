@@ -80,7 +80,7 @@ In order to send messages the Peer class offers the `sendMessage(message)` metho
 An example for requesting other connected nodes to a peers looks like this:
 
 ```javascript
-var p2p = require('bitcore-p2p-cash')
+var p2p = require('@ducatus/ducatuscore-p2p-cash')
 var Peer = p2p.Peer;
 var Messages = p2p.Messages;
 var peer = new Peer({host: '5.9.85.34'});

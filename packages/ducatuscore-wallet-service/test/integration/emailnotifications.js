@@ -67,7 +67,7 @@ describe('Email notifications', function() {
               storage: storage,
               mailer: mailerStub,
               emailOpts: {
-                from: 'bws@dummy.net',
+                from: 'dws@dummy.net',
                 subjectPrefix: '[test wallet]',
                 publicTxUrlTemplate: {
                   btc: {
@@ -118,7 +118,7 @@ describe('Email notifications', function() {
             });
             _.difference(['copayer2@domain.com', 'copayer3@domain.com'], _.map(emails, 'to')).should.be.empty;
             var one = emails[0];
-            one.from.should.equal('bws@dummy.net');
+            one.from.should.equal('dws@dummy.net');
             one.subject.should.contain('New payment proposal');
             should.exist(one.html);
             one.html.indexOf('<html>').should.equal(0);
@@ -222,7 +222,7 @@ describe('Email notifications', function() {
             });
             _.difference(['copayer1@domain.com', 'copayer2@domain.com', 'copayer3@domain.com'], _.map(emails, 'to')).should.be.empty;
             var one = emails[0];
-            one.from.should.equal('bws@dummy.net');
+            one.from.should.equal('dws@dummy.net');
             one.subject.should.contain('Payment sent');
             one.text.should.contain('800,000');
             should.exist(one.html);
@@ -277,7 +277,7 @@ describe('Email notifications', function() {
             });
             _.difference(['copayer1@domain.com', 'copayer2@domain.com'], _.map(emails, 'to')).should.be.empty;
             var one = emails[0];
-            one.from.should.equal('bws@dummy.net');
+            one.from.should.equal('dws@dummy.net');
             one.subject.should.contain('Payment proposal rejected');
             server.storage.fetchUnsentEmails(function(err, unsent) {
               should.not.exist(err);
@@ -308,7 +308,7 @@ describe('Email notifications', function() {
             });
             _.difference(['copayer1@domain.com', 'copayer2@domain.com', 'copayer3@domain.com'], _.map(emails, 'to')).should.be.empty;
             var one = emails[0];
-            one.from.should.equal('bws@dummy.net');
+            one.from.should.equal('dws@dummy.net');
             one.subject.should.contain('New payment received');
             one.text.should.contain('130 bits');
             server.storage.fetchUnsentEmails(function(err, unsent) {
@@ -343,7 +343,7 @@ describe('Email notifications', function() {
             });
             _.difference(['copayer1@domain.com', 'copayer2@domain.com', 'copayer3@domain.com'], _.map(emails, 'to')).should.be.empty;
             var one = emails[0];
-            one.from.should.equal('bws@dummy.net');
+            one.from.should.equal('dws@dummy.net');
             one.subject.should.contain('New payment received');
             one.text.should.contain('123,000');
             server.storage.fetchUnsentEmails(function(err, unsent) {
@@ -374,7 +374,7 @@ describe('Email notifications', function() {
               calls.length.should.equal(1);
               var email = calls[0].args[0];
               email.to.should.equal('copayer1@domain.com');
-              email.from.should.equal('bws@dummy.net');
+              email.from.should.equal('dws@dummy.net');
               email.subject.should.contain('Transaction confirmed');
               server.storage.fetchUnsentEmails(function(err, unsent) {
                 should.not.exist(err);
@@ -410,7 +410,7 @@ describe('Email notifications', function() {
               });
               _.difference(['copayer2@domain.com', 'copayer3@domain.com'], _.map(emails, 'to')).should.be.empty;
               var one = emails[0];
-              one.from.should.equal('bws@dummy.net');
+              one.from.should.equal('dws@dummy.net');
               one.subject.should.contain('New payment received');
               one.text.should.contain('123,000');
               server.storage.fetchUnsentEmails(function(err, unsent) {
@@ -449,13 +449,13 @@ describe('Email notifications', function() {
               var spanish = _.find(emails, {
                 to: 'copayer1@domain.com'
               });
-              spanish.from.should.equal('bws@dummy.net');
+              spanish.from.should.equal('dws@dummy.net');
               spanish.subject.should.contain('Nuevo pago recibido');
               spanish.text.should.contain('0.123 BTC');
               var english = _.find(emails, {
                 to: 'copayer2@domain.com'
               });
-              english.from.should.equal('bws@dummy.net');
+              english.from.should.equal('dws@dummy.net');
               english.subject.should.contain('New payment received');
               english.text.should.contain('123,000 bits');
               done();
@@ -474,7 +474,7 @@ describe('Email notifications', function() {
         storage: helpers.getStorage(),
         mailer: mailerStub,
         emailOpts: {
-          from: 'bws2@dummy.net',
+          from: 'dws2@dummy.net',
           subjectPrefix: '[test wallet 2]',
         },
       }, function(err) {
@@ -522,15 +522,15 @@ describe('Email notifications', function() {
             });
             _.difference(['copayer1@domain.com', 'copayer2@domain.com', 'copayer3@domain.com'], _.map(emails, 'to')).should.be.empty;
             var one = emails[0];
-            one.from.should.equal('bws@dummy.net');
+            one.from.should.equal('dws@dummy.net');
             one.subject.should.contain('New payment received');
             one.text.should.contain('123,000');
             server.storage.fetchUnsentEmails(function(err, unsent) {
               should.not.exist(err);
               unsent.length.should.equal(3);
-              unsent[0].from.should.equal('bws@dummy.net');
-              unsent[1].from.should.equal('bws@dummy.net');
-              unsent[2].from.should.equal('bws@dummy.net');
+              unsent[0].from.should.equal('dws@dummy.net');
+              unsent[1].from.should.equal('dws@dummy.net');
+              unsent[2].from.should.equal('dws@dummy.net');
               done();
             });
           }, 100);
@@ -570,7 +570,7 @@ describe('Email notifications', function() {
               storage: helpers.getStorage(),
               mailer: mailerStub,
               emailOpts: {
-                from: 'bws@dummy.net',
+                from: 'dws@dummy.net',
                 subjectPrefix: '[test wallet]',
                 publicTxUrlTemplate: {
                   btc: {
@@ -640,7 +640,7 @@ describe('Email notifications', function() {
               storage: helpers.getStorage(),
               mailer: mailerStub,
               emailOpts: {
-                from: 'bws@dummy.net',
+                from: 'dws@dummy.net',
                 subjectPrefix: '[test wallet]',
                 publicTxUrlTemplate: {
                   btc: {
@@ -681,7 +681,7 @@ describe('Email notifications', function() {
             });
             _.difference(['copayer1@domain.com'], _.map(emails, 'to')).should.be.empty;
             var one = emails[0];
-            one.from.should.equal('bws@dummy.net');
+            one.from.should.equal('dws@dummy.net');
             one.subject.should.contain('New payment received');
             one.text.should.contain('0.002213 BCH');
             server.storage.fetchUnsentEmails(function(err, unsent) {
@@ -725,7 +725,7 @@ describe('Email notifications', function() {
             storage: helpers.getStorage(),
             mailer: mailerStub,
             emailOpts: {
-              from: 'bws@dummy.net',
+              from: 'dws@dummy.net',
               subjectPrefix: '[test wallet]',
               publicTxUrlTemplate: {
                 btc: {
@@ -769,7 +769,7 @@ describe('Email notifications', function() {
               });
               _.difference(['copayer1@domain.com'], _.map(emails, 'to')).should.be.empty;
               var one = emails[0];
-              one.from.should.equal('bws@dummy.net');
+              one.from.should.equal('dws@dummy.net');
               one.subject.should.contain('New payment received');
               one.text.should.contain('4.00 BAT');
               server.storage.fetchUnsentEmails(function(err, unsent) {
@@ -812,7 +812,7 @@ describe('Email notifications', function() {
             storage: helpers.getStorage(),
             mailer: mailerStub,
             emailOpts: {
-              from: 'bws@dummy.net',
+              from: 'dws@dummy.net',
               subjectPrefix: '[test wallet]',
               publicTxUrlTemplate: {
                 btc: {
@@ -856,7 +856,7 @@ describe('Email notifications', function() {
             });
             _.difference(['copayer1@domain.com'], _.map(emails, 'to')).should.be.empty;
             var one = emails[0];
-            one.from.should.equal('bws@dummy.net');
+            one.from.should.equal('dws@dummy.net');
             one.subject.should.contain('New payment received');
             one.text.should.contain('4.00 USDC');
             server.storage.fetchUnsentEmails(function(err, unsent) {
@@ -888,7 +888,7 @@ describe('Email notifications', function() {
             });
             _.difference(['copayer1@domain.com'], _.map(emails, 'to')).should.be.empty;
             var one = emails[0];
-            one.from.should.equal('bws@dummy.net');
+            one.from.should.equal('dws@dummy.net');
             one.subject.should.contain('New payment received');
             one.text.should.contain('4.00 USDP');
             server.storage.fetchUnsentEmails(function(err, unsent) {

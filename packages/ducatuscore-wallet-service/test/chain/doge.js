@@ -13,7 +13,7 @@ const Constants = Common.Constants;
 
 describe('Chain DOGE', () => {
   describe('#getDucatuscoreTx', () => {
-    it('should create a valid bitcore TX', () => {
+    it('should create a valid ducatuscore TX', () => {
       const txp = TxProposal.fromObj(aTXP());
       const t = ChainService.getDucatuscoreTx(txp);
       should.exist(t);
@@ -30,7 +30,7 @@ describe('Chain DOGE', () => {
       t2.getChangeOutput().should.deep.equal(t2.outputs[0]);
     });
 
-    it('should create a valid signed bitcore TX', () => {
+    it('should create a valid signed ducatuscore TX', () => {
       const txp = TxProposal.fromObj(signedTxp);
       const t = ChainService.getDucatuscoreTx(txp);
       should.exist(t);
@@ -40,7 +40,7 @@ describe('Chain DOGE', () => {
       t.isFullySigned().should.equal(true);
     });
 
-    it('should create a valid unsigned bitcore TX', () => {
+    it('should create a valid unsigned ducatuscore TX', () => {
       const txp = TxProposal.fromObj(signedTxp);
       const t = ChainService.getDucatuscoreTx(txp, { signed: false } );
       should.exist(t);

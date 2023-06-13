@@ -19,7 +19,7 @@ const segWitToAddress = 'BC1QW508D6QEJXTDG4Y5R3ZARVARY0C5XW7KV8F3T4'; //'bc1qar0
 describe('Chain BTC', function() {
  
   describe('#getDucatuscoreTx', function() {
-    it('should create a valid bitcore TX', function() {
+    it('should create a valid ducatuscore TX', function() {
       var txp = TxProposal.fromObj(aTXP());
       var t = ChainService.getDucatuscoreTx(txp);
       should.exist(t);
@@ -36,7 +36,7 @@ describe('Chain BTC', function() {
       t2.getChangeOutput().should.deep.equal(t2.outputs[0]);
     });
 
-    it('should create a valid signed bitcore TX', function() {
+    it('should create a valid signed ducatuscore TX', function() {
       var txp = TxProposal.fromObj(signedTxp);
       var t = ChainService.getDucatuscoreTx(txp);
       should.exist(t);
@@ -46,7 +46,7 @@ describe('Chain BTC', function() {
       t.isFullySigned().should.equal(true);
     });
 
-    it('should create a valid unsigned bitcore TX', function() {
+    it('should create a valid unsigned ducatuscore TX', function() {
       var txp = TxProposal.fromObj(signedTxp);
       var t = ChainService.getDucatuscoreTx(txp, {signed: false} );
       should.exist(t);

@@ -2,7 +2,7 @@ import * as winston from 'winston';
 // const logLevel = args.DEBUG ? 'debug' : 'info';
 //
 export const transport = new winston.transports.Console({
-  level: process.env.BWS_LOG_LEVEL || 'debug'
+  level: process.env.DWS_LOG_LEVEL || 'debug'
 });
 
 export const logger = winston.createLogger({

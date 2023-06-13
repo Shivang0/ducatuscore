@@ -85,22 +85,22 @@ describe('Wallet service', function() {
 
   describe('#getServiceVersion', function() {
     it('should get version from package', function() {
-      WalletService.getServiceVersion().should.equal('bws-' + require('../../package').version);
+      WalletService.getServiceVersion().should.equal('dws-' + require('../../package').version);
     });
   });
 
   describe('#getInstance', function() {
     it('should get server instance', function() {
       var server = WalletService.getInstance({
-        clientVersion: 'bwc-2.9.0',
+        clientVersion: 'dwc-2.9.0',
       });
-      server.clientVersion.should.equal('bwc-2.9.0');
+      server.clientVersion.should.equal('dwc-2.9.0');
     });
-    it('should not get server instance for BWC lower than v1.2', function() {
+    it('should not get server instance for DWC lower than v1.2', function() {
       var err;
       try {
         var server = WalletService.getInstance({
-          clientVersion: 'bwc-1.1.99',
+          clientVersion: 'dwc-1.1.99',
         });
       } catch(ex) {
         err = ex;
@@ -108,7 +108,7 @@ describe('Wallet service', function() {
       should.exist(err);
       err.code.should.equal('UPGRADE_NEEDED');
     });
-    it('should get server instance for non-BWC clients', function() {
+    it('should get server instance for non-DWC clients', function() {
       var server = WalletService.getInstance({
         clientVersion: 'dummy-1.0.0',
       });
@@ -119,12 +119,12 @@ describe('Wallet service', function() {
   });
 
   describe('#getInstanceWithAuth', function() {
-    it('should not get server instance for BWC lower than v1.2', function(done) {
+    it('should not get server instance for DWC lower than v1.2', function(done) {
       var server = WalletService.getInstanceWithAuth({
         copayerId: '1234',
         message: 'hello world',
         signature: 'xxx',
-        clientVersion: 'bwc-1.1.99',
+        clientVersion: 'dwc-1.1.99',
       }, function(err, server) {
         should.exist(err);
         should.not.exist(server);
@@ -146,13 +146,13 @@ describe('Wallet service', function() {
           copayerId: wallet.copayers[0].id,
           message: 'hello world',
           signature: sig,
-          clientVersion: 'bwc-2.0.0',
+          clientVersion: 'dwc-2.0.0',
           walletId: '123',
         }, function(err, server) {
           should.not.exist(err);
           server.walletId.should.equal(wallet.id);
           server.copayerId.should.equal(wallet.copayers[0].id);
-          server.clientVersion.should.equal('bwc-2.0.0');
+          server.clientVersion.should.equal('dwc-2.0.0');
           done();
         });
       });
@@ -532,7 +532,7 @@ describe('Wallet service', function() {
       });
     });
 
-    it('should create wallet BCH if n > 1 and BWC version is 8.3.0 or higher', function(done) {
+    it('should create wallet BCH if n > 1 and DWC version is 8.3.0 or higher', function(done) {
       var opts = {
         coin: 'bch',
         name: 'my wallet',
@@ -541,7 +541,7 @@ describe('Wallet service', function() {
         pubKey: TestData.keyPair.pub
       };
 
-      server.clientVersion = 'bwc-8.3.0';
+      server.clientVersion = 'dwc-8.3.0';
 
       server.createWallet(opts, function(err, walletId) {
         should.not.exist(err);
@@ -550,7 +550,7 @@ describe('Wallet service', function() {
       });
     });
 
-    it('should create wallet BTC if n > 1 and BWC version is lower than 8.3.0', function(done) {
+    it('should create wallet BTC if n > 1 and DWC version is lower than 8.3.0', function(done) {
       var opts = {
         coin: 'btc',
         name: 'my wallet',
@@ -559,7 +559,7 @@ describe('Wallet service', function() {
         pubKey: TestData.keyPair.pub
       };
 
-      server.clientVersion = 'bwc-8.3.0';
+      server.clientVersion = 'dwc-8.3.0';
 
       server.createWallet(opts, function(err, walletId) {
         should.not.exist(err);
@@ -568,7 +568,7 @@ describe('Wallet service', function() {
       });
     });
 
-    it('should fail to create wallets BCH if n > 1 and BWC version is lower than 8.3.0', function(done) {
+    it('should fail to create wallets BCH if n > 1 and DWC version is lower than 8.3.0', function(done) {
       var opts = {
         coin: 'bch',
         name: 'my wallet',
@@ -577,18 +577,18 @@ describe('Wallet service', function() {
         pubKey: TestData.keyPair.pub
       };
 
-      server.clientVersion = 'bwc-8.2.0';
+      server.clientVersion = 'dwc-8.2.0';
 
 
       server.createWallet(opts, function(err, walletId) {
         should.not.exist(walletId);
         should.exist(err);
-        err.message.should.contain('BWC clients < 8.3 are no longer supported for multisig BCH wallets.');
+        err.message.should.contain('DWC clients < 8.3 are no longer supported for multisig BCH wallets.');
         done();
       });
     });
 
-    it('should create wallet BCH if n == 1 and BWC version is lower than 8.3.0', function(done) {
+    it('should create wallet BCH if n == 1 and DWC version is lower than 8.3.0', function(done) {
       var opts = {
         coin: 'bch',
         name: 'my wallet',
@@ -597,7 +597,7 @@ describe('Wallet service', function() {
         pubKey: TestData.keyPair.pub
       };
 
-      server.clientVersion = 'bwc-8.2.0';
+      server.clientVersion = 'dwc-8.2.0';
 
       server.createWallet(opts, function(err, walletId) {
         should.not.exist(err);
@@ -849,7 +849,7 @@ describe('Wallet service', function() {
           m: 1,
           n: 2,
           pubKey: TestData.keyPair.pub,
-          clientVersion: 'bwc-8.3.0'
+          clientVersion: 'dwc-8.3.0'
         };
         server.createWallet(walletOpts, function(err, wId) {
           should.not.exist(err);
@@ -925,7 +925,7 @@ describe('Wallet service', function() {
         });
       });
 
-      it('should join wallet BTC if BWC version is lower than 8.3.0', function(done) {
+      it('should join wallet BTC if DWC version is lower than 8.3.0', function(done) {
         var copayerOpts = helpers.getSignedCopayerOpts({
           walletId: walletId,
           coin: 'btc',
@@ -939,7 +939,7 @@ describe('Wallet service', function() {
           customData: 'dummy custom data',
         });
 
-        server.clientVersion = 'bwc-8.2.0';
+        server.clientVersion = 'dwc-8.2.0';
 
         server.joinWallet(copayerOpts, function(err, result) {
           should.not.exist(err);
@@ -1225,7 +1225,7 @@ describe('Wallet service', function() {
     describe('New clients 2', function() {
       var server, serverForBch, walletId, walletIdForBch;
 
-      it('should join wallet BCH if BWC version is 8.3.0 or higher', function(done) {
+      it('should join wallet BCH if DWC version is 8.3.0 or higher', function(done) {
         serverForBch = new WalletService();
         var walletOpts = {
           coin: 'bch',
@@ -1235,7 +1235,7 @@ describe('Wallet service', function() {
           pubKey: TestData.keyPair.pub
         };
 
-        serverForBch.clientVersion = 'bwc-8.3.4';
+        serverForBch.clientVersion = 'dwc-8.3.4';
 
         serverForBch.createWallet(walletOpts, function(err, wId) {
           should.not.exist(err);
@@ -1251,7 +1251,7 @@ describe('Wallet service', function() {
             customData: 'dummy custom data'
           });
 
-          serverForBch.clientVersion = 'bwc-8.3.0';
+          serverForBch.clientVersion = 'dwc-8.3.0';
 
           serverForBch.joinWallet(copayerOpts, function(err, result) {
             should.not.exist(err);
@@ -1288,7 +1288,7 @@ describe('Wallet service', function() {
             requestPubKey: TestData.copayers[0].pubKey_1H_0
           });
 
-          serverForBch.clientVersion = 'bwc-8.3.0';
+          serverForBch.clientVersion = 'dwc-8.3.0';
           serverForBch.joinWallet(copayerOpts, function(err, result) {
             should.not.exist(result);
             should.exist(err);
@@ -1324,7 +1324,7 @@ describe('Wallet service', function() {
             requestPubKey: TestData.copayers[0].pubKey_1H_0
           });
 
-          serverForBch.clientVersion = 'bwc-8.7.0';
+          serverForBch.clientVersion = 'dwc-8.7.0';
           serverForBch.joinWallet(copayerOpts, function(err, result) {
             should.not.exist(err);
             should.exist(result);
@@ -1337,7 +1337,7 @@ describe('Wallet service', function() {
     describe('New clients 3', function() {
       var server, walletId, walletIdForSegwit;
 
-      it('should join wallet segwit if BWC version is 8.17.0 or higher', function(done) {
+      it('should join wallet segwit if DWC version is 8.17.0 or higher', function(done) {
         server = new WalletService();
         var walletOpts = {
           coin: 'btc',
@@ -1348,7 +1348,7 @@ describe('Wallet service', function() {
           useNativeSegwit: true
         };
 
-        server.clientVersion = 'bwc-8.17.0';
+        server.clientVersion = 'dwc-8.17.0';
 
         server.createWallet(walletOpts, function(err, wId) {
           should.not.exist(err);
@@ -1364,7 +1364,7 @@ describe('Wallet service', function() {
             customData: 'dummy custom data'
           });
 
-          server.clientVersion = 'bwc-8.17.0';
+          server.clientVersion = 'dwc-8.17.0';
 
           server.joinWallet(copayerOpts, function(err, result) {
             should.not.exist(err);
@@ -1402,7 +1402,7 @@ describe('Wallet service', function() {
             requestPubKey: TestData.copayers[0].pubKey_1H_0
           });
 
-          server.clientVersion = 'bwc-8.4.0';
+          server.clientVersion = 'dwc-8.4.0';
           server.joinWallet(copayerOpts, function(err, result) {
             should.not.exist(result);
             should.exist(err);
@@ -1438,7 +1438,7 @@ describe('Wallet service', function() {
             requestPubKey: TestData.copayers[0].pubKey_1H_0
           });
 
-          server.clientVersion = 'bwc-9.0.0';
+          server.clientVersion = 'dwc-9.0.0';
           server.joinWallet(copayerOpts, function(err, result) {
             should.not.exist(err);
             should.exist(result);
@@ -4924,7 +4924,7 @@ describe('Wallet service', function() {
             });
           });
         });
-        it('should fail gracefully when bitcore throws exception on raw tx creation', function(done) {
+        it('should fail gracefully when ducatuscore throws exception on raw tx creation', function(done) {
           const coinAmount = {
             btc:0.5,
             bch:0.5,
@@ -5056,9 +5056,9 @@ describe('Wallet service', function() {
               server.createTx(txOpts, function(err, tx) {
                 should.not.exist(err);
                 should.exist(tx);
-                var bitcoreTx = ChainService.getDucatuscoreTx(tx);
-                bitcoreTx.outputs.length.should.equal(1);
-                bitcoreTx.outputs[0].satoshis.should.equal(tx.amount);
+                var ducatuscoreTx = ChainService.getDucatuscoreTx(tx);
+                ducatuscoreTx.outputs.length.should.equal(1);
+                ducatuscoreTx.outputs[0].satoshis.should.equal(tx.amount);
                 done();
               });
             });
@@ -10930,7 +10930,7 @@ describe('Wallet service', function() {
           copayerId: wallet.copayers[0].id,
           message: 'hello world',
           signature: sig,
-          clientVersion: 'bwc-2.0.0',
+          clientVersion: 'dwc-2.0.0',
           walletId: '123',
         }, (err, s) => {
           should.not.exist(err);
@@ -11311,7 +11311,7 @@ describe('Wallet service', function() {
           copayerId: wallet.copayers[0].id,
           message: 'hello world',
           signature: sig,
-          clientVersion: 'bwc-2.0.0',
+          clientVersion: 'dwc-2.0.0',
           walletId: '123',
         }, (err, s) => {
           should.not.exist(err);
@@ -11662,7 +11662,7 @@ describe('Wallet service', function() {
           copayerId: wallet.copayers[0].id,
           message: 'hello world',
           signature: sig,
-          clientVersion: 'bwc-2.0.0',
+          clientVersion: 'dwc-2.0.0',
           walletId: '123',
         }, (err, s) => {
           should.not.exist(err);
@@ -11926,7 +11926,7 @@ describe('Wallet service', function() {
           copayerId: wallet.copayers[0].id,
           message: 'hello world',
           signature: sig,
-          clientVersion: 'bwc-2.0.0',
+          clientVersion: 'dwc-2.0.0',
           walletId: '123',
         }, (err, s) => {
           should.not.exist(err);
@@ -12120,7 +12120,7 @@ describe('Wallet service', function() {
           copayerId: wallet.copayers[0].id,
           message: 'hello world',
           signature: sig,
-          clientVersion: 'bwc-2.0.0',
+          clientVersion: 'dwc-2.0.0',
           walletId: '123',
         }, (err, s) => {
           should.not.exist(err);

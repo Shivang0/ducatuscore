@@ -52,7 +52,7 @@ export class SocketService {
   }
 
   start({ server }: { server: http.Server }) {
-    const bwsKeys = this.serviceConfig.bwsKeys;
+    const dwsKeys = this.serviceConfig.dwsKeys;
     if (this.configService.isDisabled('socket')) {
       logger.info('Disabled Socket Service');
       return;
@@ -68,7 +68,7 @@ export class SocketService {
           const roomName = room.slice(room.lastIndexOf('/') + 1);
           switch (roomName) {
             case 'wallets':
-              if (bwsKeys.includes(payload.pubKey) && this.validateRequest(payload)) {
+              if (dwsKeys.includes(payload.pubKey) && this.validateRequest(payload)) {
                 socket.join(room);
               } else {
                 socket.emit('failure', { message: 'Authentication failed' });

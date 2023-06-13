@@ -1,8 +1,7 @@
 {
   "name": "insight",
-  "version": "10.0.5",
+  "version": "10.0.0",
   "description": "Insight Blockchain Explorer",
-  "license": "MIT",
   "homepage": "insight",
   "private": true,
   "keywords": [
@@ -11,7 +10,6 @@
     "blockchain",
     "block explorer",
     "bitcoin",
-    "bitcore",
     "API"
   ],
   "scripts": {

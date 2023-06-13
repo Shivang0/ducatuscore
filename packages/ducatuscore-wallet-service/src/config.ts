@@ -7,7 +7,7 @@ const Config = () => {
     disableLogs: false,
     port: 3232,
 
-    // Uncomment to make BWS a forking server
+    // Uncomment to make DWS a forking server
     // cluster: true,
 
     // Uncomment to set the number or process (will use the nr of availalbe CPUs by default)
@@ -25,7 +25,7 @@ const Config = () => {
 
     storageOpts: {
       mongoDb: {
-        uri: 'mongodb://localhost:27017/bws',
+        uri: 'mongodb://localhost:27017/dws',
         dbname: 'dws'
       }
     },

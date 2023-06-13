@@ -153,7 +153,7 @@ export class Address {
     }
 
     return {
-      // bws still use legacy addresses for BCH
+      // dws still use legacy addresses for BCH
       address: addrStr,
       path,
       publicKeys: _.invokeMap(publicKeys, 'toString')

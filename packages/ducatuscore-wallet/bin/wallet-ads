@@ -3,9 +3,9 @@
 var _ = require('lodash');
 var program = require('commander');
 var utils = require('./cli-utils');
-var Client = require('bitcore-wallet-client').default;
-var Bitcore = Client.Bitcore;
-const b = require('bitcore-lib');
+var Client = require('@ducatus/ducatuscore-wallet-client').default;
+var Ducatuscore = Client.Ducatuscore;
+const b = require('@ducatus/ducatuscore-lib');
 const ECDSA = b.crypto.ECDSA;
 const Hash = b.crypto.Hash;
 var FileStorage = require('./filestorage');
@@ -30,7 +30,7 @@ program
 // Verify(signature, m, publicKey)
 
 var args = program.args;
-var host = 'https://bws.bitpay.com';
+var host = 'https://dws.bitpay.com';
 
 var clientArgs = {
   host

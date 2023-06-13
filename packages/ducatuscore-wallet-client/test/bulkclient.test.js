@@ -59,7 +59,7 @@ describe('Bulk Client', function () {
                 blockchainExplorerMock.reset();
                 sandbox = sinon.createSandbox();
 
-                if (!process.env.BWC_SHOW_LOGS) {
+                if (!process.env.DWC_SHOW_LOGS) {
                     sandbox.stub(log, 'warn');
                     sandbox.stub(log, 'info');
                     sandbox.stub(log, 'error');

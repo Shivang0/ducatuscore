@@ -34,7 +34,7 @@ var querystring = require('querystring');
 var log = require('./log');
 const Errors = require('./errors');
 
-var BASE_URL = 'http://localhost:3232/bws/api';
+var BASE_URL = 'http://localhost:3232/dws/api';
 
 // /**
 // * @desc ClientAPI constructor.
@@ -1982,7 +1982,7 @@ export class API extends EventEmitter {
     }
 
     var newClient: any = new API({
-      baseUrl: 'https://bws.example.com/bws/api'
+      baseUrl: 'https://dws.example.com/dws/api'
     });
 
     // TODO TODO TODO
@@ -2809,7 +2809,7 @@ export class API extends EventEmitter {
 
   // /**
   // * serverAssistedImport
-  // * Imports  EXISTING wallets against BWS and return key & clients[] for each account / coin
+  // * Imports  EXISTING wallets against DWS and return key & clients[] for each account / coin
   // *
   // * @param {Object} opts
   // * @param {String} opts.words - mnemonic
@@ -2817,7 +2817,7 @@ export class API extends EventEmitter {
   // * @param {String} opts.passphrase - mnemonic's passphrase (optional)
   // * @param {Bool} opts.includeTestnetWallets - include testnet wallets (optional)
   // * @param {Bool} opts.includeLegacyWallets - search legacy wallets (optional)
-  // * @param {Object} clientOpts  - BWS connection options (see ClientAPI constructor)
+  // * @param {Object} clientOpts  - DWS connection options (see ClientAPI constructor)
 
   // * @returns {Callback} cb - Returns { err, key, clients[] }
   // */

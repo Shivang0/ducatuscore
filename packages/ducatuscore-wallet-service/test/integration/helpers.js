@@ -43,7 +43,7 @@ const CWC =  require('crypto-wallet-core');
 
 var helpers = {};
 
-helpers.CLIENT_VERSION = 'bwc-2.0.0';
+helpers.CLIENT_VERSION = 'dwc-2.0.0';
 
 helpers.before = function(cb) {
   function getDb(cb) {

@@ -24,12 +24,12 @@ const Constants = Common.Constants,
   Defaults = Common.Defaults,
   Utils = Common.Utils;
 
-function v8network(bwsNetwork) {
-  if (bwsNetwork == 'livenet') return 'mainnet';
-  if (bwsNetwork == 'testnet' && config.blockchainExplorerOpts.btc.testnet.regtestEnabled) {
+function v8network(dwsNetwork) {
+  if (dwsNetwork == 'livenet') return 'mainnet';
+  if (dwsNetwork == 'testnet' && config.blockchainExplorerOpts.btc.testnet.regtestEnabled) {
     return 'regtest';
   }
-  return bwsNetwork;
+  return dwsNetwork;
 }
 
 export class V8 {
@@ -64,7 +64,7 @@ export class V8 {
     this.apiPrefix += this.chainNetwork;
 
     this.host = opts.url;
-    this.userAgent = opts.userAgent || 'bws';
+    this.userAgent = opts.userAgent || 'dws';
 
     this.baseUrl = this.host + this.apiPrefix;
 

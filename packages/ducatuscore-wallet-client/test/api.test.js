@@ -12,21 +12,21 @@ var oldCredentials = require('./legacyCredentialsExports');
 
 var CWC = require('@ducatus/ducatuscore-crypto');
 
-var Bitcore = CWC.BitcoreLib;
-var Bitcore_ = {
-  btc: Bitcore,
-  bch: CWC.BitcoreLibCash
+var Ducatuscore = CWC.DucatuscoreLib;
+var Ducatuscore_ = {
+  btc: Ducatuscore,
+  bch: CWC.DucatuscoreLibCash
 };
 
-var BWS = require('bitcore-wallet-service');
+var DWS = require('@ducatus/ducatuscore-wallet-service');
 
 var Client = require('../ts_build').default;
 var Key = Client.Key;
 var { Request } = require('../ts_build/lib/request.js');
 var { Utils } = require('../ts_build/lib/common');
 
-var ExpressApp = BWS.ExpressApp;
-var Storage = BWS.Storage;
+var ExpressApp = DWS.ExpressApp;
+var Storage = DWS.Storage;
 var TestData = require('./testdata');
 var Errors = require('../ts_build/lib/errors');
 var { helpers, blockchainExplorerMock } = require('./helpers');
@@ -102,7 +102,7 @@ describe('client API', function() {
         blockchainExplorerMock.reset();
         sandbox = sinon.createSandbox();
 
-        if (!process.env.BWC_SHOW_LOGS) {
+        if (!process.env.DWC_SHOW_LOGS) {
           sandbox.stub(log, 'warn');
           sandbox.stub(log, 'info');
           sandbox.stub(log, 'error');
@@ -148,9 +148,9 @@ describe('client API', function() {
   });
 
   describe('Client Internals', () => {
-    it('should expose bitcore', () => {
-      should.exist(Bitcore);
-      should.exist(Bitcore.HDPublicKey);
+    it('should expose ducatuscore', () => {
+      should.exist(Ducatuscore);
+      should.exist(Ducatuscore.HDPublicKey);
     });
   });
   // todo
@@ -376,9 +376,9 @@ describe('client API', function() {
     var masterPrivateKey =
       'tprv8ZgxMBicQKsPd8U9aBBJ5J2v8XMwKwZvf8qcu2gLK5FRrsrPeSgkEcNHqKx4zwv6cP536m68q2UD7wVM24zdSCpaJRmpowaeJTeVMXL5v5k';
     var derivedPrivateKey = {
-      BIP44: new Bitcore.HDPrivateKey(masterPrivateKey).deriveChild("m/44'/1'/0'").toString(),
-      BIP45: new Bitcore.HDPrivateKey(masterPrivateKey).deriveChild("m/45'").toString(),
-      BIP48: new Bitcore.HDPrivateKey(masterPrivateKey).deriveChild("m/48'/1'/0'").toString()
+      BIP44: new Ducatuscore.HDPrivateKey(masterPrivateKey).deriveChild("m/44'/1'/0'").toString(),
+      BIP45: new Ducatuscore.HDPrivateKey(masterPrivateKey).deriveChild("m/45'").toString(),
+      BIP48: new Ducatuscore.HDPrivateKey(masterPrivateKey).deriveChild("m/48'/1'/0'").toString()
     };
 
     describe('#buildTx', () => {
@@ -388,7 +388,7 @@ describe('client API', function() {
 
         var publicKeyRing = [
           {
-            xPubKey: new Bitcore.HDPublicKey(derivedPrivateKey['BIP44'])
+            xPubKey: new Ducatuscore.HDPublicKey(derivedPrivateKey['BIP44'])
           }
         ];
 
@@ -412,7 +412,7 @@ describe('client API', function() {
         _.isString(t).should.be.true;
         /^[\da-f]+$/.test(t).should.be.true;
 
-        var t2 = new Bitcore.Transaction(t);
+        var t2 = new Ducatuscore.Transaction(t);
         t2.inputs.length.should.equal(2);
         t2.outputs.length.should.equal(2);
         t2.outputs[0].satoshis.should.equal(1200);
@@ -423,7 +423,7 @@ describe('client API', function() {
 
         var publicKeyRing = [
           {
-            xPubKey: new Bitcore.HDPublicKey(derivedPrivateKey['BIP44'])
+            xPubKey: new Ducatuscore.HDPublicKey(derivedPrivateKey['BIP44'])
           }
         ];
 
@@ -443,19 +443,19 @@ describe('client API', function() {
           addressType: 'P2PKH'
         };
         var t = Utils.buildTx(txp);
-        var bitcoreError = t.getSerializationError({
+        var ducatuscoreError = t.getSerializationError({
           disableIsFullySigned: true,
           disableSmallFees: true,
           disableLargeFees: true
         });
 
-        should.not.exist(bitcoreError);
+        should.not.exist(ducatuscoreError);
         t.getFee().should.equal(10050);
       });
       it('should build a P2WPKH tx correctly (BIP44)', () => {
         var publicKeyRing = [
           {
-            xPubKey: new Bitcore.HDPublicKey(derivedPrivateKey['BIP44'])
+            xPubKey: new Ducatuscore.HDPublicKey(derivedPrivateKey['BIP44'])
           }
         ];
 
@@ -481,19 +481,19 @@ describe('client API', function() {
           addressType: 'P2WPKH'
         };
         var t = Utils.buildTx(txp);
-        var bitcoreError = t.getSerializationError({
+        var ducatuscoreError = t.getSerializationError({
           disableIsFullySigned: true,
           disableSmallFees: true,
           disableLargeFees: true
         });
 
-        should.not.exist(bitcoreError);
+        should.not.exist(ducatuscoreError);
         t.getFee().should.equal(10050);
       });
       it('should build a P2WSH tx correctly (BIP48)', () => {
         var publicKeyRing = [
           {
-            xPubKey: new Bitcore.HDPublicKey(derivedPrivateKey['BIP48'])
+            xPubKey: new Ducatuscore.HDPublicKey(derivedPrivateKey['BIP48'])
           }
         ];
 
@@ -519,13 +519,13 @@ describe('client API', function() {
           addressType: 'P2WSH'
         };
         var t = Utils.buildTx(txp);
-        var bitcoreError = t.getSerializationError({
+        var ducatuscoreError = t.getSerializationError({
           disableIsFullySigned: true,
           disableSmallFees: true,
           disableLargeFees: true
         });
 
-        should.not.exist(bitcoreError);
+        should.not.exist(ducatuscoreError);
         t.getFee().should.equal(10050);
       });
       it('should build a tx correctly (BIP48)', () => {
@@ -534,7 +534,7 @@ describe('client API', function() {
 
         var publicKeyRing = [
           {
-            xPubKey: new Bitcore.HDPublicKey(derivedPrivateKey['BIP48'])
+            xPubKey: new Ducatuscore.HDPublicKey(derivedPrivateKey['BIP48'])
           }
         ];
 
@@ -554,13 +554,13 @@ describe('client API', function() {
           addressType: 'P2PKH'
         };
         var t = Utils.buildTx(txp);
-        var bitcoreError = t.getSerializationError({
+        var ducatuscoreError = t.getSerializationError({
           disableIsFullySigned: true,
           disableSmallFees: true,
           disableLargeFees: true
         });
 
-        should.not.exist(bitcoreError);
+        should.not.exist(ducatuscoreError);
         t.getFee().should.equal(10050);
       });
       it('should build an eth txp correctly', () => {
@@ -569,7 +569,7 @@ describe('client API', function() {
         const path = "m/44'/60'/0'";
         const publicKeyRing = [
           {
-            xPubKey: new Bitcore.HDPrivateKey(masterPrivateKey).deriveChild(path).toString()
+            xPubKey: new Ducatuscore.HDPrivateKey(masterPrivateKey).deriveChild(path).toString()
           }
         ];
 
@@ -608,7 +608,7 @@ describe('client API', function() {
         const path = "m/44'/60'/0'";
         const publicKeyRing = [
           {
-            xPubKey: new Bitcore.HDPrivateKey(masterPrivateKey).deriveChild(path).toString()
+            xPubKey: new Ducatuscore.HDPrivateKey(masterPrivateKey).deriveChild(path).toString()
           }
         ];
 
@@ -648,7 +648,7 @@ describe('client API', function() {
 
         var publicKeyRing = [
           {
-            xPubKey: new Bitcore.HDPublicKey(derivedPrivateKey['BIP44'])
+            xPubKey: new Ducatuscore.HDPublicKey(derivedPrivateKey['BIP44'])
           }
         ];
 
@@ -670,7 +670,7 @@ describe('client API', function() {
 
         var x = Utils;
 
-        x.newBitcoreTransaction = () => {
+        x.newDucatuscoreTransaction = () => {
           return {
             from: sinon.stub(),
             to: sinon.stub(),
@@ -686,7 +686,7 @@ describe('client API', function() {
 
         var t = x.buildTx(txp);
         should.exist(t);
-        x.newBitcoreTransaction = x;
+        x.newDucatuscoreTransaction = x;
       });
       it('should protect from creating excessive fee', () => {
         var toAddress = 'msj42CCGruhRsFrGATiUuh25dtxYtnpbTx';
@@ -694,7 +694,7 @@ describe('client API', function() {
 
         var publicKeyRing = [
           {
-            xPubKey: new Bitcore.HDPublicKey(derivedPrivateKey['BIP44'])
+            xPubKey: new Ducatuscore.HDPublicKey(derivedPrivateKey['BIP44'])
           }
         ];
 
@@ -715,7 +715,7 @@ describe('client API', function() {
 
         var x = Utils;
 
-        x.newBitcoreTransaction = () => {
+        x.newDucatuscoreTransaction = () => {
           return {
             from: sinon.stub(),
             to: sinon.stub(),
@@ -733,7 +733,7 @@ describe('client API', function() {
           var t = x.buildTx(txp);
         }).should.throw('Failed state: totalInputs - totalOutputs <= Defaults.MAX_TX_FEE(chain) at buildTx');
 
-        x.newBitcoreTransaction = x;
+        x.newDucatuscoreTransaction = x;
       });
       it('should build a tx with multiple outputs', () => {
         var toAddress = 'msj42CCGruhRsFrGATiUuh25dtxYtnpbTx';
@@ -741,7 +741,7 @@ describe('client API', function() {
 
         var publicKeyRing = [
           {
-            xPubKey: new Bitcore.HDPublicKey(derivedPrivateKey['BIP44'])
+            xPubKey: new Ducatuscore.HDPublicKey(derivedPrivateKey['BIP44'])
           }
         ];
 
@@ -770,10 +770,10 @@ describe('client API', function() {
           addressType: 'P2PKH'
         };
         var t = Utils.buildTx(txp);
-        var bitcoreError = t.getSerializationError({
+        var ducatuscoreError = t.getSerializationError({
           disableIsFullySigned: true
         });
-        should.not.exist(bitcoreError);
+        should.not.exist(ducatuscoreError);
       });
       it('should build a tx with provided output scripts', () => {
         var toAddress = 'msj42CCGruhRsFrGATiUuh25dtxYtnpbTx';
@@ -781,7 +781,7 @@ describe('client API', function() {
 
         var publicKeyRing = [
           {
-            xPubKey: new Bitcore.HDPublicKey(derivedPrivateKey['BIP44'])
+            xPubKey: new Ducatuscore.HDPublicKey(derivedPrivateKey['BIP44'])
           }
         ];
 
@@ -815,10 +815,10 @@ describe('client API', function() {
           addressType: 'P2PKH'
         };
         var t = Utils.buildTx(txp);
-        var bitcoreError = t.getSerializationError({
+        var ducatuscoreError = t.getSerializationError({
           disableIsFullySigned: true
         });
-        should.not.exist(bitcoreError);
+        should.not.exist(ducatuscoreError);
         t.outputs.length.should.equal(4);
         t.outputs[0].script.toHex().should.equal(txp.outputs[0].script);
         t.outputs[0].satoshis.should.equal(txp.outputs[0].amount);
@@ -826,7 +826,7 @@ describe('client API', function() {
         t.outputs[1].satoshis.should.equal(txp.outputs[1].amount);
         t.outputs[2].script.toHex().should.equal(txp.outputs[2].script);
         t.outputs[2].satoshis.should.equal(txp.outputs[2].amount);
-        var changeScript = Bitcore.Script.fromAddress(txp.changeAddress.address).toHex();
+        var changeScript = Ducatuscore.Script.fromAddress(txp.changeAddress.address).toHex();
         t.outputs[3].script.toHex().should.equal(changeScript);
       });
       it('should fail if provided output has no either toAddress or script', () => {
@@ -835,7 +835,7 @@ describe('client API', function() {
 
         var publicKeyRing = [
           {
-            xPubKey: new Bitcore.HDPublicKey(derivedPrivateKey['BIP44'])
+            xPubKey: new Ducatuscore.HDPublicKey(derivedPrivateKey['BIP44'])
           }
         ];
 
@@ -871,19 +871,19 @@ describe('client API', function() {
 
         txp.outputs[0].toAddress = '18433T2TSgajt9jWhcTBw4GoNREA6LpX3E';
         var t = Utils.buildTx(txp);
-        var bitcoreError = t.getSerializationError({
+        var ducatuscoreError = t.getSerializationError({
           disableIsFullySigned: true
         });
-        should.not.exist(bitcoreError);
+        should.not.exist(ducatuscoreError);
 
         delete txp.outputs[0].toAddress;
         txp.outputs[0].script =
           '512103ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff210314a96cd6f5a20826070173fe5b7e9797f21fc8ca4a55bcb2d2bde99f55dd352352ae';
         t = Utils.buildTx(txp);
-        var bitcoreError = t.getSerializationError({
+        var ducatuscoreError = t.getSerializationError({
           disableIsFullySigned: true
         });
-        should.not.exist(bitcoreError);
+        should.not.exist(ducatuscoreError);
       });
       it('should build a v3 tx proposal', () => {
         var toAddress = 'msj42CCGruhRsFrGATiUuh25dtxYtnpbTx';
@@ -891,7 +891,7 @@ describe('client API', function() {
 
         var publicKeyRing = [
           {
-            xPubKey: new Bitcore.HDPublicKey(derivedPrivateKey['BIP44'])
+            xPubKey: new Ducatuscore.HDPublicKey(derivedPrivateKey['BIP44'])
           }
         ];
 
@@ -921,10 +921,10 @@ describe('client API', function() {
           addressType: 'P2PKH'
         };
         var t = Utils.buildTx(txp);
-        var bitcoreError = t.getSerializationError({
+        var ducatuscoreError = t.getSerializationError({
           disableIsFullySigned: true
         });
-        should.not.exist(bitcoreError);
+        should.not.exist(ducatuscoreError);
       });
 
       it('should build a v4 tx proposal', () => {
@@ -933,7 +933,7 @@ describe('client API', function() {
 
         var publicKeyRing = [
           {
-            xPubKey: new Bitcore.HDPublicKey(derivedPrivateKey['BIP44'])
+            xPubKey: new Ducatuscore.HDPublicKey(derivedPrivateKey['BIP44'])
           }
         ];
 
@@ -963,10 +963,10 @@ describe('client API', function() {
           addressType: 'P2PKH'
         };
         var t = Utils.buildTx(txp);
-        var bitcoreError = t.getSerializationError({
+        var ducatuscoreError = t.getSerializationError({
           disableIsFullySigned: true
         });
-        should.not.exist(bitcoreError);
+        should.not.exist(ducatuscoreError);
       });
     });
 
@@ -977,7 +977,7 @@ describe('client API', function() {
 
         var publicKeyRing = [
           {
-            xPubKey: new Bitcore.HDPublicKey(derivedPrivateKey['BIP45'])
+            xPubKey: new Ducatuscore.HDPublicKey(derivedPrivateKey['BIP45'])
           }
         ];
 
@@ -1001,7 +1001,7 @@ describe('client API', function() {
         var path = "m/45'";
         var signatures = key.sign(path, txp);
 
-        // This is a GOOD test, since bitcore ONLY accept VALID signatures
+        // This is a GOOD test, since ducatuscore ONLY accept VALID signatures
         signatures.length.should.be.equal(utxos.length);
       });
       it('should sign BIP44 P2PKH correctly', () => {
@@ -1010,7 +1010,7 @@ describe('client API', function() {
 
         var publicKeyRing = [
           {
-            xPubKey: new Bitcore.HDPublicKey(derivedPrivateKey['BIP44'])
+            xPubKey: new Ducatuscore.HDPublicKey(derivedPrivateKey['BIP44'])
           }
         ];
 
@@ -1034,7 +1034,7 @@ describe('client API', function() {
         var key = new Key({ seedData: masterPrivateKey, seedType: 'extendedPrivateKey' });
         var signatures = key.sign(path, txp);
 
-        // This is a GOOD test, since bitcore ONLY accept VALID signatures
+        // This is a GOOD test, since ducatuscore ONLY accept VALID signatures
         signatures.length.should.be.equal(utxos.length);
       });
       it('should sign multiple-outputs proposal correctly', () => {
@@ -1043,7 +1043,7 @@ describe('client API', function() {
 
         var publicKeyRing = [
           {
-            xPubKey: new Bitcore.HDPublicKey(derivedPrivateKey['BIP44'])
+            xPubKey: new Ducatuscore.HDPublicKey(derivedPrivateKey['BIP44'])
           }
         ];
 
@@ -1084,7 +1084,7 @@ describe('client API', function() {
 
         var publicKeyRing = [
           {
-            xPubKey: new Bitcore.HDPublicKey(derivedPrivateKey['BIP44'])
+            xPubKey: new Ducatuscore.HDPublicKey(derivedPrivateKey['BIP44'])
           }
         ];
 
@@ -1128,7 +1128,7 @@ describe('client API', function() {
 
         var publicKeyRing = [
           {
-            xPubKey: new Bitcore.HDPublicKey(derivedPrivateKey['BIP44'])
+            xPubKey: new Ducatuscore.HDPublicKey(derivedPrivateKey['BIP44'])
           }
         ];
 
@@ -1177,7 +1177,7 @@ describe('client API', function() {
 
         var publicKeyRing = [
           {
-            xPubKey: new Bitcore.HDPublicKey(derivedPrivateKey['BIP44'])
+            xPubKey: new Ducatuscore.HDPublicKey(derivedPrivateKey['BIP44'])
           }
         ];
 
@@ -1226,7 +1226,7 @@ describe('client API', function() {
         const path = "m/44'/60'/0'";
         const publicKeyRing = [
           {
-            xPubKey: new Bitcore.HDPrivateKey(masterPrivateKey).deriveChild(path).toString()
+            xPubKey: new Ducatuscore.HDPrivateKey(masterPrivateKey).deriveChild(path).toString()
           }
         ];
 
@@ -1265,7 +1265,7 @@ describe('client API', function() {
 
         var publicKeyRing = [
           {
-            xPubKey: new Bitcore.HDPublicKey(derivedPrivateKey['BIP44'])
+            xPubKey: new Ducatuscore.HDPublicKey(derivedPrivateKey['BIP44'])
           }
         ];
 
@@ -1315,7 +1315,7 @@ describe('client API', function() {
 
         var publicKeyRing = [
           {
-            xPubKey: new Bitcore.HDPublicKey(derivedPrivateKey['BIP44'])
+            xPubKey: new Ducatuscore.HDPublicKey(derivedPrivateKey['BIP44'])
           }
         ];
 
@@ -1366,7 +1366,7 @@ describe('client API', function() {
       var i = 0;
       while (i++ < 100) {
         var walletId = Uuid.v4();
-        var walletPrivKey = new Bitcore.PrivateKey();
+        var walletPrivKey = new Ducatuscore.PrivateKey();
         var network = i % 2 == 0 ? 'testnet' : 'livenet';
         var coin = i % 3 == 0 ? 'bch' : 'btc';
         var secret = Client._buildSecret(walletId, walletPrivKey, coin, network);
@@ -1385,7 +1385,7 @@ describe('client API', function() {
 
     it('should create secret and parse secret from string', () => {
       var walletId = Uuid.v4();
-      var walletPrivKey = new Bitcore.PrivateKey();
+      var walletPrivKey = new Ducatuscore.PrivateKey();
       var coin = 'btc';
       var network = 'testnet';
       var secret = Client._buildSecret(walletId, walletPrivKey.toString(), coin, network);
@@ -1538,7 +1538,7 @@ describe('client API', function() {
         })
       );
 
-      var wpk = new Bitcore.PrivateKey();
+      var wpk = new Ducatuscore.PrivateKey();
       var args = {
         name: 'mywallet',
         m: 1,
@@ -1923,7 +1923,7 @@ describe('client API', function() {
           {},
           status => {
             // Replace caller's pubkey
-            status.wallet.copayers[1].xPubKey = new Bitcore.HDPrivateKey().publicKey;
+            status.wallet.copayers[1].xPubKey = new Ducatuscore.HDPrivateKey().publicKey;
             // Add a correct signature
             status.wallet.copayers[1].xPubKeySignature = Utils.signMessage(
               status.wallet.copayers[1].xPubKey.toString(),
@@ -2117,7 +2117,7 @@ describe('client API', function() {
       );
     });
 
-    it('should set walletPrivKey from BWS', done => {
+    it('should set walletPrivKey from DWS', done => {
       clients[0].fromString(
         k.createCredentials(null, {
           coin: 'btc',
@@ -2494,17 +2494,17 @@ describe('client API', function() {
   });
 
   describe('Version', () => {
-    it('should get version of bws', done => {
+    it('should get version of dws', done => {
       clients[0].credentials = {};
       clients[0].getVersion((err, version) => {
         if (err) {
-          // if bws is older version without getVersion support
+          // if dws is older version without getVersion support
           err.should.be.an.instanceOf(Errors.NOT_FOUND);
         } else {
-          // if bws is up-to-date
+          // if dws is up-to-date
           should.exist(version);
           should.exist(version.serviceVersion);
-          version.serviceVersion.should.contain('bws-');
+          version.serviceVersion.should.contain('dws-');
         }
         done();
       });
@@ -3607,7 +3607,7 @@ describe('client API', function() {
 
             // TODO change createAddress to /v4/, and remove this.
             if (coin == 'bch') {
-              address.address = Bitcore_['bch'].Address(address.address).toString(true);
+              address.address = Ducatuscore_['bch'].Address(address.address).toString(true);
             }
             // ==
 
@@ -4679,7 +4679,7 @@ describe('client API', function() {
                 should.not.exist(err);
                 spy.called.should.be.true;
                 var rawTx = Buffer.from(postArgs[1].transactions[0].tx, 'hex');
-                var tx = new Bitcore.Transaction(rawTx);
+                var tx = new Ducatuscore.Transaction(rawTx);
                 var script = tx.inputs[0].script;
                 script.isScriptHashIn().should.equal(true);
                 memo.should.be.equal(
@@ -4872,7 +4872,7 @@ describe('client API', function() {
               should.not.exist(err, err);
               spy.called.should.be.true;
               var rawTx = Buffer.from(postArgs[1].transactions[0].tx, 'hex');
-              var tx = new Bitcore.Transaction(rawTx);
+              var tx = new Ducatuscore.Transaction(rawTx);
               var script = tx.inputs[0].script;
 
               script.isPublicKeyHashIn().should.equal(true);
@@ -4899,7 +4899,7 @@ describe('client API', function() {
               should.exist(x0.address);
 
               // TODO change createAddress to /v4/, and remove this.
-              //x0.address = Bitcore_['bch'].Address(x0.address).toString(true);
+              //x0.address = Ducatuscore_['bch'].Address(x0.address).toString(true);
               // ======
               blockchainExplorerMock.setUtxo(x0, 1, 2);
               blockchainExplorerMock.setUtxo(x0, 1, 2);
@@ -4945,7 +4945,7 @@ describe('client API', function() {
               should.not.exist(err);
               spy.called.should.be.true;
               var rawTx = Buffer.from(postArgs[1].transactions[0].tx, 'hex');
-              var tx = Bitcore_['bch'].Transaction(rawTx);
+              var tx = Ducatuscore_['bch'].Transaction(rawTx);
               var script = tx.inputs[0].script;
               script.isPublicKeyHashIn().should.equal(true);
               memo.should.be.equal(
@@ -5116,7 +5116,7 @@ describe('client API', function() {
               clients[0].broadcastTxProposal(txp, (err, txp) => {
                 should.not.exist(err);
                 txp.status.should.equal('broadcasted');
-                txp.txid.should.equal(new Bitcore.Transaction(blockchainExplorerMock.lastBroadcasted).id);
+                txp.txid.should.equal(new Ducatuscore.Transaction(blockchainExplorerMock.lastBroadcasted).id);
                 done();
               });
             } else {
@@ -5184,7 +5184,7 @@ describe('client API', function() {
               clients[0].broadcastTxProposal(txp, (err, txp) => {
                 should.not.exist(err);
                 txp.status.should.equal('broadcasted');
-                txp.txid.should.equal(new Bitcore.Transaction(blockchainExplorerMock.lastBroadcasted).id);
+                txp.txid.should.equal(new Ducatuscore.Transaction(blockchainExplorerMock.lastBroadcasted).id);
                 txp.outputs[0].message.should.equal('output 0');
                 txp.message.should.equal('hello');
                 done();
@@ -5367,7 +5367,7 @@ describe('client API', function() {
                   txp.status.should.equal('accepted');
                   clients[1].broadcastTxProposal(txp, (err, txp) => {
                     txp.status.should.equal('broadcasted');
-                    txp.txid.should.equal(new Bitcore.Transaction(blockchainExplorerMock.lastBroadcasted).id);
+                    txp.txid.should.equal(new Ducatuscore.Transaction(blockchainExplorerMock.lastBroadcasted).id);
                     done();
                   });
                 });
@@ -5431,7 +5431,7 @@ describe('client API', function() {
                   txp.status.should.equal('accepted');
                   clients[2].broadcastTxProposal(txp, (err, txp) => {
                     txp.status.should.equal('broadcasted');
-                    txp.txid.should.equal(new Bitcore.Transaction(blockchainExplorerMock.lastBroadcasted).id);
+                    txp.txid.should.equal(new Ducatuscore.Transaction(blockchainExplorerMock.lastBroadcasted).id);
                     done();
                   });
                 });
@@ -6018,7 +6018,7 @@ describe('client API', function() {
           });
         });
 
-        it('should export & import with mnemonics + BWS', done => {
+        it('should export & import with mnemonics + DWS', done => {
           var c = clients[0].credentials;
           var walletId = c.walletId;
           var walletName = c.walletName;
@@ -6058,7 +6058,7 @@ describe('client API', function() {
           done();
         });
 
-        it('should export & import from Key +  BWS', done => {
+        it('should export & import from Key +  DWS', done => {
           var c = clients[0].credentials;
           var walletId = c.walletId;
           var walletName = c.walletName;
@@ -6137,7 +6137,7 @@ describe('client API', function() {
                         done();
                       });
         */
-        it('should export & import with mnemonics + BWS', done => {
+        it('should export & import with mnemonics + DWS', done => {
           let k = new Key({
             seedData: 'pink net pet stove boy receive task nephew book spawn pull regret',
             seedType: 'mnemonic',
@@ -6183,7 +6183,7 @@ describe('client API', function() {
           });
         });
 
-        it('should check BWS once if specific derivation is not problematic', done => {
+        it('should check DWS once if specific derivation is not problematic', done => {
           // this key derivation is equal for compliant and non-compliant
           let k = new Key({
             seedData: 'relax about label gentle insect cross summer helmet come price elephant seek',
@@ -7792,7 +7792,7 @@ describe('client API', function() {
             var c = clients[0].credentials;
 
             // Ggenerate a new priv key, not registered
-            var k = new Bitcore.PrivateKey();
+            var k = new Ducatuscore.PrivateKey();
             c.requestPrivKey = k.toString();
             c.requestPubKey = k.toPublicKey().toString();
             done();
@@ -7839,7 +7839,7 @@ describe('client API', function() {
           url.should.contain('/copayers');
           body.should.not.contain('pepe');
 
-          var k = new Bitcore.PrivateKey(key);
+          var k = new Ducatuscore.PrivateKey(key);
           var c = clients[0].credentials;
           c.requestPrivKey = k.toString();
           c.requestPubKey = k.toPublicKey().toString();
@@ -7881,7 +7881,7 @@ describe('client API', function() {
         });
 
         clients[0].addAccess(opts2, (err, x, key) => {
-          var k = new Bitcore.PrivateKey(key);
+          var k = new Ducatuscore.PrivateKey(key);
           var c = clients[0].credentials;
           c.requestPrivKey = k.toString();
           c.requestPubKey = k.toPublicKey().toString();
@@ -8013,7 +8013,7 @@ describe('client API', function() {
         };
       });
 
-      var B = Bitcore_[coin];
+      var B = Ducatuscore_[coin];
       it.skip('should decrypt bip38 encrypted private key', done => {
         this.timeout(60000);
         clients[0].decryptBIP38PrivateKey(

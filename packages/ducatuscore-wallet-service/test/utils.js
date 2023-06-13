@@ -190,8 +190,8 @@ describe('Utils', function() {
 
   describe('#parseVersion', function() {
     it('should parse version', function() {
-      Utils.parseVersion('bwc-2.3.1').should.deep.equal({
-        agent: 'bwc',
+      Utils.parseVersion('dwc-2.3.1').should.deep.equal({
+        agent: 'dwc',
         major: 2,
         minor: 3,
         patch: 1,
