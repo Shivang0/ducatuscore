@@ -342,9 +342,9 @@ describe('BTC Tests', function() {
         expect(output.scriptPubKey.address).to.equal(config.currencyConfig.sendTo);
       });
     
-      it('should get tx output info for bitcore', async() => {
-        const output1 = await rpcs.getTxOutputInfo({ txid, vout: 0, transformToBitcore: true });
-        const output2 = await rpcs.getTxOutputInfo({ txid, vout: 1, transformToBitcore: true });
+      it('should get tx output info for ducatuscore', async() => {
+        const output1 = await rpcs.getTxOutputInfo({ txid, vout: 0, transformToDucatuscore: true });
+        const output2 = await rpcs.getTxOutputInfo({ txid, vout: 1, transformToDucatuscore: true });
         let output = [output1, output2].find(v => v.value === 0.0001);
         expect(output).to.exist;
         expect(output.address).to.equal(config.currencyConfig.sendTo);

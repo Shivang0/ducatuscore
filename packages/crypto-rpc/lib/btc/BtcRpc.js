@@ -281,14 +281,14 @@ class BtcRpc {
     return { height, hash };
   }
 
-  async getTxOutputInfo({ txid, vout, includeMempool = false, transformToBitcore }) {
+  async getTxOutputInfo({ txid, vout, includeMempool = false, transformToDucatuscore }) {
     const txidInfo = await this.asyncCall('gettxout', [txid, vout, includeMempool]);
     if (!txidInfo) {
       this.emitter.emit('error', new Error(`No info found for ${txid}`));
       return null;
     }
-    if (transformToBitcore) {
-      let bitcoreUtxo = {
+    if (transformToDucatuscore) {
+      let ducatuscoreUtxo = {
         mintIndex: vout,
         mintTxid: txid,
         address: txidInfo.scriptPubKey.address || txidInfo.scriptPubKey.addresses[0], // Legacy
@@ -296,7 +296,7 @@ class BtcRpc {
         value: txidInfo.value,
         confirmations: txidInfo.confirmations
       };
-      return bitcoreUtxo;
+      return ducatuscoreUtxo;
     }
     return txidInfo;
   }
