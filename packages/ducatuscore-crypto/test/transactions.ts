@@ -504,43 +504,6 @@ describe('Transaction Creation', () => {
       );
     }
   });
-
-  it('should create a DOGE tx', () => {
-    const recipients = [{ address: 'mpNpzMoprLnSBu8CWDunNCYeJq3Mzdk59V', amount: 1e8 }];
-    const change = 'msnAsQcCdtzDyiSWb4ZnNxFwUy3P9ogQvY';
-    const utxos = [
-      {
-        mintTxid: '643ec66d6c4cad4cbdb8ed2166b8078975e0af9bb7ff7e30d394f43b0d9f18ab',
-        mintIndex: 1,
-        value: 0.02503422 * 1e8,
-        script: '76a91457884dcfe2ab46d3354a42d97333c95e5b80cf0188ac',
-        address: 'moVnNJpHHfssYJEnMTS5xXyGV8RhRQNRz5',
-        sequenceNumber: 4294967294
-      },
-      {
-        mintTxid: '643ec66d6c4cad4cbdb8ed2166b8078975e0af9bb7ff7e30d394f43b0d9f18ab',
-        mintIndex: 0,
-        value: 1e8,
-        script: '76a9144e744a19a009a9dd43a23a7c12045c83e82ac9d288ac',
-        address: 'mnfnJx2xWWptYmBzck3rdE851Dtu9GaZ3F',
-        sequenceNumber: 4294967294
-      }
-    ];
-    const fee = 7440;
-    const tx = Transactions.create({ chain: 'DOGE', recipients, change, utxos, fee, rbf: true });
-
-    const keys = [
-      {
-        address: 'mnfnJx2xWWptYmBzck3rdE851Dtu9GaZ3F',
-        privKey: 'cSFjiifSbZ2hU4jTFwE993LCe2rkZGULCTGWTDWXzHvuXRKxpnc1'
-      },
-      { address: 'moVnNJpHHfssYJEnMTS5xXyGV8RhRQNRz5', privKey: 'cUWVirwp5vh1D6WWbYci3tuGniyf28ERpgU4uL5VSiFDfvNEhJqy' }
-    ];
-    const signed = Transactions.sign({ chain: 'DOGE', tx, keys, utxos });
-    const expected =
-      '0100000002ab189f0d3bf494d3307effb79bafe0758907b86621edb8bd4cad4c6c6dc63e64010000006a47304402201df8f5c273dfb945f4ce253676b6f8b9ab42d9d80504ac89a52be258c5c56a8e022010ef6409177680f783a34308cc2cb748315a43091c9ab5a585db2af36e84c647012102c8f8fa438666cbd287e28fb384b99555e4acce610e8141e887c9c458bba5db5cffffffffab189f0d3bf494d3307effb79bafe0758907b86621edb8bd4cad4c6c6dc63e64000000006b483045022100c3bf109bcbba3227fb7a749c4e5f708dd0c5de2ae1bda66e98605ffe856ae6cc02201debac5b5e1262af3b0f95d57f47d0f932c8d733822658d3a5377fb2827dc69701210321f2f13aed42db7257b64f77d574071a6e81e460ab3693eefb7482c12d1ff697ffffffff0100e1f505000000001976a914612fb4d5e27a28f5c54018d8948ca3a650741c4188ac00000000';
-    expect(signed).to.eq(expected);
-  });
 });
 
 describe('Transaction Sign', () => {

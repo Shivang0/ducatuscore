@@ -14,12 +14,9 @@
 
 - [Ducatuscore Lib](packages/ducatuscore-lib) - A powerful JavaScript library for Ducatus
 - [Ducatuscore Lib Cash](packages/ducatuscore-lib-cash) - A powerful JavaScript library for Bitcoin Cash
-- [Ducatuscore Lib Doge](packages/ducatuscore-lib-doge) - A powerful JavaScript library for Dogecoin
-- [Ducatuscore Lib Litecoin](packages/ducatuscore-lib-ltc) - A powerful JavaScript library for Litecoin
 - [Ducatuscore Mnemonic](packages/ducatuscore-mnemonic) - Implements mnemonic code for generating deterministic keys
 - [Ducatuscore P2P](packages/ducatuscore-p2p) - The peer-to-peer networking protocol for Ducatus
 - [Ducatuscore P2P Cash](packages/ducatuscore-p2p-cash) - The peer-to-peer networking protocol for Bitcoin Cash
-- [Ducatuscore P2P Doge](packages/ducatuscore-p2p-doge) **DEPRECATED**[^1] - The peer-to-peer networking protocol for Dogecoin
 - [Ducatuscore Crypto](packages/ducatuscore-crypto) - A coin-agnostic wallet library for creating transactions, signing, and address derivation
 
 ## Extras

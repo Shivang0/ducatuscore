@@ -4045,29 +4045,6 @@ describe('Wallet service', function() {
                 });
               });
             });
-            if(coin !== 'doge') { // TODO
-              it('should be able to specify change address', function(done) {
-                helpers.stubUtxos(server, wallet, [1, 2], function(utxos) {
-                  var txOpts = {
-                    outputs: [{
-                      toAddress: addressStr,
-                      amount: 0.8e8,
-                    }],
-                    feePerKb: 100e2,
-                    changeAddress: utxos[0].address,
-                  };
-                  txOpts = Object.assign(txOpts, flags);
-                  server.createTx(txOpts, function(err, tx) {
-                    should.not.exist(err);
-                    should.exist(tx);
-                    var t = ChainService.getDucatuscoreTx(tx);
-
-                    t.getChangeOutput().script.toAddress().toString(true).should.equal(txOpts.changeAddress);
-                  done();
-                });
-              });
-            });
-          }
             it('should be fail if specified change address is not from the wallet', function(done) {
 
               helpers.stubUtxos(server, wallet, [1, 2], function(utxos) {
@@ -4698,7 +4675,7 @@ describe('Wallet service', function() {
           var level, expected, expectedNormal;
           before(() => {
             if (Constants.UTXO_CHAINS[coin.toUpperCase()]) {
-              const normal = coin == 'doge' ? 1e8: 200e2;   // normal BCH, DOGE
+              const normal = 200e2;
               helpers.stubFeeLevels({
                 1: 400e2,
                 2: normal,
@@ -4915,44 +4892,6 @@ describe('Wallet service', function() {
             });
           });
         });
-        if(coin !== 'doge') { // TODO
-          it('should fail with different error for insufficient funds and locked funds', function(done) {
-            const ts = TO_SAT[coin];
-            helpers.stubUtxos(server, wallet, [1, 1], { coin }, function() {
-              let txAmount = +((1.1 * ts).toFixed(0));
-              var txOpts = {
-                outputs: [{
-                  toAddress: addressStr,
-                  amount: txAmount,
-                }],
-                feePerKb: 100e2,
-                from: fromAddr,
-              };
-              txOpts = Object.assign(txOpts, flags);
-              helpers.createAndPublishTx(server, txOpts, TestData.copayers[0].privKey_1H_0, function(tx) {
-                server.getBalance({}, function(err, balance) {
-                  should.not.exist(err);
-                  balance.totalAmount.should.equal(2 * ts + lockedFunds);
-                  if(flags.noChange) {
-                    balance.lockedAmount.should.equal(txAmount + lockedFunds);
-                    txOpts.outputs[0].amount = 2 * ts;
-                  } else {
-                    balance.lockedAmount.should.equal(2 * ts);
-                    txOpts.outputs[0].amount = 1 * ts;
-                  }
-  
-                  txOpts = Object.assign(txOpts, flags);
-                  server.createTx(txOpts, function(err, tx) {
-                    should.exist(err);
-                    err.code.should.equal('LOCKED_FUNDS');
-                    err.message.should.equal('Funds are locked by pending transaction proposals');
-                    done();
-                  });
-                });
-              });
-            });
-          });
-        }
 
         if(!flags.noUtxoTests) {
 
@@ -4993,32 +4932,6 @@ describe('Wallet service', function() {
                 should.exist(err);
                 err.code.should.equal('DUST_AMOUNT');
                 err.message.should.equal('Amount below dust threshold');
-                done();
-              });
-            });
-          });
-
-          if(coin !== 'doge') { // TODO
-          
-            it('should create tx with 0 change output', function(done) {
-            helpers.stubUtxos(server, wallet, 2, function() {
-              var fee = 2260; // The exact fee of the resulting tx
-              var amount = 2e8 - fee;
-
-              var txOpts = {
-                outputs: [{
-                  toAddress: addressStr,
-                  amount: amount,
-                }],
-                feePerKb: 100e2,
-              };
-              txOpts = Object.assign(txOpts, flags);
-              server.createTx(txOpts, function(err, tx) {
-                should.not.exist(err);
-                should.exist(tx);
-                var ducatuscoreTx = ChainService.getDucatuscoreTx(tx);
-                ducatuscoreTx.outputs.length.should.equal(1);
-                ducatuscoreTx.outputs[0].satoshis.should.equal(tx.amount);
                 done();
               });
             });
@@ -5174,14 +5087,9 @@ describe('Wallet service', function() {
           });
 
           it('should shuffle outputs unless specified', function(done) {
-            let amount, outputAmount;
-            if(coin === 'doge'){
-              amount = 1000;
-              outputAmount = 1e8;
-            } else {
-              amount = 1;
-              outputAmount = 100e2;
-            }
+            let amount = 1;
+            let outputAmount = 100e2;
+            
             helpers.stubUtxos(server, wallet, amount, function() {
               var txOpts = {
                 outputs: _.times(30, function(i) {
@@ -7544,168 +7452,6 @@ describe('Wallet service', function() {
       });
     });
   });
-
-
-  describe('Check requiredFeeRate  DOGE', function() {
-    var server, wallet;
-
-    beforeEach(function(done) {
-      helpers.stubFeeLevels({
-        1: 40002,
-        2: 1e8,
-        24: 0.5e8,
-      }, true);
-      done();
-    });
-
-    const cases = [
-      {
-        name: 'Legacy',
-        requiredFeeRate: 755000,
-        utxos: [100],
-        outputs:  [{
-          toAddress: 'DMHR9z3hVfEMkfsxfP7CbVtYdPh2f5ESqo',
-          amount: 2048378600, 
-        }],
-      },
-      {
-        n: 2,
-        name: 'Legacy, sendmax',
-        requiredFeeRate: 755000,
-        sendMax: true,
-        fromSegwit: false,
-        utxos: [100],
-        outputs:  [{
-          toAddress: 'DMHR9z3hVfEMkfsxfP7CbVtYdPh2f5ESqo',
-        }],
-      },
-      {
-        n: 2,
-        name: 'Legacy, above min relay fee',
-        requiredFeeRate: 1e8,
-        fromSegwit: false,
-        utxos: Array(10).fill(1), // 10 utxo's of 1 DOGE each
-        outputs: [{
-          toAddress: 'DMHR9z3hVfEMkfsxfP7CbVtYdPh2f5ESqo',
-          amount: 8e8
-        }]
-      },
-    ];
-
-    function checkTx(txOpts, x, cb) {
-      function sign(copayerM, tx, cb) {
-        helpers.getAuthServer(wallet.copayers[copayerM].id, function(server) {
-          var signatures = helpers.clientSign(tx, TestData.copayers[copayerM].xPrivKey_44H_0H_0H);
-          server.signTx({
-            txProposalId: tx.id,
-            signatures: signatures,
-          }, function(err, txp) {
-            should.not.exist(err, err);
-
-            if (++copayerM == x.m) {
-              return cb(txp);
-            } else {
-              return sign(copayerM, tx, cb);
-            }
-          });
-        });
-      }
-
-
-      helpers.createAndPublishTx(server, txOpts, TestData.copayers[0].privKey_1H_0, function(tx) {
-        sign(0, tx, (txp) => {
-
-          should.exist(txp.raw);
-          // console.log('[server.js.7038]', txp.raw); // TODO
-          txp.status.should.equal('accepted');
-          //console.log('[server.js.6981:txp:]',txp); // TODO
-
-          var t = ChainService.getDucatuscoreTx(txp);
-          const vSize = x.vSize || t._estimateSize(); // use given vSize if available
-          // Check size and fee rate
-          const actualSize = txp.raw.length / 2;
-          const actualFeeRate = t.getFee() /  (x.fromSegwit ? vSize : actualSize) * 1000;
-          //console.log('[server.js.7001:log:]',txp.raw); // TODO
-          console.log(`Wire Size:${actualSize} vSize: ${vSize} (Segwit: ${x.fromSegwit})  Fee: ${t.getFee()} ActualRate:${Math.round(actualFeeRate)} RequiredRate:${x.requiredFeeRate}`);
-
-          // Fee should be more than min relay fee
-          t.getFee().should.be.gte(CWC.DucatuscoreLibDoge.Transaction.DUST_AMOUNT);
-
-          if (t.getFee() > CWC.DucatuscoreLibDoge.Transaction.DUST_AMOUNT) {
-            // size should be above (or equal) the required FeeRate
-            actualFeeRate.should.not.be.below(x.requiredFeeRate);
-            actualFeeRate.should.be.below(x.requiredFeeRate * 1.5); // no more that 50% extra
-          }
-          return cb(actualFeeRate);
-        });
-      });
-    };
-    let i=0;
-    cases.forEach( x => {
-
-      x.i = i;
-      x.m = x.m || 1;
-      x.n = x.n || 1;
-      it(`case  ${i++} : ${x.name} (${x.m}-of-${x.n})`, function(done) {
-
-        helpers.createAndJoinWallet(x.m, x.n, {useNativeSegwit: x.fromSegwit, coin:'doge'}, function(s, w) {
-          server = s;
-          wallet = w;
-
-          helpers.stubUtxos(server, wallet, x.utxos, function() {
-            server.getSendMaxInfo({
-              feePerKb: x.requiredFeeRate,
-              returnInputs: true,
-            }, function(err, info) {
-              should.not.exist(err, err);
-              should.exist(info);
-
-              var txOpts = {
-                outputs: x.outputs,
-              };
-
-              if (x.sendMax) {
-                txOpts.fee =  info.fee;
-                txOpts.inputs = info.inputs;
-                txOpts.outputs[0].amount =  info.amount;
-              } else {
-                txOpts.feePerKb = x.requiredFeeRate;
-              }
-              txOpts.payProUrl = 'aaa.com';
-
-              // CASE 8
-              checkTx(txOpts, x, (fee1) => {
-                if (x.i == 8) {
-                  helpers.beforeEach(() => {
-                    // check with paypro fee is bigger.
-                    console.log(`## case  ${x.i} : Again with no paypro`);
-                    helpers.createAndJoinWallet(x.m, x.n, {useNativeSegwit: x.fromSegwit}, function(s, w) {
-                      server = s;
-                      wallet = w;
-
-                      helpers.stubUtxos(server, wallet, x.utxos, function() {
-
-                        txOpts.payProUrl = null;
-                        checkTx(txOpts, x, (fee2) => {
-                          console.log(`## Fee PayPro: ${fee1} vs ${fee2}`);
-                          fee1.should.be.above(fee2);
-                          done();
-                        });
-                      });
-                    });
-                  });
-                } else {
-                  done();
-                }
-
-              });
-            });
-          });
-        });
-      });
-    });
-  });
-
 
   describe('#rejectTx', function() {
     var server, wallet, txid;

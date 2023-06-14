@@ -1965,22 +1965,6 @@ export class WalletService implements IWalletService {
 
       const feeLevels = Defaults.FEE_LEVELS[opts.chain];
 
-      /*
-      if (opts.chain === 'doge') {
-        const defaultDogeFeeLevels = feeLevels[0];
-        const result: {
-          feePerKb?: number;
-          nbBlocks?: number;
-          level: string;
-        } = {
-          level: defaultDogeFeeLevels.name,
-          nbBlocks: defaultDogeFeeLevels.nbBlocks,
-          feePerKb: defaultDogeFeeLevels.defaultValue
-        };
-        return cb(null, [result]);
-      }
-      */
-
       const samplePoints = () => {
         const definedPoints = _.uniq(_.map(feeLevels, 'nbBlocks'));
         return _.uniq(

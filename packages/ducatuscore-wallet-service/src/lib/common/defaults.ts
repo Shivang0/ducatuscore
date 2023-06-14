@@ -221,8 +221,6 @@ export const Defaults = {
 
   MAX_TX_SIZE_IN_KB_BCH: 100,
 
-  MAX_TX_SIZE_IN_KB_DOGE: 100,
-
   // MAX_TX_SIZE_IN_KB_ETH: 500, // not used
   // MAX_TX_SIZE_IN_KB_XRP: 1000, // not used
 

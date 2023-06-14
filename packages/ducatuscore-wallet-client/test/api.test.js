@@ -642,52 +642,6 @@ describe('client API', function() {
           '0xec068504a817c80082520894a062a07a0a56beb2872b12f388f511d694626730870dd764300b80008081898080'
         ]);
       });
-      it('should protect from creating excessive fee DOGE', () => {
-        var toAddress = 'msj42CCGruhRsFrGATiUuh25dtxYtnpbTx';
-        var changeAddress = 'msj42CCGruhRsFrGATiUuh25dtxYtnpbTx';
-
-        var publicKeyRing = [
-          {
-            xPubKey: new Ducatuscore.HDPublicKey(derivedPrivateKey['BIP44'])
-          }
-        ];
-
-        var utxos = helpers.generateUtxos('P2PKH', publicKeyRing, 'm/1/0', 1, [1, 2]);
-        var txp = {
-          coin: 'doge',
-          inputs: utxos,
-          toAddress: toAddress,
-          amount: 1.5e8,
-          changeAddress: {
-            address: changeAddress
-          },
-          requiredSignatures: 1,
-          outputOrder: [0, 1],
-          fee: 3.2e8, /// 3 DOGE fee, WOW!
-          derivationStrategy: 'BIP44',
-          addressType: 'P2PKH'
-        };
-
-        var x = Utils;
-
-        x.newDucatuscoreTransaction = () => {
-          return {
-            from: sinon.stub(),
-            to: sinon.stub(),
-            change: sinon.stub(),
-            outputs: [
-              {
-                satoshis: 1000
-              }
-            ],
-            fee: sinon.stub()
-          };
-        };
-
-        var t = x.buildTx(txp);
-        should.exist(t);
-        x.newDucatuscoreTransaction = x;
-      });
       it('should protect from creating excessive fee', () => {
         var toAddress = 'msj42CCGruhRsFrGATiUuh25dtxYtnpbTx';
         var changeAddress = 'msj42CCGruhRsFrGATiUuh25dtxYtnpbTx';

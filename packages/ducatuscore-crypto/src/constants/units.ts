@@ -143,17 +143,6 @@ export let UNITS = {
       minDecimals: 0
     }
   },
-  doge: {
-    toSatoshis: 100000000,
-    full: {
-      maxDecimals: 8,
-      minDecimals: 8
-    },
-    short: {
-      maxDecimals: 6,
-      minDecimals: 2
-    }
-  },
   shib: {
     toSatoshis: 1e18,
     full: {
