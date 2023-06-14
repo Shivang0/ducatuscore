@@ -1,0 +1,30 @@
+{
+  "name": "@ducatus/ducatuscore-p2p-duc",
+  "version": "10.0.0",
+  "author": "Ducatus",
+  "scripts": {
+    "lint": "gulp lint",
+    "test": "gulp test",
+    "coverage": "gulp coverage",
+    "build": "gulp",
+    "pub": "npm run build && npm publish --access public"
+  },
+  "dependencies": {
+    "bloom-filter": "^0.2.0",
+    "buffers": "github:bitpay/node-buffers#v0.1.2-bitpay",
+    "@ducatus/ducatus-core-lib-rev": "8.16.7",
+    "socks5-client": "^0.3.6"
+  },
+  "description": "Interface to the Ducatus P2P network for bitcore",
+  "devDependencies": {
+    "brfs": "^1.2.0",
+    "chai": "~1.10.0",
+    "gulp": "^3.8.10",
+    "sinon": "^1.12.2"
+  },
+  "keywords": [
+    "bitcore",
+    "ducatus"
+  ],
+  "main": "index.js"
+}
