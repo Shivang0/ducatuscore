@@ -13,7 +13,7 @@ services:
     environment:
       - DB_HOST=db
       - DB_NAME=ducatuscore-test
-      - DUCATUSCORE_CONFIG_PATH=../../../../ducatuscore-test.config.js
+      - TYZ_WALLET_CORE_CONFIG_PATH=../../../../ducatuscore-test.config.js
     depends_on:
       - db
       - bitcoin

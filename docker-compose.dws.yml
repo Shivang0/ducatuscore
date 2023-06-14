@@ -23,7 +23,7 @@ services:
     ports:
       - 3380:3380
     env_file: .env
-    command: 'node ./packages/ducatuscoree-service/ts_build/messagebroker/messagebroker.js'
+    command: 'node ./packages/ducatuscore-service/ts_build/messagebroker/messagebroker.js'
     
   ducatuscore-emailservice:
     build: .
@@ -74,18 +74,18 @@ services:
     env_file: .env
     command: 'node ./packages/ducatuscore-service/ts_build/dws.js'
 
-  ducatuscore-pushnotificationsservice:
-    build: .
-    restart: always
-    image: ducatuscore-pushnotificationsservice
-    links:
-      - database-dws
-      - ducatuscore-messagebroker
-    environment:
-      - DB_HOST=database-dws
-      - MSG_HOST=ducatuscore-messagebroker
-    env_file: .env
-    command: 'node ./packages/ducatuscore-service/ts_build/pushnotificationsservice/pushnotificationsservice.js'
+  # ducatuscore-pushnotificationsservice:
+  #   build: .
+  #   restart: always
+  #   image: ducatuscore-pushnotificationsservice
+  #   links:
+  #     - database-dws
+  #     - ducatuscore-messagebroker
+  #   environment:
+  #     - DB_HOST=database-dws
+  #     - MSG_HOST=ducatuscore-messagebroker
+  #   env_file: .env
+  #   command: 'node ./packages/ducatuscore-service/ts_build/pushnotificationsservice/pushnotificationsservice.js'
 
   # ducatuscore-bcmonitor:
   #   build: .
@@ -95,7 +95,7 @@ services:
   #     - database-dws
   #     - ducatuscore-messagebroker
   #   environment:
-  #     - DB_HOST=ducatuscore-dws
+  #     - DB_HOST=ducatuscoree-dws
   #     - MSG_HOST=ducatuscore-messagebroker
   #   env_file: .env
   #   command: 'node ./packages/ducatuscore-service/ts_build/bcmonitor/bcmonitor.js'
