@@ -2,9 +2,9 @@
 
 var Message = require('../message');
 var inherits = require('util').inherits;
-var bitcore = require('@ducatus/ducatus-core-lib-rev');
-var $ = bitcore.util.preconditions;
-var _ = bitcore.deps._;
+var ducatuscore = require('@ducatus/ducatuscore-lib-duc');
+var $ = ducatuscore.util.preconditions;
+var _ = ducatuscore.deps._;
 
 /**
  * @param {Transaction=} arg - An instance of Transaction

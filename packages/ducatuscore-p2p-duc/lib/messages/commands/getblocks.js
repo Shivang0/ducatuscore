@@ -2,11 +2,11 @@
 
 var Message = require('../message');
 var inherits = require('util').inherits;
-var bitcore = require('@ducatus/ducatus-core-lib-rev');
+var ducatuscore = require('@ducatus/ducatuscore-lib-duc');
 var utils = require('../utils');
-var BufferReader = bitcore.encoding.BufferReader;
-var BufferWriter = bitcore.encoding.BufferWriter;
-var $ = bitcore.util.preconditions;
+var BufferReader = ducatuscore.encoding.BufferReader;
+var BufferWriter = ducatuscore.encoding.BufferWriter;
+var $ = ducatuscore.util.preconditions;
 
 /**
  * Query another peer about blocks. It can query for multiple block hashes,

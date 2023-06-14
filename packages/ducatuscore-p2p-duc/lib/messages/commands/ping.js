@@ -2,12 +2,12 @@
 
 var Message = require('../message');
 var inherits = require('util').inherits;
-var bitcore = require('@ducatus/ducatus-core-lib-rev');
+var ducatuscore = require('@ducatus/ducatuscore-lib-duc');
 var utils = require('../utils');
-var $ = bitcore.util.preconditions;
-var _ = bitcore.deps._;
-var BufferUtil = bitcore.util.buffer;
-var BufferReader = bitcore.encoding.BufferReader;
+var $ = ducatuscore.util.preconditions;
+var _ = ducatuscore.deps._;
+var BufferUtil = ducatuscore.util.buffer;
+var BufferReader = ducatuscore.encoding.BufferReader;
 
 /**
  * A message to confirm that a connection is still valid.

@@ -1,9 +1,9 @@
 'use strict';
 
-var bitcore = require('@ducatus/ducatus-core-lib-rev');
-var $ = bitcore.util.preconditions;
-var BufferWriter = bitcore.encoding.BufferWriter;
-var Hash = bitcore.crypto.Hash;
+var ducatuscore = require('@ducatus/ducatuscore-lib-duc');
+var $ = ducatuscore.util.preconditions;
+var BufferWriter = ducatuscore.encoding.BufferWriter;
+var Hash = ducatuscore.crypto.Hash;
 
 /**
  * Base message that can be inherited to add an additional

@@ -1,8 +1,4 @@
 'use strict';
 
-var gulp = require('gulp');
-var litecoreTasks = require('litecore-build');
-
-litecoreTasks('p2p', {skipBrowser: true});
-
-gulp.task('default', ['lint', 'coverage']);
+var startGulp = require('@ducatus/ducatuscore-build');
+module.exports = startGulp('p2p', {skipBrowser: true})

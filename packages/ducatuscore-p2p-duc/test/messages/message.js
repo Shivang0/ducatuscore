@@ -3,7 +3,7 @@
 var should = require('chai').should();
 var P2P = require('../../');
 var Message = P2P.Messages.Message;
-var Networks = require('@ducatus/ducatus-core-lib-rev').Networks;
+var Networks = require('@ducatus/ducatuscore-lib-duc').Networks;
 
 describe('Message', function() {
 
@@ -31,7 +31,7 @@ describe('Message', function() {
         return new Buffer(0);
       };
       var buffer = message.toBuffer();
-      var expectedBuffer = new Buffer('fbc0b6db636f6d6d616e640000000000000000005df6e0e2', 'hex');
+      var expectedBuffer = new Buffer('f9beb4d9636f6d6d616e640000000000000000005df6e0e2', 'hex');
       buffer.should.deep.equal(expectedBuffer);
     });
   });

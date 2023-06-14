@@ -6,14 +6,14 @@ var chai = require('chai');
 var should = chai.should();
 var expect = chai.expect;
 
-var bitcore = require('@ducatus/ducatus-core-lib-rev');
+var ducatuscore = require('@ducatus/ducatuscore-lib-duc');
 var P2P = require('../');
 var Peer = P2P.Peer;
 var MessagesData = require('./data/messages');
 var Messages = P2P.Messages;
 var messages = new Messages();
 var Pool = P2P.Pool;
-var Networks = bitcore.Networks;
+var Networks = ducatuscore.Networks;
 
 var dns = require('dns');
 var sinon = require('sinon');
@@ -36,6 +36,22 @@ describe('Pool', function() {
   it('create instance setting the network', function() {
     var pool = new Pool({network: Networks.testnet});
     pool.network.should.equal(Networks.testnet);
+  });
+
+  it('create instance setting a network from string', function() {
+    var pool = new Pool({network: 'testnet'});
+    pool.network.should.equal(Networks.testnet);
+  });
+
+  it('create instance setting a network from xpubkey', function() {
+    var pool = new Pool({network: 0x043587cf});
+    pool.network.should.equal(Networks.testnet);
+  });
+
+  it('create instance setting a custom network', function() {
+    const customNetwork = new class Network{ constructor(port, networkMagic) { this.port = port; this.networkMagic = networkMagic } }(1234, 0x1234567);
+    var pool = new Pool({network: customNetwork});
+    pool.network.should.equal(customNetwork);
   });
 
   it('discover peers via dns', function() {

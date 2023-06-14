@@ -10,14 +10,14 @@ var expect = chai.expect;
 var sinon = require('sinon');
 var fs = require('fs');
 
-var bitcore = require('@ducatus/ducatus-core-lib-rev');
-var _ = bitcore.deps._;
+var ducatuscore = require('@ducatus/ducatuscore-lib-duc');
+var _ = ducatuscore.deps._;
 var P2P = require('../');
 var Peer = P2P.Peer;
 var EventEmitter = require('events').EventEmitter;
 var Messages = P2P.Messages;
 var messages = new Messages();
-var Networks = bitcore.Networks;
+var Networks = ducatuscore.Networks;
 
 describe('Peer', function() {
 
@@ -90,6 +90,28 @@ describe('Peer', function() {
     peer.host.should.equal('localhost');
     peer.network.should.equal(Networks.testnet);
     peer.port.should.equal(Networks.testnet.port);
+  });
+
+  it('create instance setting a network from string', function() {
+    var peer = new Peer({host: 'localhost', network: 'testnet'});
+    peer.host.should.equal('localhost');
+    peer.network.should.equal(Networks.testnet);
+    peer.port.should.equal(Networks.testnet.port);
+  });
+
+  it('create instance setting a network from xpubkey', function() {
+    var peer = new Peer({host: 'localhost', network: 0x043587cf});
+    peer.host.should.equal('localhost');
+    peer.network.should.equal(Networks.testnet);
+    peer.port.should.equal(Networks.testnet.port);
+  });
+
+  it('create instance setting a custom network', function() {
+    const customNetwork = new class Network{ constructor(port, networkMagic) { this.port = port; this.networkMagic = networkMagic } }(1234, 0x1234567);
+    var peer = new Peer({host: 'localhost', network: customNetwork});
+    peer.host.should.equal('localhost');
+    peer.network.should.equal(customNetwork);
+    peer.port.should.equal(customNetwork.port);
   });
 
   it('create instance setting port and network', function() {

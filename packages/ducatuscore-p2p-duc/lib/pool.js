@@ -2,10 +2,10 @@
 
 var dns = require('dns');
 var EventEmitter = require('events').EventEmitter;
-var bitcore = require('@ducatus/ducatus-core-lib-rev');
-var sha256 = bitcore.crypto.Hash.sha256;
+var ducatuscore = require('@ducatus/ducatuscore-lib-duc');
+var sha256 = ducatuscore.crypto.Hash.sha256;
 var Peer = require('./peer');
-var Networks = bitcore.Networks;
+var Networks = ducatuscore.Networks;
 var util = require('util');
 var net = require('net');
 
@@ -50,11 +50,15 @@ function Pool(options) {
   this._connectedPeers = {};
   this._addrs = [];
 
+  if (options.network && options.network.constructor.name !== 'Network') {
+    options.network = Networks.get(options.network);
+  }
+
   this.listenAddr = options.listenAddr !== false;
   this.dnsSeed = options.dnsSeed !== false;
   this.maxSize = options.maxSize || Pool.MaxConnectedPeers;
   this.messages = options.messages;
-  this.network = Networks.get(options.network) || Networks.defaultNetwork;
+  this.network = options.network || Networks.defaultNetwork;
   this.relay = options.relay === false ? false : true;
 
   if (options.addrs) {

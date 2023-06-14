@@ -4,10 +4,10 @@ var Buffers = require('./buffers');
 var EventEmitter = require('events').EventEmitter;
 var Net = require('net');
 var Socks5Client = require('socks5-client');
-var bitcore = require('@ducatus/ducatus-core-lib-rev');
-var Networks = bitcore.Networks;
+var ducatuscore = require('@ducatus/ducatuscore-lib-duc');
+var Networks = ducatuscore.Networks;
 var Messages = require('./messages');
-var $ = bitcore.util.preconditions;
+var $ = ducatuscore.util.preconditions;
 var util = require('util');
 
 /**
@@ -57,7 +57,10 @@ function Peer(options) {
     this.port = options.port;
   }
 
-  this.network = Networks.get(options.network) || Networks.defaultNetwork;
+  if (options.network && options.network.constructor.name !== 'Network') {
+    options.network = Networks.get(options.network);
+  }
+  this.network = options.network || Networks.defaultNetwork;
 
   if (!this.port) {
     this.port = this.network.port;
@@ -65,8 +68,8 @@ function Peer(options) {
 
   this.messages = options.messages || new Messages({
     network: this.network,
-    Block: bitcore.Block,
-    Transaction: bitcore.Transaction
+    Block: ducatuscore.Block,
+    Transaction: ducatuscore.Transaction
   });
 
   this.dataBuffer = new Buffers();
@@ -164,7 +167,11 @@ Peer.prototype._addSocketEventHandlers = function() {
       // TODO: handle this case better
       return self.disconnect();
     }
-    self._readMessage();
+    try {
+      self._readMessage();
+    } catch (e) {
+      return self.disconnect();
+    }
   });
 };
 

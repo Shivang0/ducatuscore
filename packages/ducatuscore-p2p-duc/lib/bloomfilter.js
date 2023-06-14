@@ -1,9 +1,9 @@
 'use strict';
 
-var bitcore = require('@ducatus/ducatus-core-lib-rev');
+var ducatuscore = require('@ducatus/ducatuscore-lib-duc');
 var BloomFilter = require('bloom-filter');
-var BufferReader = bitcore.encoding.BufferReader;
-var BufferWriter = bitcore.encoding.BufferWriter;
+var BufferReader = ducatuscore.encoding.BufferReader;
+var BufferWriter = ducatuscore.encoding.BufferWriter;
 
 /**
  * A constructor for Bloom Filters

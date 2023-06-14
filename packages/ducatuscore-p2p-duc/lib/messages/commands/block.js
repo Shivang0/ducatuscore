@@ -2,9 +2,9 @@
 
 var Message = require('../message');
 var inherits = require('util').inherits;
-var bitcore = require('@ducatus/ducatus-core-lib-rev');
-var $ = bitcore.util.preconditions;
-var _ = bitcore.deps._;
+var ducatuscore = require('@ducatus/ducatuscore-lib-duc');
+var $ = ducatuscore.util.preconditions;
+var _ = ducatuscore.deps._;
 
 /**
  * @param {Block=} arg - An instance of a Block
@@ -26,10 +26,17 @@ function BlockMessage(arg, options) {
 inherits(BlockMessage, Message);
 
 BlockMessage.prototype.setPayload = function(payload) {
-  this.block = this.Block.fromBuffer(payload);
+  if (this.Block.prototype.fromRaw) {
+    this.block = this.Block.fromRaw(payload);
+  } else {
+    this.block = this.Block.fromBuffer(payload);
+  }
 };
 
 BlockMessage.prototype.getPayload = function() {
+  if (this.Block.prototype.toRaw) {
+    return this.block.toRaw();
+  }
   return this.block.toBuffer();
 };
 
