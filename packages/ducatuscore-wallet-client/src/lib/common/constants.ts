@@ -27,8 +27,6 @@ export const Constants = {
     'bch',
     'eth',
     'xrp',
-    'doge',
-    'ltc',
     'usdc',
     'usdp',
     'pax', // backwards compatibility
@@ -56,8 +54,8 @@ export const Constants = {
     'usdt'
   ],
 
-  CHAINS: ['btc', 'bch', 'eth', 'ducx', 'xrp', 'doge', 'ltc'],
-  UTXO_CHAINS: ['btc', 'bch', 'doge', 'ltc'],
+  CHAINS: ['btc', 'bch', 'eth', 'ducx', 'xrp'],
+  UTXO_CHAINS: ['btc', 'bch'],
   EVM_CHAINS: ['eth', 'ducx'],
   ETH_TOKEN_OPTS: CWC.Constants.ETH_TOKEN_OPTS,
   DUCX_TOKEN_OPTS: CWC.Constants.DUCX_TOKEN_OPTS,

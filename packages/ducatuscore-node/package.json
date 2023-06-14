@@ -78,8 +78,6 @@
     "@ducatus/ducatuscore-client": "^10.0.0",
     "@ducatus/ducatuscore-lib": "^10.0.0",
     "@ducatus/ducatuscore-lib-cash": "^10.0.0",
-    "@ducatus/ducatuscore-lib-doge": "^10.0.0",
-    "@ducatus/ducatuscore-lib-ltc": "^10.0.0",
     "@ducatus/ducatuscore-p2p": "^10.0.0",
     "@ducatus/ducatuscore-p2p-cash": "^10.0.0",
     "@ducatus/ducatuscore-p2p-doge": "^10.0.0",

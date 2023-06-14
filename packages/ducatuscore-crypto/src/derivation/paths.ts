@@ -19,18 +19,6 @@ export const Paths = {
     testnet: "m/44'/144'/",
     regtest: "m/44'/144'/"
   },
-  DOGE: {
-    mainnet: "m/44'/3'/",
-    livenet: "m/44'/3'/",
-    testnet: "m/44'/3'/",
-    regtest: "m/44'/3'/"
-  },
-  LTC: {
-    mainnet: "m/44'/2'/",
-    livenet: "m/44'/2'/",
-    testnet: "m/44'/2'/",
-    regtest: "m/44'/2'/"
-  },
   DUCX: {
     mainnet: "m/44'/60'/", // the official ducx derivation path is 966 but users will expect address to be same as ETH
     livenet: "m/44'/60'/",

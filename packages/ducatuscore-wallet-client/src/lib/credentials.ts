@@ -217,10 +217,6 @@ export class Credentials {
         coin = '60'; // the official ducx derivation path is 966 but users will expect address to be same as ETH
       } else if (this.coin == 'xrp') {
         coin = '144';
-      } else if (this.coin == 'doge') {
-        coin = '3';
-      } else if (this.coin == 'ltc') {
-        coin = '2';
       } else {
         throw new Error('unknown coin: ' + this.coin);
       }
@@ -324,9 +320,7 @@ export class Credentials {
     if (!this.m || !this.n) return false;
     if (
       (this.chain === 'btc' ||
-        this.chain === 'bch' ||
-        this.chain === 'doge' ||
-        this.chain === 'ltc') &&
+        this.chain === 'bch') &&
       (!this.publicKeyRing || this.publicKeyRing.length != this.n)
     )
       return false;

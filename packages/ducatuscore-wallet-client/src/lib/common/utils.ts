@@ -3,8 +3,6 @@
 import {
   DucatuscoreLib,
   DucatuscoreLibCash,
-  DucatuscoreLibDoge,
-  DucatuscoreLibLtc,
   Deriver,
   Transactions
 } from '@ducatus/ducatuscore-crypto';
@@ -23,9 +21,7 @@ const Ducatuscore_ = {
   bch: DucatuscoreLibCash,
   eth: Ducatuscore,
   ducx: Ducatuscore,
-  xrp: Ducatuscore,
-  doge: DucatuscoreLibDoge,
-  ltc: DucatuscoreLibLtc
+  xrp: Ducatuscore
 };
 const PrivateKey = Ducatuscore.PrivateKey;
 const PublicKey = Ducatuscore.PublicKey;

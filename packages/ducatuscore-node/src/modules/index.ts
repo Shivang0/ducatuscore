@@ -52,8 +52,6 @@ class ModuleManager extends BaseModule {
     ETH: './ethereum',
     DUCX: './ducx',
     BCH: './bitcoin-cash',
-    DOGE: './dogecoin',
-    LTC: './litecoin',
     XRP: './ripple'
   };
 

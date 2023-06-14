@@ -9,9 +9,7 @@ const secp256k1 = require('secp256k1');
 const Ducatuscore = require('@ducatus/ducatuscore-lib');
 const Ducatuscore_ = {
   btc: Ducatuscore,
-  bch: require('@ducatus/ducatuscore-lib-cash'),
-  doge: require('@ducatus/ducatuscore-lib-doge'),
-  ltc: require('@ducatus/ducatuscore-lib-ltc')
+  bch: require('@ducatus/ducatuscore-lib-cash')
 };
 
 export class Utils {
@@ -250,17 +248,7 @@ export class Utils {
         new Ducatuscore_['bch'].Address(address);
         return 'bch';
       } catch (e) {
-        try {
-          new Ducatuscore_['doge'].Address(address);
-          return 'doge';
-        } catch (e) {
-          try {
-            new Ducatuscore_['ltc'].Address(address);
-            return 'ltc';
-          } catch (e) {
-            return;
-          }
-        }
+        return;
       }
     }
   }

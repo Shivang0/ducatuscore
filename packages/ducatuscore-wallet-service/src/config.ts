@@ -77,22 +77,6 @@ const Config = () => {
           url: 'https://api-xrp.bitcore.io'
         }
       },
-      doge: {
-        livenet: {
-          url: 'https://api.bitcore.io'
-        },
-        testnet: {
-          url: 'https://api.bitcore.io'
-        }
-      },
-      ltc: {
-        livenet: {
-          url: 'https://api.bitcore.io'
-        },
-        testnet: {
-          url: 'https://api.bitcore.io'
-        }
-      },
       socketApiKey: 'socketApiKey'
     },
     pushNotificationsOpts: {
@@ -171,16 +155,7 @@ const Config = () => {
     //   xrp: {
     //     livenet: 'https://xrpscan.com/tx/{{txid}}',
     //     testnet: 'https://test.bithomp.com/explorer//tx/{{txid}}',
-    //   },
-    //   doge: {
-    //     livenet: 'https://blockchair.com/dogecoin/transaction/{{txid}}',
-    //     testnet: 'https://sochain.com/tx/DOGETEST/{{txid}}',
-    //  },
-    //   ltc: {
-    //     livenet: 'https://bitpay.com/insight/#/LTC/mainnet/tx/{{txid}}',
-    //     testnet: 'https://bitpay.com/insight/#/LTC/testnet/tx/{{txid}}',
-    //  }
-    // },
+    //   }
     // },
     // To use sendgrid:
     // const sgMail = require('@sendgrid/mail');

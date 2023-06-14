@@ -19,9 +19,7 @@ var config = require('../test-config');
 var Ducatuscore = require('@ducatus/ducatuscore-lib');
 var Ducatuscore_ = {
   btc: Ducatuscore,
-  bch: require('@ducatus/ducatuscore-lib-cash'),
-  doge: require('@ducatus/ducatuscore-lib-doge'),
-  ltc: require('@ducatus/ducatuscore-lib-ltc')
+  bch: require('@ducatus/ducatuscore-lib-cash')
 };
 
 var { ChainService } = require('../../ts_build/lib/chain/index');
@@ -530,7 +528,7 @@ helpers.stubCheckData = function(bc, server, isBCH, cb) {
 helpers.stubFeeLevels = function(levels, fill, coin) {
   coin = coin || 'btc';
   let div = 1;
-  if (coin == 'btc' || coin == 'bch' || coin == 'doge' || coin == 'ltc') {
+  if (coin == 'btc' || coin == 'bch') {
     div = 1e8;  // bitcoind returns values in BTC amounts
   }
 

@@ -20,9 +20,7 @@ const Ducatuscore_ = {
   btc: Ducatuscore,
   bch: require('@ducatus/ducatuscore-lib-cash'),
   eth: Ducatuscore,
-  xrp: Ducatuscore,
-  doge: require('@ducatus/ducatuscore-lib-doge'),
-  ltc: require('@ducatus/ducatuscore-lib-ltc')
+  xrp: Ducatuscore
 };
 
 const { WalletService } = require('../../ts_build/lib/server');
@@ -46,9 +44,7 @@ const TO_SAT = {
   'btc': 1e8,
   'eth': 1e18,
   'usdc': 1e6,
-  'xrp': 1e6,
-  'doge': 1e8,
-  'ltc': 1e8
+  'xrp': 1e6
 };
 
 const TOKENS = ['0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48', '0x056fd409e1d7a124bd7017459dfea2f387b6d5cd'];
@@ -3812,20 +3808,6 @@ describe('Wallet service', function() {
       addr: 'rDzTZxa7NwD9vmNf5dvTbW4FQDNSRsfPv6',
       lockedFunds: Defaults.MIN_XRP_BALANCE,
       flags: { noChange: true , noUtxoTests: true},
-    },
-    {
-      coin: 'doge',
-      key: 'id44btc',
-      addr: 'DTZ1W1qmXM9w4xJa9MMp2cAjdQv4PWSs9V',
-      lockedFunds: 0,
-      flags: {},
-    },
-    {
-      coin: 'ltc',
-      key: 'id44btc',
-      addr: 'LUDZDsJHVwgZBc5HdfbbBgqU6hJZwWNseV',
-      lockedFunds: 0,
-      flags: {},
     }
   ];
 
@@ -3874,9 +3856,7 @@ describe('Wallet service', function() {
               btc:8000,
               bch:8000,
               eth:8000,
-              xrp:8000,
-              doge:1e8,
-              ltc:8000
+              xrp:8000
             }
             let amount = coinAmount[coin];
             var txOpts = {
@@ -3964,7 +3944,7 @@ describe('Wallet service', function() {
               });
             });
           });
-          if(coin === 'btc' || coin === 'bch' || coin === 'doge' || coin === 'ltc') {
+          if(coin === 'btc' || coin === 'bch') {
             it('should fail to create BTC/BCH tx for invalid amount', function(done) {
               var txOpts = {
                 outputs: [{
@@ -4399,9 +4379,7 @@ describe('Wallet service', function() {
                 btc:0.8,
                 bch:0.8,
                 eth:0.8,
-                xrp:0.8,
-                doge:1,
-                ltc: 0.8
+                xrp:0.8
               }
               var txp1, txp2;
               var txOpts = {
@@ -4758,16 +4736,6 @@ describe('Wallet service', function() {
                 expected = 12;
                 expectedNormal = 12;
                 break;
-              case 'doge':
-                level = 'normal';
-                expected = 1e8;
-                expectedNormal = 1e8;
-                break;
-              case 'ltc':
-                level = 'normal';
-                expected = 200e2;
-                expectedNormal = 200e2;
-                break;
               default:
                 level = 'economy';
                 expected = 180e2;
@@ -4840,9 +4808,7 @@ describe('Wallet service', function() {
             btc:8000,
             bch:8000,
             eth:8000,
-            xrp:8000,
-            doge:1e8,
-            ltc: 8000
+            xrp:8000
           }
           let amount = coinAmount[coin];
           helpers.stubUtxos(server, wallet, [1, 2], function() {
@@ -4878,9 +4844,7 @@ describe('Wallet service', function() {
             btc: 3800,
             bch: 3800,
             xrp: 3800,
-            eth: 210000000,
-            doge: 1e8,
-            ltc: 3800
+            eth: 210000000
           }
           helpers.stubUtxos(server, wallet, [1, 2], { coin }, function() {
             var max = 3 * ts - coinFee[coin]; // Fees for this tx at 100bits/kB = 3740 sat
@@ -4929,16 +4893,12 @@ describe('Wallet service', function() {
             btc:0.5,
             bch:0.5,
             eth:0.5,
-            xrp:0.5,
-            doge:1,
-            ltc:0.5
+            xrp:0.5
           }
           helpers.stubUtxos(server, wallet, 2, { coin }, function() {
             sandbox.stub(CWC.Transactions, 'create').throws(new Error('dummy exception'));
             sandbox.stub(Ducatuscore_.btc, 'Transaction').throws(new Error('dummy exception'));
             sandbox.stub(Ducatuscore_.bch, 'Transaction').throws(new Error('dummy exception'));
-            sandbox.stub(Ducatuscore_.doge, 'Transaction').throws(new Error('dummy exception'));
-            sandbox.stub(Ducatuscore_.ltc, 'Transaction').throws(new Error('dummy exception'));
             var txOpts = {
               outputs: [{
                 toAddress: addressStr,
@@ -5212,59 +5172,6 @@ describe('Wallet service', function() {
               });
             });
           });
-
-
-          if(coin !== 'doge' && coin !== 'ltc') { // TODO
-          it('should accept a tx proposal signed with a custom key', function(done) {
-            var reqPrivKey = new Ducatuscore.PrivateKey();
-            var reqPubKey = reqPrivKey.toPublicKey().toString();
-
-            var xPrivKey = TestData.copayers[0].xPrivKey_44H_0H_0H;
-            var accessOpts = {
-              copayerId: TestData.copayers[0][idKey],
-              requestPubKey: reqPubKey,
-              signature: helpers.signRequestPubKey(reqPubKey, xPrivKey),
-            };
-
-            server.addAccess(accessOpts, function(err) {
-              should.not.exist(err);
-
-              helpers.stubUtxos(server, wallet, [1, 2], { coin }, function() {
-                var txOpts = {
-                  outputs: [{
-                    toAddress: addressStr,
-                    amount: 0.8 * 1e8,
-                  }],
-                  message: 'some message',
-                  feePerKb: 100e2,
-                };
-                txOpts = Object.assign(txOpts, flags);
-                server.createTx(txOpts, function(err, txp) {
-                  should.not.exist(err);
-                  should.exist(txp);
-
-                  var publishOpts = {
-                    txProposalId: txp.id,
-                    proposalSignature: helpers.signMessage(txp.getRawTx(), reqPrivKey),
-                  }
-
-                  server.publishTx(publishOpts, function(err) {
-                    should.not.exist(err);
-                    server.getTx({
-                      txProposalId: txp.id
-                    }, function(err, x) {
-                      should.not.exist(err);
-                      x.proposalSignature.should.equal(publishOpts.proposalSignature);
-                      x.proposalSignaturePubKey.should.equal(accessOpts.requestPubKey);
-                      x.proposalSignaturePubKeySig.should.equal(accessOpts.signature);
-                      done();
-                    });
-                  });
-                });
-              });
-            });
-          });
-        }
 
           it('should shuffle outputs unless specified', function(done) {
             let amount, outputAmount;

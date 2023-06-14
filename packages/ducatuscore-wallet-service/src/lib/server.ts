@@ -485,8 +485,8 @@ export class WalletService implements IWalletService {
    * @param {number} opts.n - Total copayers.
    * @param {string} opts.pubKey - Public key to verify copayers joining have access to the wallet secret.
    * @param {string} opts.singleAddress[=false] - The wallet will only ever have one address.
-   * @param {string} opts.coin[='btc'] - The coin for this wallet (btc, bch, eth, doge, ltc).
-   * @param {string} opts.chain[='btc'] - The chain for this wallet (btc, bch, eth, doge, ltc).
+   * @param {string} opts.coin[='btc'] - The coin for this wallet (btc, bch, eth).
+   * @param {string} opts.chain[='btc'] - The chain for this wallet (btc, bch, eth).
    * @param {string} opts.network[='livenet'] - The Bitcoin network for this wallet.
    * @param {string} opts.account[=0] - BIP44 account number
    * @param {string} opts.usePurpose48 - for Multisig wallet, use purpose=48
@@ -1038,8 +1038,8 @@ export class WalletService implements IWalletService {
    * Joins a wallet in creation.
    * @param {Object} opts
    * @param {string} opts.walletId - The wallet id.
-   * @param {string} opts.coin[='btc'] - The expected coin for this wallet (btc, bch, eth, doge, ltc).
-   * @param {string} opts.chain[='btc'] - The expected chain for this wallet (btc, bch, eth, doge, ltc).
+   * @param {string} opts.coin[='btc'] - The expected coin for this wallet (btc, bch, eth).
+   * @param {string} opts.chain[='btc'] - The expected chain for this wallet (btc, bch, eth).
    * @param {string} opts.name - The copayer name.
    * @param {string} opts.xPubKey - Extended Public Key for this copayer.
    * @param {string} opts.requestPubKey - Public Key used to check requests from this copayer.
@@ -1924,7 +1924,7 @@ export class WalletService implements IWalletService {
           const feePerKb = _.isObject(result) && result[p] && _.isNumber(result[p]) ? +result[p] : -1;
           if (feePerKb < 0) failed.push(p);
 
-          // NOTE: ONLY BTC/BCH/DOGE/LTC expect feePerKb to be Bitcoin amounts
+          // NOTE: ONLY BTC/BCH expect feePerKb to be Bitcoin amounts
           // others... expect wei.
 
           return ChainService.convertFeePerKb(chain, p, feePerKb);
@@ -4443,7 +4443,7 @@ export class WalletService implements IWalletService {
   /**
    * Returns exchange rates of the supported fiat currencies for the specified coin.
    * @param {Object} opts
-   * @param {String} opts.coin - The coin requested (btc, bch, eth, xrp, , ltc).
+   * @param {String} opts.coin - The coin requested (btc, bch, eth, xrp).
    * @param {String} [opts.code] - Currency ISO code (e.g: USD, EUR, ARS).
    * @param {Date} [opts.ts] - A timestamp to base the rate on (default Date.now()).
    * @param {String} [opts.provider] - A provider of exchange rates (default 'BitPay').

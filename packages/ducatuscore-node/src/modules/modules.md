@@ -9,8 +9,6 @@ The modules in this table will automatically register with `ducatuscore-node` if
 | BTC            | bitcoin        | ./bitcoin      |
 | ETH            | ethereum       | ./ethereum     |
 | BCH            | bitcoin-cash   | ./bitcoin-cash |
-| LTC            | litecoin       | ./litecoin     |
-| DOGE           | dogecoin       | ./dogecoin     |
 | XRP            | ripple         | ./ripple       |
 
 If there is a custom or third-party module you'd like to use, follow the example below.

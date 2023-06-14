@@ -401,10 +401,6 @@ export class Key {
       coinCode = '60'; // the official ducx derivation path is 966 but users will expect address to be same as ETH
     } else if (opts.coin == 'xrp') {
       coinCode = '144';
-    } else if (opts.coin == 'doge') {
-      coinCode = '3';
-    } else if (opts.coin == 'ltc') {
-      coinCode = '2';
     } else {
       throw new Error('unknown coin: ' + opts.coin);
     }

@@ -24,8 +24,6 @@ var Ducatuscore_ = {
   eth: CWC.DucatuscoreLib,
   ducx: CWC.DucatuscoreLib,
   xrp: CWC.DucatuscoreLib,
-  doge: CWC.DucatuscoreLibDoge,
-  ltc: CWC.DucatuscoreLibLtc
 };
 var Mnemonic = require('@ducatus/ducatuscore-mnemonic');
 var url = require('url');
@@ -71,8 +69,6 @@ export class API extends EventEmitter {
   // Expose ducatuscore
   static Ducatuscore = CWC.DucatuscoreLib;
   static DucatuscoreCash = CWC.DucatuscoreLibCash;
-  static DucatuscoreDoge = CWC.DucatuscoreLibDoge;
-  static DucatuscoreLtc = CWC.DucatuscoreLibLtc;
 
   constructor(opts?) {
     super();
@@ -2121,7 +2117,7 @@ export class API extends EventEmitter {
           const weightedSize = [];
 
           let isSegwit =
-            (txp.coin == 'btc' || txp.coin == 'ltc') &&
+            txp.coin == 'btc' &&
             (txp.addressType == 'P2WSH' || txp.addressType == 'P2WPKH');
 
           let i = 0;
@@ -2906,12 +2902,8 @@ export class API extends EventEmitter {
         ['eth', 'livenet'],
         ['ducx', 'livenet'],
         ['xrp', 'livenet'],
-        ['doge', 'livenet'],
-        ['ltc', 'livenet'],
         ['btc', 'livenet', true],
-        ['bch', 'livenet', true],
-        ['doge', 'livenet', true],
-        ['ltc', 'livenet', true]
+        ['bch', 'livenet', true]
       ];
       if (key.use44forMultisig) {
         //  testing old multi sig

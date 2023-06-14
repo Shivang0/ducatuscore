@@ -44,9 +44,7 @@ export class Address {
 
   static Ducatuscore = {
     btc: require('@ducatus/ducatuscore-lib'),
-    bch: require('@ducatus/ducatuscore-lib-cash'),
-    doge: require('@ducatus/ducatuscore-lib-doge'),
-    ltc: require('@ducatus/ducatuscore-lib-ltc')
+    bch: require('@ducatus/ducatuscore-lib-cash')
   };
 
   static create(opts) {

@@ -7,9 +7,7 @@ export const Constants = {
     BCH: 'bch',
     ETH: 'eth',
     DUCX: 'ducx',
-    XRP: 'xrp',
-    DOGE: 'doge',
-    LTC: 'ltc'
+    XRP: 'xrp'
   },
 
   BITPAY_SUPPORTED_COINS: {
@@ -19,8 +17,6 @@ export const Constants = {
     ETH: 'eth',
     DUCX: 'ducx',
     XRP: 'xrp',
-    DOGE: 'doge',
-    LTC: 'ltc',
     SHIB: 'shib',
     APE: 'ape',
     USDC: 'usdc',
@@ -68,9 +64,7 @@ export const Constants = {
 
   UTXO_CHAINS: {
     BTC: 'btc',
-    BCH: 'bch',
-    DOGE: 'doge',
-    LTC: 'ltc'
+    BCH: 'bch'
   },
 
   EVM_CHAINS: {
@@ -125,8 +119,6 @@ export const Constants = {
     bch: { testnet: 300, livenet: 0 },
     eth: { testnet: 300, livenet: 0 },
     ducx: { testnet: 300, livenet: 12 }, // DUCX set to 12 because blocks normally occur every 1-2 seconds
-    xrp: { testnet: 300, livenet: 0 },
-    doge: { testnet: 300, livenet: 0 },
-    ltc: { testnet: 300, livenet: 0 }
+    xrp: { testnet: 300, livenet: 0 }
   } as { [chain: string]: { [network: string]: number } }
 };
