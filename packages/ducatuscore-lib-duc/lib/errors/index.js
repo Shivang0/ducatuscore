@@ -42,20 +42,20 @@ var traverseRoot = function(parent, errorsDefinition) {
 };
 
 
-var bitcore = {};
-bitcore.Error = function() {
+var ducatuscore = {};
+ducatuscore.Error = function() {
   this.message = 'Internal error';
   this.stack = this.message + '\n' + (new Error()).stack;
 };
-bitcore.Error.prototype = Object.create(Error.prototype);
-bitcore.Error.prototype.name = 'bitcore.Error';
+ducatuscore.Error.prototype = Object.create(Error.prototype);
+ducatuscore.Error.prototype.name = 'ducatuscore.Error';
 
 
 var data = require('./spec');
-traverseRoot(bitcore.Error, data);
+traverseRoot(ducatuscore.Error, data);
 
-module.exports = bitcore.Error;
+module.exports = ducatuscore.Error;
 
 module.exports.extend = function(spec) {
-  return traverseNode(bitcore.Error, spec);
+  return traverseNode(ducatuscore.Error, spec);
 };

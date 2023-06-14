@@ -123,15 +123,25 @@ function addNetwork(data) {
  * @param {Network} network
  */
 function removeNetwork(network) {
+  if (typeof network !== 'object') {
+    network = get(network);
+  }
   for (var i = 0; i < networks.length; i++) {
     if (networks[i] === network) {
       networks.splice(i, 1);
     }
   }
   for (var key in networkMaps) {
-    const index = networkMaps[key].indexOf(network);
-    if (index >= 0) {
-      delete networkMaps[key][index];
+    if (networkMaps[key].length) {
+      const index = networkMaps[key].indexOf(network);
+      if (index >= 0) {
+        networkMaps[key].splice(index, 1);
+      }
+      if (networkMaps[key].length === 0) {
+        delete networkMaps[key];
+      }
+    } else if (networkMaps[key] === network) {
+      delete networkMaps[key];
     }
   }
 }
@@ -151,6 +161,10 @@ addNetwork({
   dnsSeeds: []
 });
 
+/**
+ * @instance
+ * @member Networks#livenet
+ */
 var livenet = get('livenet');
 
 addNetwork({
@@ -168,8 +182,11 @@ addNetwork({
   dnsSeeds: []
 });
 
+/**
+ * @instance
+ * @member Networks#testnet
+ */
 var testnet = get('testnet');
-
 
 addNetwork({
   name: 'restore',
@@ -185,59 +202,11 @@ addNetwork({
   dnsSeeds: []
 });
 
-var restore = get('restore');
-
-
-
-// /**
-//  * @instance
-//  * @member Networks#livenet
-//  */
-
-// addNetwork({
-//   name: 'testnet',
-//   alias: 'test',
-//   pubkeyhash: 0x6f,
-//   privatekey: 0xef,
-//   scripthash: 0xc4,
-//   bech32prefix: 'tb',
-//   xpubkey: 0x043587cf,
-//   xprivkey: 0x04358394,
-//   networkMagic: 0x0b110907,
-//   port: 18333,
-//   dnsSeeds: [
-//     'testnet-seed.bitcoin.petertodd.org',
-//     'testnet-seed.bluematt.me',
-//     'testnet-seed.alexykot.me',
-//     'testnet-seed.bitcoin.schildbach.de'
-//   ]
-// });
-//
-// /**
-//  * @instance
-//  * @member Networks#testnet
-//  */
-// var testnet = get('testnet');
-//
-// addNetwork({
-//   name: 'regtest',
-//   alias: 'dev',
-//   pubkeyhash: 0x6f,
-//   privatekey: 0xef,
-//   scripthash: 0xc4,
-//   bech32prefix: 'bcrt',
-//   xpubkey: 0x043587cf,
-//   xprivkey: 0x04358394,
-//   networkMagic: 0xfabfb5da,
-//   port: 18444,
-//   dnsSeeds: []
-// });
-//
-// /**
-//  * @instance
-//  * @member Networks#testnet
-//  */
-// var regtest = get('regtest');
+/**
+ * @instance
+ * @member Networks#testnet
+ */
+var regtest = get('regtest');
 
 /**
  * @function
@@ -246,7 +215,7 @@ var restore = get('restore');
  * Will enable regtest features for testnet
  */
 function enableRegtest() {
-  // testnet.regtestEnabled = true;
+  testnet.regtestEnabled = true;
 }
 
 /**
@@ -256,7 +225,7 @@ function enableRegtest() {
  * Will disable regtest features for testnet
  */
 function disableRegtest() {
-  // testnet.regtestEnabled = false;
+  testnet.regtestEnabled = false;
 }
 
 /**
@@ -266,10 +235,10 @@ module.exports = {
   add: addNetwork,
   remove: removeNetwork,
   defaultNetwork: livenet,
-  livenet,
+  livenet: livenet,
   mainnet: livenet,
-  restore,
-  testnet,
+  testnet: testnet,
+  regtest: regtest,
   get: get,
   enableRegtest: enableRegtest,
   disableRegtest: disableRegtest

@@ -7,7 +7,7 @@ var Address = require('./address');
 var Unit = require('./unit');
 
 /**
- * Bitcore URI
+ * Ducatuscore URI
  *
  * Instantiate an URI from a bitcoin URI String or an Object. An URI instance
  * can be created with a bitcoin uri string or an object. All instances of
@@ -20,7 +20,7 @@ var Unit = require('./unit');
  * @example
  * ```javascript
  *
- * var uri = new URI('ducatus:12A1MyfXbW6RhdRAZEqofac5jCQQjwEPBu?amount=1.2');
+ * var uri = new URI('bitcoin:12A1MyfXbW6RhdRAZEqofac5jCQQjwEPBu?amount=1.2');
  * console.log(uri.address, uri.amount);
  * ```
  *
@@ -83,7 +83,7 @@ URI.fromObject = function fromObject(json) {
  * @example
  * ```javascript
  *
- * var valid = URI.isValid('ducatus:12A1MyfXbW6RhdRAZEqofac5jCQQjwEPBu');
+ * var valid = URI.isValid('bitcoin:12A1MyfXbW6RhdRAZEqofac5jCQQjwEPBu');
  * // true
  * ```
  *
@@ -101,10 +101,10 @@ URI.isValid = function(arg, knownParams) {
 };
 
 /**
- * Convert a bitcoin URI string into a simple object.
+ * Convert a ducatus URI string into a simple object.
  *
- * @param {string} uri - A bitcoin URI string
- * @throws {TypeError} Invalid bitcoin URI
+ * @param {string} uri - A ducatus URI string
+ * @throws {TypeError} Invalid ducatus URI
  * @returns {Object} An object with the parsed params
  */
 URI.parse = function(uri) {

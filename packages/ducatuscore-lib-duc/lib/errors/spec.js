@@ -1,6 +1,6 @@
 'use strict';
 
-var docsURL = 'http://bitcore.io/';
+var docsURL = 'http://google.com/';
 
 module.exports = [{
   name: 'InvalidB58Char',
