@@ -32,7 +32,7 @@ export let UNITS = {
       minDecimals: 2
     }
   },
-  matic: {
+  ducx: {
     toSatoshis: 1e18,
     full: {
       maxDecimals: 8,

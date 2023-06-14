@@ -83,7 +83,7 @@ export const Defaults = {
         defaultValue: 1000000000
       }
     ],
-    matic: [
+    ducx: [
       {
         name: 'urgent',
         nbBlocks: 1,
@@ -264,7 +264,7 @@ export const Defaults = {
     btc: 10000 * 1000, // 10k sat/b
     bch: 10000 * 1000, // 10k sat/b
     eth: 1000000000000, // 50 Gwei,
-    matic: 1000000000000, // 50 Gwei,
+    ducx: 1000000000000, // 50 Gwei,
     xrp: 1000000000000,
     doge: 100000000 * 100,
     ltc: 10000 * 1000 // 10k sat/b
@@ -274,7 +274,7 @@ export const Defaults = {
     btc: 0,
     bch: 0,
     eth: 0,
-    matic: 0,
+    ducx: 0,
     xrp: 0,
     doge: 0,
     ltc: 0
@@ -284,7 +284,7 @@ export const Defaults = {
     btc: 0.05 * 1e8,
     bch: 0.05 * 1e8,
     eth: 1 * 1e18, // 1 eth
-    matic: 1 * 1e18, // 1 matic
+    ducx: 1 * 1e18, // 1 ducx
     xrp: 1 * 1e6, // 1 xrp
     doge: 400 * 1e8,
     ltc: 0.05 * 1e8

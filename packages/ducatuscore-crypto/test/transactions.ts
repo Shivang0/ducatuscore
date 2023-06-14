@@ -265,8 +265,8 @@ describe('Transaction Creation', () => {
     expect(cryptoTx).to.equal(expectedTx);
   });
 
-  it('should be able to create a livenet MATIC tx', () => {
-    const rawMaticTx = {
+  it('should be able to create a livenet DUCX tx', () => {
+    const rawDucxTx = {
       network: 'livenet',
       value: 3896000000000000,
       to: '0x37d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08A',
@@ -274,11 +274,11 @@ describe('Transaction Creation', () => {
         '0xb6b4af05000000000000000000000000000000000000000000000000000dd764300b800000000000000000000000000000000000000000000000000000000004a817c8000000000000000000000000000000000000000000000000000000016ada606a26050bb49a5a8228599e0dd48c1368abd36f4f14d2b74a015b2d168dbcab0773ce399393220df874bb22ca961f351e038acd2ba5cc8c764385c9f23707622cc435000000000000000000000000000000000000000000000000000000000000001c7e247d684a635813267b10a63f7f3ba88b28ca2790c909110b28236cf1b9bba03451e83d5834189f28d4c77802fc76b7c760a42bc8bebf8dd15e6ead146805630000000000000000000000000000000000000000000000000000000000000000',
       gasPrice: 20000000000
     };
-    const { value, to } = rawMaticTx;
+    const { value, to } = rawDucxTx;
     const recipients = [{ address: to, amount: value }];
     const cryptoTx = Transactions.create({
-      ...rawMaticTx,
-      chain: 'MATIC',
+      ...rawDucxTx,
+      chain: 'DUCX',
       recipients,
       nonce: 0
     });
@@ -287,8 +287,8 @@ describe('Transaction Creation', () => {
     expect(cryptoTx).to.equal(expectedTx);
   });
 
-  it('should be able to create a testnet MATIC tx', () => {
-    const rawMaticTx = {
+  it('should be able to create a testnet DUCX tx', () => {
+    const rawDucxTx = {
       network: 'testnet',
       value: 3896000000000000,
       to: '0x37d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08A',
@@ -296,11 +296,11 @@ describe('Transaction Creation', () => {
         '0xb6b4af05000000000000000000000000000000000000000000000000000dd764300b800000000000000000000000000000000000000000000000000000000004a817c8000000000000000000000000000000000000000000000000000000016ada606a26050bb49a5a8228599e0dd48c1368abd36f4f14d2b74a015b2d168dbcab0773ce399393220df874bb22ca961f351e038acd2ba5cc8c764385c9f23707622cc435000000000000000000000000000000000000000000000000000000000000001c7e247d684a635813267b10a63f7f3ba88b28ca2790c909110b28236cf1b9bba03451e83d5834189f28d4c77802fc76b7c760a42bc8bebf8dd15e6ead146805630000000000000000000000000000000000000000000000000000000000000000',
       gasPrice: 20000000000
     };
-    const { value, to } = rawMaticTx;
+    const { value, to } = rawDucxTx;
     const recipients = [{ address: to, amount: value }];
     const cryptoTx = Transactions.create({
-      ...rawMaticTx,
-      chain: 'MATIC',
+      ...rawDucxTx,
+      chain: 'DUCX',
       recipients,
       nonce: 0
     });
@@ -309,8 +309,8 @@ describe('Transaction Creation', () => {
     expect(cryptoTx).to.equal(expectedTx);
   });
 
-  it('should be able to create a mumbai MATIC tx', () => {
-    const rawMaticTx = {
+  it('should be able to create a mumbai DUCX tx', () => {
+    const rawDucxTx = {
       network: 'mumbai',
       value: 3896000000000000,
       to: '0x37d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08A',
@@ -318,11 +318,11 @@ describe('Transaction Creation', () => {
         '0xb6b4af05000000000000000000000000000000000000000000000000000dd764300b800000000000000000000000000000000000000000000000000000000004a817c8000000000000000000000000000000000000000000000000000000016ada606a26050bb49a5a8228599e0dd48c1368abd36f4f14d2b74a015b2d168dbcab0773ce399393220df874bb22ca961f351e038acd2ba5cc8c764385c9f23707622cc435000000000000000000000000000000000000000000000000000000000000001c7e247d684a635813267b10a63f7f3ba88b28ca2790c909110b28236cf1b9bba03451e83d5834189f28d4c77802fc76b7c760a42bc8bebf8dd15e6ead146805630000000000000000000000000000000000000000000000000000000000000000',
       gasPrice: 20000000000
     };
-    const { value, to } = rawMaticTx;
+    const { value, to } = rawDucxTx;
     const recipients = [{ address: to, amount: value }];
     const cryptoTx = Transactions.create({
-      ...rawMaticTx,
-      chain: 'MATIC',
+      ...rawDucxTx,
+      chain: 'DUCX',
       recipients,
       nonce: 0
     });
@@ -412,24 +412,24 @@ describe('Transaction Creation', () => {
   });
 
   // We should set up this test once we have the multisend contract deployed to Mumbai and can create a tx
-  // it('should be able to send MATIC to multiple using multisend contract', () => {
+  // it('should be able to send DUCX to multiple using multisend contract', () => {
   //   const wallet = {
   //     address: '0xb4b9be3062b6dB6eDa78fa4b5EA80595Cfa7E655',
   //     privateKey: '0x733d4cddb30d33f324def2bb80c6a844f7ba342a60bed06d838afb6b37ab1972',
   //     index: 0
   //   };
-  //   const rawMaticTx = {
+  //   const rawDucxTx = {
   //     value: 3896000000000000,
   //     to: '0xf514e00E20373f6366C9AF966fF5F8be587595E9',
   //   };
-  //   const rawMaticTx2 = {
+  //   const rawDucxTx2 = {
   //     value: 20407919369583210,
   //     to: '0x3428F3Eb7df7D4a16f9e4A5098574Cea2CFBbdc6',
   //   }
-  //   const recipients = [{ address: rawMaticTx.to, amount: rawMaticTx.value }, { address: rawMaticTx2.to, amount: rawMaticTx2.value }];
+  //   const recipients = [{ address: rawDucxTx.to, amount: rawDucxTx.value }, { address: rawDucxTx2.to, amount: rawDucxTx2.value }];
   //   const cryptoTx = Transactions.create({
   //     network: 'testnet',
-  //     chain: 'MATIC',
+  //     chain: 'DUCX',
   //     recipients,
   //     nonce: 3,
   //     contractAddress: '0x44dfceb88f24c738d8ae9b7d4bb898cbca06db0e',
@@ -440,7 +440,7 @@ describe('Transaction Creation', () => {
   //     '0xf9013103843b9aca088301193a9444dfceb88f24c738d8ae9b7d4bb898cbca06db0e8756584930ac7a6ab9010425245b26000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000002000000000000000000000000f514e00e20373f6366c9af966ff5f8be587595e90000000000000000000000003428f3eb7df7d4a16f9e4a5098574cea2cfbbdc60000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000dd764300b8000000000000000000000000000000000000000000000000000004880e500a0fa6a2a8080';
   //   expect(cryptoTx).to.equal(expectedTx);
 
-  //   const signedTx = Transactions.sign({ chain: 'MATIC', tx: cryptoTx, key: { address: wallet.address, privKey: wallet.privateKey } });
+  //   const signedTx = Transactions.sign({ chain: 'DUCX', tx: cryptoTx, key: { address: wallet.address, privKey: wallet.privateKey } });
   //   const expectedSignedTx =
   //     '0xf9017103843b9aca088301193a9444dfceb88f24c738d8ae9b7d4bb898cbca06db0e8756584930ac7a6ab9010425245b26000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000002000000000000000000000000f514e00e20373f6366c9af966ff5f8be587595e90000000000000000000000003428f3eb7df7d4a16f9e4a5098574cea2cfbbdc60000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000dd764300b8000000000000000000000000000000000000000000000000000004880e500a0fa6a78a0bea5d9aac59d7337c0735f00c0e93d694b4c495bb3390d9eb07a7c6deb89d5a5a0754454d41354761d6591f98e76a4640768c858980c6d1d359efa49fe0edc9ff4';
   //   // https://kovan.etherscan.io/getRawTx?tx=0x34d33c7e40e586cefefcb6fdfff133b67b4a4e182e15637765495b46ce7eb240
@@ -634,9 +634,9 @@ describe('Transaction Sign', () => {
     expect(signedTx).to.equal(expectedSignedTx);
   });
 
-  it('should be able to getSignature an MATIC tx', () => {
+  it('should be able to getSignature an DUCX tx', () => {
     const signature = Transactions.getSignature({
-      chain: 'MATIC',
+      chain: 'DUCX',
       tx:
         '0xf9014c808504a817c800809437d7b3bbd88efde6a93cf74d2f5b0385d3e3b08a870dd764300b8000b90124b6b4af05000000000000000000000000000000000000000000000000000dd764300b800000000000000000000000000000000000000000000000000000000004a817c8000000000000000000000000000000000000000000000000000000016ada606a26050bb49a5a8228599e0dd48c1368abd36f4f14d2b74a015b2d168dbcab0773ce399393220df874bb22ca961f351e038acd2ba5cc8c764385c9f23707622cc435000000000000000000000000000000000000000000000000000000000000001c7e247d684a635813267b10a63f7f3ba88b28ca2790c909110b28236cf1b9bba03451e83d5834189f28d4c77802fc76b7c760a42bc8bebf8dd15e6ead146805630000000000000000000000000000000000000000000000000000000000000000',
       key: {
@@ -648,9 +648,9 @@ describe('Transaction Sign', () => {
     expect(signature).to.equal(expectedSignature);
   });
 
-  it('should apply signatures to an MATIC tx', () => {
+  it('should apply signatures to an DUCX tx', () => {
     const signedTx = Transactions.applySignature({
-      chain: 'MATIC',
+      chain: 'DUCX',
       tx:
         '0xf9014c808504a817c800809437d7b3bbd88efde6a93cf74d2f5b0385d3e3b08a870dd764300b8000b90124b6b4af05000000000000000000000000000000000000000000000000000dd764300b800000000000000000000000000000000000000000000000000000000004a817c8000000000000000000000000000000000000000000000000000000016ada606a26050bb49a5a8228599e0dd48c1368abd36f4f14d2b74a015b2d168dbcab0773ce399393220df874bb22ca961f351e038acd2ba5cc8c764385c9f23707622cc435000000000000000000000000000000000000000000000000000000000000001c7e247d684a635813267b10a63f7f3ba88b28ca2790c909110b28236cf1b9bba03451e83d5834189f28d4c77802fc76b7c760a42bc8bebf8dd15e6ead146805630000000000000000000000000000000000000000000000000000000000000000',
       signature:
@@ -662,10 +662,10 @@ describe('Transaction Sign', () => {
     expect(signedTx).to.equal(expectedSignedTx);
   });
 
-  it('should fail to apply signatures to an MATIC tx if signature is invalid', () => {
+  it('should fail to apply signatures to an DUCX tx if signature is invalid', () => {
     expect(() => {
       Transactions.applySignature({
-        chain: 'MATIC',
+        chain: 'DUCX',
         tx:
           '0xf9014c808504a817c800809437d7b3bbd88efde6a93cf74d2f5b0385d3e3b08a870dd764300b8000b90124b6b4af05000000000000000000000000000000000000000000000000000dd764300b800000000000000000000000000000000000000000000000000000000004a817c8000000000000000000000000000000000000000000000000000000016ada606a26050bb49a5a8228599e0dd48c1368abd36f4f14d2b74a015b2d168dbcab0773ce399393220df874bb22ca961f351e038acd2ba5cc8c764385c9f23707622cc435000000000000000000000000000000000000000000000000000000000000001c7e247d684a635813267b10a63f7f3ba88b28ca2790c909110b28236cf1b9bba03451e83d5834189f28d4c77802fc76b7c760a42bc8bebf8dd15e6ead146805630000000000000000000000000000000000000000000000000000000000000000',
         signature: '0xdb'
@@ -673,9 +673,9 @@ describe('Transaction Sign', () => {
     }).to.throw('invalid signature');
   });
 
-  it('should sign an MATIC tx', () => {
+  it('should sign an DUCX tx', () => {
     const signedTx = Transactions.sign({
-      chain: 'MATIC',
+      chain: 'DUCX',
       tx:
         '0xf9014c808504a817c800809437d7b3bbd88efde6a93cf74d2f5b0385d3e3b08a870dd764300b8000b90124b6b4af05000000000000000000000000000000000000000000000000000dd764300b800000000000000000000000000000000000000000000000000000000004a817c8000000000000000000000000000000000000000000000000000000016ada606a26050bb49a5a8228599e0dd48c1368abd36f4f14d2b74a015b2d168dbcab0773ce399393220df874bb22ca961f351e038acd2ba5cc8c764385c9f23707622cc435000000000000000000000000000000000000000000000000000000000000001c7e247d684a635813267b10a63f7f3ba88b28ca2790c909110b28236cf1b9bba03451e83d5834189f28d4c77802fc76b7c760a42bc8bebf8dd15e6ead146805630000000000000000000000000000000000000000000000000000000000000000',
       key: {
@@ -713,10 +713,10 @@ describe('Transaction Sign', () => {
     expect(hash).to.equal(expectedHash);
   });
 
-  it('should get MATIC tx hash', () => {
+  it('should get DUCX tx hash', () => {
     // from https://ethereum.stackexchange.com/questions/31285/how-to-get-raw-ethereum-transaction-hash
     const hash = Transactions.getHash({
-      chain: 'MATIC',
+      chain: 'DUCX',
       tx:
         '0xf86c258502540be40083035b609482e041e84074fc5f5947d4d27e3c44f824b7a1a187b1a2bc2ec500008078a04a7db627266fa9a4116e3f6b33f5d245db40983234eb356261f36808909d2848a0166fa098a2ce3bda87af6000ed0083e3bf7cc31c6686b670bd85cbc6da2d6e85'
     });
@@ -792,11 +792,11 @@ describe('Transaction Sign', () => {
     expect(error).to.not.equal(undefined);
   });
 
-  it('should be throw using wrong privKey to sign an MATIC tx', () => {
+  it('should be throw using wrong privKey to sign an DUCX tx', () => {
     let error;
     try {
       Transactions.sign({
-        chain: 'MATIC',
+        chain: 'DUCX',
         tx:
           '0xf9014c808504a817c800809437d7b3bbd88efde6a93cf74d2f5b0385d3e3b08a870dd764300b8000b90124b6b4af05000000000000000000000000000000000000000000000000000dd764300b800000000000000000000000000000000000000000000000000000000004a817c8000000000000000000000000000000000000000000000000000000016ada606a26050bb49a5a8228599e0dd48c1368abd36f4f14d2b74a015b2d168dbcab0773ce399393220df874bb22ca961f351e038acd2ba5cc8c764385c9f23707622cc435000000000000000000000000000000000000000000000000000000000000001c7e247d684a635813267b10a63f7f3ba88b28ca2790c909110b28236cf1b9bba03451e83d5834189f28d4c77802fc76b7c760a42bc8bebf8dd15e6ead146805630000000000000000000000000000000000000000000000000000000000000000',
         key: {
@@ -839,21 +839,21 @@ describe('ETH Transaction getChainId', () => {
   });
 });
 
-describe('MATIC Transaction getChainId', () => {
+describe('DUCX Transaction getChainId', () => {
   it('should get the correct chainId per network', () => {
-    const mainnetId = Transactions.get({ chain: 'MATIC' }).getChainId('mainnet');
+    const mainnetId = Transactions.get({ chain: 'DUCX' }).getChainId('mainnet');
     expect(mainnetId).to.equal(137);
 
-    const livenetId = Transactions.get({ chain: 'MATIC' }).getChainId('livenet');
+    const livenetId = Transactions.get({ chain: 'DUCX' }).getChainId('livenet');
     expect(livenetId).to.equal(137);
 
-    const testnetId = Transactions.get({ chain: 'MATIC' }).getChainId('testnet');
+    const testnetId = Transactions.get({ chain: 'DUCX' }).getChainId('testnet');
     expect(testnetId).to.equal(80001);
 
-    const testId = Transactions.get({ chain: 'MATIC' }).getChainId('mumbai');
+    const testId = Transactions.get({ chain: 'DUCX' }).getChainId('mumbai');
     expect(testId).to.equal(80001);
 
-    const regtestId = Transactions.get({ chain: 'MATIC' }).getChainId('regtest');
+    const regtestId = Transactions.get({ chain: 'DUCX' }).getChainId('regtest');
     expect(regtestId).to.equal(1337);
   });
 });

@@ -33,7 +33,7 @@ const BASE = {
   BTC: `https://api.bitcore.io/api/${coin}/${network}`,
   BCH: `https://api.bitcore.io/api/${coin}/${network}`,
   ETH: `https://api-eth.bitcore.io/api/${coin}/${network}`,
-  MATIC: `https://api-matic.bitcore.io/api/${coin}/${network}`,
+  DUCX: `https://api-ducx.bitcore.io/api/${coin}/${network}`,
   XRP: `https://api-xrp.bitcore.io/api/${coin}/${network}`,
   DOGE: `https://api.bitcore.io/api/${coin}/${network}`,
   LTC: `https://api.bitcore.io/api/${coin}/${network}`

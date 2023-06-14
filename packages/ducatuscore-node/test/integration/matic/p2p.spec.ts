@@ -13,7 +13,7 @@ import { resetDatabase } from '../../helpers';
 import { intAfterHelper, intBeforeHelper } from '../../helpers/integration';
 
 const { StreamUtil } = DucatuscoreClient;
-const chain = 'MATIC';
+const chain = 'DUCX';
 const network = 'regtest';
 const chainConfig = config.chains[chain][network] as IEVMNetworkConfig;
 const name = 'PolygonWallet-Ci';
@@ -114,7 +114,7 @@ describe('Polygon', function() {
     const balance = await wallet.getBalance();
     expect(balance.confirmed).to.be.gt(0);
 
-    const key = 'getBalanceForAddress-MATIC-regtest-0xb875c670b079cce8f6ab4f013bd471359c877ac0';
+    const key = 'getBalanceForAddress-DUCX-regtest-0xb875c670b079cce8f6ab4f013bd471359c877ac0';
     const cached = await CacheStorage.collection.findOne({ key });
     expect(cached).to.exist;
     expect(cached!.value).to.deep.eq(balance);

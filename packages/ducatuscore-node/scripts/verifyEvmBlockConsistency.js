@@ -11,7 +11,7 @@ function usage(err) {
   }
   console.log('Usage: ./verifyEvmBlockConsistency.js [options]');
   console.log('');
-  console.log('  --chain <value>          ETH, MATIC');
+  console.log('  --chain <value>          ETH, DUCX');
   console.log('  --network <value>        mainnet, testnet, or regtest');
   console.log('  --startHeight <value>    Block height to start at (inclusive)');
   console.log('  --endHeight <value>      Block height to end at (inclusive) (optional)');

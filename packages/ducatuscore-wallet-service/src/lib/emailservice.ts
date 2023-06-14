@@ -253,7 +253,8 @@ export class EmailService {
       bit: 'bits',
       bch: 'BCH',
       eth: 'ETH',
-      matic: 'MATIC',
+      duc: 'DUCX',
+      ducx: 'DUCX',
       xrp: 'XRP',
       doge: 'DOGE',
       ltc: 'LTC',
@@ -281,8 +282,8 @@ export class EmailService {
           if (Constants.ETH_TOKEN_OPTS[tokenAddress]) {
             unit = Constants.ETH_TOKEN_OPTS[tokenAddress].symbol.toLowerCase();
             label = UNIT_LABELS[unit];
-          } else if (Constants.MATIC_TOKEN_OPTS[tokenAddress]) {
-            unit = Constants.MATIC_TOKEN_OPTS[tokenAddress].symbol.toLowerCase();
+          } else if (Constants.DUCX_TOKEN_OPTS[tokenAddress]) {
+            unit = Constants.DUCX_TOKEN_OPTS[tokenAddress].symbol.toLowerCase();
             label = UNIT_LABELS[unit];
           } else {
             let customTokensData;
@@ -513,7 +514,7 @@ export class EmailService {
     return new Promise((resolve, reject) => {
       const chainIdMap = {
         eth: 1,
-        matic: 137
+        ducx: 137
       };
       // Get tokens
       this.request(

@@ -14,10 +14,8 @@ const Ducatuscore_ = {
   btc: Ducatuscore,
   bch: require('@ducatus/ducatuscore-lib-cash'),
   eth: Ducatuscore,
-  matic: Ducatuscore,
-  xrp: Ducatuscore,
-  doge: require('@ducatus/ducatuscore-lib-doge'),
-  ltc: require('@ducatus/ducatuscore-lib-ltc')
+  ducx: Ducatuscore,
+  xrp: Ducatuscore
 };
 const config = require('../../config');
 const Constants = Common.Constants,

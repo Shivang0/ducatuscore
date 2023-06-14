@@ -19,21 +19,13 @@ const PROVIDERS = {
       livenet: 'https://api-eth.bitcore.io',
       testnet: 'https://api-eth.bitcore.io'
     },
-    matic: {
-      livenet: 'https://api-matic.bitcore.io',
-      testnet: 'https://api-matic.bitcore.io'
+    ducx: {
+      livenet: 'https://api-ducx.bitcore.io',
+      testnet: 'https://api-ducx.bitcore.io'
     },
     xrp: {
       livenet: 'https://api-xrp.bitcore.io',
       testnet: 'https://api-xrp.bitcore.io'
-    },
-    doge: {
-      livenet: 'https://api.bitpay.com',
-      testnet: 'https://api.bitpay.com'
-    },
-    ltc: {
-      livenet: 'https://api.bitpay.com',
-      testnet: 'https://api.bitpay.com'
     }
   }
 };

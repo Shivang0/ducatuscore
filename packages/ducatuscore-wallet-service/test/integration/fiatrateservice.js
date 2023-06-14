@@ -259,7 +259,7 @@ describe('Fiat rate service', function() {
     });
 
     it('should get historical rates from ts to now', function(done) {
-      const coins = ['btc', 'bch', 'eth', 'matic', 'xrp', 'doge', 'ltc'];
+      const coins = ['btc', 'bch', 'eth', 'ducx', 'xrp', 'doge', 'ltc'];
       var clock = sinon.useFakeTimers({ toFake: ['Date'] });
       async.each(
         [1.0, 2.0, 3.0, 4.0, 5.0],
@@ -359,7 +359,7 @@ describe('Fiat rate service', function() {
               res['btc'].length.should.equal(4);
               should.not.exist(res['bch']);
               should.not.exist(res['eth']);
-              should.not.exist(res['matic']);
+              should.not.exist(res['ducx']);
               should.not.exist(res['xrp']);
               should.not.exist(res['doge']);
               should.not.exist(res['ltc']);
@@ -508,7 +508,7 @@ describe('Fiat rate service', function() {
           rate: 121
         }
       ];
-      var matic = [
+      var ducx = [
         {
           code: 'USD',
           rate: 1.19
@@ -589,10 +589,10 @@ describe('Fiat rate service', function() {
         .yields(null, null, eth);
       request.get
         .withArgs({
-          url: 'https://bitpay.com/api/rates/MATIC',
+          url: 'https://bitpay.com/api/rates/DUCX',
           json: true
         })
-        .yields(null, null, matic);
+        .yields(null, null, ducx);
       request.get
         .withArgs({
           url: 'https://bitpay.com/api/rates/XRP',
@@ -661,7 +661,7 @@ describe('Fiat rate service', function() {
                     service.getRate(
                       {
                         code: 'USD',
-                        coin: 'matic'
+                        coin: 'ducx'
                       },
                       function(err, res) {
                         should.not.exist(err);

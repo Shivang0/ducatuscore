@@ -9,15 +9,15 @@ import { MongoBound } from '../../../src/models/base';
 import { CacheStorage } from '../../../src/models/cache';
 import { IWallet, WalletStorage } from '../../../src/models/wallet';
 import { WalletAddressStorage } from '../../../src/models/walletAddress';
-import { MATIC } from '../../../src/modules/matic/api/csp';
+import { DUCX } from '../../../src/modules/ducx/api/csp';
 import { IEVMTransaction } from '../../../src/providers/chain-state/evm//types';
 import { EVMBlockStorage } from '../../../src/providers/chain-state/evm/models/block';
 import { EVMTransactionStorage } from '../../../src/providers/chain-state/evm/models/transaction';
 import { StreamWalletTransactionsParams } from '../../../src/types/namespaces/ChainStateProvider';
 import { intAfterHelper, intBeforeHelper } from '../../helpers/integration';
 
-describe('Polygon/MATIC API', function() {
-  const chain = 'MATIC';
+describe('Polygon/DUCX API', function() {
+  const chain = 'DUCX';
   const network = 'regtest';
 
   const suite = this;
@@ -76,12 +76,12 @@ describe('Polygon/MATIC API', function() {
   });
 
   it('should be able to get the fees', async () => {
-    const chain = 'MATIC';
+    const chain = 'DUCX';
     const network = 'testnet';
     let target = 1;
     while (target <= 4) {
       const cacheKey = `getFee-${chain}-${network}-${target}`;
-      const fee = await MATIC.getFee({ chain, network, target });
+      const fee = await DUCX.getFee({ chain, network, target });
       expect(fee).to.exist;
       const cached = await CacheStorage.getGlobal(cacheKey);
       expect(fee).to.deep.eq(cached);
@@ -90,7 +90,7 @@ describe('Polygon/MATIC API', function() {
   });
 
   it('should estimate fees by most recent transactions', async () => {
-    const chain = 'MATIC';
+    const chain = 'DUCX';
     const network = 'testnet';
     const txs = new Array(4000).fill({}).map(_ => {
       return {
@@ -103,7 +103,7 @@ describe('Polygon/MATIC API', function() {
     await CacheStorage.collection.remove({});
     await EVMTransactionStorage.collection.deleteMany({});
     await EVMTransactionStorage.collection.insertMany(txs);
-    const estimates = await Promise.all([1, 2, 3, 4].map(target => MATIC.getFee({ network, target })));
+    const estimates = await Promise.all([1, 2, 3, 4].map(target => DUCX.getFee({ network, target })));
     for (const estimate of estimates) {
       expect(estimate.feerate).to.be.gt(0);
       expect(estimate.feerate).to.be.eq(10000000000);
@@ -111,7 +111,7 @@ describe('Polygon/MATIC API', function() {
   });
 
   it('should return cached fee for a minute', async () => {
-    const chain = 'MATIC';
+    const chain = 'DUCX';
     const network = 'testnet';
     const txs = new Array(4000).fill({}).map(_ => {
       return {
@@ -124,10 +124,10 @@ describe('Polygon/MATIC API', function() {
     await CacheStorage.collection.remove({})
     await EVMTransactionStorage.collection.deleteMany({});
     await EVMTransactionStorage.collection.insertMany(txs);
-    let estimates = await Promise.all([1, 2, 3, 4].map(target => MATIC.getFee({ network, target })));
+    let estimates = await Promise.all([1, 2, 3, 4].map(target => DUCX.getFee({ network, target })));
 
     await EVMTransactionStorage.collection.deleteMany({});
-    estimates = await Promise.all([1, 2, 3, 4].map(target => MATIC.getFee({ network, target })));
+    estimates = await Promise.all([1, 2, 3, 4].map(target => DUCX.getFee({ network, target })));
     for (const estimate of estimates) {
       expect(estimate.feerate).to.be.gt(0);
       expect(estimate.feerate).to.be.eq(10000000000);
@@ -151,19 +151,19 @@ describe('Polygon/MATIC API', function() {
         balanceOf: () => ({ call: sandbox.stub().resolves(0) })
       }
     };
-    sandbox.stub(MATIC, 'erc20For').resolves(tokenStub);
-    const balance = await MATIC.getBalanceForAddress({ chain, network, address, args: { tokenAddress: address } });
+    sandbox.stub(DUCX, 'erc20For').resolves(tokenStub);
+    const balance = await DUCX.getBalanceForAddress({ chain, network, address, args: { tokenAddress: address } });
     expect(balance).to.deep.eq({ confirmed: 0, unconfirmed: 0, balance: 0 });
     sandbox.restore();
   });
 
-  it('should be able to get address MATIC balance', async () => {
+  it('should be able to get address DUCX balance', async () => {
     const address = '0xb8fd14fb0e0848cb931c1e54a73486c4b968be3d';
-    const balance = await MATIC.getBalanceForAddress({ chain, network, address, args: {} });
+    const balance = await DUCX.getBalanceForAddress({ chain, network, address, args: {} });
     expect(balance).to.deep.eq({ confirmed: 0, unconfirmed: 0, balance: 0 });
   });
 
-  it('should stream MATIC transactions for address', async () => {
+  it('should stream DUCX transactions for address', async () => {
     const address = '0xb8fd14fb0e0848cb931c1e54a73486c4b968be3d';
     const txCount = 100;
     const txs = new Array(txCount).fill({}).map(() => {
@@ -188,7 +188,7 @@ describe('Polygon/MATIC API', function() {
       transform: (_data, _, cb) => cb(null)
     }) as unknown) as Request;
 
-    await MATIC.streamAddressTransactions({ chain, network, address, res, req, args: {} });
+    await DUCX.streamAddressTransactions({ chain, network, address, res, req, args: {} });
     let counter = 0;
     await new Promise(r => {
       res
@@ -202,7 +202,7 @@ describe('Polygon/MATIC API', function() {
     expect(counter).to.eq(expected);
   });
 
-  it('should stream MATIC transactions for block', async () => {
+  it('should stream DUCX transactions for block', async () => {
     const txCount = 100;
     const txs = new Array(txCount).fill({}).map(() => {
       return {
@@ -229,7 +229,7 @@ describe('Polygon/MATIC API', function() {
       }
     }) as unknown) as Request;
 
-    await MATIC.streamTransactions({ chain, network, res, req, args: { blockHeight: 1 } });
+    await DUCX.streamTransactions({ chain, network, res, req, args: { blockHeight: 1 } });
     let counter = 0;
     await new Promise<void>(r => {
       res
@@ -247,7 +247,7 @@ describe('Polygon/MATIC API', function() {
     expect(counter).to.eq(expected);
   });
 
-  it('should stream MATIC transactions for blockHash', async () => {
+  it('should stream DUCX transactions for blockHash', async () => {
     const txCount = 100;
     const txs = new Array(txCount).fill({}).map(() => {
       return {
@@ -274,7 +274,7 @@ describe('Polygon/MATIC API', function() {
       }
     }) as unknown) as Request;
 
-    await MATIC.streamTransactions({ chain, network, res, req, args: { blockHash: '12345' } });
+    await DUCX.streamTransactions({ chain, network, res, req, args: { blockHash: '12345' } });
     let counter = 0;
     await new Promise<void>(r => {
       res
@@ -294,7 +294,7 @@ describe('Polygon/MATIC API', function() {
 
   describe('#streamWalletTransactions', () => {
     let sandbox = sinon.createSandbox();
-    let chain = 'MATIC';
+    let chain = 'DUCX';
     let network = 'mainnet';
     let address = '0x1Eee23160Db790ee48Fd39871A64b13e76Fc2C3C';
     let wallet: IWallet = {
@@ -311,7 +311,7 @@ describe('Polygon/MATIC API', function() {
       const res = await WalletStorage.collection.findOneAndUpdate({ name: wallet.name }, { $set: wallet }, { returnOriginal: false, upsert: true });
       wallet = res.value as IWallet;
       await WalletAddressStorage.collection.updateOne({ network, address }, { $set: { chain, network, wallet: (wallet._id as ObjectId), processed: true, address } }, { upsert: true })
-      sandbox.stub(MATIC, 'getWeb3').resolves({ web3 });
+      sandbox.stub(DUCX, 'getWeb3').resolves({ web3 });
     });
 
     afterEach(async () => {
@@ -323,11 +323,11 @@ describe('Polygon/MATIC API', function() {
       sandbox.restore();
     });
 
-    it('should stream wallet\'s valid MATIC transactions', async () =>
+    it('should stream wallet\'s valid DUCX transactions', async () =>
       await streamWalletTransactionsTest(chain, network)
     );
 
-    it('should stream wallet\'s valid & invalid MATIC transactions', async () =>
+    it('should stream wallet\'s valid & invalid DUCX transactions', async () =>
       await streamWalletTransactionsTest(chain, network, true)
     );
   });
@@ -370,7 +370,7 @@ const streamWalletTransactionsTest = async (chain: string, network: string, incl
   txs.forEach(tx => tx.wallets = [objectId]);
 
   // Stubs
-  sandbox.stub(MATIC, 'getWalletAddresses').resolves([address]);
+  sandbox.stub(DUCX, 'getWalletAddresses').resolves([address]);
 
   // Test
   await EVMTransactionStorage.collection.deleteMany({});
@@ -381,7 +381,7 @@ const streamWalletTransactionsTest = async (chain: string, network: string, incl
   }) as unknown) as Response;
   res.type = () => res;
 
-  await MATIC.streamWalletTransactions({
+  await DUCX.streamWalletTransactions({
     chain,
     network,
     wallet,

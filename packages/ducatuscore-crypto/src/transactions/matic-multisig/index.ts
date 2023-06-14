@@ -1,9 +1,9 @@
 import Web3 from 'web3';
 import { AbiItem } from 'web3-utils';
 import { MultisigAbi } from '../eth-multisig/abi';
-import { MATICTxProvider } from '../matic';
+import { DUCXTxProvider } from '../ducx';
 
-export class MATICMULTISIGTxProvider extends MATICTxProvider {
+export class DUCXMULTISIGTxProvider extends DUCXTxProvider {
   getMultisigContract(multisigContractAddress: string) {
     const web3 = new Web3();
     const contract = new web3.eth.Contract(MultisigAbi as AbiItem[], multisigContractAddress);

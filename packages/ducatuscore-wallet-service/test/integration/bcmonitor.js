@@ -117,7 +117,7 @@ describe('Blockchain monitor', function() {
                 eth: {
                   livenet: blockchainExplorerEVM
                 },
-                matic: {
+                ducx: {
                   livenet: blockchainExplorerEVM
                 }
               }

@@ -54,8 +54,8 @@ export let ETH_TOKEN_OPTS = {
     address: '0x4d224452801aced8b2f0aebe155379bb5d594381'
   },
   '0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0': {
-    name: 'Matic Token',
-    symbol: 'MATIC',
+    name: 'Ducx Token',
+    symbol: 'DUCX',
     decimals: 18,
     address: '0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0'
   },
@@ -67,7 +67,7 @@ export let ETH_TOKEN_OPTS = {
   }
 };
 
-export let MATIC_TOKEN_OPTS = {
+export let DUCX_TOKEN_OPTS = {
   '0x2791bca1f2de4661ed88a30c99a7a9449aa84174': {
     name: 'USD Coin (PoS)',
     symbol: 'USDC',

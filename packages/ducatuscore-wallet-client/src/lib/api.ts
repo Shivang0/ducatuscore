@@ -22,7 +22,7 @@ var Ducatuscore_ = {
   btc: CWC.DucatuscoreLib,
   bch: CWC.DucatuscoreLibCash,
   eth: CWC.DucatuscoreLib,
-  matic: CWC.DucatuscoreLib,
+  ducx: CWC.DucatuscoreLib,
   xrp: CWC.DucatuscoreLib,
   doge: CWC.DucatuscoreLibDoge,
   ltc: CWC.DucatuscoreLibLtc
@@ -712,7 +712,7 @@ export class API extends EventEmitter {
     switch (chain.toLowerCase()) {
       case 'xrp':
       case 'eth':
-      case 'matic':
+      case 'ducx':
         const unsignedTxs = t.uncheckedSerialize();
         const signedTxs = [];
         for (let index = 0; index < signatures.length; index++) {
@@ -2904,7 +2904,7 @@ export class API extends EventEmitter {
         ['bch', 'livenet'],
         ['bch', 'livenet', false, true], // check for prefork bch wallet
         ['eth', 'livenet'],
-        ['matic', 'livenet'],
+        ['ducx', 'livenet'],
         ['xrp', 'livenet'],
         ['doge', 'livenet'],
         ['ltc', 'livenet'],
@@ -3134,10 +3134,10 @@ export class API extends EventEmitter {
               clients.push(newClient);
               const tokenAddresses = wallet.status.preferences.tokenAddresses;
               const multisigEthInfo = wallet.status.preferences.multisigEthInfo;
-              const maticTokenAddresses =
-                wallet.status.preferences.maticTokenAddresses;
-              const multisigMaticInfo =
-                wallet.status.preferences.multisigMaticInfo;
+              const ducxTokenAddresses =
+                wallet.status.preferences.ducxTokenAddresses;
+              const multisigDucxInfo =
+                wallet.status.preferences.multisigDucxInfo;
 
               // Eth wallet with tokens?
               if (!_.isEmpty(tokenAddresses) || !_.isEmpty(multisigEthInfo)) {
@@ -3215,16 +3215,16 @@ export class API extends EventEmitter {
                 }
               }
 
-              // matic wallet with tokens?
+              // ducx wallet with tokens?
               if (
-                !_.isEmpty(maticTokenAddresses) ||
-                !_.isEmpty(multisigMaticInfo)
+                !_.isEmpty(ducxTokenAddresses) ||
+                !_.isEmpty(multisigDucxInfo)
               ) {
-                if (!_.isEmpty(maticTokenAddresses)) {
-                  function oneInchGetMaticTokensData() {
+                if (!_.isEmpty(ducxTokenAddresses)) {
+                  function oneInchGetDucxTokensData() {
                     return new Promise((resolve, reject) => {
                       newClient.request.get(
-                        '/v1/service/oneInch/getTokens/matic',
+                        '/v1/service/oneInch/getTokens/ducx',
                         (err, data) => {
                           if (err) return reject(err);
                           return resolve(data);
@@ -3234,14 +3234,14 @@ export class API extends EventEmitter {
                   }
                   let customTokensData;
                   try {
-                    customTokensData = await oneInchGetMaticTokensData();
+                    customTokensData = await oneInchGetDucxTokensData();
                   } catch (error) {
-                    log.warn('oneInchGetMaticTokensData err', error);
+                    log.warn('oneInchGetDucxTokensData err', error);
                     customTokensData = null;
                   }
-                  _.each(maticTokenAddresses, t => {
+                  _.each(ducxTokenAddresses, t => {
                     const token =
-                      Constants.MATIC_TOKEN_OPTS[t] ||
+                      Constants.DUCX_TOKEN_OPTS[t] ||
                       (customTokensData && customTokensData[t]);
                     if (!token) {
                       log.warn(`Token ${t} unknown`);
@@ -3249,43 +3249,43 @@ export class API extends EventEmitter {
                     }
                     log.info(`Importing token: ${token.name}`);
                     const tokenCredentials =
-                      newClient.credentials.getTokenCredentials(token, 'matic');
+                      newClient.credentials.getTokenCredentials(token, 'ducx');
                     let tokenClient = _.cloneDeep(newClient);
                     tokenClient.credentials = tokenCredentials;
                     clients.push(tokenClient);
                   });
                 }
-                // matic wallet with multisig wallets?
-                if (!_.isEmpty(multisigMaticInfo)) {
-                  _.each(multisigMaticInfo, info => {
+                // ducx wallet with multisig wallets?
+                if (!_.isEmpty(multisigDucxInfo)) {
+                  _.each(multisigDucxInfo, info => {
                     log.info(
                       `Importing multisig wallet. Address: ${info.multisigContractAddress} - m: ${info.m} - n: ${info.n}`
                     );
-                    const multisigMaticCredentials =
+                    const multisigDucxCredentials =
                       newClient.credentials.getMultisigEthCredentials({
                         walletName: info.walletName,
                         multisigContractAddress: info.multisigContractAddress,
                         n: info.n,
                         m: info.m
                       });
-                    let multisigMaticClient = _.cloneDeep(newClient);
-                    multisigMaticClient.credentials = multisigMaticCredentials;
-                    clients.push(multisigMaticClient);
-                    const maticTokenAddresses = info.maticTokenAddresses;
-                    if (!_.isEmpty(maticTokenAddresses)) {
-                      _.each(maticTokenAddresses, t => {
-                        const token = Constants.MATIC_TOKEN_OPTS[t];
+                    let multisigDucxClient = _.cloneDeep(newClient);
+                    multisigDucxClient.credentials = multisigDucxCredentials;
+                    clients.push(multisigDucxClient);
+                    const ducxTokenAddresses = info.ducxTokenAddresses;
+                    if (!_.isEmpty(ducxTokenAddresses)) {
+                      _.each(ducxTokenAddresses, t => {
+                        const token = Constants.DUCX_TOKEN_OPTS[t];
                         if (!token) {
                           log.warn(`Token ${t} unknown`);
                           return;
                         }
                         log.info(`Importing multisig token: ${token.name}`);
                         const tokenCredentials =
-                          multisigMaticClient.credentials.getTokenCredentials(
+                          multisigDucxClient.credentials.getTokenCredentials(
                             token,
-                            'matic'
+                            'ducx'
                           );
-                        let tokenClient = _.cloneDeep(multisigMaticClient);
+                        let tokenClient = _.cloneDeep(multisigDucxClient);
                         tokenClient.credentials = tokenCredentials;
                         clients.push(tokenClient);
                       });

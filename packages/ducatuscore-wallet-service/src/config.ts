@@ -61,12 +61,12 @@ const Config = () => {
           url: 'https://api-eth.bitcore.io'
         }
       },
-      matic: {
+      ducx: {
         livenet: {
-          url: 'https://api-matic.bitcore.io'
+          url: 'https://api-ducx.bitcore.io'
         },
         testnet: {
-          url: 'https://api-matic.bitcore.io'
+          url: 'https://api-ducx.bitcore.io'
         }
       },
       xrp: {

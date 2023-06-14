@@ -23,9 +23,9 @@ describe('Address Validation', () => {
   const ethAddress = '37d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08A';
   const prefixEthAddress = '0x37d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08A';
 
-  // MATIC
-  const maticAddress = '37d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08A';
-  const prefixMaticAddress = '0x37d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08A';
+  // DUCX
+  const ducxAddress = '37d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08A';
+  const prefixDucxAddress = '0x37d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08A';
 
   // XRP
   const xrpAddress = 'rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh';
@@ -45,9 +45,9 @@ describe('Address Validation', () => {
   const xrpUri = 'ripple:rEqj9WKSH7wEkPvWf6b4gCi26Y3F7HbKUF';
   const xrpUriParams = 'ripple:rEqj9WKSH7wEkPvWf6b4gCi26Y3F7HbKUF?amount=123456&dt=123456';
   const xrpUriSingleParam = 'ripple:rEqj9WKSH7wEkPvWf6b4gCi26Y3F7HbKUF?amount=123456';
-  const maticUri = 'matic:0x37d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08A';
-  const maticUriParams = 'matic:0x37d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08A?value=123&gasPrice=123&gas=123&gasLimit=123';
-  const maticUriSingleParam = 'matic:0x37d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08A?value=123';
+  const ducxUri = 'ducx:0x37d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08A';
+  const ducxUriParams = 'ducx:0x37d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08A?value=123&gasPrice=123&gas=123&gasLimit=123';
+  const ducxUriSingleParam = 'ducx:0x37d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08A?value=123';
 
   // Invalid Address
   const invalidBtcAddress = '1NuKwkDtCymgA1FNLUBaUWLD8s4kKWvgn';
@@ -56,15 +56,15 @@ describe('Address Validation', () => {
   const invalidLtcAddress = 'LYgDcZ3oW3aZBhZUyiC84fb99hyUPVxLw';
   const invalidEthAddress = '37d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08';
   const invalidXrpAddress = 'rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTH';
-  const invalidMaticAddress = '57d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08';
+  const invalidDucxAddress = '57d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08';
 
   // Invalid Uri
   const invalidEthPrefix = '0x37d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08A';
   const invalidXrpPrefix = 'rEqj9WKSH7wEkPvWf6b4gCi26Y3F7HbKUF';
-  const invalidMaticPrefix = '0x37d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08A';
+  const invalidDucxPrefix = '0x37d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08A';
   const invalidEthUriParams = 'ethereum:0x37d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08A?value=invalid&gasLimit=123&gas=123';
   const invalidXrpUriParams = 'ripple:rEqj9WKSH7wEkPvWf6b4gCi26Y3F7HbKUF?amount=invalid&dt=123';
-  const invalidMaticUriParams = 'matic:0x37d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08A?value=invalid&gasLimit=123&gas=123';
+  const invalidDucxUriParams = 'ducx:0x37d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08A?value=invalid&gasLimit=123&gas=123';
 
   it('should be able to validate an BTC address', async () => {
     const isValidAddress = await Validation.validateAddress('BTC', 'mainnet', btcAddress);
@@ -106,9 +106,9 @@ describe('Address Validation', () => {
     expect(isValidAddress).to.equal(true);
   });
 
-  it('should be able to validate an MATIC address', async () => {
-    const isValidAddress = await Validation.validateAddress('MATIC', 'mainnet', maticAddress);
-    const isValidPrefixAddress = await Validation.validateAddress('MATIC', 'mainnet', prefixMaticAddress);
+  it('should be able to validate an DUCX address', async () => {
+    const isValidAddress = await Validation.validateAddress('DUCX', 'mainnet', ducxAddress);
+    const isValidPrefixAddress = await Validation.validateAddress('DUCX', 'mainnet', prefixDucxAddress);
     expect(isValidAddress).to.equal(true);
     expect(isValidPrefixAddress).to.equal(true);
   });
@@ -159,10 +159,10 @@ describe('Address Validation', () => {
     expect(isValidUriSingleParam).to.equal(true);
   });
 
-  it('should be able to validate an MATIC Uri', async () => {
-    const isValidUri = await Validation.validateUri('MATIC', maticUri);
-    const isValidUriParams = await Validation.validateUri('MATIC', maticUriParams);
-    const isValidUriSingleParam = await Validation.validateUri('MATIC', maticUriSingleParam);
+  it('should be able to validate an DUCX Uri', async () => {
+    const isValidUri = await Validation.validateUri('DUCX', ducxUri);
+    const isValidUriParams = await Validation.validateUri('DUCX', ducxUriParams);
+    const isValidUriSingleParam = await Validation.validateUri('DUCX', ducxUriSingleParam);
     expect(isValidUri).to.equal(true);
     expect(isValidUriParams).to.equal(true);
     expect(isValidUriSingleParam).to.equal(true);
@@ -198,8 +198,8 @@ describe('Address Validation', () => {
     expect(inValidAddress).to.equal(false);
   });
 
-  it('should be able to invalidate an incorrect MATIC address', async () => {
-    const inValidAddress = await Validation.validateAddress('MATIC', 'mainnet', invalidMaticAddress);
+  it('should be able to invalidate an incorrect DUCX address', async () => {
+    const inValidAddress = await Validation.validateAddress('DUCX', 'mainnet', invalidDucxAddress);
     expect(inValidAddress).to.equal(false);
   });
 
@@ -223,13 +223,13 @@ describe('Address Validation', () => {
     expect(inValidXrpPrefix).to.equal(false);
   });
 
-  it('should be able to invalidate incorrect MATIC Uri params', async () => {
-    const inValidMaticUri = await Validation.validateUri('MATIC', invalidMaticUriParams);
-    expect(inValidMaticUri).to.equal(false);
+  it('should be able to invalidate incorrect DUCX Uri params', async () => {
+    const inValidDucxUri = await Validation.validateUri('DUCX', invalidDucxUriParams);
+    expect(inValidDucxUri).to.equal(false);
   });
 
-  it('should be able to invalidate MATIC URI without ethereum prefix', async () => {
-    const inValidMaticPrefix = await Validation.validateUri('MATIC', invalidMaticPrefix);
-    expect(inValidMaticPrefix).to.equal(false);
+  it('should be able to invalidate DUCX URI without ethereum prefix', async () => {
+    const inValidDucxPrefix = await Validation.validateUri('DUCX', invalidDucxPrefix);
+    expect(inValidDucxPrefix).to.equal(false);
   });
 });

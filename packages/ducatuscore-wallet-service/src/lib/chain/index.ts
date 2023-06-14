@@ -6,7 +6,7 @@ import { BtcChain } from './btc';
 import { DogeChain } from './doge';
 import { EthChain } from './eth';
 import { LtcChain } from './ltc';
-import { MaticChain } from './matic';
+import { DucxChain } from './ducx';
 import { XrpChain } from './xrp';
 
 const Constants = Common.Constants;
@@ -72,7 +72,7 @@ const chains: { [chain: string]: IChain } = {
   BTC: new BtcChain(),
   BCH: new BchChain(),
   ETH: new EthChain(),
-  MATIC: new MaticChain(),
+  DUCX: new DucxChain(),
   XRP: new XrpChain(),
   DOGE: new DogeChain(),
   LTC: new LtcChain()

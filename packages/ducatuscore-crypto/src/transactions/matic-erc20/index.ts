@@ -1,10 +1,10 @@
 import Web3 from 'web3';
 import { AbiItem } from 'web3-utils';
 import { ERC20Abi, MULTISENDAbi } from '../erc20/abi';
-import { MATICTxProvider } from '../matic';
+import { DUCXTxProvider } from '../ducx';
 const { toBN } = Web3.utils;
 
-export class MATICERC20TxProvider extends MATICTxProvider {
+export class DUCXERC20TxProvider extends DUCXTxProvider {
   getERC20Contract(tokenContractAddress: string) {
     const web3 = new Web3();
     const contract = new web3.eth.Contract(ERC20Abi as AbiItem[], tokenContractAddress);

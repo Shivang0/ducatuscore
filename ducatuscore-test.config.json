@@ -1,6 +1,6 @@
 {
   "ducatuscoreNode": {
-    "modules": ["./bitcoin", "./bitcoin-cash", "./ethereum", "./matic", "./ripple"],
+    "modules": ["./bitcoin", "./bitcoin-cash", "./ethereum", "./ducx", "./ripple"],
     "services": {
       "api": {
         "wallets": {
@@ -47,7 +47,7 @@
           "threads": 0
         }
       },
-      "MATIC": {
+      "DUCX": {
         "regtest": {
           "chainSource": "p2p",
           "trustedPeers": [

@@ -22,7 +22,7 @@ const Ducatuscore_ = {
   btc: Ducatuscore,
   bch: DucatuscoreLibCash,
   eth: Ducatuscore,
-  matic: Ducatuscore,
+  ducx: Ducatuscore,
   xrp: Ducatuscore,
   doge: DucatuscoreLibDoge,
   ltc: DucatuscoreLibLtc

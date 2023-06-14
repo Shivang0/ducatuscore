@@ -602,7 +602,7 @@ describe('client API', function() {
           '0xeb068504a817c80082520894a062a07a0a56beb2872b12f388f511d694626730870dd764300b800080018080'
         ]);
       });
-      it('should build a matic txp correctly', () => {
+      it('should build a ducx txp correctly', () => {
         const toAddress = '0xa062a07a0a56beb2872b12f388f511d694626730';
         const key = new Key({ seedData: masterPrivateKey, seedType: 'extendedPrivateKey' });
         const path = "m/44'/60'/0'";
@@ -612,13 +612,13 @@ describe('client API', function() {
           }
         ];
 
-        const from = Utils.deriveAddress('P2PKH', publicKeyRing, 'm/0/0', 1, 'livenet', 'matic');
+        const from = Utils.deriveAddress('P2PKH', publicKeyRing, 'm/0/0', 1, 'livenet', 'ducx');
 
         const txp = {
           version: 3,
           from: from.address,
-          coin: 'matic',
-          chain: 'matic',
+          coin: 'ducx',
+          chain: 'ducx',
           outputs: [
             {
               toAddress: toAddress,
@@ -2535,22 +2535,22 @@ describe('client API', function() {
       });
     });
 
-    it('should save and retrieve matic token addresses', done => {
-      helpers.createAndJoinWallet(clients, keys, 1, 1, {coin: 'matic', chain: 'matic'}, () => {
+    it('should save and retrieve ducx token addresses', done => {
+      helpers.createAndJoinWallet(clients, keys, 1, 1, {coin: 'ducx', chain: 'ducx'}, () => {
         clients[0].getPreferences((err, preferences) => {
           should.not.exist(err);
           preferences.should.be.empty;
           clients[0].savePreferences(
             {
-              maticTokenAddresses: ['0x2791bca1f2de4661ed88a30c99a7a9449aa84174']
+              ducxTokenAddresses: ['0x2791bca1f2de4661ed88a30c99a7a9449aa84174']
             },
             err => {
               should.not.exist(err);
               clients[0].getPreferences((err, preferences) => {
                 should.not.exist(err);
                 should.exist(preferences);
-                preferences.maticTokenAddresses[0].should.exist;
-                preferences.maticTokenAddresses[0].should.equal('0x2791bca1f2de4661ed88a30c99a7a9449aa84174');
+                preferences.ducxTokenAddresses[0].should.exist;
+                preferences.ducxTokenAddresses[0].should.equal('0x2791bca1f2de4661ed88a30c99a7a9449aa84174');
                 done();
               });
             }
@@ -2559,14 +2559,14 @@ describe('client API', function() {
       });
     });
 
-    it('should save and retrieve matic multisig address', done => {
-      helpers.createAndJoinWallet(clients, keys, 1, 1, {coin: 'matic', chain: 'matic'}, () => {
+    it('should save and retrieve ducx multisig address', done => {
+      helpers.createAndJoinWallet(clients, keys, 1, 1, {coin: 'ducx', chain: 'ducx'}, () => {
         clients[0].getPreferences((err, preferences) => {
           should.not.exist(err);
           preferences.should.be.empty;
           clients[0].savePreferences(
             {
-              multisigMaticInfo: [{
+              multisigDucxInfo: [{
                 walletName: 'myWallet',
                 multisigContractAddress: '0xeC20607aa654D823DD01BEB8780a44863c57Ed07',
                 n: 0,
@@ -2578,8 +2578,8 @@ describe('client API', function() {
               clients[0].getPreferences((err, preferences) => {
                 should.not.exist(err);
                 should.exist(preferences);
-                preferences.multisigMaticInfo[0].should.exist;
-                preferences.multisigMaticInfo[0].multisigContractAddress.should.equal('0xeC20607aa654D823DD01BEB8780a44863c57Ed07');
+                preferences.multisigDucxInfo[0].should.exist;
+                preferences.multisigDucxInfo[0].multisigContractAddress.should.equal('0xeC20607aa654D823DD01BEB8780a44863c57Ed07');
                 done();
               });
             }
@@ -5287,14 +5287,14 @@ describe('client API', function() {
       });
     });
 
-    it('Send and broadcast in 1-1 wallet MATIC', done => {
-      helpers.createAndJoinWallet(clients, keys, 1, 1, { coin: 'matic', chain: 'matic' }, w => {
+    it('Send and broadcast in 1-1 wallet DUCX', done => {
+      helpers.createAndJoinWallet(clients, keys, 1, 1, { coin: 'ducx', chain: 'ducx' }, w => {
         clients[0].createAddress((err, x0) => {
           should.not.exist(err);
           should.exist(x0.address);
           //blockchainExplorerMock.setUtxo(x0, 1, 1);
           var opts = {
-            chain: 'matic',
+            chain: 'ducx',
             outputs: [
               {
                 amount: 10000000,
@@ -6183,7 +6183,7 @@ describe('client API', function() {
           });
         });
 
-        it('should check DWS once if specific derivation is not problematic', done => {
+        it('should check DWS once if specific derivation is not probleducx', done => {
           // this key derivation is equal for compliant and non-compliant
           let k = new Key({
             seedData: 'relax about label gentle insect cross summer helmet come price elephant seek',
@@ -6456,19 +6456,19 @@ describe('client API', function() {
         });
       });
 
-      it('should be able to gain access to matic tokens wallets from mnemonic', done => {
-        helpers.createAndJoinWallet(clients, keys, 1, 1, { coin: 'matic', chain: 'matic' }, () => {
+      it('should be able to gain access to ducx tokens wallets from mnemonic', done => {
+        helpers.createAndJoinWallet(clients, keys, 1, 1, { coin: 'ducx', chain: 'ducx' }, () => {
           var words = keys[0].get(null, true).mnemonic;
           var walletName = clients[0].credentials.walletName;
           var copayerName = clients[0].credentials.copayerName;
           var walletId = clients[0].credentials.walletId;
-          var maticTokenAddresses = [
+          var ducxTokenAddresses = [
             '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
             '0x8f3cf7ad23cd3cadbd9735aff958023239c6a063'
           ];
           clients[0].savePreferences(
             {
-              maticTokenAddresses
+              ducxTokenAddresses
             },
             err => {
               should.not.exist(err);
@@ -6480,7 +6480,7 @@ describe('client API', function() {
                   }
                 },
                 (err, k, c) => {
-                  // the matic wallet + 2 tokens.
+                  // the ducx wallet + 2 tokens.
                   c.length.should.equal(3);
                   let recoveryClient = c[0];
                   recoveryClient.openWallet(err => {
@@ -6488,15 +6488,15 @@ describe('client API', function() {
                     recoveryClient.credentials.walletName.should.equal(walletName);
                     recoveryClient.credentials.copayerName.should.equal(copayerName);
                     recoveryClient.credentials.walletId.should.equal(walletId);
-                    recoveryClient.credentials.coin.should.equal('matic');
-                    recoveryClient.credentials.chain.should.equal('matic');
+                    recoveryClient.credentials.coin.should.equal('ducx');
+                    recoveryClient.credentials.chain.should.equal('ducx');
                     let recoveryClient2 = c[2];
                     recoveryClient2.openWallet(err => {
                       should.not.exist(err);
                       recoveryClient2.credentials.coin.should.equal('dai');
                       should.exist(recoveryClient2.credentials.chain);
-                      recoveryClient2.credentials.chain.should.equal('matic');
-                      recoveryClient2.credentials.walletId.should.equal(`${walletId}-${maticTokenAddresses[1]}`);
+                      recoveryClient2.credentials.chain.should.equal('ducx');
+                      recoveryClient2.credentials.walletId.should.equal(`${walletId}-${ducxTokenAddresses[1]}`);
                       done();
                     });
                   });
@@ -6507,17 +6507,17 @@ describe('client API', function() {
         });
       });
 
-      it('should be able to gain access to matic tokens wallets from mnemonic (Case 2)', done => {
-        helpers.createAndJoinWallet(clients, keys, 1, 1, { coin: 'matic', chain: 'matic' }, () => {
+      it('should be able to gain access to ducx tokens wallets from mnemonic (Case 2)', done => {
+        helpers.createAndJoinWallet(clients, keys, 1, 1, { coin: 'ducx', chain: 'ducx' }, () => {
           var words = keys[0].get(null, true).mnemonic;
           var walletName = clients[0].credentials.walletName;
           var copayerName = clients[0].credentials.copayerName;
           var walletId = clients[0].credentials.walletId;
-          var maticTokenAddresses = [
+          var ducxTokenAddresses = [
             '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
           ];
 
-          clients[0].savePreferences({ maticTokenAddresses }, err => {
+          clients[0].savePreferences({ ducxTokenAddresses }, err => {
             should.not.exist(err);
             Client.serverAssistedImport(
               { words, includeTestnetWallets: true  },
@@ -6527,7 +6527,7 @@ describe('client API', function() {
                 }
               },
               (err, k, c) => {
-                // the matic wallet + 1 token.
+                // the ducx wallet + 1 token.
                 c.length.should.equal(2);
                 let recoveryClient = c[0];
                 recoveryClient.openWallet(err => {
@@ -6535,15 +6535,15 @@ describe('client API', function() {
                   recoveryClient.credentials.walletName.should.equal(walletName);
                   recoveryClient.credentials.copayerName.should.equal(copayerName);
                   recoveryClient.credentials.walletId.should.equal(walletId);
-                  recoveryClient.credentials.coin.should.equal('matic');
-                  recoveryClient.credentials.chain.should.equal('matic');
+                  recoveryClient.credentials.coin.should.equal('ducx');
+                  recoveryClient.credentials.chain.should.equal('ducx');
                   let recoveryClient2 = c[1];
                   recoveryClient2.openWallet(err => {
                     should.not.exist(err);
                     recoveryClient2.credentials.coin.should.equal('usdc');
                     should.exist(recoveryClient2.credentials.chain);
-                    recoveryClient2.credentials.chain.should.equal('matic');
-                    recoveryClient2.credentials.walletId.should.equal(`${walletId}-${maticTokenAddresses[0]}`);
+                    recoveryClient2.credentials.chain.should.equal('ducx');
+                    recoveryClient2.credentials.walletId.should.equal(`${walletId}-${ducxTokenAddresses[0]}`);
                     done();
                   });
                 });
@@ -6553,17 +6553,17 @@ describe('client API', function() {
         });
       });
 
-      it('should not fail to gain access to matic wallet with unknown tokens addresses from mnemonic (Case 3)', done => {
-        helpers.createAndJoinWallet(clients, keys, 1, 1, { coin: 'matic', chain: 'matic' }, () => {
+      it('should not fail to gain access to ducx wallet with unknown tokens addresses from mnemonic (Case 3)', done => {
+        helpers.createAndJoinWallet(clients, keys, 1, 1, { coin: 'ducx', chain: 'ducx' }, () => {
           var words = keys[0].get(null, true).mnemonic;
           var walletName = clients[0].credentials.walletName;
           var copayerName = clients[0].credentials.copayerName;
           var walletId = clients[0].credentials.walletId;
-          var maticTokenAddresses = [
+          var ducxTokenAddresses = [
             '0x9da9bc12b19b22d7c55798f722a1b6747ae9a710',
           ];
 
-          clients[0].savePreferences({ maticTokenAddresses }, err => {
+          clients[0].savePreferences({ ducxTokenAddresses }, err => {
             should.not.exist(err);
               Client.serverAssistedImport(
               { words, includeTestnetWallets: true },
@@ -6573,7 +6573,7 @@ describe('client API', function() {
                 }
               },
               (err, k, c) => {
-                // the matic wallet + 1 unknown token addresses on preferences.
+                // the ducx wallet + 1 unknown token addresses on preferences.
                 c.length.should.equal(1);
                 let recoveryClient = c[0];
                 recoveryClient.openWallet(err => {
@@ -6581,8 +6581,8 @@ describe('client API', function() {
                   recoveryClient.credentials.walletName.should.equal(walletName);
                   recoveryClient.credentials.copayerName.should.equal(copayerName);
                   recoveryClient.credentials.walletId.should.equal(walletId);
-                  recoveryClient.credentials.coin.should.equal('matic');
-                  recoveryClient.credentials.chain.should.equal('matic');
+                  recoveryClient.credentials.coin.should.equal('ducx');
+                  recoveryClient.credentials.chain.should.equal('ducx');
                   done();
                 });
               })

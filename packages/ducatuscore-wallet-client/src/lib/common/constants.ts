@@ -43,7 +43,7 @@ export const Constants = {
   ],
 
   DUCATUS_SUPPORTED_ETH_ERC20: [
-    'matic',
+    'ducx',
     'usdc',
     'pax',
     'gusd',
@@ -56,14 +56,14 @@ export const Constants = {
     'usdt'
   ],
 
-  CHAINS: ['btc', 'bch', 'eth', 'matic', 'xrp', 'doge', 'ltc'],
+  CHAINS: ['btc', 'bch', 'eth', 'ducx', 'xrp', 'doge', 'ltc'],
   UTXO_CHAINS: ['btc', 'bch', 'doge', 'ltc'],
-  EVM_CHAINS: ['eth', 'matic'],
+  EVM_CHAINS: ['eth', 'ducx'],
   ETH_TOKEN_OPTS: CWC.Constants.ETH_TOKEN_OPTS,
-  MATIC_TOKEN_OPTS: CWC.Constants.MATIC_TOKEN_OPTS,
+  DUCX_TOKEN_OPTS: CWC.Constants.DUCX_TOKEN_OPTS,
   UNITS: CWC.Constants.UNITS,
   EVM_CHAINSUFFIXMAP: {
     eth: 'e',
-    matic: 'm'
+    ducx: 'm'
   }
 };

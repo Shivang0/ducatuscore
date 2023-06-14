@@ -4,19 +4,19 @@ import { EventEmitter } from 'events';
 import * as sinon from 'sinon';
 import { MongoBound } from '../../../../src/models/base';
 import { IEVMBlock, IEVMTransaction } from '../../../../src/providers/chain-state/evm/types';
-import { MATIC } from '../../../../src/modules/matic/api/csp';
+import { DUCX } from '../../../../src/modules/ducx/api/csp';
 import { BaseEVMStateProvider } from '../../../../src/providers/chain-state/evm/api/csp';
 import { mockModel } from '../../../helpers';
 
-describe('MATIC Chain State Provider', function() {
-  const chain = 'MATIC';
+describe('DUCX Chain State Provider', function() {
+  const chain = 'DUCX';
   const network = 'regtest';
 
   it('should be able to get web3', async () => {
     const sandbox = sinon.createSandbox();
     const web3Stub = { eth: { getBlockNumber: sandbox.stub().resolves(1) } };
-    sandbox.stub(BaseEVMStateProvider, 'rpcs').value({ MATIC: {[network]: { web3: web3Stub, rpc: sinon.stub() } } });
-    const { web3 } = await MATIC.getWeb3(network);
+    sandbox.stub(BaseEVMStateProvider, 'rpcs').value({ DUCX: {[network]: { web3: web3Stub, rpc: sinon.stub() } } });
+    const { web3 } = await DUCX.getWeb3(network);
     const block = await web3.eth.getBlockNumber();
     const stub = web3.eth.getBlockNumber as sinon.SinonStub;
     expect(stub.callCount).to.eq(2);
@@ -27,8 +27,8 @@ describe('MATIC Chain State Provider', function() {
   it('should make a new web3 if getBlockNumber fails', async () => {
     const sandbox = sinon.createSandbox();
     const web3Stub = { eth: { getBlockNumber: sandbox.stub().throws('Block number fails') } };
-    sandbox.stub(BaseEVMStateProvider, 'rpcs').value({ MATIC: {[network]: { web3: web3Stub, rpc: sinon.stub() } } });
-    const { web3 } = await MATIC.getWeb3(network);
+    sandbox.stub(BaseEVMStateProvider, 'rpcs').value({ DUCX: {[network]: { web3: web3Stub, rpc: sinon.stub() } } });
+    const { web3 } = await DUCX.getWeb3(network);
     const stub = web3.eth.getBlockNumber as sinon.SinonStub;
     expect(stub.callCount).to.not.exist;
     sandbox.restore();
@@ -48,15 +48,15 @@ describe('MATIC Chain State Provider', function() {
         symbol: () => ({ call: sandbox.stub().resolves(expected.symbol) })
       }
     };
-    sandbox.stub(MATIC, 'erc20For').resolves(tokenStub);
-    const token = await MATIC.getERC20TokenInfo(network, '0x123');
+    sandbox.stub(DUCX, 'erc20For').resolves(tokenStub);
+    const token = await DUCX.getERC20TokenInfo(network, '0x123');
     expect(token.name).to.eq(expected.name);
     expect(token.symbol).to.eq(expected.symbol);
     expect(token.decimals).to.eq(expected.decimals);
     sandbox.restore();
   });
 
-  it('should be able to find an MATIC transaction', async () => {
+  it('should be able to find an DUCX transaction', async () => {
     const sandbox = sinon.createSandbox();
     const mockTx = {
       _id: new ObjectId(),
@@ -65,10 +65,10 @@ describe('MATIC Chain State Provider', function() {
       gasPrice: 10,
       data: Buffer.from('')
     } as MongoBound<IEVMTransaction>;
-    sandbox.stub(MATIC, 'getReceipt').resolves({ gasUsed: 21000 });
-    sandbox.stub(MATIC, 'getLocalTip').resolves({ height: 1 });
+    sandbox.stub(DUCX, 'getReceipt').resolves({ gasUsed: 21000 });
+    sandbox.stub(DUCX, 'getLocalTip').resolves({ height: 1 });
     mockModel('transactions', mockTx);
-    const found = await MATIC.getTransaction({ chain: 'MATIC', network: 'testnet', txId: '123' });
+    const found = await DUCX.getTransaction({ chain: 'DUCX', network: 'testnet', txId: '123' });
     expect(found).to.exist;
     expect(found!.fee).to.eq(21000 * 10);
     expect(found!.confirmations).to.eq(1);
@@ -90,8 +90,8 @@ describe('MATIC Chain State Provider', function() {
         })
       }
     };
-    sandbox.stub(BaseEVMStateProvider, 'rpcs').value({ MATIC: {[network]: { web3: web3Stub, rpc: sinon.stub() } } });
-    const txids = await MATIC.broadcastTransaction({ chain, network, rawTx: ['123', '456'] });
+    sandbox.stub(BaseEVMStateProvider, 'rpcs').value({ DUCX: {[network]: { web3: web3Stub, rpc: sinon.stub() } } });
+    const txids = await DUCX.broadcastTransaction({ chain, network, rawTx: ['123', '456'] });
     expect(web3Stub.eth.sendSignedTransaction.calledWith('123')).to.eq(true);
     expect(web3Stub.eth.sendSignedTransaction.calledWith('456')).to.eq(true);
     expect(txids).to.deep.eq(['123', '456']);
@@ -113,8 +113,8 @@ describe('MATIC Chain State Provider', function() {
         })
       }
     };
-    sandbox.stub(BaseEVMStateProvider, 'rpcs').value({ MATIC: {[network]: { web3: web3Stub, rpc: sinon.stub() } } });
-    const txid = await MATIC.broadcastTransaction({ chain, network, rawTx: '123' });
+    sandbox.stub(BaseEVMStateProvider, 'rpcs').value({ DUCX: {[network]: { web3: web3Stub, rpc: sinon.stub() } } });
+    const txid = await DUCX.broadcastTransaction({ chain, network, rawTx: '123' });
     expect(web3Stub.eth.sendSignedTransaction.calledWith('123')).to.eq(true);
     expect(txid).to.eq('123');
     sandbox.restore();
@@ -144,10 +144,10 @@ describe('MATIC Chain State Provider', function() {
         })
       }
     };
-    sandbox.stub(BaseEVMStateProvider, 'rpcs').value({ MATIC: {[network]: { web3: web3Stub, rpc: sinon.stub() } } });
+    sandbox.stub(BaseEVMStateProvider, 'rpcs').value({ DUCX: {[network]: { web3: web3Stub, rpc: sinon.stub() } } });
     let thrown = false;
     try {
-      await MATIC.broadcastTransaction({ chain, network, rawTx: ['123', '456'] });
+      await DUCX.broadcastTransaction({ chain, network, rawTx: ['123', '456'] });
     } catch (e) {
       thrown = true;
     }
@@ -157,7 +157,7 @@ describe('MATIC Chain State Provider', function() {
     sandbox.restore();
   });
 
-  it('should be able to find an MATIC block', async () => {
+  it('should be able to find an DUCX block', async () => {
     const sandbox = sinon.createSandbox();
     const mockBlock = {
       _id: new ObjectId(),
@@ -165,7 +165,7 @@ describe('MATIC Chain State Provider', function() {
       height: 1
     } as MongoBound<IEVMBlock>;
     mockModel('blocks', mockBlock);
-    const found = await MATIC.getBlocks({ chain, network, blockId: mockBlock.hash });
+    const found = await DUCX.getBlocks({ chain, network, blockId: mockBlock.hash });
     expect(found).to.exist;
     expect(found[0]).to.exist;
     expect(found[0].hash).to.eq(mockBlock.hash);
@@ -188,7 +188,7 @@ describe('MATIC Chain State Provider', function() {
     };
 
     beforeEach(() => {
-      sandbox.stub(BaseEVMStateProvider, 'rpcs').value({ MATIC: {[network]: { web3: web3Stub, rpc: sinon.stub() } } });
+      sandbox.stub(BaseEVMStateProvider, 'rpcs').value({ DUCX: {[network]: { web3: web3Stub, rpc: sinon.stub() } } });
     });
 
     afterEach(() => {
@@ -197,14 +197,14 @@ describe('MATIC Chain State Provider', function() {
 
     it('it should return gas', async () => {
       web3Stub.currentProvider.send.callsArgWith(1, null, { result: '12345' });
-      const gas = await MATIC.estimateGas({ network, to: '0x123', from: '0xabc', gasPrice: 123, value: 'lorem' });
+      const gas = await DUCX.estimateGas({ network, to: '0x123', from: '0xabc', gasPrice: 123, value: 'lorem' });
       expect(gas).to.equal(12345);
     });
 
     it('should return gas for optional params', async () => {
       web3Stub.currentProvider.send.callsArgWith(1, null, { result: '1234' });
       
-      const gas = await MATIC.estimateGas({ network });
+      const gas = await DUCX.estimateGas({ network });
       expect(gas).to.equal(1234);
     });
 
@@ -212,7 +212,7 @@ describe('MATIC Chain State Provider', function() {
       web3Stub.currentProvider.send.callsArgWith(1, 'Unavailable server', null); // body is null
   
       try {
-        await MATIC.estimateGas({ network });
+        await DUCX.estimateGas({ network });
         throw new Error('should have thrown');
       } catch (err) {
         expect(err).to.equal('Unavailable server');
@@ -223,7 +223,7 @@ describe('MATIC Chain State Provider', function() {
       web3Stub.currentProvider.send.callsArgWith(1, null, { message: 'need some param' });
   
       try {
-        await MATIC.estimateGas({ network });
+        await DUCX.estimateGas({ network });
         throw new Error('should have thrown');
       } catch (err) {
         expect(err).to.deep.equal({ message: 'need some param' });
@@ -234,7 +234,7 @@ describe('MATIC Chain State Provider', function() {
       web3Stub.currentProvider.send.callsArgWith(1, null, { error: { code: 2, message: 'need some param' } });
   
       try {
-        await MATIC.estimateGas({ network });
+        await DUCX.estimateGas({ network });
         throw new Error('should have thrown');
       } catch (err) {
         expect(err).to.deep.equal({ code: 2, message: 'need some param' });
@@ -245,7 +245,7 @@ describe('MATIC Chain State Provider', function() {
       web3Stub.currentProvider.send.callsArgWith(1, null, { result: '12345' });
   
       try {
-        await MATIC.estimateGas({ network: 'unexpected' });
+        await DUCX.estimateGas({ network: 'unexpected' });
         throw new Error('should have thrown');
       } catch (err: any) {
         expect(err.message).to.equal('Cannot read properties of undefined (reading \'providers\')');
@@ -256,7 +256,7 @@ describe('MATIC Chain State Provider', function() {
       web3Stub.currentProvider.send.callsArgWith(1, null, null); // body is null
   
       try {
-        await MATIC.estimateGas({ network });
+        await DUCX.estimateGas({ network });
         throw new Error('should have thrown');
       } catch (err: any) {
         expect(err.message).to.equal('Cannot read properties of null (reading \'result\')');

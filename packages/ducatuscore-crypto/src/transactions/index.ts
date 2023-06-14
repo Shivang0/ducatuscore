@@ -5,9 +5,9 @@ import { ERC20TxProvider } from './erc20';
 import { ETHTxProvider } from './eth';
 import { ETHMULTISIGTxProvider } from './eth-multisig';
 import { LTCTxProvider } from './ltc';
-import { MATICTxProvider } from './matic';
-import { MATICERC20TxProvider } from './matic-erc20';
-import { MATICMULTISIGTxProvider } from './matic-multisig';
+import { DUCXTxProvider } from './ducx';
+import { DUCXERC20TxProvider } from './ducx-erc20';
+import { DUCXMULTISIGTxProvider } from './ducx-multisig';
 import { XRPTxProvider } from './xrp';
 
 const providers = {
@@ -19,9 +19,9 @@ const providers = {
   XRP: new XRPTxProvider(),
   DOGE: new DOGETxProvider(),
   LTC: new LTCTxProvider(),
-  MATIC: new MATICTxProvider(),
-  MATICMULTISIG: new MATICMULTISIGTxProvider(),
-  MATICERC20: new MATICERC20TxProvider()
+  DUCX: new DUCXTxProvider(),
+  DUCXMULTISIG: new DUCXMULTISIGTxProvider(),
+  DUCXERC20: new DUCXERC20TxProvider()
 };
 
 export class TransactionsProxy {

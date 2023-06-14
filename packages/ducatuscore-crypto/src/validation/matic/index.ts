@@ -1,14 +1,14 @@
 import { EthValidation } from '../eth';
 const utils = require('web3-utils');
 
-export class MaticValidation extends EthValidation {
+export class DucxValidation extends EthValidation {
   validateUri(addressUri: string): boolean {
     if (!addressUri) {
       return false;
     }
     const address = this.extractAddress(addressUri);
-    const maticPrefix = /matic/i.exec(addressUri);
-    return !!maticPrefix && utils.isAddress(address);
+    const ducxPrefix = /ducx/i.exec(addressUri);
+    return !!ducxPrefix && utils.isAddress(address);
   }
 
   protected extractAddress(data) {

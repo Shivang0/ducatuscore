@@ -6,7 +6,7 @@ export const Constants = {
     BTC: 'btc',
     BCH: 'bch',
     ETH: 'eth',
-    MATIC: 'matic',
+    DUCX: 'ducx',
     XRP: 'xrp',
     DOGE: 'doge',
     LTC: 'ltc'
@@ -17,7 +17,7 @@ export const Constants = {
     BTC: 'btc',
     BCH: 'bch',
     ETH: 'eth',
-    MATIC: 'matic',
+    DUCX: 'ducx',
     XRP: 'xrp',
     DOGE: 'doge',
     LTC: 'ltc',
@@ -36,7 +36,7 @@ export const Constants = {
 
   BITPAY_SUPPORTED_ETH_ERC20: {
     // backwards compatability
-    MATIC: 'matic',
+    DUCX: 'ducx',
     USDC: 'usdc',
     USDP: 'usdp',
     PAX: 'pax', // backwards compatability
@@ -75,7 +75,7 @@ export const Constants = {
 
   EVM_CHAINS: {
     ETH: 'eth',
-    MATIC: 'matic'
+    DUCX: 'ducx'
   },
 
   NETWORKS: {
@@ -106,7 +106,7 @@ export const Constants = {
   BIP45_SHARED_INDEX: 0x80000000 - 1,
 
   ETH_TOKEN_OPTS: CWC.Constants.ETH_TOKEN_OPTS,
-  MATIC_TOKEN_OPTS: CWC.Constants.MATIC_TOKEN_OPTS,
+  DUCX_TOKEN_OPTS: CWC.Constants.DUCX_TOKEN_OPTS,
 
   BITPAY_CONTRACTS: {
     MULTISEND: 'MULTISEND'
@@ -116,7 +116,7 @@ export const Constants = {
   // There is a default value in defaults.ts that applies to UTXOs
   CONFIRMATIONS_TO_START_CACHING: {
     eth: 100,
-    matic: 150
+    ducx: 150
   },
 
   // Individual chain settings for block throttling
@@ -124,7 +124,7 @@ export const Constants = {
     btc: { testnet: 300, livenet: 0 },
     bch: { testnet: 300, livenet: 0 },
     eth: { testnet: 300, livenet: 0 },
-    matic: { testnet: 300, livenet: 12 }, // MATIC set to 12 because blocks normally occur every 1-2 seconds
+    ducx: { testnet: 300, livenet: 12 }, // DUCX set to 12 because blocks normally occur every 1-2 seconds
     xrp: { testnet: 300, livenet: 0 },
     doge: { testnet: 300, livenet: 0 },
     ltc: { testnet: 300, livenet: 0 }

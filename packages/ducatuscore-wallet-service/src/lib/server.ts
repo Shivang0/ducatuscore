@@ -44,10 +44,8 @@ const Ducatuscore_ = {
   btc: Ducatuscore,
   bch: require('@ducatus/ducatuscore-lib-cash'),
   eth: Ducatuscore,
-  matic: Ducatuscore,
-  xrp: Ducatuscore,
-  doge: require('@ducatus/ducatuscore-lib-doge'),
-  ltc: require('@ducatus/ducatuscore-lib-ltc')
+  ducx: Ducatuscore,
+  xrp: Ducatuscore
 };
 
 const Utils = Common.Utils;
@@ -1154,8 +1152,8 @@ export class WalletService implements IWalletService {
    * @param {string} opts.unit - Bitcoin unit used to format amounts in notifications.
    * @param {string} opts.tokenAddresses - Linked token addresses
    * @param {string} opts.multisigEthInfo - Linked multisig eth wallet info
-   * @param {string} opts.maticTokenAddresses - Linked token addresses
-   * @param {string} opts.multisigMaticInfo - Linked multisig eth wallet info
+   * @param {string} opts.ducxTokenAddresses - Linked token addresses
+   * @param {string} opts.multisigDucxInfo - Linked multisig eth wallet info
    *
    */
   savePreferences(opts, cb) {
@@ -1196,17 +1194,17 @@ export class WalletService implements IWalletService {
         }
       },
       {
-        name: 'maticTokenAddresses',
+        name: 'ducxTokenAddresses',
         isValid(value) {
-          return _.isArray(value) && value.every(x => Validation.validateAddress('matic', 'mainnet', x));
+          return _.isArray(value) && value.every(x => Validation.validateAddress('ducx', 'mainnet', x));
         }
       },
       {
-        name: 'multisigMaticInfo',
+        name: 'multisigDucxInfo',
         isValid(value) {
           return (
             _.isArray(value) &&
-            value.every(x => Validation.validateAddress('matic', 'mainnet', x.multisigContractAddress))
+            value.every(x => Validation.validateAddress('ducx', 'mainnet', x.multisigContractAddress))
           );
         }
       }
@@ -1233,9 +1231,9 @@ export class WalletService implements IWalletService {
         opts.multisigEthInfo = null;
       }
 
-      if (wallet.coin != 'matic') {
-        opts.maticMokenAddresses = null;
-        opts.multisigMaticInfo = null;
+      if (wallet.coin != 'ducx') {
+        opts.ducxMokenAddresses = null;
+        opts.multisigDucxInfo = null;
       }
 
       this._runLocked(cb, cb => {
@@ -1277,26 +1275,26 @@ export class WalletService implements IWalletService {
             );
           }
 
-          // merge matic tokenAddresses
-          if (opts.maticTokenAddresses) {
+          // merge ducx tokenAddresses
+          if (opts.ducxTokenAddresses) {
             oldPref = oldPref || {};
-            oldPref.maticTokenAddresses = oldPref.maticTokenAddresses || [];
-            preferences.maticTokenAddresses = _.uniq(oldPref.maticTokenAddresses.concat(opts.maticTokenAddresses));
+            oldPref.ducxTokenAddresses = oldPref.ducxTokenAddresses || [];
+            preferences.ducxTokenAddresses = _.uniq(oldPref.ducxTokenAddresses.concat(opts.ducxTokenAddresses));
           }
 
-          // merge matic multisigMaticInfo
-          if (opts.multisigMaticInfo) {
+          // merge ducx multisigDucxInfo
+          if (opts.multisigDucxInfo) {
             oldPref = oldPref || {};
-            oldPref.multisigMaticInfo = oldPref.multisigMaticInfo || [];
+            oldPref.multisigDucxInfo = oldPref.multisigDucxInfo || [];
 
-            preferences.multisigMaticInfo = _.uniq(
-              oldPref.multisigMaticInfo.concat(opts.multisigMaticInfo).reduce((x, y) => {
+            preferences.multisigDucxInfo = _.uniq(
+              oldPref.multisigDucxInfo.concat(opts.multisigDucxInfo).reduce((x, y) => {
                 let exists = false;
                 x.forEach(e => {
                   // add new token addresses linked to the multisig wallet
                   if (e.multisigContractAddress === y.multisigContractAddress) {
-                    e.maticTokenAddresses = e.maticTokenAddresses || [];
-                    y.maticTokenAddresses = _.uniq(e.maticTokenAddresses.concat(y.maticTokenAddresses));
+                    e.ducxTokenAddresses = e.ducxTokenAddresses || [];
+                    y.ducxTokenAddresses = _.uniq(e.ducxTokenAddresses.concat(y.ducxTokenAddresses));
                     e = Object.assign(e, y);
                     exists = true;
                   }
@@ -5937,7 +5935,7 @@ export class WalletService implements IWalletService {
 
       const chainIdMap = {
         eth: 1,
-        matic: 137
+        ducx: 137
       };
 
       const chainId = chainIdMap[req.params?.['chain'] || 'eth'];
@@ -5971,7 +5969,7 @@ export class WalletService implements IWalletService {
 
       const chainIdMap = {
         eth: 1,
-        matic: 137
+        ducx: 137
       };
 
       const chainId = chainIdMap[req.params?.['chain'] || 'eth'];

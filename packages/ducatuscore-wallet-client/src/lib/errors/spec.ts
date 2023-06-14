@@ -72,8 +72,8 @@ var errorSpec = [
     message: 'Your linked ETH wallet does not have enough ETH for fee.'
   },
   {
-    name: 'INSUFFICIENT_MATIC_FEE',
-    message: 'Your linked POLYGON wallet does not have enough MATIC for fee.'
+    name: 'INSUFFICIENT_DUCX_FEE',
+    message: 'Your linked POLYGON wallet does not have enough DUCX for fee.'
   },
   {
     name: 'LOCKED_FUNDS',
@@ -85,7 +85,7 @@ var errorSpec = [
       'Your ETH linked wallet funds are locked by pending spend proposals.'
   },
   {
-    name: 'LOCKED_MATIC_FEE',
+    name: 'LOCKED_DUCX_FEE',
     message:
       'Your POLYGON linked wallet funds are locked by pending spend proposals.'
   },

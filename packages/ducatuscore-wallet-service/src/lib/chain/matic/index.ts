@@ -8,7 +8,7 @@ const Constants = Common.Constants;
 const Defaults = Common.Defaults;
 const Errors = require('../../errors/errordefinitions');
 
-export class MaticChain extends EthChain {
+export class DucxChain extends EthChain {
   /**
    * Converts Ducatuscore Balance Response.
    * @param {Object} ducatuscoreBalance - { unconfirmed, confirmed, balance }
@@ -19,8 +19,8 @@ export class MaticChain extends EthChain {
   getDucatuscoreTx(txp, opts = { signed: true }) {
     const { data, outputs, payProUrl, tokenAddress, multisigContractAddress, isTokenSwap } = txp;
     const isERC20 = tokenAddress && !payProUrl && !isTokenSwap;
-    const isMATICMULTISIG = multisigContractAddress;
-    const chain = isMATICMULTISIG ? 'MATICMULTISIG' : isERC20 ? 'MATICERC20' : 'MATIC';
+    const isDUCXMULTISIG = multisigContractAddress;
+    const chain = isDUCXMULTISIG ? 'DUCXMULTISIG' : isERC20 ? 'DUCXERC20' : 'DUCX';
     const recipients = outputs.map(output => {
       return {
         amount: output.amount,
@@ -74,7 +74,7 @@ export class MaticChain extends EthChain {
       throw new Error('Signatures Required');
     }
 
-    const chain = 'MATIC';
+    const chain = 'DUCX';
     const unsignedTxs = tx.uncheckedSerialize();
     const signedTxs = [];
     for (let index = 0; index < signatures.length; index++) {
@@ -92,7 +92,7 @@ export class MaticChain extends EthChain {
   }
 
   validateAddress(wallet, inaddr, opts) {
-    const chain = 'MATIC';
+    const chain = 'DUCX';
     const isValidTo = Validation.validateAddress(chain, wallet.network, inaddr);
     if (!isValidTo) {
       throw Errors.INVALID_ADDRESS;
@@ -106,8 +106,8 @@ export class MaticChain extends EthChain {
 
   getInsufficientFeeError(txp) {
     return new ClientError(
-      Errors.codes.INSUFFICIENT_MATIC_FEE,
-      `${Errors.INSUFFICIENT_MATIC_FEE.message}. RequiredFee: ${txp.fee}`,
+      Errors.codes.INSUFFICIENT_DUCX_FEE,
+      `${Errors.INSUFFICIENT_DUCX_FEE.message}. RequiredFee: ${txp.fee}`,
       {
         requiredFee: txp.fee
       }
@@ -116,8 +116,8 @@ export class MaticChain extends EthChain {
 
   getLockedFeeError(txp) {
     return new ClientError(
-      Errors.codes.LOCKED_MATIC_FEE,
-      `${Errors.LOCKED_MATIC_FEE.message}. RequiredFee: ${txp.fee}`,
+      Errors.codes.LOCKED_DUCX_FEE,
+      `${Errors.LOCKED_DUCX_FEE.message}. RequiredFee: ${txp.fee}`,
       {
         requiredFee: txp.fee
       }

@@ -11,7 +11,7 @@ import { EventLog } from '../../../providers/chain-state/evm/types';
 import { Config } from '../../../services/config';
 import { IEVMNetworkConfig } from '../../../types/Config';
 import { StreamWalletTransactionsParams } from '../../../types/namespaces/ChainStateProvider';
-import { MATIC } from './csp';
+import { DUCX } from './csp';
 
 interface MULTISIGInstantiation
   extends EventLog<{
@@ -31,7 +31,7 @@ export class GnosisApi {
   private ETH_MULTISIG_TX_PROPOSAL_EXPIRE_TIME = 48 * 3600 * 1000;
 
   async multisigFor(network: string, address: string) {
-    const { web3 } = await MATIC.getWeb3(network);
+    const { web3 } = await DUCX.getWeb3(network);
     const contract = new web3.eth.Contract(MultisigAbi as AbiItem[], address);
     return contract;
   }
@@ -41,10 +41,10 @@ export class GnosisApi {
     sender: string,
     txId: string
   ): Promise<Partial<Transaction>[]> {
-    const { web3 } = await MATIC.getWeb3(network);
-    const networkConfig: IEVMNetworkConfig = Config.chainConfig({ chain: 'MATIC', network });
+    const { web3 } = await DUCX.getWeb3(network);
+    const networkConfig: IEVMNetworkConfig = Config.chainConfig({ chain: 'DUCX', network });
     const { gnosisFactory = this.gnosisFactories[network] } = networkConfig;
-    let query = { chain: 'MATIC', network, txid: txId };
+    let query = { chain: 'DUCX', network, txid: txId };
     const found = await EVMTransactionStorage.collection.findOne(query);
     const blockHeight = found && found.blockHeight ? found.blockHeight : null;
     if (!blockHeight || blockHeight < 0) return Promise.resolve([]);
@@ -80,7 +80,7 @@ export class GnosisApi {
     const time = Math.floor(Date.now()) - this.ETH_MULTISIG_TX_PROPOSAL_EXPIRE_TIME;
     const [block] = await EVMBlockStorage.collection
       .find({
-        chain: 'MATIC',
+        chain: 'DUCX',
         network,
         timeNormalized: { $gte: new Date(time) }
       })
@@ -145,8 +145,8 @@ export class GnosisApi {
 
   async streamGnosisWalletTransactions(params: { multisigContractAddress: string } & StreamWalletTransactionsParams) {
     const { multisigContractAddress, network, res, args } = params;
-    const { web3 } = await MATIC.getWeb3(network);
-    const transactionQuery = MATIC.getWalletTransactionQuery(params);
+    const { web3 } = await DUCX.getWeb3(network);
+    const transactionQuery = DUCX.getWalletTransactionQuery(params);
     delete transactionQuery.wallets;
     delete transactionQuery['wallets.0'];
     let query;

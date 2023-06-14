@@ -266,7 +266,7 @@ export class FiatRateService {
     // Oldest date in timestamp range in epoch number ex. 24 hours ago
     const now = Date.now() - Defaults.FIAT_RATE_FETCH_INTERVAL * 60 * 1000;
     const ts = _.isNumber(opts.ts) ? opts.ts : now;
-    const coins = ['btc', 'bch', 'eth', 'matic', 'xrp', 'doge', 'ltc', 'shib', 'ape'];
+    const coins = ['btc', 'bch', 'eth', 'duc', 'ducx', 'xrp', 'shib', 'ape'];
 
     async.map(
       coins,

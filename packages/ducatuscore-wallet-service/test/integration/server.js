@@ -10531,14 +10531,14 @@ describe('Wallet service', function() {
     });
   });
 
-  describe('ERC20 createTx (MATIC)', function() {
+  describe('ERC20 createTx (DUCX)', function() {
     var server, wallet;
     let sandbox;
     let addressStr = '0x37d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08A';
     beforeEach(function(done) {
       sandbox = sinon.createSandbox();
       helpers.createAndJoinWallet(1, 1, {
-        coin: 'matic',
+        coin: 'ducx',
       }, function(s, w) {
         server = s;
         wallet = w;
@@ -10550,13 +10550,13 @@ describe('Wallet service', function() {
       sandbox.restore();
     })
 
-   it('should fail with different error for ERC20 txs with insufficient MATIC to cover miner fee', function(done) {
+   it('should fail with different error for ERC20 txs with insufficient DUCX to cover miner fee', function(done) {
       const ts = TO_SAT['usdc'];
       server.createAddress({}, from => {
         helpers.stubUtxos(server, wallet, [1, 1], { tokenAddress: TOKENS[0] }, function() {
           let txAmount = 1e6;
           var txOpts = {
-            chain: 'matic',
+            chain: 'ducx',
             coin: 'usdc_m',
             outputs: [{
               toAddress: addressStr,
@@ -10569,8 +10569,8 @@ describe('Wallet service', function() {
           txOpts = Object.assign(txOpts);
           server.createTx(txOpts, function(err, tx) {
             should.exist(err);
-            err.code.should.equal('INSUFFICIENT_MATIC_FEE');
-            err.message.should.equal('Your linked POLYGON wallet does not have enough MATIC for fee. RequiredFee: 3999999999999990000');
+            err.code.should.equal('INSUFFICIENT_DUCX_FEE');
+            err.message.should.equal('Your linked POLYGON wallet does not have enough DUCX for fee. RequiredFee: 3999999999999990000');
             err.messageData.should.deep.equal({ requiredFee: 3999999999999990000 });
             server.getBalance({ tokenAddress: txOpts.tokenAddress }, function(err, tokenBalance) {
               should.not.exist(err);
@@ -10595,7 +10595,7 @@ describe('Wallet service', function() {
       server.createAddress({}, from => {
         helpers.stubUtxos(server, wallet, [1, 1], { tokenAddress: TOKENS[0] }, function() {
           var txOpts = {
-            chain: 'matic',
+            chain: 'ducx',
             coin: 'usdc_m',
             payProUrl: 'payProUrl',
             outputs: [{
