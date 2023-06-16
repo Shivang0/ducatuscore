@@ -1,4 +1,4 @@
-import { Validation } from 'crypto-wallet-core';
+import { Validation } from '@ducatus/ducatuscore-crypto';
 import { Request, Response, Router } from 'express';
 import { ChainStateProvider } from '../../providers/chain-state';
 import { StreamWalletAddressesParams } from '../../types/namespaces/ChainStateProvider';

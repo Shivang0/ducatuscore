@@ -1,4 +1,6 @@
 import { BchDeriver } from './bch';
+import { DucDeriver } from './duc';
+import { DucXDeriver } from './ducx';
 import { BtcDeriver } from './btc';
 import { EthDeriver } from './eth';
 import { DucxDeriver } from './ducx';
@@ -22,6 +24,7 @@ const derivers: { [chain: string]: IDeriver } = {
   BCH: new BchDeriver(),
   ETH: new EthDeriver(),
   XRP: new XrpDeriver(),
+  DUC: new DucDeriver(),
   DUCX: new DucxDeriver()
 };
 

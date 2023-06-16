@@ -1,6 +1,6 @@
 {
   "ducatuscoreNode": {
-    "modules": ["./ducatus", "./ducatusx"], 
+    "modules": ["./ducatus", "./ducx"], 
     "services": {
       "api": {
         "wallets": {

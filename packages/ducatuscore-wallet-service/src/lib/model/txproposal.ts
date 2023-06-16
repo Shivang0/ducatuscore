@@ -1,4 +1,4 @@
-import { Transactions } from 'crypto-wallet-core';
+import { Transactions } from '@ducatus/ducatuscore-crypto';
 import _ from 'lodash';
 import { ChainService } from '../chain/index';
 import { Common } from '../common';

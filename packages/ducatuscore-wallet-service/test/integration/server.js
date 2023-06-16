@@ -5,7 +5,7 @@ const async = require('async');
 
 const chai = require('chai');
 const sinon = require('sinon');
-const CWC = require('crypto-wallet-core');
+const CWC = require('@ducatus/ducatuscore-crypto');
 
 const LOG_LEVEL = 'info';
 //const LOG_LEVEL = 'debug';

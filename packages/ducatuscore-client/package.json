@@ -24,7 +24,7 @@
     "bcrypt": "5.1.0",
     "@ducatus/ducatuscore-mnemonic": "^10.0.5",
     "commander": "2.15.1",
-    "crypto-wallet-core": "^10.0.5",
+    "@ducatus/ducatuscore-crypto": "^10.0.0",
     "elliptic": "^6.5.3",
     "ethers": "5.7.1",
     "level-js": "4.0.2",

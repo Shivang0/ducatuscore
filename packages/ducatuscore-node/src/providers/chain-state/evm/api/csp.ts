@@ -44,9 +44,10 @@ export class BaseEVMStateProvider extends InternalStateProvider implements IChai
   config: IChainConfig<IEVMNetworkConfig>;
   static rpcs = {} as { [chain: string]: { [network: string]: { rpc: CryptoRpc; web3: Web3 } } };
 
-  constructor(public chain: string = 'ETH') {
+  constructor(public chain: string = 'ETH', public minGasPrices?: {mainnet:number; testnet: number;}) {
     super(chain);
     this.config = Config.chains[this.chain] as IChainConfig<IEVMNetworkConfig>;
+    this.minGasPrices = minGasPrices;
   }
 
   async getWeb3(network: string): Promise<{ rpc: CryptoRpc; web3: Web3 }> {
@@ -121,14 +122,23 @@ export class BaseEVMStateProvider extends InternalStateProvider implements IChai
           .sort({ blockHeight: -1 })
           .limit(20 * 200)
           .toArray();
-
+        const minGasPrices = this.minGasPrices
+          ? this.minGasPrices[network]
+          : 0;
         const blockGasPrices = txs
-          .map(tx => Number(tx.gasPrice))
+          .map(tx => chain.toLocaleLowerCase() === 'ducx' 
+            ? Number(Math.max(tx.gasPrice, minGasPrices)) 
+            : Number(tx.gasPrice)
+          )
           .filter(gasPrice => gasPrice)
           .sort((a, b) => b - a);
 
         const whichQuartile = Math.min(target, 4) || 1;
-        const quartileMedian = StatsUtil.getNthQuartileMedian(blockGasPrices, whichQuartile);
+        let quartileMedian: number = StatsUtil.getNthQuartileMedian(blockGasPrices, whichQuartile);
+
+        if (quartileMedian < minGasPrices) {
+          quartileMedian = minGasPrices;
+        }
 
         const roundedGwei = (quartileMedian / 1e9).toFixed(2);
         const gwei = Number(roundedGwei) || 0;

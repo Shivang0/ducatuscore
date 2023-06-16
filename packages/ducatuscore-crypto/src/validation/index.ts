@@ -1,6 +1,7 @@
 import { BchValidation } from './bch';
 import { BtcValidation } from './btc';
 import { EthValidation } from './eth';
+import { DucValidation } from './duc';
 import { DucxValidation } from './ducx';
 import { XrpValidation } from './xrp';
 
@@ -14,6 +15,7 @@ const validation: { [chain: string]: IValidation } = {
   BCH: new BchValidation(),
   ETH: new EthValidation(),
   XRP: new XrpValidation(),
+  DUC: new DucValidation(),
   DUCX: new DucxValidation()
 };
 

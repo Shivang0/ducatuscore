@@ -1,6 +1,6 @@
 import * as DucatuscoreClient from '@ducatus/ducatuscore-client';
 import { expect } from 'chai';
-import { Web3 } from 'crypto-wallet-core';
+import { Web3 } from '@ducatus/ducatuscore-crypto';
 import sinon from 'sinon';
 import config from '../../../src/config';
 import { CacheStorage } from '../../../src/models/cache';

@@ -1,10 +1,10 @@
 import Web3 from 'web3';
 import { AbiItem } from 'web3-utils';
-import { ERC20Abi, MULTISENDAbi } from '../erc20/abi';
 import { DUCXTxProvider } from '../ducx';
+import { ERC20Abi } from './abi';
 const { toBN } = Web3.utils;
 
-export class DUCXERC20TxProvider extends DUCXTxProvider {
+export class DRC20TxProvider extends DUCXTxProvider {
   getERC20Contract(tokenContractAddress: string) {
     const web3 = new Web3();
     const contract = new web3.eth.Contract(ERC20Abi as AbiItem[], tokenContractAddress);
@@ -34,23 +34,12 @@ export class DUCXERC20TxProvider extends DUCXTxProvider {
     tokenAddress: string;
     contractAddress?: string;
   }) {
-    const { tokenAddress, recipients, contractAddress } = params;
-    if (recipients.length > 1) {
-      const addresses = [];
-      const amounts = [];
-      for (let recipient of recipients) {
-        addresses.push(recipient.address);
-        amounts.push(toBN(recipient.amount));
-      }
-      const multisendContract = this.getMultiSendContract(contractAddress);
-      return multisendContract.methods.sendErc20(tokenAddress, addresses, amounts).encodeABI();
-    } else {
-      const [{ address, amount }] = params.recipients;
-      const amountBN = toBN(amount);
-      const data = this.getERC20Contract(tokenAddress)
-        .methods.transfer(address, amountBN)
-        .encodeABI();
-      return data;
-    }
+    const { tokenAddress } = params;
+    const [{ address, amount }] = params.recipients;
+    const amountBN = toBN(amount);
+    const data = this.getERC20Contract(tokenAddress)
+      .methods.transfer(address, amountBN)
+      .encodeABI();
+    return data;
   }
 }

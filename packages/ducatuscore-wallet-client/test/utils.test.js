@@ -3,7 +3,7 @@
 var _ = require('lodash');
 var chai = require('chai');
 var should = chai.should();
-var Ducatuscore = require('crypto-wallet-core').DucatuscoreLib;
+var Ducatuscore = require('@ducatus/ducatuscore-crypto').DucatuscoreLib;
 var { Utils } = require('../ts_build/lib/common');
 
 describe('Utils', () => {

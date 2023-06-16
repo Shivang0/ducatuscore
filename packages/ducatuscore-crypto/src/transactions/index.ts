@@ -1,11 +1,12 @@
 import { BCHTxProvider } from './bch';
 import { BTCTxProvider } from './btc';
+import { DUCTxProvider } from './duc';
+import { DUCXTxProvider } from './ducx';
 import { ERC20TxProvider } from './erc20';
+import { DRC20TxProvider } from './drc20';
+import { DRC721TxProvider } from './drc721';
 import { ETHTxProvider } from './eth';
 import { ETHMULTISIGTxProvider } from './eth-multisig';
-import { DUCXTxProvider } from './ducx';
-import { DUCXERC20TxProvider } from './ducx-erc20';
-import { DUCXMULTISIGTxProvider } from './ducx-multisig';
 import { XRPTxProvider } from './xrp';
 
 const providers = {
@@ -14,10 +15,11 @@ const providers = {
   ETH: new ETHTxProvider(),
   ETHERC20: new ERC20TxProvider(),
   ETHMULTISIG: new ETHMULTISIGTxProvider(),
-  XRP: new XRPTxProvider(),
+  DUC: new DUCTxProvider(),
   DUCX: new DUCXTxProvider(),
-  DUCXMULTISIG: new DUCXMULTISIGTxProvider(),
-  DUCXERC20: new DUCXERC20TxProvider()
+  DRC20: new DRC20TxProvider(),
+  DRC721: new DRC721TxProvider(),
+  XRP: new XRPTxProvider()
 };
 
 export class TransactionsProxy {
