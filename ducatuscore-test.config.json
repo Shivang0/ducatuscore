@@ -1,6 +1,6 @@
 {
   "ducatuscoreNode": {
-    "modules": ["./bitcoin", "./bitcoin-cash", "./ethereum", "./ducx", "./ripple"],
+    "modules": ["./ducatus", "./ducatusx"], 
     "services": {
       "api": {
         "wallets": {
@@ -9,69 +9,65 @@
       }
     },
     "chains": {
-      "BTC": {
-        "regtest": {
-          "chainSource": "p2p",
+      "DUC": {
+        "mainnet": {
+          "chainSource": "p2p", 
           "trustedPeers": [
             {
-              "host": "localhost",
-              "port": 8332
+              "host": "194.135.84.108",
+              "port": 9691
             }
           ],
           "rpc": {
-            "host": "localhost",
-            "port": 8333,
-            "username": "ducatuscorenodetest",
-            "password": "local321"
+            "host": "194.135.84.108",
+            "port": 9690,
+            "username": "node194",
+            "password": "node194"
+          }
+        },
+       "testnet": {
+          "chainSource": "p2p",
+          "trustedPeers": [
+            {
+              "host": "194.135.84.108",
+              "port": 18335
+            }
+          ],
+          "rpc": {
+            "host": "194.135.84.108",
+            "port": 18336,
+            "username": "ducatustest",
+            "password": "ducatuspwd"
           }
         }
       },
-      "ETH": {
-        "regtest": {
-          "chainSource": "p2p",
-          "trustedPeers": [
-            {
-              "host": "localhost",
-              "port": 40404
-            }
-          ],
-          "providers": [{
-            "host": "localhost",
-            "protocol": "ws",
-            "port": 9545
-          }, {
-            "host": "localhost",
-            "protocol": "ws",
-            "port": 9556
-          }],
-          "threads": 0
-        }
-      },
       "DUCX": {
-        "regtest": {
+        "mainnet": {
           "chainSource": "p2p",
           "trustedPeers": [
             {
-              "host": "localhost",
-              "port": 40404
+              "host": "212.24.108.89",
+              "port": 30301
             }
           ],
-          "providers": [{
-            "host": "localhost",
-            "protocol": "ws",
-            "port": 9556
-          }],
-          "threads": 0
-        }
-      },
-      "XRP": {
-        "testnet": {
-          "chainSource": "rpc",
           "provider": {
-            "host": "localhost",
-            "protocol": "ws",
-            "port": 6996,
-            "dataHost": "localhost"
+            "host": "212.24.108.89",
+            "port": 8456,
+            "protocol": "ws"
+          }
+        },
+        "testnet": {
+          "chainSource": "p2p",
+          "trustedPeers": [
+            {
+              "host": "89.40.14.180",
+              "port": 30300
+            }
+          ],
+          "provider": {
+            "host": "89.40.14.180",
+            "port": 8455,
+            "protocol": "ws"
           }
         }
       }

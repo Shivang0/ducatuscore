@@ -30,4 +30,3 @@ ADD . .
 RUN npm install
 RUN npm run bootstrap
 RUN npm run compile
-RUN npm run patch:node
