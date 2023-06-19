@@ -197,26 +197,24 @@ export class Credentials {
       }
 
       var coin = '0';
-      // checking in chains for simplicity
-      if (
-        this.network != 'livenet' &&
-        Constants.UTXO_CHAINS.includes(this.coin)
-      ) {
+      if (this.network != 'livenet' && Constants.UTXO_CHAINS.includes(this.coin)) {
         coin = '1';
       } else if (this.coin == 'bch') {
         if (this.use145forBCH) {
           coin = '145';
         } else {
-          coin = '0';
+          coin = '1025';
         }
       } else if (this.coin == 'btc') {
+        coin = '1025';
+      } else if (this.coin == 'duc') {
         coin = '0';
       } else if (this.coin == 'eth') {
         coin = '60';
-      } else if (this.coin == 'ducx') {
-        coin = '60'; // the official ducx derivation path is 966 but users will expect address to be same as ETH
       } else if (this.coin == 'xrp') {
         coin = '144';
+      } else if (this.coin == 'ducx') {
+        coin = '1060';
       } else {
         throw new Error('unknown coin: ' + this.coin);
       }
@@ -319,8 +317,11 @@ export class Credentials {
   isComplete() {
     if (!this.m || !this.n) return false;
     if (
-      (this.chain === 'btc' ||
-        this.chain === 'bch') &&
+      (
+        this.chain === 'btc' ||
+        this.chain === 'bch' ||
+        this.chain === 'duc' 
+      ) &&
       (!this.publicKeyRing || this.publicKeyRing.length != this.n)
     )
       return false;

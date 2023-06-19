@@ -22,6 +22,7 @@ var Ducatuscore_ = {
   btc: CWC.DucatuscoreLib,
   bch: CWC.DucatuscoreLibCash,
   eth: CWC.DucatuscoreLib,
+  duc: CWC.DucatuscoreLibDuc,
   ducx: CWC.DucatuscoreLib,
   xrp: CWC.DucatuscoreLib,
 };
@@ -69,6 +70,7 @@ export class API extends EventEmitter {
   // Expose ducatuscore
   static Ducatuscore = CWC.DucatuscoreLib;
   static DucatuscoreCash = CWC.DucatuscoreLibCash;
+  static DucatuscoreDuc = CWC.DucatuscoreLibDuc;
 
   constructor(opts?) {
     super();
@@ -831,7 +833,7 @@ export class API extends EventEmitter {
   // /**
   // * Get current fee levels for the specified network
   // *
-  // * @param {string} chain - 'btc' (default) or 'bch'
+  // * @param {string} chain - 'btc' (default) or 'bch', 'duc'
   // * @param {string} network - 'livenet' (default) or 'testnet'
   // * @param {Callback} cb
   // * @returns {Callback} cb - Returns error or an object with status information
@@ -883,7 +885,7 @@ export class API extends EventEmitter {
   // * @param {Number} m
   // * @param {Number} n
   // * @param {object} opts (optional: advanced options)
-  // * @param {string} opts.coin[='btc'] - The coin for this wallet (btc, bch).
+  // * @param {string} opts.coin[='btc'] - The coin for this wallet (btc, bch, duc).
   // * @param {string} opts.network[='livenet']
   // * @param {string} opts.singleAddress[=false] - The wallet will only ever have one address.
   // * @param {String} opts.walletPrivKey - set a walletPrivKey (instead of random)
@@ -978,7 +980,7 @@ export class API extends EventEmitter {
   // * @param {String} secret
   // * @param {String} copayerName
   // * @param {Object} opts
-  // * @param {string} opts.coin[='btc'] - The expected coin for this wallet (btc, bch).
+  // * @param {string} opts.coin[='btc'] - The expected coin for this wallet (btc, bch, duc).
   // * @param {Boolean} opts.dryRun[=false] - Simulate wallet join
   // * @param {Callback} cb
   // * @returns {Callback} cb - Returns the wallet
@@ -1415,7 +1417,6 @@ export class API extends EventEmitter {
     args.message =
       API._encryptMessage(opts.message, this.credentials.sharedEncryptingKey) ||
       null;
-    args.payProUrl = opts.payProUrl || null;
     args.isTokenSwap = opts.isTokenSwap || null;
     args.replaceTxByFee = opts.replaceTxByFee || null;
     _.each(args.outputs, o => {
@@ -1441,7 +1442,6 @@ export class API extends EventEmitter {
   // * @param {number} opts.feePerKb - Optional. Specify the fee per KB for this TX (in satoshi).
   // * @param {string} opts.changeAddress - Optional. Use this address as the change address for the tx. The address should belong to the wallet. In the case of singleAddress wallets, the first main address will be used.
   // * @param {Boolean} opts.sendMax - Optional. Send maximum amount of funds that make sense under the specified fee/feePerKb conditions. (defaults to false).
-  // * @param {string} opts.payProUrl - Optional. Paypro URL for peers to verify TX
   // * @param {Boolean} opts.excludeUnconfirmedUtxos[=false] - Optional. Do not use UTXOs of unconfirmed transactions as inputs
   // * @param {Boolean} opts.dryRun[=false] - Optional. Simulate the action but do not change server state.
   // * @param {Array} opts.inputs - Optional. Inputs for this TX
@@ -1659,20 +1659,6 @@ export class API extends EventEmitter {
       this._processTxps(txps);
       async.every(
         txps,
-        (txp, acb) => {
-          if (opts.doNotVerify) return acb(true);
-          this.getPayProV2(txp)
-            .then(paypro => {
-              var isLegit = Verifier.checkTxProposal(this.credentials, txp, {
-                paypro
-              });
-
-              return acb(isLegit);
-            })
-            .catch(err => {
-              return acb(err);
-            });
-        },
         isLegit => {
           if (!isLegit) return cb(new Errors.SERVER_COMPROMISED());
 
@@ -2901,6 +2887,9 @@ export class API extends EventEmitter {
         ['bch', 'livenet', false, true], // check for prefork bch wallet
         ['eth', 'livenet'],
         ['ducx', 'livenet'],
+        ['ducx', 'testnet'],
+        ['duc', 'livenet'],
+        ['duc', 'testnet'],
         ['xrp', 'livenet'],
         ['btc', 'livenet', true],
         ['bch', 'livenet', true]

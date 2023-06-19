@@ -382,25 +382,24 @@ export class Key {
     var coinCode = '0';
 
     // checking in chains for simplicity
-    if (
-      opts.network == 'testnet' &&
-      Constants.UTXO_CHAINS.includes(opts.coin)
-    ) {
+    if (opts.network == 'testnet' && Constants.UTXO_CHAINS.includes(opts.coin)) {
       coinCode = '1';
     } else if (opts.coin == 'bch') {
-      if (this.use0forBCH || opts.use0forBCH) {
-        coinCode = '0';
+      if (this.use0forBCH) {
+        coinCode = '1025';
       } else {
         coinCode = '145';
       }
     } else if (opts.coin == 'btc') {
+      coinCode = '1025';
+    } else if (opts.coin == 'duc') {
       coinCode = '0';
     } else if (opts.coin == 'eth') {
       coinCode = '60';
-    } else if (opts.coin == 'ducx') {
-      coinCode = '60'; // the official ducx derivation path is 966 but users will expect address to be same as ETH
     } else if (opts.coin == 'xrp') {
       coinCode = '144';
+    } else if (opts.coin == 'ducx') {
+      coinCode = '1060';
     } else {
       throw new Error('unknown coin: ' + opts.coin);
     }

@@ -22,10 +22,12 @@ export const Constants = {
   },
   BIP45_SHARED_INDEX: 0x80000000 - 1,
 
-  DUCATUS_SUPPORTED_COINS: [
+  DUCATUSCORE_SUPPORTED_COINS: [
     'btc',
     'bch',
     'eth',
+    'duc',
+    'ducx',
     'xrp',
     'usdc',
     'usdp',
@@ -37,10 +39,24 @@ export const Constants = {
     'shib',
     'ape',
     'euroc',
-    'usdt'
+    'usdt',
+    'jamasy',
+    'nuyasa',
+    'sunoba',
+    'dscmed',
+    'pog1',
+    'wde',
+    'mdxb',
+    'g.o.l.d.',
+    'jwan',
+    'tkf',
+    'AA+',
+    'QMN',
+    'mpe',
+    'balisol'
   ],
 
-  DUCATUS_SUPPORTED_ETH_ERC20: [
+  DUCATUSCORE_SUPPORTED_ETH_ERC20: [
     'ducx',
     'usdc',
     'pax',
@@ -54,14 +70,14 @@ export const Constants = {
     'usdt'
   ],
 
-  CHAINS: ['btc', 'bch', 'eth', 'ducx', 'xrp'],
-  UTXO_CHAINS: ['btc', 'bch'],
+  CHAINS: ['btc', 'bch', 'eth', 'duc', 'ducx', 'xrp'],
+  UTXO_CHAINS: ['btc', 'bch', 'duc'],
   EVM_CHAINS: ['eth', 'ducx'],
   ETH_TOKEN_OPTS: CWC.Constants.ETH_TOKEN_OPTS,
   DUCX_TOKEN_OPTS: CWC.Constants.DUCX_TOKEN_OPTS,
   UNITS: CWC.Constants.UNITS,
   EVM_CHAINSUFFIXMAP: {
     eth: 'e',
-    ducx: 'm'
+    ducx: 'd'
   }
 };

@@ -172,15 +172,6 @@ var errorSpec = [
     name: 'BTC_NOT_BCH',
     message:
       'This invoice is priced in BTC, not BCH. Please try with a BTC wallet instead.'
-  },
-  {
-    name: 'REQUEST_TIMEOUT',
-    message:
-      'The PayPro request has timed out. Please connect to the internet or try again later.'
-  },
-  {
-    name: 'INVALID_REQUEST',
-    message: 'The PayPro request was invalid. Please try again later.'
   }
 ];
 module.exports = errorSpec;
