@@ -1,8 +1,9 @@
 import * as async from 'async';
 import * as crypto from 'crypto'
 import * as _ from 'lodash';
-import 'source-map-support/register';
+import moment from 'moment';
 import logger from './logger';
+import 'source-map-support/register';
 
 import { BlockChainExplorer } from './blockchainexplorer';
 import { V8 } from './blockchainexplorers/v8';
@@ -13,9 +14,7 @@ import { FiatRateService } from './fiatrateservice';
 import { Lock } from './lock';
 import { MessageBroker } from './messagebroker';
 import {
-  Advertisement,
   Copayer,
-  ExternalServicesConfig,
   INotification,
   ITxProposal,
   IWallet,
@@ -29,6 +28,7 @@ import {
   Wallet
 } from './model';
 import { Storage } from './storage';
+import { Validation } from '@ducatus/ducatuscore-crypto';
 
 const config = require('../config');
 const Uuid = require('uuid');
@@ -38,11 +38,11 @@ const serverMessages = require('../serverMessages');
 const BCHAddressTranslator = require('./bchaddresstranslator');
 const EmailValidator = require('email-validator');
 
-import { Validation } from '@ducatus/ducatuscore-crypto';
 const Ducatuscore = require('@ducatus/ducatuscore-lib');
 const Ducatuscore_ = {
   btc: Ducatuscore,
   bch: require('@ducatus/ducatuscore-lib-cash'),
+  duc: require('@ducatus/ducatuscore-lib-duc'),
   eth: Ducatuscore,
   ducx: Ducatuscore,
   xrp: Ducatuscore
@@ -1025,7 +1025,7 @@ export class WalletService implements IWalletService {
   _clientSupportsPayProRefund() {
     const version = this._parseClientVersion();
     if (!version) return false;
-    if (version.agent != 'dwc') return true;
+    if (version.agent != 'bwc') return true;
     if (version.major < 1 || (version.major == 1 && version.minor < 2)) return false;
     return true;
   }
@@ -1198,15 +1198,6 @@ export class WalletService implements IWalletService {
         isValid(value) {
           return _.isArray(value) && value.every(x => Validation.validateAddress('ducx', 'mainnet', x));
         }
-      },
-      {
-        name: 'multisigDucxInfo',
-        isValid(value) {
-          return (
-            _.isArray(value) &&
-            value.every(x => Validation.validateAddress('ducx', 'mainnet', x.multisigContractAddress))
-          );
-        }
       }
     ];
 
@@ -1282,27 +1273,6 @@ export class WalletService implements IWalletService {
             preferences.ducxTokenAddresses = _.uniq(oldPref.ducxTokenAddresses.concat(opts.ducxTokenAddresses));
           }
 
-          // merge ducx multisigDucxInfo
-          if (opts.multisigDucxInfo) {
-            oldPref = oldPref || {};
-            oldPref.multisigDucxInfo = oldPref.multisigDucxInfo || [];
-
-            preferences.multisigDucxInfo = _.uniq(
-              oldPref.multisigDucxInfo.concat(opts.multisigDucxInfo).reduce((x, y) => {
-                let exists = false;
-                x.forEach(e => {
-                  // add new token addresses linked to the multisig wallet
-                  if (e.multisigContractAddress === y.multisigContractAddress) {
-                    e.ducxTokenAddresses = e.ducxTokenAddresses || [];
-                    y.ducxTokenAddresses = _.uniq(e.ducxTokenAddresses.concat(y.ducxTokenAddresses));
-                    e = Object.assign(e, y);
-                    exists = true;
-                  }
-                });
-                return exists ? x : [...x, y];
-              }, [])
-            );
-          }
           this.storage.storePreferences(preferences, err => {
             return cb(err);
           });
@@ -1498,6 +1468,30 @@ export class WalletService implements IWalletService {
         });
         return cb(null, onlyMain);
       });
+    });
+  }
+
+  /**
+   * Get all addresses.
+   * @param {Object} opts
+   * @param {Numeric} opts.limit (optional) - Limit the resultset. Return all addresses by default.
+   * @param {Boolean} [opts.reverse=false] (optional) - Reverse the order of returned addresses.
+   * @returns {Address}
+   */
+  findInfoByAddress(address, cb) {
+    this.storage.fetchAddress(address, (err, address) => {
+      if (err) return cb(err);
+      else {
+        this.storage.fetchWallet(this.walletId, (err, wallet) => {
+          if (err) return cb(err);
+          if (!wallet) return cb(Errors.WALLET_NOT_FOUND);
+
+          const data = { address, wallet };
+          return cb(null, data);
+        });
+
+        // return cb(null, info);
+      }
     });
   }
 
@@ -3735,6 +3729,89 @@ export class WalletService implements IWalletService {
     );
   }
 
+  getExchangerTxs(chain, network, txs, cb) {
+    const exchangerUrl = config.exchangerUrl[network];
+    const apiUrl = `${exchangerUrl}/api/v1/payments/get_status/`;
+    const headers = { 'Content-Type': 'application/json' };
+    const body = {
+      tx_hashes: txs,
+      chain
+    };
+
+    try {
+      this.request.post(
+        apiUrl,
+        {
+          headers,
+          body,
+          json: true
+        },
+        (err, res) => {
+          if (err || !res) {
+            return cb(err, null);
+          }
+
+          if (res.statusCode !== 200 || !res.body.payments) {
+            return cb(`Status code: ${res.statusCode}`, null);
+          }
+
+          const txs: any[] = res.body && res.body.payments;
+
+          return cb(null, txs);
+        }
+      );
+    } catch (error) {
+      return cb(error, null);
+    }
+  }
+
+  checkSwapTxs(wallet, txs: any[], cb: any) {
+    let { coin, network } = wallet;
+    coin = coin.toUpperCase();
+    network = network.toLowerCase();
+
+    if (!txs.length) {
+      return cb(null, null);
+    }
+
+    const tx_hashes = txs.map(tx => tx.txid);
+
+    this.getExchangerTxs(coin, network, tx_hashes, (err, swappedTxs = []) => {
+      if (err) {
+        log.error(`getExchangerTxs is failed. Coin: ${coin} Network: ${network} ${err} `);
+        return cb(null, txs);
+      }
+
+      swappedTxs.forEach(swappedTx => {
+        const txIndex = txs.findIndex(tx => tx.txid === swappedTx.txid);
+
+        swappedTx.status = (swappedTx.status[0] + swappedTx.status.toLowerCase().substr(1)).replace(/_/g, ' ');
+        swappedTx.convertedFromAmount = Utils.formatAmount(
+          Number(swappedTx.convertedFromAmount),
+          swappedTx.convertedFrom.toLowerCase(),
+          {}
+        );
+        swappedTx.convertedToAmount = Utils.formatAmount(
+          Number(swappedTx.convertedToAmount),
+          swappedTx.convertedTo.toLowerCase(),
+          {}
+        );
+        swappedTx.statusHistory = swappedTx.statusHistory.map(statusRow => {
+          return {
+            status: (statusRow.status[0] + statusRow.status.toLowerCase().substr(1)).replace(/_/g, ' '),
+            date: moment(statusRow.date).format('MM/DD/YYYY hh:mm a')
+          };
+        });
+
+        if (txIndex >= 0) {
+          txs[txIndex].swap = swappedTx;
+        }
+      });
+
+      return cb(null, txs);
+    });
+  }
+
   /**
    * Get All active (live) advertisements
    * @param opts
@@ -4037,6 +4114,20 @@ export class WalletService implements IWalletService {
             });
 
             resultTxs = resultTxs.concat(oldTxs);
+            return next();
+          });
+        },
+        next => {
+          if (!resultTxs.length) {
+            return next();
+          }
+
+          this.checkSwapTxs(wallet, resultTxs, (err, txs) => {
+            if (err) {
+              return next(err);
+            }
+
+            resultTxs = txs;
             return next();
           });
         },
@@ -4374,8 +4465,8 @@ export class WalletService implements IWalletService {
       if (err) return cb(err);
       if (!wallet.isComplete()) return cb(Errors.WALLET_NOT_COMPLETE);
 
-      // do not scan single address UTXO wallets.
-      if (wallet.singleAddress && ChainService.isUTXOChain(wallet.chain)) return cb();
+       // do not scan single address UTXO wallets.
+       if (wallet.singleAddress && ChainService.isUTXOChain(wallet.chain)) return cb();
 
       setTimeout(() => {
         wallet.beRegistered = false;
@@ -4553,1520 +4644,6 @@ export class WalletService implements IWalletService {
     if (!checkRequired(opts, ['txid'], cb)) return;
 
     this.storage.removeTxConfirmationSub(this.copayerId, opts.txid, cb);
-  }
-
-  /**
-   * Get External Services configuration based on the users location and their current version of the app
-   * @param {Object} opts
-   * @param {string} opts.currentAppVersion - (Optional) The version of the app from which the user is connected.
-   * @param {string} opts.currentLocationCountry - (Optional) Country where the user is currently located.
-   * @param {string} opts.currentLocationState - (Optional) State where the user is currently located.
-   * @param {string} opts.bitpayIdLocationCountry - (Optional) Country registered as address of the user logged in with BitpayId.
-   * @param {string} opts.bitpayIdLocationState - (Optional) State registered as address of the user logged in with BitpayId.
-   */
-  getServicesData(opts, cb) {
-    let externalServicesConfig: ExternalServicesConfig = _.cloneDeep(config.services);
-
-    const isLoggedIn = !!opts?.bitpayIdLocationCountry;
-    const usaBannedStates = ['HI', 'LA', 'NY'];
-
-    if (
-      // Logged in with bitpayId
-      (['US', 'USA'].includes(opts?.bitpayIdLocationCountry?.toUpperCase()) && usaBannedStates.includes(opts?.bitpayIdLocationState?.toUpperCase())) ||
-      // Logged out (IP restriction)
-      (!isLoggedIn && ['US', 'USA'].includes(opts?.currentLocationCountry?.toUpperCase()) && usaBannedStates.includes(opts?.currentLocationState?.toUpperCase()))
-    ) {
-      externalServicesConfig.swapCrypto = {...externalServicesConfig.swapCrypto, ...{ disabled: true, disabledMessage:'Swaps are currently unavailable in your area.'}};
-    }
-
-    return cb(null, externalServicesConfig);
-  }
-
-  private moonpayGetKeys(req) {
-    if (!config.moonpay) throw new Error('Moonpay missing credentials');
-
-    let env: 'sandbox' | 'production' | 'sandboxWeb' | 'productionWeb';
-    env = req.body.env === 'production' ? 'production' : 'sandbox';
-    if (req.body.context === 'web') {
-      env += 'Web';
-    }
-
-    delete req.body.env;
-    delete req.body.context;
-
-    const keys: {
-      API: string;
-      WIDGET_API: string;
-      API_KEY: string;
-      SECRET_KEY: string;
-    } = {
-      API: config.moonpay[env].api,
-      WIDGET_API: config.moonpay[env].widgetApi,
-      API_KEY: config.moonpay[env].apiKey,
-      SECRET_KEY: config.moonpay[env].secretKey
-    };
-
-    return keys;
-  }
-
-  moonpayGetQuote(req): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const keys = this.moonpayGetKeys(req);
-      const API = keys.API;
-      const API_KEY = keys.API_KEY;
-
-      if (!checkRequired(req.body, ['currencyAbbreviation', 'baseCurrencyAmount', 'baseCurrencyCode'])) {
-        return reject(new ClientError("Moonpay's request missing arguments"));
-      }
-
-      const headers = {
-        'Content-Type': 'application/json'
-      };
-
-      let qs = [];
-      qs.push('apiKey=' + API_KEY);
-      qs.push('baseCurrencyAmount=' + req.body.baseCurrencyAmount);
-      qs.push('baseCurrencyCode=' + req.body.baseCurrencyCode);
-
-      if (req.body.extraFeePercentage) qs.push('extraFeePercentage=' + req.body.extraFeePercentage);
-      if (req.body.paymentMethod) qs.push('paymentMethod=' + req.body.paymentMethod);
-      if (req.body.areFeesIncluded) qs.push('areFeesIncluded=' + req.body.areFeesIncluded);
-
-      const URL: string = API + `/v3/currencies/${req.body.currencyAbbreviation}/buy_quote/?${qs.join('&')}`;
-
-      this.request.get(
-        URL,
-        {
-          headers,
-          json: true
-        },
-        (err, data) => {
-          if (err) {
-            return reject(err.body ? err.body : err);
-          } else {
-            return resolve(data.body ? data.body : data);
-          }
-        }
-      );
-    });
-  }
-
-  moonpayGetCurrencyLimits(req): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const keys = this.moonpayGetKeys(req);
-      const API = keys.API;
-      const API_KEY = keys.API_KEY;
-
-      if (!checkRequired(req.body, ['currencyAbbreviation', 'baseCurrencyCode'])) {
-        return reject(new ClientError("Moonpay's request missing arguments"));
-      }
-
-      const headers = {
-        'Content-Type': 'application/json'
-      };
-
-      let qs = [];
-      qs.push('apiKey=' + API_KEY);
-      qs.push('baseCurrencyCode=' + encodeURIComponent(req.body.baseCurrencyCode));
-      if (req.body.areFeesIncluded) qs.push('areFeesIncluded=' + encodeURIComponent(req.body.areFeesIncluded));
-      if (req.body.paymentMethod) qs.push('paymentMethod=' + encodeURIComponent(req.body.paymentMethod));
-
-      const URL = API + `/v3/currencies/${req.body.currencyAbbreviation}/limits/?${qs.join('&')}`
-
-      this.request.get(
-        URL,
-        {
-          headers,
-          json: true
-        },
-        (err, data) => {
-          if (err) {
-            return reject(err.body ? err.body : err);
-          } else {
-            return resolve(data.body ? data.body : data);
-          }
-        }
-      );
-    });
-  }
-
-  moonpayGetSignedPaymentUrl(req): { urlWithSignature: string } {
-    const keys = this.moonpayGetKeys(req);
-    const SECRET_KEY = keys.SECRET_KEY;
-    const API_KEY = keys.API_KEY;
-    const WIDGET_API = keys.WIDGET_API;
-
-    if (
-      !checkRequired(req.body, [
-        'currencyCode',
-        'walletAddress',
-        'baseCurrencyCode',
-        'baseCurrencyAmount',
-        'externalTransactionId',
-        'redirectURL'
-      ])
-    ) {
-      throw new ClientError("Moonpay's request missing arguments");
-    }
-
-    const headers = {
-      'Content-Type': 'application/json'
-    };
-
-    let qs = [];
-    qs.push('apiKey=' + API_KEY);
-    qs.push('currencyCode=' + encodeURIComponent(req.body.currencyCode));
-    qs.push('walletAddress=' + encodeURIComponent(req.body.walletAddress));
-    qs.push('baseCurrencyCode=' + encodeURIComponent(req.body.baseCurrencyCode));
-    qs.push('baseCurrencyAmount=' + encodeURIComponent(req.body.baseCurrencyAmount));
-    qs.push('externalTransactionId=' + encodeURIComponent(req.body.externalTransactionId));
-    qs.push('redirectURL=' + encodeURIComponent(req.body.redirectURL));
-    if (req.body.lockAmount) qs.push('lockAmount=' + encodeURIComponent(req.body.lockAmount));
-    if (req.body.showWalletAddressForm)
-      qs.push('showWalletAddressForm=' + encodeURIComponent(req.body.showWalletAddressForm));
-
-    const URL_SEARCH: string = `?${qs.join('&')}`;
-
-    const URLSignatureHash: string = Ducatuscore.crypto.Hash.sha256hmac(
-      Buffer.from(URL_SEARCH),
-      Buffer.from(SECRET_KEY)
-    ).toString('base64');
-
-    const urlWithSignature = `${WIDGET_API}${URL_SEARCH}&signature=${encodeURIComponent(URLSignatureHash)}`;
-
-    return { urlWithSignature };
-  }
-
-  moonpayGetTransactionDetails(req): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const keys = this.moonpayGetKeys(req);
-      const API = keys.API;
-      const API_KEY = keys.API_KEY;
-
-      if (!checkRequired(req.body, ['transactionId']) && !checkRequired(req.body, ['externalId'])) {
-        return reject(new ClientError("Moonpay's request missing arguments"));
-      }
-
-      const headers = {
-        'Content-Type': 'application/json'
-      };
-      let URL: string;
-
-      let qs = [];
-      qs.push('apiKey=' + API_KEY);
-      if (req.body.transactionId) {
-        URL = API + `/v1/transactions/${req.body.transactionId}?${qs.join('&')}`;
-      } else if (req.body.externalId) {
-        URL = API + `/v1/transactions/ext/${req.body.externalId}?${qs.join('&')}`;
-      }
-
-      this.request.get(
-        URL,
-        {
-          headers,
-          json: true
-        },
-        (err, data) => {
-          if (err) {
-            return reject(err.body ? err.body : err);
-          } else {
-            return resolve(data.body ? data.body : data);
-          }
-        }
-      );
-    });
-  }
-
-  moonpayGetAccountDetails(req): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const keys = this.moonpayGetKeys(req);
-      const API = keys.API;
-      const API_KEY = keys.API_KEY;
-
-      const headers = {
-        'Content-Type': 'application/json'
-      };
-
-      let qs = [];
-      qs.push('apiKey=' + API_KEY);
-
-      const URL = API + `/v3/accounts/me?${qs.join('&')}`;
-
-      this.request.get(
-        URL,
-        {
-          headers,
-          json: true
-        },
-        (err, data) => {
-          if (err) {
-            return reject(err.body ? err.body : err);
-          } else {
-            return resolve(data.body ? data.body : data);
-          }
-        }
-      );
-    });
-  }
-
-  private rampGetKeys(req) {
-    if (!config.ramp) throw new Error('Ramp missing credentials');
-
-    let env: 'sandbox' | 'production' | 'sandboxWeb' | 'productionWeb';
-    env = req.body.env === 'production' ? 'production' : 'sandbox';
-    if (req.body.context === 'web') {
-      env += 'Web';
-    }
-    delete req.body.env;
-    delete req.body.context;
-
-    const keys: {
-      API: string;
-      WIDGET_API: string;
-      API_KEY: string;
-    } = {
-      API: config.ramp[env].api,
-      WIDGET_API: config.ramp[env].widgetApi,
-      API_KEY: config.ramp[env].apiKey,
-    };
-
-    return keys;
-  }
-
-  rampGetQuote(req): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const keys = this.rampGetKeys(req);
-      const API = keys.API;
-      const API_KEY = keys.API_KEY;
-
-      if (!checkRequired(req.body, ['cryptoAssetSymbol', 'fiatValue', 'fiatCurrency'])) {
-        return reject(new ClientError("Ramp's request missing arguments"));
-      }
-
-      const headers = {
-        'Content-Type': 'application/json'
-      };
-
-      const URL: string = API + `/host-api/v3/onramp/quote/all?hostApiKey=${API_KEY}`;
-
-      this.request.post(
-        URL,
-        {
-          headers,
-          body: req.body,
-          json: true
-        },
-        (err, data) => {
-          if (err) {
-            return reject(err.body ? err.body : err);
-          } else {
-            return resolve(data.body ? data.body : data);
-          }
-        }
-      );
-    });
-  }
-
-  rampGetSignedPaymentUrl(req): { urlWithSignature: string } {
-    const webRequiredParams = [
-      'swapAsset',
-      'userAddress',
-      'selectedCountryCode',
-      'finalUrl',
-    ];
-    const appRequiredParams = [
-      'swapAsset',
-      'swapAmount',
-      'enabledFlows',
-      'defaultFlow',
-      'userAddress',
-      'selectedCountryCode',
-      'defaultAsset',
-      'finalUrl',
-    ];
-
-    const requiredParams = req.body.context === 'web' ? webRequiredParams : appRequiredParams;
-    const keys = this.rampGetKeys(req);
-    const API_KEY = keys.API_KEY;
-    const WIDGET_API = keys.WIDGET_API;
-
-    if (
-      !checkRequired(req.body, requiredParams)
-    ) {
-      throw new ClientError("Ramp's request missing arguments");
-    }
-
-    const headers = {
-      'Content-Type': 'application/json'
-    };
-
-    let qs = [];
-    qs.push('hostApiKey=' + API_KEY);
-    qs.push('swapAsset=' + encodeURIComponent(req.body.swapAsset));
-    qs.push('userAddress=' + encodeURIComponent(req.body.userAddress));
-    qs.push('selectedCountryCode=' + encodeURIComponent(req.body.selectedCountryCode));
-    qs.push('finalUrl=' + encodeURIComponent(req.body.finalUrl));
-    if (req.body.enabledFlows) qs.push('enabledFlows=' + encodeURIComponent(req.body.enabledFlows));
-    if (req.body.defaultFlow) qs.push('defaultFlow=' + encodeURIComponent(req.body.defaultFlow));
-    if (req.body.hostLogoUrl) qs.push('hostLogoUrl=' + encodeURIComponent(req.body.hostLogoUrl));
-    if (req.body.hostAppName) qs.push('hostAppName=' + encodeURIComponent(req.body.hostAppName));
-    if (req.body.swapAmount) qs.push('swapAmount=' + encodeURIComponent(req.body.swapAmount));
-    if (req.body.fiatValue) qs.push('fiatValue=' + encodeURIComponent(req.body.fiatValue));
-    if (req.body.fiatCurrency) qs.push('fiatCurrency=' + encodeURIComponent(req.body.fiatCurrency));
-    if (req.body.defaultAsset) qs.push('defaultAsset=' + encodeURIComponent(req.body.defaultAsset));
-    if (req.body.userEmailAddress) qs.push('userEmailAddress=' + encodeURIComponent(req.body.userEmailAddress));
-
-    const URL_SEARCH: string = `?${qs.join('&')}`;
-
-    const urlWithSignature = `${WIDGET_API}${URL_SEARCH}`;
-
-    return { urlWithSignature };
-  }
-
-  rampGetAssets(req): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const keys = this.rampGetKeys(req);
-      const API = keys.API;
-      const API_KEY = keys.API_KEY;
-
-      const headers = {
-        'Content-Type': 'application/json'
-      };
-      let URL: string;
-
-      let qs = [];
-      qs.push('hostApiKey=' + API_KEY);
-    if (req.body.currencyCode) qs.push('currencyCode=' + encodeURIComponent(req.body.currencyCode));
-    if (req.body.withDisabled) qs.push('withDisabled=' + encodeURIComponent(req.body.withDisabled));
-    if (req.body.withHidden) qs.push('withHidden=' + encodeURIComponent(req.body.withHidden));
-    if (req.body.useIp) {
-      const ip = Utils.getIpFromReq(req);
-      qs.push('userIp=' + encodeURIComponent(ip));
-    }
-  
-      URL = API + `/host-api/v3/assets?${qs.join('&')}`;
-
-      this.request.get(
-        URL,
-        {
-          headers,
-          json: true
-        },
-        (err, data) => {
-          if (err) {
-            return reject(err.body ? err.body : err);
-          } else {
-            return resolve(data.body ? data.body : data);
-          }
-        }
-      );
-    });
-  }
-
-  private sardineGetKeys(req) {
-    if (!config.sardine) throw new Error('Sardine missing credentials');
-
-    let env: 'sandbox' | 'production' | 'sandboxWeb' | 'productionWeb';
-    env = req.body.env === 'production' ? 'production' : 'sandbox';
-    if (req.body.context === 'web') {
-      env += 'Web';
-    }
-    delete req.body.env;
-    delete req.body.context;
-
-    const keys: {
-      API: string;
-      SECRET_KEY: string;
-      CLIENT_ID: string;
-    } = {
-      API: config.sardine[env].api,
-      SECRET_KEY: config.sardine[env].secretKey,
-      CLIENT_ID: config.sardine[env].clientId,
-    };
-
-    return keys;
-  }
-
-  sardineGetQuote(req): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const keys = this.sardineGetKeys(req);
-      const API = keys.API;
-      const CLIENT_ID = keys.CLIENT_ID;
-      const SECRET_KEY = keys.SECRET_KEY;
-
-      if (!checkRequired(req.body, ['asset_type', 'network', 'total'])) {
-        return reject(new ClientError("Sardine's request missing arguments"));
-      }
-
-      const secret = `${CLIENT_ID}:${SECRET_KEY}`;
-      const secretBase64 = Buffer.from(secret).toString('base64');
-
-      const headers = {
-        Accept: 'application/json',
-        Authorization: `Basic ${secretBase64}`,
-      };
-
-      let qs = [];
-      qs.push('asset_type=' + req.body.asset_type);
-      qs.push('network=' + req.body.network);
-      qs.push('total=' + req.body.total);
-
-      if (req.body.currency) qs.push('currency=' + req.body.currency);
-      if (req.body.paymentType) qs.push('paymentType=' + req.body.paymentType);
-      if (req.body.quote_type) qs.push('quote_type=' + req.body.quote_type);
-
-      const URL: string = API + `/v1/quotes?${qs.join('&')}`;
-
-      this.request.get(
-        URL,
-        {
-          headers,
-          json: true
-        },
-        (err, data) => {
-          if (err) {
-            return reject(err.body ? err.body : err);
-          } else {
-            return resolve(data.body ? data.body : data);
-          }
-        }
-      );
-    });
-  }
-
-  sardineGetCurrencyLimits(req): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const keys = this.sardineGetKeys(req);
-      const API = keys.API;
-      const CLIENT_ID = keys.CLIENT_ID;
-      const SECRET_KEY = keys.SECRET_KEY;
-
-      const secret = `${CLIENT_ID}:${SECRET_KEY}`;
-      const secretBase64 = Buffer.from(secret).toString('base64');
-
-      const headers = {
-        Accept: 'application/json',
-        Authorization: `Basic ${secretBase64}`,
-      };
-
-      const URL: string = API + '/v1/fiat-currencies';
-
-      this.request.get(
-        URL,
-        {
-          headers,
-          json: true
-        },
-        (err, data) => {
-          if (err) {
-            return reject(err.body ? err.body : err);
-          } else {
-            return resolve(data.body ? data.body : data);
-          }
-        }
-      );
-    });
-  }
-
-  sardineGetToken(req): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const keys = this.sardineGetKeys(req);
-      const API = keys.API;
-      const CLIENT_ID = keys.CLIENT_ID;
-      const SECRET_KEY = keys.SECRET_KEY;
-
-      if (!checkRequired(req.body, ['referenceId', 'externalUserId'])) {
-        return reject(new ClientError("Sardine's request missing arguments"));
-      }
-
-      const secret = `${CLIENT_ID}:${SECRET_KEY}`;
-      const secretBase64 = Buffer.from(secret).toString('base64');
-
-      const headers = {
-        'Content-Type': 'application/json',
-        'Authorization': `Basic ${secretBase64}`,
-      };
-
-      const URL: string = API + '/v1/auth/client-tokens';
-
-      this.request.post(
-        URL,
-        {
-          headers,
-          body: req.body,
-          json: true
-        },
-        (err, data) => {
-          if (err) {
-            return reject(err.body ? err.body : err);
-          } else {
-            return resolve(data.body ? data.body : data);
-          }
-        }
-      );
-    });
-  }
-
-  sardineGetOrdersDetails(req): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const keys = this.sardineGetKeys(req);
-      const API = keys.API;
-      const CLIENT_ID = keys.CLIENT_ID;
-      const SECRET_KEY = keys.SECRET_KEY;
-
-      if (!checkRequired(req.body, ['orderId']) && !checkRequired(req.body, ['externalUserId']) && !checkRequired(req.body, ['referenceId'])) {
-        return reject(new ClientError("Sardine's request missing arguments"));
-      }
-
-      const secret = `${CLIENT_ID}:${SECRET_KEY}`;
-      const secretBase64 = Buffer.from(secret).toString('base64');
-
-      const headers = {
-        Accept: 'application/json',
-        Authorization: `Basic ${secretBase64}`,
-      };
-
-      let qs = [];
-      let URL: string;
-
-      if (req.body.orderId) {
-        URL = API + `/v1/orders/${req.body.orderId}`;
-      } else if (req.body.externalUserId || req.body.referenceId){
-        if (req.body.externalUserId) qs.push('externalUserId=' + req.body.externalUserId);
-        if (req.body.referenceId) qs.push('referenceId=' + req.body.referenceId);
-        if (req.body.startDate) qs.push('startDate=' + req.body.startDate);
-        if (req.body.endDate) qs.push('endDate=' + req.body.endDate);
-        if (req.body.limit) qs.push('limit=' + req.body.limit);
-
-        URL = API + `/v1/orders?${qs.join('&')}`;
-      }
-
-      this.request.get(
-        URL,
-        {
-          headers,
-          json: true
-        },
-        (err, data) => {
-          if (err) {
-            return reject(err.body ? err.body : err);
-          } else {
-            return resolve(data.body ? data.body : data);
-          }
-        }
-      );
-    });
-  }
-
-  private simplexGetKeys(req) {
-    if (!config.simplex) throw new Error('Simplex missing credentials');
-
-    let env: 'sandbox' | 'production' | 'sandboxWeb' | 'productionWeb';
-    env = req.body.env === 'production' ? 'production' : 'sandbox';
-    if (req.body.context === 'web') {
-      env += 'Web';
-    }
-
-    delete req.body.env;
-    delete req.body.context;
-
-    const keys = {
-      API: config.simplex[env].api,
-      API_KEY: config.simplex[env].apiKey,
-      APP_PROVIDER_ID: config.simplex[env].appProviderId
-    };
-
-    return keys;
-  }
-
-  simplexGetQuote(req): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const keys = this.simplexGetKeys(req);
-
-      const API = keys.API;
-      const API_KEY = keys.API_KEY;
-      const ip = Utils.getIpFromReq(req);
-
-      req.body.client_ip = ip;
-      req.body.wallet_id = keys.APP_PROVIDER_ID;
-
-      const headers = {
-        'Content-Type': 'application/json',
-        Authorization: 'ApiKey ' + API_KEY
-      };
-
-      this.request.post(
-        API + '/wallet/merchant/v2/quote',
-        {
-          headers,
-          body: req.body,
-          json: true
-        },
-        (err, data) => {
-          if (err) {
-            return reject(err.body ? err.body : err);
-          } else {
-            return resolve(data.body ? data.body : null);
-          }
-        }
-      );
-    });
-  }
-
-  simplexPaymentRequest(req): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const keys = this.simplexGetKeys(req);
-
-      const API = keys.API;
-      const API_KEY = keys.API_KEY;
-      const appProviderId = keys.APP_PROVIDER_ID;
-      const paymentId = Uuid.v4();
-      const orderId = Uuid.v4();
-      const apiHost = keys.API;
-      const ip = Utils.getIpFromReq(req);
-
-      if (
-        !checkRequired(req.body, ['account_details', 'transaction_details']) &&
-        !checkRequired(req.body.transaction_details, ['payment_details'])
-      ) {
-        return reject(new ClientError("Simplex's request missing arguments"));
-      }
-
-      req.body.account_details.app_provider_id = appProviderId;
-      req.body.account_details.signup_login = {
-        ip,
-        location: '',
-        uaid: '',
-        accept_language: 'de,en-US;q=0.7,en;q=0.3',
-        http_accept_language: 'de,en-US;q=0.7,en;q=0.3',
-        user_agent: req.body.account_details.signup_login ? req.body.account_details.signup_login.user_agent : '', // Format: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:67.0) Gecko/20100101 Firefox/67.0'
-        cookie_session_id: '',
-        timestamp: req.body.account_details.signup_login ? req.body.account_details.signup_login.timestamp : ''
-      };
-
-      req.body.transaction_details.payment_details.payment_id = paymentId;
-      req.body.transaction_details.payment_details.order_id = orderId;
-
-      const headers = {
-        'Content-Type': 'application/json',
-        Authorization: 'ApiKey ' + API_KEY
-      };
-
-      this.request.post(
-        API + '/wallet/merchant/v2/payments/partner/data',
-        {
-          headers,
-          body: req.body,
-          json: true
-        },
-        (err, data) => {
-          if (err) {
-            return reject(err.body ? err.body : err);
-          } else {
-            data.body.payment_id = paymentId;
-            data.body.order_id = orderId;
-            data.body.app_provider_id = appProviderId;
-            data.body.api_host = apiHost;
-            return resolve(data.body);
-          }
-        }
-      );
-    });
-  }
-
-  simplexGetEvents(req): Promise<any> {
-    return new Promise((resolve, reject) => {
-      if (!config.simplex) return reject(new Error('Simplex missing credentials'));
-      if (!req.env || (req.env != 'sandbox' && req.env != 'production'))
-        return reject(new Error("Simplex's request wrong environment"));
-
-      const API = config.simplex[req.env].api;
-      const API_KEY = config.simplex[req.env].apiKey;
-      const headers = {
-        'Content-Type': 'application/json',
-        Authorization: 'ApiKey ' + API_KEY
-      };
-
-      this.request.get(
-        API + '/wallet/merchant/v2/events',
-        {
-          headers,
-          json: true
-        },
-        (err, data) => {
-          if (err) {
-            return reject(err.body ? err.body : null);
-          } else {
-            return resolve(data.body ? data.body : null);
-          }
-        }
-      );
-    });
-  }
-
-  private wyreGetKeys(req) {
-    if (!config.wyre) throw new Error('Wyre missing credentials');
-
-    let env = 'sandbox';
-    if (req.body.env && req.body.env == 'production') {
-      env = 'production';
-    }
-    delete req.body.env;
-
-    const keys = {
-      API: config.wyre[env].api,
-      API_KEY: config.wyre[env].apiKey,
-      SECRET_API_KEY: config.wyre[env].secretApiKey,
-      ACCOUNT_ID: config.wyre[env].appProviderAccountId
-    };
-
-    return keys;
-  }
-
-  wyreWalletOrderQuotation(req): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const keys = this.wyreGetKeys(req);
-      req.body.accountId = keys.ACCOUNT_ID;
-
-      if (req.body.amountIncludeFees) {
-        if (
-          !checkRequired(req.body, ['sourceAmount', 'sourceCurrency', 'destCurrency', 'dest', 'country', 'walletType'])
-        ) {
-          return reject(new ClientError("Wyre's request missing arguments"));
-        }
-      } else {
-        if (!checkRequired(req.body, ['amount', 'sourceCurrency', 'destCurrency', 'dest', 'country'])) {
-          return reject(new ClientError("Wyre's request missing arguments"));
-        }
-      }
-
-      const URL: string = `${keys.API}/v3/orders/quote/partner?timestamp=${Date.now().toString()}`;
-      const XApiSignature: string = URL + JSON.stringify(req.body);
-      const XApiSignatureHash: string = Ducatuscore.crypto.Hash.sha256hmac(
-        Buffer.from(XApiSignature),
-        Buffer.from(keys.SECRET_API_KEY)
-      ).toString('hex');
-
-      const headers = {
-        'Content-Type': 'application/json',
-        'X-Api-Key': keys.API_KEY,
-        'X-Api-Signature': XApiSignatureHash
-      };
-
-      this.request.post(
-        URL,
-        {
-          headers,
-          body: req.body,
-          json: true
-        },
-        (err, data) => {
-          if (err) {
-            return reject(err.body ? err.body : err);
-          } else {
-            return resolve(data.body);
-          }
-        }
-      );
-    });
-  }
-
-  wyreWalletOrderReservation(req): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const keys = this.wyreGetKeys(req);
-      req.body.referrerAccountId = keys.ACCOUNT_ID;
-
-      if (req.body.amountIncludeFees) {
-        if (
-          !checkRequired(req.body, [
-            'sourceAmount',
-            'sourceCurrency',
-            'destCurrency',
-            'dest',
-            'country',
-            'paymentMethod'
-          ])
-        ) {
-          return reject(new ClientError("Wyre's request missing arguments"));
-        }
-      } else {
-        if (!checkRequired(req.body, ['amount', 'sourceCurrency', 'destCurrency', 'dest', 'paymentMethod'])) {
-          return reject(new ClientError("Wyre's request missing arguments"));
-        }
-      }
-
-      const URL: string = `${keys.API}/v3/orders/reserve?timestamp=${Date.now().toString()}`;
-      const XApiSignature: string = URL + JSON.stringify(req.body);
-      const XApiSignatureHash: string = Ducatuscore.crypto.Hash.sha256hmac(
-        Buffer.from(XApiSignature),
-        Buffer.from(keys.SECRET_API_KEY)
-      ).toString('hex');
-
-      const headers = {
-        'Content-Type': 'application/json',
-        'X-Api-Key': keys.API_KEY,
-        'X-Api-Signature': XApiSignatureHash
-      };
-
-      this.request.post(
-        URL,
-        {
-          headers,
-          body: req.body,
-          json: true
-        },
-        (err, data) => {
-          if (err) {
-            return reject(err.body ? err.body : err);
-          } else {
-            return resolve(data.body);
-          }
-        }
-      );
-    });
-  }
-
-  private changellyGetKeys(req) {
-    if (!config.changelly) {
-      logger.warn('Changelly missing credentials');
-      throw new Error('ClientError: Service not configured.');
-      if (!config.changelly.v1) {
-        logger.warn('Changelly v1 missing credentials');
-        throw new Error('ClientError: Service v1 not configured.');
-      }
-    }
-
-    const keys = {
-      API: config.changelly.v1.api,
-      API_KEY: config.changelly.v1.apiKey,
-      SECRET: config.changelly.v1.secret
-    };
-
-    return keys;
-  }
-
-  private changellyGetKeysV2(req) {
-    if (!config.changelly) {
-      logger.warn('Changelly missing credentials');
-      throw new Error('ClientError: Service not configured.');
-      if (!config.changelly.v2) {
-        logger.warn('Changelly v2 missing credentials');
-        throw new Error('ClientError: Service v2 not configured.');
-      }
-    }
-
-    const keys = {
-      API: config.changelly.v2.api,
-      SECRET: config.changelly.v2.secret
-    };
-
-    return keys;
-  }
-
-  changellySignRequests(message, secret: string) {
-    if (!message || !secret) throw new Error('Missing parameters to sign Changelly v1 request');
-
-    const sign: string = Ducatuscore.crypto.Hash.sha512hmac(
-      Buffer.from(JSON.stringify(message)),
-      Buffer.from(secret)
-    ).toString('hex');
-
-    return sign;
-  }
-
-
-  changellySignRequestsV2(message, secret: string) {
-    if (!message || !secret) throw new Error('Missing parameters to sign Changelly v2 request');
-
-    const privateKey = crypto.createPrivateKey({
-      key: Buffer.from(secret, 'hex'),
-      format: 'der',
-      type: 'pkcs8',
-    });
-    
-    const publicKey = crypto.createPublicKey(privateKey).export({
-        type: 'pkcs1',
-        format: 'der'
-    });
-
-    const signature = crypto.sign('sha256', Buffer.from(JSON.stringify(message)), privateKey);
-
-    return {signature, publicKey};
-  }
-
-  changellyGetCurrencies(req): Promise<any> {
-    return new Promise((resolve, reject) => {
-      let keys, headers;
-      if (req.body.useV2) {
-        keys = this.changellyGetKeysV2(req);
-      } else {
-        keys = this.changellyGetKeys(req);
-      }
-
-      if (!checkRequired(req.body, ['id'])) {
-        return reject(new ClientError('changellyGetCurrencies request missing arguments'));
-      }
-
-      const message = {
-        jsonrpc: '2.0',
-        id: req.body.id,
-        method: req.body.full ? 'getCurrenciesFull' : 'getCurrencies',
-        params: {}
-      };
-
-      const URL: string = keys.API;
-
-      if (req.body.useV2) {
-        const {signature, publicKey} = this.changellySignRequestsV2(message, keys.SECRET);
-        headers = {
-          'Content-Type': 'application/json',
-          'X-Api-Key': crypto.createHash('sha256').update(publicKey).digest('base64'),
-          'X-Api-Signature': signature.toString('base64'),
-        };
-      } else {
-        const sign: string = this.changellySignRequests(message, keys.SECRET);
-        headers = {
-          'Content-Type': 'application/json',
-          sign,
-          'api-key': keys.API_KEY
-        };
-      }
-
-      this.request.post(
-        URL,
-        {
-          headers,
-          body: message,
-          json: true
-        },
-        (err, data) => {
-          if (err) {
-            return reject(err.body ?? err);
-          } else {
-            return resolve(data.body);
-          }
-        }
-      );
-    });
-  }
-
-  changellyGetPairsParams(req): Promise<any> {
-    return new Promise((resolve, reject) => {
-      let keys, headers;
-      if (req.body.useV2) {
-        keys = this.changellyGetKeysV2(req);
-      } else {
-        keys = this.changellyGetKeys(req);
-      }
-
-      if (!checkRequired(req.body, ['id', 'coinFrom', 'coinTo'])) {
-        return reject(new ClientError('changellyGetPairsParams request missing arguments'));
-      }
-
-      const message = {
-        id: req.body.id,
-        jsonrpc: '2.0',
-        method: 'getPairsParams',
-        params: [
-          {
-            from: req.body.coinFrom,
-            to: req.body.coinTo
-          }
-        ]
-      };
-
-      const URL: string = keys.API;
-      if (req.body.useV2) {
-        const {signature, publicKey} = this.changellySignRequestsV2(message, keys.SECRET);
-        headers = {
-          'Content-Type': 'application/json',
-          'X-Api-Key': crypto.createHash('sha256').update(publicKey).digest('base64'),
-          'X-Api-Signature': signature.toString('base64'),
-        };
-      } else {
-        const sign: string = this.changellySignRequests(message, keys.SECRET);
-        headers = {
-          'Content-Type': 'application/json',
-          sign,
-          'api-key': keys.API_KEY
-        };
-      }
-
-      this.request.post(
-        URL,
-        {
-          headers,
-          body: message,
-          json: true
-        },
-        (err, data) => {
-          if (err) {
-            return reject(err.body ?? err);
-          } else {
-            return resolve(data.body);
-          }
-        }
-      );
-    });
-  }
-
-  changellyGetFixRateForAmount(req): Promise<any> {
-    return new Promise((resolve, reject) => {
-      let keys, headers;
-      if (req.body.useV2) {
-        keys = this.changellyGetKeysV2(req);
-      } else {
-        keys = this.changellyGetKeys(req);
-      }
-
-      if (!checkRequired(req.body, ['id', 'coinFrom', 'coinTo', 'amountFrom'])) {
-        return reject(new ClientError('changellyGetFixRateForAmount request missing arguments'));
-      }
-
-      const message = {
-        id: req.body.id,
-        jsonrpc: '2.0',
-        method: 'getFixRateForAmount',
-        params: [
-          {
-            from: req.body.coinFrom,
-            to: req.body.coinTo,
-            amountFrom: req.body.amountFrom
-          }
-        ]
-      };
-
-      const URL: string = keys.API;
-
-      if (req.body.useV2) {
-        const {signature, publicKey} = this.changellySignRequestsV2(message, keys.SECRET);
-        headers = {
-          'Content-Type': 'application/json',
-          'X-Api-Key': crypto.createHash('sha256').update(publicKey).digest('base64'),
-          'X-Api-Signature': signature.toString('base64'),
-        };
-      } else {
-        const sign: string = this.changellySignRequests(message, keys.SECRET);
-        headers = {
-          'Content-Type': 'application/json',
-          sign,
-          'api-key': keys.API_KEY
-        };
-      }
-
-      this.request.post(
-        URL,
-        {
-          headers,
-          body: message,
-          json: true
-        },
-        (err, data) => {
-          if (err) {
-            return reject(err.body ?? err);
-          } else {
-            return resolve(data.body);
-          }
-        }
-      );
-    });
-  }
-
-  changellyCreateFixTransaction(req): Promise<any> {
-    return new Promise((resolve, reject) => {
-      let keys, headers;
-      if (req.body.useV2) {
-        keys = this.changellyGetKeysV2(req);
-      } else {
-        keys = this.changellyGetKeys(req);
-      }
-
-      if (
-        !checkRequired(req.body, [
-          'id',
-          'coinFrom',
-          'coinTo',
-          'amountFrom',
-          'addressTo',
-          'fixedRateId',
-          'refundAddress'
-        ])
-      ) {
-        return reject(new ClientError('changellyCreateFixTransaction request missing arguments'));
-      }
-
-      const message = {
-        id: req.body.id,
-        jsonrpc: '2.0',
-        method: 'createFixTransaction',
-        params: {
-          from: req.body.coinFrom,
-          to: req.body.coinTo,
-          address: req.body.addressTo,
-          amountFrom: req.body.amountFrom,
-          rateId: req.body.fixedRateId,
-          refundAddress: req.body.refundAddress
-        }
-      };
-
-      const URL: string = keys.API;
-
-      if (req.body.useV2) {
-        const {signature, publicKey} = this.changellySignRequestsV2(message, keys.SECRET);
-        headers = {
-          'Content-Type': 'application/json',
-          'X-Api-Key': crypto.createHash('sha256').update(publicKey).digest('base64'),
-          'X-Api-Signature': signature.toString('base64'),
-        };
-      } else {
-        const sign: string = this.changellySignRequests(message, keys.SECRET);
-        headers = {
-          'Content-Type': 'application/json',
-          sign,
-          'api-key': keys.API_KEY
-        };
-      }
-
-      this.request.post(
-        URL,
-        {
-          headers,
-          body: message,
-          json: true
-        },
-        (err, data) => {
-          if (err) {
-            return reject(err.body ?? err);
-          } else {
-            return resolve(data.body);
-          }
-        }
-      );
-    });
-  }
-
-  changellyGetTransactions(req): Promise<any> {
-    return new Promise((resolve, reject) => {
-      let keys, headers;
-      if (req.body.useV2) {
-        keys = this.changellyGetKeysV2(req);
-      } else {
-        keys = this.changellyGetKeys(req);
-      }
-
-      if (!checkRequired(req.body, ['id', 'exchangeTxId'])) {
-        return reject(new ClientError('changellyGetTransactions request missing arguments'));
-      }
-
-      const message = {
-        id: req.body.id,
-        jsonrpc: '2.0',
-        method: 'getTransactions',
-        params:
-          {
-            id: req.body.exchangeTxId,
-            limit: req.body.limit ?? 1,
-          }
-      };
-
-      const URL: string = keys.API;
-
-      if (req.body.useV2) {
-        const {signature, publicKey} = this.changellySignRequestsV2(message, keys.SECRET);
-        headers = {
-          'Content-Type': 'application/json',
-          'X-Api-Key': crypto.createHash('sha256').update(publicKey).digest('base64'),
-          'X-Api-Signature': signature.toString('base64'),
-        };
-      } else {
-        const sign: string = this.changellySignRequests(message, keys.SECRET);
-        headers = {
-          'Content-Type': 'application/json',
-          sign,
-          'api-key': keys.API_KEY
-        };
-      }
-
-      this.request.post(
-        URL,
-        {
-          headers,
-          body: message,
-          json: true
-        },
-        (err, data) => {
-          if (err) {
-            return reject(err.body ?? err);
-          } else {
-            return resolve(data.body);
-          }
-        }
-      );
-    });
-  }
-
-  changellyGetStatus(req): Promise<any> {
-    return new Promise((resolve, reject) => {
-      let keys, headers;
-      if (req.body.useV2) {
-        keys = this.changellyGetKeysV2(req);
-      } else {
-        keys = this.changellyGetKeys(req);
-      }
-
-      if (!checkRequired(req.body, ['id', 'exchangeTxId'])) {
-        return reject(new ClientError('changellyGetStatus request missing arguments'));
-      }
-
-      const message = {
-        jsonrpc: '2.0',
-        id: req.body.id,
-        method: 'getStatus',
-        params: {
-          id: req.body.exchangeTxId
-        }
-      };
-
-      const URL: string = keys.API;
-
-      if (req.body.useV2) {
-        const {signature, publicKey} = this.changellySignRequestsV2(message, keys.SECRET);
-        headers = {
-          'Content-Type': 'application/json',
-          'X-Api-Key': crypto.createHash('sha256').update(publicKey).digest('base64'),
-          'X-Api-Signature': signature.toString('base64'),
-        };
-      } else {
-        const sign: string = this.changellySignRequests(message, keys.SECRET);
-        headers = {
-          'Content-Type': 'application/json',
-          sign,
-          'api-key': keys.API_KEY
-        };
-      }
-
-      this.request.post(
-        URL,
-        {
-          headers,
-          body: message,
-          json: true
-        },
-        (err, data) => {
-          if (err) {
-            return reject(err.body ?? err);
-          } else {
-            return resolve(data.body);
-          }
-        }
-      );
-    });
-  }
-
-  private oneInchGetCredentials() {
-    if (!config.oneInch) throw new Error('1Inch missing credentials');
-
-    const credentials = {
-      API: config.oneInch.api,
-      referrerAddress: config.oneInch.referrerAddress,
-      referrerFee: config.oneInch.referrerFee
-    };
-
-    return credentials;
-  }
-
-  oneInchGetReferrerFee(req): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const credentials = this.oneInchGetCredentials();
-
-      const referrerFee: number = credentials.referrerFee;
-
-      resolve({ referrerFee });
-    });
-  }
-
-  oneInchGetSwap(req): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const credentials = this.oneInchGetCredentials();
-
-      if (
-        !checkRequired(req.body, [
-          'fromTokenAddress',
-          'toTokenAddress',
-          'amount',
-          'fromAddress',
-          'slippage',
-          'destReceiver'
-        ])
-      ) {
-        return reject(new ClientError('oneInchGetSwap request missing arguments'));
-      }
-
-      const headers = {
-        'Content-Type': 'application/json'
-      };
-
-      let qs = [];
-      qs.push('fromTokenAddress=' + req.body.fromTokenAddress);
-      qs.push('toTokenAddress=' + req.body.toTokenAddress);
-      qs.push('amount=' + req.body.amount);
-      qs.push('fromAddress=' + req.body.fromAddress);
-      qs.push('slippage=' + req.body.slippage);
-      qs.push('destReceiver=' + req.body.destReceiver);
-
-      if (credentials.referrerFee) qs.push('fee=' + credentials.referrerFee);
-      if (credentials.referrerAddress) qs.push('referrerAddress=' + credentials.referrerAddress);
-
-      const chainIdMap = {
-        eth: 1,
-        ducx: 137
-      };
-
-      const chainId = chainIdMap[req.params?.['chain'] || 'eth'];
-
-      const URL: string = `${credentials.API}/v3.0/${chainId}/swap/?${qs.join('&')}`;
-
-      this.request.get(
-        URL,
-        {
-          headers,
-          json: true
-        },
-        (err, data) => {
-          if (err) {
-            return reject(err.body ?? err);
-          } else {
-            return resolve(data.body);
-          }
-        }
-      );
-    });
-  }
-
-  oneInchGetTokens(req): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const credentials = this.oneInchGetCredentials();
-
-      const headers = {
-        'Content-Type': 'application/json'
-      };
-
-      const chainIdMap = {
-        eth: 1,
-        ducx: 137
-      };
-
-      const chainId = chainIdMap[req.params?.['chain'] || 'eth'];
-
-      const URL: string = `${credentials.API}/v3.0/${chainId}/tokens`;
-
-      this.request.get(
-        URL,
-        {
-          headers,
-          json: true
-        },
-        (err, data) => {
-          if (err) {
-            return reject(err.body ?? err);
-          } else {
-            return resolve(data.body.tokens);
-          }
-        }
-      );
-    });
-  }
-
-  checkServiceAvailability(req): boolean {
-    if (!checkRequired(req.body, ['service', 'opts'])) {
-      throw new ClientError('checkServiceAvailability request missing arguments');
-    }
-
-    let serviceEnabled: boolean;
-
-    switch (req.body.service) {
-      case '1inch':
-        if (req.body.opts?.country?.toUpperCase() === 'US') {
-          serviceEnabled = false;
-        } else {
-          serviceEnabled = true;
-        }
-        break;
-
-      default:
-        serviceEnabled = true;
-        break;
-    }
-
-    return serviceEnabled;
-  }
-
-  getSpenderApprovalWhitelist(cb) {
-    if (Services.ERC20_SPENDER_APPROVAL_WHITELIST) {
-      return cb(null, Services.ERC20_SPENDER_APPROVAL_WHITELIST);
-    } else {
-      return cb(new Error('Could not get ERC20 spender approval whitelist'));
-    }
-  }
-
-  getPayId(url: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const headers = {
-        'PayID-Version': '1.0',
-        Accept: 'application/payid+json'
-      };
-      this.request.get(
-        url,
-        {
-          headers,
-          json: true
-        },
-        (err, data) => {
-          if (err) {
-            return reject(err.body ? err.body : err);
-          } else {
-            return resolve(data.body ? data.body : data);
-          }
-        }
-      );
-    });
-  }
-
-  discoverPayId(req): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const URL: string = `https://${req.domain}/.well-known/webfinger?resource=payid%3A${req.handle}%24${req.domain}`;
-      const headers = {
-        'PayID-Version': '1.0',
-        Accept: 'application/payid+json'
-      };
-      this.request.get(
-        URL,
-        {
-          headers,
-          json: true
-        },
-        (err, data) => {
-          if (err) {
-            return reject(err.body ? err.body : err);
-          } else {
-            let url;
-            if (data.body && data.body.links && data.body.links[0].template) {
-              const template: string = data.body.links[0].template;
-              url = template.replace('{acctpart}', req.handle);
-            } else {
-              url = `https://${req.domain}/${req.handle}`;
-            }
-            this.getPayId(url)
-              .then(data => {
-                return resolve(data);
-              })
-              .catch(err => {
-                return reject(err);
-              });
-          }
-        }
-      );
-    });
   }
 
   clearWalletCache(): Promise<boolean> {

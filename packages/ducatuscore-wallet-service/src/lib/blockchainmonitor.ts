@@ -67,6 +67,7 @@ export class BlockchainMonitor {
             btc: {},
             bch: {},
             eth: {},
+            duc: {},
             ducx: {},
             xrp: {}
           };

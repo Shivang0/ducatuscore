@@ -18,9 +18,8 @@ export class DucxChain extends EthChain {
 
   getDucatuscoreTx(txp, opts = { signed: true }) {
     const { data, outputs, payProUrl, tokenAddress, multisigContractAddress, isTokenSwap } = txp;
-    const isERC20 = tokenAddress && !payProUrl && !isTokenSwap;
-    const isDUCXMULTISIG = multisigContractAddress;
-    const chain = isDUCXMULTISIG ? 'DUCXMULTISIG' : isERC20 ? 'DUCXERC20' : 'DUCX';
+    const isDRC20 = tokenAddress && !payProUrl && !isTokenSwap;
+    const chain = isDRC20 ? 'DRC20' : 'DUCX';
     const recipients = outputs.map(output => {
       return {
         amount: output.amount,

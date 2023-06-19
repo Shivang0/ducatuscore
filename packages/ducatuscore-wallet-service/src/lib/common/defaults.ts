@@ -48,6 +48,34 @@ export const Defaults = {
         defaultValue: 10000
       }
     ],
+    duc: [
+      {
+        name: 'urgent',
+        nbBlocks: 2,
+        multiplier: 1.5,
+        defaultValue: 75000
+      },
+      {
+        name: 'priority',
+        nbBlocks: 2,
+        defaultValue: 50000
+      },
+      {
+        name: 'normal',
+        nbBlocks: 3,
+        defaultValue: 30000
+      },
+      {
+        name: 'economy',
+        nbBlocks: 6,
+        defaultValue: 25000
+      },
+      {
+        name: 'superEconomy',
+        nbBlocks: 24,
+        defaultValue: 10000
+      }
+    ],
     bch: [
       {
         name: 'normal',
@@ -86,28 +114,31 @@ export const Defaults = {
     ducx: [
       {
         name: 'urgent',
-        nbBlocks: 1,
-        defaultValue: 300000000000
+        nbBlocks: 1, // < 2 min
+        multiplier: 1.1,
+        defaultValue: 3000000000
       },
       {
         name: 'priority',
-        nbBlocks: 2,
-        defaultValue: 250000000000
+        nbBlocks: 2, // 3 min
+        defaultValue: 2500000000
       },
       {
         name: 'normal',
-        nbBlocks: 3,
-        defaultValue: 200000000000
+        nbBlocks: 3, // 5 min
+        defaultValue: 2000000000
       },
       {
         name: 'economy',
-        nbBlocks: 4,
-        defaultValue: 200000000000
+        nbBlocks: 4, // 10 minutes
+        multiplier: 0.9,
+        defaultValue: 1500000000
       },
       {
         name: 'superEconomy',
-        nbBlocks: 4,
-        defaultValue: 200000000000
+        nbBlocks: 4, // 15 minutes
+        multiplier: 0.8,
+        defaultValue: 1000000000
       }
     ],
     xrp: [
@@ -143,7 +174,7 @@ export const Defaults = {
   UTXO_SELECTION_MAX_FEE_VS_SINGLE_UTXO_FEE_FACTOR: 5,
 
   // Minimum allowed amount for tx outputs (including change) in SAT
-  MIN_OUTPUT_AMOUNT: 546,
+  MIN_OUTPUT_AMOUNT: 5000,
 
   // Number of confirmations from which tx in history will be cached
   // (ie we consider them inmutables)
@@ -160,7 +191,7 @@ export const Defaults = {
   // Cache time for blockchain height (in ms)
   // this is actually erased on 'new block' notifications
   // so, 30m seems fine
-  BLOCKHEIGHT_CACHE_TIME: 30 * 60 * 1000,
+  BLOCKHEIGHT_CACHE_TIME: 3 * 60 * 1000,
 
   // Cache time fee levels (in ms)
   FEE_LEVEL_CACHE_DURATION: 6 * 60 * 1000,
@@ -179,7 +210,7 @@ export const Defaults = {
       windowMs: 60 * 60 * 1000, // hour window
       delayAfter: 8, // begin slowing down responses after the 3rd request
       delayMs: 3000, // slow down subsequent responses by 3 seconds per request
-      max: 15, // start blocking after 20 request
+      max: 30, // start blocking after 20 request
       message: 'Too many wallets created from this IP, please try again after an hour'
     },
     estimateFee: {
@@ -196,6 +227,7 @@ export const Defaults = {
     //   max: 1200 , // 1 post every 3 sec average, max.
     // },
   },
+
   COIN: 'btc',
   EVM_COIN: 'eth',
   CHAIN: 'btc',
@@ -228,7 +260,8 @@ export const Defaults = {
     btc: 10000 * 1000, // 10k sat/b
     bch: 10000 * 1000, // 10k sat/b
     eth: 1000000000000, // 50 Gwei,
-    ducx: 1000000000000, // 50 Gwei,
+    duc: 10000 * 1000, // 10k sat/b
+    ducx: 500000000000,
     xrp: 1000000000000
   },
 
@@ -236,6 +269,7 @@ export const Defaults = {
     btc: 0,
     bch: 0,
     eth: 0,
+    duc: 0,
     ducx: 0,
     xrp: 0
   },
@@ -244,6 +278,7 @@ export const Defaults = {
     btc: 0.05 * 1e8,
     bch: 0.05 * 1e8,
     eth: 1 * 1e18, // 1 eth
+    duc: 0.05 * 1e8,
     ducx: 1 * 1e18, // 1 ducx
     xrp: 1 * 1e6, // 1 xrp
   },
@@ -251,6 +286,11 @@ export const Defaults = {
   // ETH
   DEFAULT_GAS_LIMIT: 60000,
   DEFAULT_ERC20_GAS_LIMIT: 160000,
+  // DUCX
+  DEFAULT_DUCX_GAS_LIMIT: 21000,
+  DEFAULT_DUCX_CONTRACT_GAS_LIMIT: 180000,
+  DEFAULT_DRC20_GAS_LIMIT: 160000,
+  MIN_DUCX_GAS_LIMIT: 21000,
   // Gas Limit per each multisend recipient
   DEFAULT_MULTISEND_RECIPIENT_GAS_LIMIT: 45000,
   DEFAULT_MULTISEND_RECIPIENT_ERC20_GAS_LIMIT: 65000,
@@ -259,23 +299,25 @@ export const Defaults = {
   // XRP has a non-refundable mininum activation fee / balance
   MIN_XRP_BALANCE: 10000000,
 
-  // Time to get the latest push notification subscriptions. In ms.
-  PUSH_NOTIFICATION_SUBS_TIME: 10 * 60 * 1000, // 10 min.
+   // Time to get the latest push notification subscriptions. In ms.
+   PUSH_NOTIFICATION_SUBS_TIME: 10 * 60 * 1000, // 10 min.
 
-  PUSH_NOTIFICATION_LIMIT: 10,
+   PUSH_NOTIFICATION_LIMIT: 10,
+ 
+   FIAT_CURRENCIES: [
+     { code: 'USD', name: 'US Dollar' },
+     { code: 'INR', name: 'Indian Rupee' },
+     { code: 'GBP', name: 'Pound Sterling' },
+     { code: 'EUR', name: 'Eurozone Euro' },
+     { code: 'CAD', name: 'Canadian Dollar' },
+     { code: 'COP', name: 'Colombian Peso' },
+     { code: 'NGN', name: 'Nigerian Naira' },
+     { code: 'BRL', name: 'Brazilian Real' },
+     { code: 'ARS', name: 'Argentine Peso' },
+     { code: 'AUD', name: 'Australian Dollar' },
+     { code: 'JPY', name: 'Japanese Yen' },
+     { code: 'NZD', name: 'New Zealand Dollar' }
+   ],
 
-  FIAT_CURRENCIES: [
-    { code: 'USD', name: 'US Dollar' },
-    { code: 'INR', name: 'Indian Rupee' },
-    { code: 'GBP', name: 'Pound Sterling' },
-    { code: 'EUR', name: 'Eurozone Euro' },
-    { code: 'CAD', name: 'Canadian Dollar' },
-    { code: 'COP', name: 'Colombian Peso' },
-    { code: 'NGN', name: 'Nigerian Naira' },
-    { code: 'BRL', name: 'Brazilian Real' },
-    { code: 'ARS', name: 'Argentine Peso' },
-    { code: 'AUD', name: 'Australian Dollar' },
-    { code: 'JPY', name: 'Japanese Yen' },
-    { code: 'NZD', name: 'New Zealand Dollar' }
-  ],
+  NEW_BLOCK_THROTTLE_TIME_MIN: 5
 };

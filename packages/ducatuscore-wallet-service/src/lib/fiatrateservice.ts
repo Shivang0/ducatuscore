@@ -3,16 +3,19 @@ import _ from 'lodash';
 import * as request from 'request';
 import { Common } from './common';
 import { Storage } from './storage';
+import logger from './logger';
 
 const $ = require('preconditions').singleton();
 const Defaults = Common.Defaults;
 const Constants = Common.Constants;
-import logger from './logger';
+const customCoins = ['duc', 'ducx'];
+
 export class FiatRateService {
   request: request.RequestAPI<any, any, any>;
   defaultProvider: any;
   providers: any[];
   storage: Storage;
+
   init(opts, cb) {
     opts = opts || {};
 
@@ -57,13 +60,18 @@ export class FiatRateService {
 
   _fetch(cb?) {
     cb = cb || function() {};
-    const coins = Object.values(Constants.BITPAY_SUPPORTED_COINS);
+    const coins = Object.values(Constants.DUCATUSCORE_SUPPORTED_COINS);
     const provider = this.providers[0];
 
     //    async.each(this.providers, (provider, next) => {
     async.each(
       coins,
       (coin, next2) => {
+        const provider = customCoins.includes(coin) ? this.providers[1] : this.providers[0];
+        if (customCoins.includes(coin)) {
+          logger.warn(`Get ${coin} from ${provider.url}`);
+        }
+
         this._retrieve(provider, coin, (err, res) => {
           if (err) {
             logger.warn('Error retrieving data for %o: %o', provider.name + coin, err);
@@ -84,6 +92,7 @@ export class FiatRateService {
 
   _retrieve(provider, coin, cb) {
     logger.debug(`Fetching data for ${provider.name} / ${coin}`);
+    const url = customCoins.includes(coin) ? provider.url : provider.url + coin.toUpperCase();
 
     const handleCoinsRates = (err, res) => {
       if (err || !res) {
@@ -104,16 +113,16 @@ export class FiatRateService {
     };
 
     const ts = Date.now();
-    if (Constants.BITPAY_USD_STABLECOINS[coin.toUpperCase()]) {
+    if (Constants.DUCATUSCORE_USD_STABLECOINS[coin.toUpperCase()]) {
       return this.getRatesForStablecoin({ code: 'USD', ts }, handleCoinsRates);
     }
 
-    if (Constants.BITPAY_EUR_STABLECOINS[coin.toUpperCase()]) {
+    if (Constants.DUCATUSCORE_EUR_STABLECOINS[coin.toUpperCase()]) {
       return this.getRatesForStablecoin({ code: 'EUR', ts }, handleCoinsRates);
     }
     this.request.get(
       {
-        url: provider.url + coin.toUpperCase(),
+        url: customCoins.includes(coin) ? provider.url : provider.url + coin.toUpperCase(),
         json: true
       },
       (err, res, body) => handleCoinsRates(err, body)
@@ -133,10 +142,6 @@ export class FiatRateService {
     async.map(
       [].concat(ts),
       (ts, cb) => {
-        if (coin === 'wbtc') {
-          logger.info('Using btc for wbtc rate.');
-          coin = 'btc';
-        }
         this.storage.fetchFiatRate(coin, opts.code, ts, (err, rate) => {
           if (err) return cb(err);
           if (rate && ts - rate.ts > Defaults.FIAT_RATE_MAX_LOOK_BACK_TIME * 60 * 1000) rate = null;
@@ -173,7 +178,7 @@ export class FiatRateService {
     const currencies: { code: string; name: string }[] = fiatFiltered.length ? fiatFiltered : Defaults.FIAT_CURRENCIES;
 
     async.map(
-      _.values(Constants.BITPAY_SUPPORTED_COINS),
+      _.values(Constants.DUCATUSCORE_SUPPORTED_COINS),
       (coin, cb) => {
         rates[coin] = [];
         async.map(
@@ -217,11 +222,11 @@ export class FiatRateService {
     let { coin, code } = opts;
     const ts = opts.ts || Date.now();
 
-    if (Constants.BITPAY_USD_STABLECOINS[coin.toUpperCase()]) {
+    if (Constants.DUCATUSCORE_USD_STABLECOINS[coin.toUpperCase()]) {
       return this.getRatesForStablecoin({ code: 'USD', ts }, cb);
     }
 
-    if (Constants.BITPAY_EUR_STABLECOINS[coin.toUpperCase()]) {
+    if (Constants.DUCATUSCORE_EUR_STABLECOINS[coin.toUpperCase()]) {
       return this.getRatesForStablecoin({ code: 'EUR', ts }, cb);
     }
 

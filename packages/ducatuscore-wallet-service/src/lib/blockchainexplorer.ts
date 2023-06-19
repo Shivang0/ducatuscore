@@ -5,6 +5,9 @@ import { Common } from './common';
 
 const $ = require('preconditions').singleton();
 const Defaults = Common.Defaults;
+const config = require('../config');
+const { nodeUrl } = config;
+
 const PROVIDERS = {
   v8: {
     btc: {
@@ -15,13 +18,17 @@ const PROVIDERS = {
       livenet: 'https://api.bitpay.com',
       testnet: 'https://api.bitpay.com'
     },
+    duc: {
+      livenet: nodeUrl,
+      testnet: nodeUrl
+    },
+    ducx: {
+      livenet: nodeUrl,
+      testnet: nodeUrl
+    },
     eth: {
       livenet: 'https://api-eth.bitcore.io',
       testnet: 'https://api-eth.bitcore.io'
-    },
-    ducx: {
-      livenet: 'https://api-ducx.bitcore.io',
-      testnet: 'https://api-ducx.bitcore.io'
     },
     xrp: {
       livenet: 'https://api-xrp.bitcore.io',

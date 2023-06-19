@@ -48,6 +48,7 @@ const ObjectID = mongodb.ObjectID;
 var objectIdDate = function(date) {
   return Math.floor(date / 1000).toString(16) + '0000000000000000';
 };
+
 export class Storage {
   static BCHEIGHT_KEY = 'bcheight';
   static collections = collections;
@@ -656,13 +657,29 @@ export class Storage {
       });
   }
 
+  fetchAddress(address, cb) {
+    this.db
+      .collection(collections.ADDRESSES)
+      .find({
+        address
+      })
+      .sort({
+        createdOn: 1
+      })
+      .toArray((err, result) => {
+        if (err) return cb(err);
+        if (!result) return cb();
+        return cb(null, result.map(Address.fromObj));
+      });
+  }
+
   migrateToCashAddr(walletId, cb) {
     const cursor = this.db.collection(collections.ADDRESSES).find({
       walletId
     });
 
     cursor.on('end', () => {
-      console.log(`Migration to cash address of ${walletId} Finished`);
+      logger.log(`Migration to cash address of ${walletId} Finished`);
       return this.clearWalletCache(walletId, cb);
     });
 

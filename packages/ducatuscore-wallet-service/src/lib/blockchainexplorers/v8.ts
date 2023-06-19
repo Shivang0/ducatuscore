@@ -14,6 +14,7 @@ const Ducatuscore_ = {
   btc: Ducatuscore,
   bch: require('@ducatus/ducatuscore-lib-cash'),
   eth: Ducatuscore,
+  duc: require('@ducatus/ducatuscore-lib-duc'),
   ducx: Ducatuscore,
   xrp: Ducatuscore
 };

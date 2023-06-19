@@ -1,12 +1,41 @@
 import _ from 'lodash';
 import { logger } from './lib/logger';
 
+const { 
+  MODE, 
+  DUCX_NODE_PROD_URL, 
+  DUCX_NODE_DEV_URL, 
+  DUCX_NODE_LOCAL_URL, 
+  DUC_NODE_PROD_URL, 
+  DUC_NODE_DEV_URL, 
+  DUC_NODE_LOCAL_URL, 
+  EXCHANGER_LIVENET_URL, 
+  EXCHANGER_TESTNET_URL,
+  DB_HOST, 
+  MSG_HOST
+} = process.env;
+const defaultMode = 'prod';
+const mode: 'prod' | 'dev' | 'local' = (MODE as 'prod' | 'dev' | 'local') || defaultMode;
+const ducxNode = {
+  prod: DUCX_NODE_PROD_URL || 'https://ducapi.rocknblock.io',
+  dev: DUCX_NODE_DEV_URL || 'http://localhost:3000',
+  local: DUCX_NODE_LOCAL_URL || 'http://localhost:3000'
+};
+const ducNode = {
+  prod: DUC_NODE_PROD_URL || 'https://ducapi.rocknblock.io',
+  dev: DUC_NODE_DEV_URL || 'http://localhost:3000',
+  local: DUC_NODE_LOCAL_URL || 'http://localhost:3000'
+};
+
 const Config = () => {
   let defaultConfig = {
     basePath: '/dws/api',
     disableLogs: false,
     port: 3232,
-
+    exchangerUrl: {
+      livenet: EXCHANGER_LIVENET_URL || 'https://www.ducatuscoins.com',
+      testnet: EXCHANGER_TESTNET_URL || 'https://devducatus.rocknblock.io'
+    },
     // Uncomment to make DWS a forking server
     // cluster: true,
 
@@ -25,14 +54,14 @@ const Config = () => {
 
     storageOpts: {
       mongoDb: {
-        uri: 'mongodb://localhost:27017/dws',
-        dbname: 'dws'
+        uri: DB_HOST ? `mongodb://${DB_HOST}:27017/tws` : 'mongodb://localhost:27017/tws',
+        dbname: 'tws'
       }
     },
     messageBrokerOpts: {
       //  To use message broker server, uncomment this:
       messageBrokerServer: {
-        url: 'http://localhost:3380'
+        url: MSG_HOST ? `http://${MSG_HOST}:3380` : 'http://localhost:3380'
       }
     },
     blockchainExplorerOpts: {
@@ -61,12 +90,21 @@ const Config = () => {
           url: 'https://api-eth.bitcore.io'
         }
       },
-      ducx: {
+      duc: {
         livenet: {
-          url: 'https://api-ducx.bitcore.io'
+          url: ducxNode[mode]
         },
         testnet: {
-          url: 'https://api-ducx.bitcore.io'
+          url: ducxNode[mode],
+          regtestEnabled: false
+        }
+      },
+      ducx: {
+        livenet: {
+          url: ducxNode[mode]
+        },
+        testnet: {
+          url: ducxNode[mode]
         }
       },
       xrp: {
@@ -96,74 +134,8 @@ const Config = () => {
     maintenanceOpts: {
       maintenanceMode: false
     },
-    services: {
-      buyCrypto: {
-        disabled: false,
-        moonpay: {
-          disabled: false,
-          removed: false
-        },
-        ramp: {
-          disabled: false,
-          removed: false
-        },
-        sardine: {
-          disabled: false,
-          removed: false
-        },
-        simplex: {
-          disabled: false,
-          removed: false
-        },
-        wyre: {
-          disabled: false,
-          removed: false
-        }
-      },
-      swapCrypto: { 
-        disabled: false,
-        changelly: {
-          disabled: false,
-          removed: false
-        }
-      },
-    },
     suspendedChains: [],
     staticRoot: '/tmp/static'
-    // emailOpts: {
-    //  host: 'localhost',
-    //  port: 25,
-    //  ignoreTLS: true,
-    //  subjectPrefix: '[Wallet Service]',
-    //  from: 'wallet-service@some.io',
-    //  templatePath: 'templates',
-    //  defaultLanguage: 'en',
-    //  defaultUnit: 'btc',
-    //  publicTxUrlTemplate: {
-    //   btc: {
-    //     livenet: 'https://bitpay.com/insight/#/BTC/mainnet/tx/{{txid}}',
-    //     testnet: 'https://bitpay.com/insight/#/BTC/testnet/tx/{{txid}}',
-    //   },
-    //   bch: {
-    //     livenet: 'https://bitpay.com/insight/#/BCH/mainnet/tx/{{txid}}',
-    //     testnet: 'https://bitpay.com/insight/#/BCH/testnet/tx/{{txid}}',
-    //   },
-    //   eth: {
-    //     livenet: 'https://etherscan.io/tx/{{txid}}',
-    //     testnet: 'https://kovan.etherscan.io/tx/{{txid}}',
-    //   },
-    //   xrp: {
-    //     livenet: 'https://xrpscan.com/tx/{{txid}}',
-    //     testnet: 'https://test.bithomp.com/explorer//tx/{{txid}}',
-    //   }
-    // },
-    // To use sendgrid:
-    // const sgMail = require('@sendgrid/mail');
-    // sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-    //
-    //
-    // //then add:
-    // mailer: sgMail,
   };
 
   // Override default values with dws.config.js' values, if present

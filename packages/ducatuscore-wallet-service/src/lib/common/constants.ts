@@ -2,19 +2,21 @@
 import * as CWC from '@ducatus/ducatuscore-crypto';
 
 export const Constants = {
-  CHAINS: {
+  COINS: {
     BTC: 'btc',
     BCH: 'bch',
     ETH: 'eth',
+    DUC: 'duc',
     DUCX: 'ducx',
     XRP: 'xrp'
   },
 
-  BITPAY_SUPPORTED_COINS: {
+  DUCATUSCORE_SUPPORTED_COINS: {
     // used for rates
     BTC: 'btc',
     BCH: 'bch',
     ETH: 'eth',
+    DUC: 'duc',
     DUCX: 'ducx',
     XRP: 'xrp',
     SHIB: 'shib',
@@ -27,10 +29,24 @@ export const Constants = {
     DAI: 'dai',
     WBTC: 'wbtc',
     EUROC: 'euroc',
-    USDT: 'usdt'
+    USDT: 'usdt',
+    JAMASY: 'jamasy',
+    NUYASA: 'nuyasa',
+    SUNOBA: 'sunoba',
+    DSCMED: 'dscmed',
+    POG1: 'pog1',
+    WDE: 'wde',
+    MDXB: 'mdxb',
+    'G.O.L.D.': 'g.o.l.d.',
+    JWAN: 'jwan',
+    TKF: 'tkf',
+    'AA+': 'aa+',
+    QMN: 'qmn',
+    MPE: 'mpe',
+    BALISOL: 'balisol'
   },
 
-  BITPAY_SUPPORTED_ETH_ERC20: {
+  DUCATUSCORE_SUPPORTED_ETH_ERC20: {
     // backwards compatability
     DUCX: 'ducx',
     USDC: 'usdc',
@@ -46,7 +62,29 @@ export const Constants = {
     USDT: 'usdt'
   },
 
-  BITPAY_USD_STABLECOINS: {
+  DUCATUSCORE_SUPPORTED_DUCX_DRC20: {
+    JAMASY: 'jamasy',
+    NUYASA: 'nuyasa',
+    SUNOBA: 'sunoba',
+    DSCMED: 'dscmed',
+    POG1: 'pog1',
+    WDE: 'wde',
+    MDXB: 'mdxb',
+    'G.O.L.D.': 'g.o.l.d.',
+    JWAN: 'jwan',
+    TKF: 'tkf',
+    'AA+': 'aa+',
+    QMN: 'qmn',
+    MPE: 'mpe',
+    BALISOL: 'balisol'
+  },
+  UTXO_COINS: {
+    BTC: 'btc',
+    BCH: 'bch',
+    DUC: 'duc'
+  },
+
+  DUCATUSCORE_USD_STABLECOINS: {
     // used for rates
     USDC: 'usdc',
     USDP: 'usdp',
@@ -57,14 +95,15 @@ export const Constants = {
     USDT: 'usdt'
   },
 
-  BITPAY_EUR_STABLECOINS: {
+  DUCATUSCORE_EUR_STABLECOINS: {
     // used for rates
     EUROC: 'euroc'
   },
 
   UTXO_CHAINS: {
     BTC: 'btc',
-    BCH: 'bch'
+    BCH: 'bch',
+    DUC: 'duc'
   },
 
   EVM_CHAINS: {
@@ -77,7 +116,7 @@ export const Constants = {
     TESTNET: 'testnet'
   },
 
-  ADDRESS_FORMATS: ['copay', 'cashaddr', 'legacy'],
+  ADDRESS_FORMATS: ['copay', 'cashaddr', 'legacy', 'ducatus'],
 
   SCRIPT_TYPES: {
     P2SH: 'P2SH',
@@ -85,6 +124,7 @@ export const Constants = {
     P2PKH: 'P2PKH',
     P2WPKH: 'P2WPKH'
   },
+
   DERIVATION_STRATEGIES: {
     BIP44: 'BIP44',
     BIP45: 'BIP45'

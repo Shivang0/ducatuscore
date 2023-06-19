@@ -89,21 +89,6 @@ export class ExpressApp {
       transport.level = 'error';
     } else {
       this.app.use(LogMiddleware());
-      // morgan.token('walletId', function getId(req) {
-      // return req.walletId ? '<' + req.walletId + '>' : '<>';
-      // });
-
-      // const logFormat =
-      // ':walletId :remote-addr :date[iso] ":method :url" :status :res[content-length] :response-time ":user-agent"  ';
-      // const logOpts = {
-      // skip(req, res) {
-      // if (res.statusCode != 200) return false;
-      // return req.path.indexOf('/notifications/') >= 0;
-      // },
-      // stream: logger.stream
-      // };
-
-      // this.app.use(morgan(logFormat, logOpts));
     }
 
     const router = express.Router();
@@ -766,17 +751,16 @@ export class ExpressApp {
     });
 
     /* THIS WAS NEVED ENABLED YET NOW 2020-04-07
-    router.post('/v4/txproposals/', (req, res) => {
-      getServerWithAuth(req, res, server => {
-        req.body.txpVersion = 4;
-        server.createTx(req.body, (err, txp) => {
-          if (err) return returnError(err, res, req);
-          res.json(txp);
+      router.post('/v4/txproposals/', (req, res) => {
+        getServerWithAuth(req, res, server => {
+          req.body.txpVersion = 4;
+          server.createTx(req.body, (err, txp) => {
+            if (err) return returnError(err, res, req);
+            res.json(txp);
+          });
         });
       });
-    });
-
-*/
+    */
 
     // DEPRECATED
     router.post('/v1/addresses/', (req, res) => {
@@ -828,6 +812,19 @@ export class ExpressApp {
         server.createAddress(req.body, (err, address) => {
           if (err) return returnError(err, res, req);
           res.json(address);
+        });
+      });
+    });
+
+    router.get('/v1/address_info/', (req, res) => {
+      getServerWithAuth(req, res, server => {
+        const reqAddress = req.query.address || null;
+
+        if (!reqAddress) return returnError('no address provide', res, req);
+
+        server.findInfoByAddress(reqAddress, (err, info) => {
+          if (err) return returnError(err, res, req);
+          res.json(info);
         });
       });
     });
@@ -1479,185 +1476,6 @@ export class ExpressApp {
       });
     });
 
-    router.get('/v1/services', (req, res) => {
-      let server;
-      try {
-        server = getServer(req, res);
-      } catch (ex) {
-        return returnError(ex, res, req);
-      }
-      const opts = req.query;
-      server.getServicesData(opts, (err, response) => {
-        if (err) return returnError(err, res, req);
-        res.json(response);
-      });
-    });
-
-    router.post('/v1/service/checkAvailability', (req, res) => {
-      let server, response;
-      try {
-        server = getServer(req, res);
-        response = server.checkServiceAvailability(req);
-        return res.json(response);
-      } catch (ex) {
-        return returnError(ex, res, req);
-      }
-    });
-
-    router.post('/v1/service/moonpay/quote', (req, res) => {
-      getServerWithAuth(req, res, async server => {
-        let response;
-        try {
-          response = await server.moonpayGetQuote(req);
-          return res.json(response);
-        } catch (ex) {
-          return returnError(ex, res, req);
-        }
-      });
-    });
-
-    router.post('/v1/service/moonpay/currencyLimits', async (req, res) => {
-      let server, response;
-      try {
-        server = getServer(req, res);
-        response = await server.moonpayGetCurrencyLimits(req);
-        return res.json(response);
-      } catch (ex) {
-        return returnError(ex, res, req);
-      }
-    });
-
-    router.post('/v1/service/moonpay/signedPaymentUrl', (req, res) => {
-      getServerWithAuth(req, res, server => {
-        let response;
-        try {
-          response = server.moonpayGetSignedPaymentUrl(req);
-          return res.json(response);
-        } catch (ex) {
-          return returnError(ex, res, req);
-        }
-      });
-    });
-
-    router.post('/v1/service/moonpay/transactionDetails', async (req, res) => {
-      let server, response;
-      try {
-        server = getServer(req, res);
-        response = await server.moonpayGetTransactionDetails(req);
-        return res.json(response);
-      } catch (ex) {
-        return returnError(ex, res, req);
-      }
-    });
-
-    router.post('/v1/service/moonpay/accountDetails', async (req, res) => {
-      let server, response;
-      try {
-        server = getServer(req, res);
-        response = await server.moonpayGetAccountDetails(req);
-        return res.json(response);
-      } catch (ex) {
-        return returnError(ex, res, req);
-      }
-    });
-
-    router.post('/v1/service/ramp/quote', (req, res) => {
-      getServerWithAuth(req, res, async server => {
-        let response;
-        try {
-          response = await server.rampGetQuote(req);
-          return res.json(response);
-        } catch (ex) {
-          return returnError(ex, res, req);
-        }
-      });
-    });
-
-    router.post('/v1/service/ramp/signedPaymentUrl', (req, res) => {
-      getServerWithAuth(req, res, async server => {
-        let response;
-        try {
-          response = await server.rampGetSignedPaymentUrl(req);
-          return res.json(response);
-        } catch (ex) {
-          return returnError(ex, res, req);
-        }
-      });
-    });
-
-    router.post('/v1/service/ramp/assets', async (req, res) => {
-      let server, response;
-      try {
-        server = getServer(req, res);
-        response = await server.rampGetAssets(req);
-        return res.json(response);
-      } catch (ex) {
-        return returnError(ex, res, req);
-      }
-    });
-
-    router.post('/v1/service/sardine/quote', (req, res) => {
-      getServerWithAuth(req, res, server => {
-        server
-          .sardineGetQuote(req)
-          .then(response => {
-            res.json(response);
-          })
-          .catch(err => {
-            return returnError(err ?? 'unknown', res, req);
-          });
-      });
-    });
-
-    router.post('/v1/service/sardine/getToken', (req, res) => {
-      getServerWithAuth(req, res, server => {
-        server
-          .sardineGetToken(req)
-          .then(response => {
-            res.json(response);
-          })
-          .catch(err => {
-            return returnError(err ?? 'unknown', res, req);
-          });
-      });
-    });
-
-    router.post('/v1/service/sardine/currencyLimits', (req, res) => {
-      let server;
-      try {
-        server = getServer(req, res);
-      } catch (ex) {
-        return returnError(ex, res, req);
-      }
-
-      server
-        .sardineGetCurrencyLimits(req)
-        .then(response => {
-          res.json(response);
-        })
-        .catch(err => {
-          return returnError(err ?? 'unknown', res, req);
-        });
-    });
-
-    router.post('/v1/service/sardine/ordersDetails', (req, res) => {
-      let server;
-      try {
-        server = getServer(req, res);
-      } catch (ex) {
-        return returnError(ex, res, req);
-      }
-
-      server
-        .sardineGetOrdersDetails(req)
-        .then(response => {
-          res.json(response);
-        })
-        .catch(err => {
-          return returnError(err ?? 'unknown', res, req);
-        });
-    });
-
     router.post('/v1/service/simplex/quote', (req, res) => {
       getServerWithAuth(req, res, server => {
         server
@@ -1666,7 +1484,7 @@ export class ExpressApp {
             res.json(response);
           })
           .catch(err => {
-            return returnError(err ?? 'unknown', res, req);
+            if (err) return returnError(err, res, req);
           });
       });
     });
@@ -1679,7 +1497,7 @@ export class ExpressApp {
             res.json(response);
           })
           .catch(err => {
-            return returnError(err ?? 'unknown', res, req);
+            if (err) return returnError(err, res, req);
           });
       });
     });
@@ -1693,217 +1511,12 @@ export class ExpressApp {
             res.json(response);
           })
           .catch(err => {
-            return returnError(err ?? 'unknown', res, req);
+            if (err) return returnError(err, res, req);
           });
       });
     });
 
-    router.post('/v1/service/wyre/walletOrderQuotation', (req, res) => {
-      getServerWithAuth(req, res, server => {
-        server
-          .wyreWalletOrderQuotation(req)
-          .then(response => {
-            res.json(response);
-          })
-          .catch(err => {
-            return returnError(err ?? 'unknown', res, req);
-          });
-      });
-    });
-
-    router.post('/v1/service/wyre/walletOrderReservation', (req, res) => {
-      getServerWithAuth(req, res, server => {
-        server
-          .wyreWalletOrderReservation(req)
-          .then(response => {
-            res.json(response);
-          })
-          .catch(err => {
-            return returnError(err ?? 'unknown', res, req);
-          });
-      });
-    });
-
-    router.post('/v1/service/changelly/getCurrencies', (req, res) => {
-      let server;
-      try {
-        server = getServer(req, res);
-      } catch (ex) {
-        return returnError(ex, res, req);
-      }
-      server
-        .changellyGetCurrencies(req)
-        .then(response => {
-          res.json(response);
-        })
-        .catch(err => {
-          return returnError(err ?? 'unknown', res, req);
-        });
-    });
-
-    router.post('/v1/service/changelly/getPairsParams', (req, res) => {
-      getServerWithAuth(req, res, server => {
-        server
-          .changellyGetPairsParams(req)
-          .then(response => {
-            res.json(response);
-          })
-          .catch(err => {
-            return returnError(err ?? 'unknown', res, req);
-          });
-      });
-    });
-
-    router.post('/v1/service/changelly/getFixRateForAmount', (req, res) => {
-      getServerWithAuth(req, res, server => {
-        server
-          .changellyGetFixRateForAmount(req)
-          .then(response => {
-            res.json(response);
-          })
-          .catch(err => {
-            return returnError(err ?? 'unknown', res, req);
-          });
-      });
-    });
-
-    router.post('/v1/service/changelly/createFixTransaction', (req, res) => {
-      getServerWithAuth(req, res, server => {
-        server
-          .changellyCreateFixTransaction(req)
-          .then(response => {
-            res.json(response);
-          })
-          .catch(err => {
-            return returnError(err ?? 'unknown', res, req);
-          });
-      });
-    });
-
-    router.post('/v1/service/changelly/getTransactions', (req, res) => {
-      let server;
-      try {
-        server = getServer(req, res);
-      } catch (ex) {
-        return returnError(ex, res, req);
-      }
-      server
-        .changellyGetTransactions(req)
-        .then(response => {
-          res.json(response);
-        })
-        .catch(err => {
-          return returnError(err ?? 'unknown', res, req);
-        });
-    });
-
-    router.post('/v1/service/changelly/getStatus', (req, res) => {
-      let server;
-      try {
-        server = getServer(req, res);
-      } catch (ex) {
-        return returnError(ex, res, req);
-      }
-      server
-        .changellyGetStatus(req)
-        .then(response => {
-          res.json(response);
-        })
-        .catch(err => {
-          return returnError(err ?? 'unknown', res, req);
-        });
-    });
-
-    router.get('/v1/service/oneInch/getReferrerFee', (req, res) => {
-      let server;
-      try {
-        server = getServer(req, res);
-      } catch (ex) {
-        return returnError(ex, res, req);
-      }
-      server
-        .oneInchGetReferrerFee(req)
-        .then(response => {
-          res.json(response);
-        })
-        .catch(err => {
-          return returnError(err ?? 'unknown', res, req);
-        });
-    });
-
-    router.post('/v1/service/oneInch/getSwap/:chain?', (req, res) => {
-      getServerWithAuth(req, res, server => {
-        server
-          .oneInchGetSwap(req)
-          .then(response => {
-            res.json(response);
-          })
-          .catch(err => {
-            return returnError(err ?? 'unknown', res, req);
-          });
-      });
-    });
-
-    router.get('/v1/service/oneInch/getTokens/:chain?', (req, res) => {
-      let server;
-      try {
-        server = getServer(req, res);
-      } catch (ex) {
-        return returnError(ex, res, req);
-      }
-      server
-        .oneInchGetTokens(req)
-        .then(response => {
-          res.json(response);
-        })
-        .catch(err => {
-          return returnError(err ?? 'unknown', res, req);
-        });
-    });
-
-    router.get('/v1/services/dex/getSpenderApprovalWhitelist', (req, res) => {
-      let server;
-      try {
-        server = getServer(req, res);
-      } catch (ex) {
-        return returnError(ex, res, req);
-      }
-
-      server.getSpenderApprovalWhitelist((err, response) => {
-        if (err) return returnError(err, res, req);
-        res.json(response);
-      });
-    });
-
-    router.get('/v1/service/payId/:payId', (req, res) => {
-      let server;
-      const payId = req.params['payId'];
-      const opts = {
-        handle: payId.split('$')[0],
-        domain: payId.split('$')[1]
-      };
-      try {
-        server = getServer(req, res);
-      } catch (ex) {
-        return returnError(ex, res, req);
-      }
-      server
-        .discoverPayId(opts)
-        .then(response => {
-          res.json(response);
-        })
-        .catch(err => {
-          return returnError(err ?? 'unknown', res, req);
-        });
-    });
-
-    // Set no-cache by default
-    this.app.use((req, res, next) => {
-      res.setHeader('Cache-Control', 'no-store');
-      next();
-    });
-
-    this.app.use(opts.basePath || '/dws/api', router);
+     this.app.use(opts.basePath || '/dws/api', router);
 
     if (config.staticRoot) {
       logger.debug(`Serving static files from ${config.staticRoot}`);
