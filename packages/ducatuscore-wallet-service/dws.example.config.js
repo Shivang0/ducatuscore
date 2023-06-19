@@ -64,7 +64,7 @@ module.exports = {
       testnet: {
         url: 'https://api-xrp.bitcore.io'
       }
-    }
+    },
     socketApiKey: 'socketApiKey'
   },
   pushNotificationsOpts: {
@@ -85,42 +85,5 @@ module.exports = {
   services: {
     buyCrypto: { simplexPromotion202002: false }
   },
-  suspendedChains: [],
-  staticRoot: '/tmp/static'
-  // To use email notifications uncomment this:
-  // emailOpts: {
-  //  host: 'localhost',
-  //  port: 25,
-  //  ignoreTLS: true,
-  //  subjectPrefix: '[Wallet Service]',
-  //  from: 'wallet-service@some.io',
-  //  templatePath: 'templates',
-  //  defaultLanguage: 'en',
-  //  defaultUnit: 'btc',
-  //  publicTxUrlTemplate: {
-  //   btc: {
-  //     livenet: 'https://bitpay.com/insight/#/BTC/mainnet/tx/{{txid}}',
-  //     testnet: 'https://bitpay.com/insight/#/BTC/testnet/tx/{{txid}}',
-  //   },
-  //   bch: {
-  //     livenet: 'https://bitpay.com/insight/#/BCH/mainnet/tx/{{txid}}',
-  //     testnet: 'https://bitpay.com/insight/#/BCH/testnet/tx/{{txid}}',
-  //   },
-  //   eth: {
-  //     livenet: 'https://etherscan.io/tx/{{txid}}',
-  //     testnet: 'https://kovan.etherscan.io/tx/{{txid}}',
-  //   },
-  //   xrp: {
-  //     livenet: 'https://xrpscan.com/tx/{{txid}}',
-  //     testnet: 'https://test.bithomp.com/explorer//tx/{{txid}}',
-  //   }
-  // },
-  // },
-  // To use sendgrid:
-  // const sgMail = require('@sendgrid/mail');
-  // sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-  //
-  //
-  // //then add:
-  // mailer: sgMail,
+  suspendedChains: []
 };
