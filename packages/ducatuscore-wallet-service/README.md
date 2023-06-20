@@ -246,7 +246,6 @@ Required Arguments:
 - amount: amount (in satoshis) of the mount proposed to be transfered
 - proposalsSignature: Signature of the proposal by the creator peer, using proposalSigningKey.
 - (opt) message: Encrypted private message to peers.
-- (opt) payProUrl: Paypro URL for peers to verify TX
 - (opt) feePerKb: Use an alternative fee per KB for this TX.
 - (opt) excludeUnconfirmedUtxos: Do not use UTXOs of unconfirmed transactions as inputs for this TX.
 - BCH addresses need to be cashaddr without prefix.

@@ -590,7 +590,7 @@ helpers.clientSign = function(txp, derivedXPrivKey) {
       const priv =  xpriv.derive('m/0/0').privateKey;
       const privKey = priv.toString('hex');
       let tx = ChainService.getDucatuscoreTx(txp).uncheckedSerialize();
-      const isERC20 = txp.tokenAddress && !txp.payProUrl;
+      const isERC20 = txp.tokenAddress;
       const chain = isERC20 ? ChainService.getChain(txp.coin) + 'ERC20' : ChainService.getChain(txp.coin);
       tx = typeof tx === 'string'? [tx] : tx;
       signatures = [];

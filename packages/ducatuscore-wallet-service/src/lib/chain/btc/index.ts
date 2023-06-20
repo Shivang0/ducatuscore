@@ -72,7 +72,6 @@ export class BtcChain implements IChain {
     );
   }
 
-  // opts.payProUrl => only to use different safety margin or not
   getWalletSendMaxInfo(server, wallet, opts, cb) {
     server.getUtxosForCurrentWallet({}, (err, utxos) => {
       if (err) return cb(err);
@@ -536,7 +535,7 @@ export class BtcChain implements IChain {
     }
 
     const feeOpts = {
-      conservativeEstimation: opts.payProUrl ? true : false,
+      conservativeEstimation: false,
       instantAcceptanceEscrow: opts.instantAcceptanceEscrow
     };
     const escrowAmount = opts.instantAcceptanceEscrow || 0;

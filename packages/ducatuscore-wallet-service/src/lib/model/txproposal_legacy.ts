@@ -24,7 +24,6 @@ export interface ITxProposal {
   toAddress: string;
   amount: number;
   message: string;
-  payProUrl: string;
   proposalSignature: string;
   changeAddress: string;
   inputs: any[];
@@ -59,7 +58,6 @@ export class TxProposalLegacy {
   toAddress: string;
   amount: number;
   message: string;
-  payProUrl: string;
   proposalSignature: string;
   changeAddress: string;
   inputs: any[];
@@ -106,7 +104,6 @@ export class TxProposalLegacy {
     x.toAddress = obj.toAddress;
     x.amount = obj.amount;
     x.message = obj.message;
-    x.payProUrl = obj.payProUrl;
     x.proposalSignature = obj.proposalSignature;
     x.changeAddress = obj.changeAddress;
     x.inputs = obj.inputs;

@@ -166,9 +166,7 @@ export class EthChain implements IChain {
             continue;
           } else if (!output.gasLimit) {
             try {
-              const to = opts.payProUrl
-                ? output.toAddress
-                : opts.tokenAddress
+              const to = opts.tokenAddress
                 ? opts.tokenAddress
                 : opts.multisigContractAddress
                 ? opts.multisigContractAddress
@@ -230,13 +228,12 @@ export class EthChain implements IChain {
     const {
       data,
       outputs,
-      payProUrl,
       tokenAddress,
       multisigContractAddress,
       multiSendContractAddress,
       isTokenSwap
     } = txp;
-    const isERC20 = tokenAddress && !payProUrl && !isTokenSwap;
+    const isERC20 = tokenAddress && !isTokenSwap;
     const isETHMULTISIG = multisigContractAddress;
     const chain = isETHMULTISIG ? 'ETHMULTISIG' : isERC20 ? 'ETHERC20' : 'ETH';
     const recipients = outputs.map(output => {
@@ -376,27 +373,7 @@ export class EthChain implements IChain {
 
         const { totalAmount, availableAmount } = balance;
 
-        /* If its paypro its an already created ERC20 transaction and we need to get the actual invoice value from the data
-        invoice outputs example:
-        "outputs":[{
-            "amount":0,
-            "toAddress":"0x44d69d16C711BF966E3d00A46f96e02D16BDdf1f",
-            "message":null,
-            "data":"...",
-            "gasLimit":29041
-          },
-          {
-            "amount":0,
-            "toAddress":"0xc27eD3DF0DE776246cdAD5a052A9982473FceaB8",
-            "message":null,
-            "data":"...",
-            "gasLimit":200000
-        }]
-        */
-        const txpTotalAmount =
-          (opts.multisigContractAddress || opts.tokenAddress) && txp.payProUrl
-            ? getInvoiceValue(txp)
-            : txp.getTotalAmount(opts);
+        const txpTotalAmount = txp.getTotalAmount(opts);
 
         if (totalAmount < txpTotalAmount) {
           return cb(Errors.INSUFFICIENT_FUNDS);

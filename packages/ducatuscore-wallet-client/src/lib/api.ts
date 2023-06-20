@@ -8,8 +8,6 @@ import { BulkClient } from './bulkclient';
 import { Constants, Utils } from './common';
 import { Credentials } from './credentials';
 import { Key } from './key';
-import { PayPro } from './paypro';
-import { PayProV2 } from './payproV2';
 import { Request } from './request';
 import { Verifier } from './verifier';
 
@@ -42,7 +40,6 @@ var BASE_URL = 'http://localhost:3232/dws/api';
 // * @constructor
 // */
 export class API extends EventEmitter {
-  doNotVerifyPayPro: any;
   timeout: any;
   logLevel: any;
   supportStaffWalletId: any;
@@ -58,8 +55,6 @@ export class API extends EventEmitter {
   bp_partner: string;
   bp_partner_version: string;
 
-  static PayProV2 = PayProV2;
-  static PayPro = PayPro;
   static Key = Key;
   static Verifier = Verifier;
   static Core = CWC;
@@ -75,7 +70,6 @@ export class API extends EventEmitter {
     super();
     opts = opts || {};
 
-    this.doNotVerifyPayPro = opts.doNotVerifyPayPro;
     this.timeout = opts.timeout || 50000;
     this.logLevel = opts.logLevel || 'silent';
     this.supportStaffWalletId = opts.supportStaffWalletId;
@@ -1331,36 +1325,6 @@ export class API extends EventEmitter {
   }
 
   // /**
-  // * fetchPayPro
-  // *
-  // * @param opts.payProUrl  URL for paypro request
-  // * @returns {Callback} cb - Return error or the parsed payment protocol request
-  // * Returns (err,paypro)
-  // *  paypro.amount
-  // *  paypro.toAddress
-  // *  paypro.memo
-  // */
-  fetchPayPro(opts, cb) {
-    $.checkArgument(opts).checkArgument(opts.payProUrl);
-
-    PayPro.get(
-      {
-        url: opts.payProUrl,
-        coin: this.credentials.coin || 'btc',
-        network: this.credentials.network || 'livenet',
-
-        // for testing
-        request: this.request
-      },
-      (err, paypro) => {
-        if (err) return cb(err);
-
-        return cb(null, paypro);
-      }
-    );
-  }
-
-  // /**
   // * Gets list of utxos
   // *
   // * @param {Function} cb
@@ -1416,7 +1380,6 @@ export class API extends EventEmitter {
     args.message =
       API._encryptMessage(opts.message, this.credentials.sharedEncryptingKey) ||
       null;
-    args.payProUrl = opts.payProUrl || null;
     args.isTokenSwap = opts.isTokenSwap || null;
     args.replaceTxByFee = opts.replaceTxByFee || null;
     _.each(args.outputs, o => {
@@ -1442,7 +1405,6 @@ export class API extends EventEmitter {
   // * @param {number} opts.feePerKb - Optional. Specify the fee per KB for this TX (in satoshi).
   // * @param {string} opts.changeAddress - Optional. Use this address as the change address for the tx. The address should belong to the wallet. In the case of singleAddress wallets, the first main address will be used.
   // * @param {Boolean} opts.sendMax - Optional. Send maximum amount of funds that make sense under the specified fee/feePerKb conditions. (defaults to false).
-  // * @param {string} opts.payProUrl - Optional. Paypro URL for peers to verify TX
   // * @param {Boolean} opts.excludeUnconfirmedUtxos[=false] - Optional. Do not use UTXOs of unconfirmed transactions as inputs
   // * @param {Boolean} opts.dryRun[=false] - Optional. Simulate the action but do not change server state.
   // * @param {Array} opts.inputs - Optional. Inputs for this TX
@@ -1660,23 +1622,7 @@ export class API extends EventEmitter {
       this._processTxps(txps);
       async.every(
         txps,
-        (txp, acb) => {
-          if (opts.doNotVerify) return acb(true);
-          this.getPayProV2(txp)
-            .then(paypro => {
-              var isLegit = Verifier.checkTxProposal(this.credentials, txp, {
-                paypro
-              });
-
-              return acb(isLegit);
-            })
-            .catch(err => {
-              return acb(err);
-            });
-        },
-        isLegit => {
-          if (!isLegit) return cb(new Errors.SERVER_COMPROMISED());
-
+        () => {
           var result;
           if (opts.forAirGapped) {
             result = {
@@ -1702,48 +1648,6 @@ export class API extends EventEmitter {
     });
   }
 
-  // private?
-  getPayPro(txp, cb) {
-    if (!txp.payProUrl || this.doNotVerifyPayPro) return cb();
-
-    PayPro.get(
-      {
-        url: txp.payProUrl,
-        coin: txp.coin || 'btc',
-        network: txp.network || 'livenet',
-
-        // for testing
-        request: this.request
-      },
-      (err, paypro) => {
-        if (err)
-          return cb(
-            new Error(
-              'Could not fetch invoice:' + (err.message ? err.message : err)
-            )
-          );
-        return cb(null, paypro);
-      }
-    );
-  }
-
-  getPayProV2(txp) {
-    if (!txp.payProUrl || this.doNotVerifyPayPro) return Promise.resolve();
-
-    const chain = txp.chain || Utils.getChain(txp.coin); // getChain -> backwards compatibility
-    const currency = Utils.getCurrencyCodeFromCoinAndChain(txp.coin, chain);
-    const payload = {
-      address: txp.from
-    };
-
-    return PayProV2.selectPaymentOption({
-      paymentUrl: txp.payProUrl,
-      chain,
-      currency,
-      payload
-    });
-  }
-
   // /**
   // * push transaction proposal signatures
   // *
@@ -1764,32 +1668,23 @@ export class API extends EventEmitter {
       return cb('No signatures to push. Sign the transaction with Key first');
     }
 
-    this.getPayProV2(txp)
-      .then(paypro => {
-        var isLegit = Verifier.checkTxProposal(this.credentials, txp, {
-          paypro
-        });
+    try {
+      let defaultBase = '/v2/txproposals/';
+      base = base || defaultBase;
 
-        if (!isLegit) return cb(new Errors.SERVER_COMPROMISED());
+      let url = base + txp.id + '/signatures/';
 
-        let defaultBase = '/v2/txproposals/';
-        base = base || defaultBase;
-        //        base = base || '/v2/txproposals/'; // DISABLED 2020-04-07
-
-        let url = base + txp.id + '/signatures/';
-
-        var args = {
-          signatures
-        };
-        this.request.post(url, args, (err, txp) => {
-          if (err) return cb(err);
-          this._processTxps(txp);
-          return cb(null, txp);
-        });
-      })
-      .catch(err => {
-        return cb(err);
+      var args = {
+        signatures
+      };
+      this.request.post(url, args, (err, txp) => {
+        if (err) return cb(err);
+        this._processTxps(txp);
+        return cb(null, txp);
       });
+    } catch(err) {
+      return cb(err);
+    }
   }
 
   /**
@@ -2087,102 +1982,11 @@ export class API extends EventEmitter {
       'Failed state: this.credentials at <broadcastTxProposal()>'
     );
 
-    this.getPayProV2(txp)
-      .then(paypro => {
-        if (paypro) {
-          var t_unsigned = Utils.buildTx(txp);
-          var t = _.cloneDeep(t_unsigned);
-
-          this._applyAllSignatures(txp, t);
-
-          const chain = txp.chain || Utils.getChain(txp.coin); // getChain -> backwards compatibility
-          const currency = Utils.getCurrencyCodeFromCoinAndChain(
-            txp.coin,
-            chain
-          );
-          const rawTxUnsigned = t_unsigned.uncheckedSerialize();
-          const serializedTx = t.serialize({
-            disableSmallFees: true,
-            disableLargeFees: true,
-            disableDustOutputs: true
-          });
-          const unsignedTransactions = [];
-          const signedTransactions = [];
-
-          // Convert string to array if string
-          const unserializedTxs =
-            typeof rawTxUnsigned === 'string' ? [rawTxUnsigned] : rawTxUnsigned;
-          const serializedTxs =
-            typeof serializedTx === 'string' ? [serializedTx] : serializedTx;
-
-          const weightedSize = [];
-
-          let isSegwit =
-            txp.coin == 'btc' &&
-            (txp.addressType == 'P2WSH' || txp.addressType == 'P2WPKH');
-
-          let i = 0;
-          for (const unsigned of unserializedTxs) {
-            let size;
-            if (isSegwit) {
-              // we dont have a fast way to calculate weigthedSize`
-              size = Math.floor((txp.fee / txp.feePerKb) * 1000) - 10;
-            } else {
-              size = serializedTxs[i].length / 2;
-            }
-            unsignedTransactions.push({
-              tx: unsigned,
-              weightedSize: size
-            });
-            weightedSize.push(size);
-
-            i++;
-          }
-          i = 0;
-          for (const signed of serializedTxs) {
-            signedTransactions.push({
-              tx: signed,
-              weightedSize: weightedSize[i++],
-              escrowReclaimTx: txp.escrowReclaimTx
-            });
-          }
-          PayProV2.verifyUnsignedPayment({
-            paymentUrl: txp.payProUrl,
-            chain,
-            currency,
-            unsignedTransactions
-          })
-            .then(() => {
-              PayProV2.sendSignedPayment({
-                paymentUrl: txp.payProUrl,
-                chain,
-                currency,
-                signedTransactions,
-                bpPartner: {
-                  bp_partner: this.bp_partner,
-                  bp_partner_version: this.bp_partner_version
-                }
-              })
-                .then(payProDetails => {
-                  if (payProDetails.memo) {
-                    log.debug('Merchant memo:', payProDetails.memo);
-                  }
-                  return cb(null, txp, payProDetails.memo);
-                })
-                .catch(err => {
-                  return cb(err);
-                });
-            })
-            .catch(err => {
-              return cb(err);
-            });
-        } else {
-          this._doBroadcast(txp, cb);
-        }
-      })
-      .catch(err => {
-        return cb(err);
-      });
+    try {
+      this._doBroadcast(txp, cb);
+    } catch(err) {
+      return cb(err);
+    }
   }
 
   // /**

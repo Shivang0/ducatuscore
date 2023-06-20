@@ -57,7 +57,6 @@ export interface ITxProposal {
   chain: string;
   network: string;
   message: string;
-  payProUrl: string;
   from: string;
   changeAddress: string;
   escrowAddress: string;
@@ -121,7 +120,6 @@ export class TxProposal {
   chain: string;
   network: string;
   message: string;
-  payProUrl: string;
   from: string;
   changeAddress: any;
   escrowAddress: any;
@@ -201,7 +199,6 @@ export class TxProposal {
     x.network = opts.network;
     x.signingMethod = opts.signingMethod;
     x.message = opts.message;
-    x.payProUrl = opts.payProUrl;
     x.changeAddress = opts.changeAddress;
     x.escrowAddress = opts.escrowAddress;
     x.instantAcceptanceEscrow = opts.instantAcceptanceEscrow;
@@ -286,7 +283,6 @@ export class TxProposal {
     x.outputs = obj.outputs;
     x.amount = obj.amount;
     x.message = obj.message;
-    x.payProUrl = obj.payProUrl;
     x.changeAddress = obj.changeAddress;
     x.escrowAddress = obj.escrowAddress;
     x.instantAcceptanceEscrow = obj.instantAcceptanceEscrow;

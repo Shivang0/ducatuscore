@@ -164,8 +164,8 @@ export class Utils {
     return Stringify(proposalHeader);
   }
 
-  static getOldHash(toAddress, amount, message, payProUrl) {
-    return [toAddress, amount, message || '', payProUrl || ''].join('|');
+  static getOldHash(toAddress, amount, message) {
+    return [toAddress, amount, message || ''].join('|');
   }
 
   static parseDerivationPath(path: string) {
@@ -457,7 +457,6 @@ export class Utils {
         data,
         destinationTag,
         outputs,
-        payProUrl,
         tokenAddress,
         multisigContractAddress,
         multiSendContractAddress,
@@ -478,7 +477,7 @@ export class Utils {
       }
       const unsignedTxs = [];
       // If it is a token swap its an already created ERC20 transaction so we skip it and go directly to ETH transaction create
-      const isERC20 = tokenAddress && !payProUrl && !isTokenSwap;
+      const isERC20 = tokenAddress && !isTokenSwap;
       const isMULTISIG = multisigContractAddress;
       const chainName = chain.toUpperCase();
       const _chain = isMULTISIG

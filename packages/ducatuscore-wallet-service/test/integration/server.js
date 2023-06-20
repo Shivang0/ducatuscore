@@ -7418,34 +7418,8 @@ describe('Wallet service', function() {
               } else {
                 txOpts.feePerKb = x.requiredFeeRate;
               }
-              txOpts.payProUrl = 'aaa.com';
 
-              // CASE 8
-              checkTx(txOpts, x, (fee1) => {
-                if (x.i == 8) {
-                  helpers.beforeEach(() => {
-                    // check with paypro fee is bigger.
-                    console.log(`## case  ${x.i} : Again with no paypro`);
-                    helpers.createAndJoinWallet(x.m, x.n, {useNativeSegwit: x.fromSegwit}, function(s, w) {
-                      server = s;
-                      wallet = w;
-
-                      helpers.stubUtxos(server, wallet, x.utxos, function() {
-
-                        txOpts.payProUrl = null;
-                        checkTx(txOpts, x, (fee2) => {
-                          console.log(`## Fee PayPro: ${fee1} vs ${fee2}`);
-                          fee1.should.be.above(fee2);
-                          done();
-                        });
-                      });
-                    });
-                  });
-                } else {
-                  done();
-                }
-
-              });
+              done();
             });
           });
         });
@@ -9514,40 +9488,6 @@ describe('Wallet service', function() {
     });
   });
 
-
-  describe('PayPro', function() {
-    var server, wallet;
-
-    beforeEach(function(done) {
-      helpers.createAndJoinWallet(1, 1, function(s, w) {
-        server = s;
-        wallet = w;
-        done();
-      });
-    });
-
-    it('should create a paypro tx', function(done) {
-      helpers.stubUtxos(server, wallet, [1, 2], function() {
-        var txOpts = {
-          outputs: [{
-            toAddress: '18PzpUFkFZE8zKWUPvfykkTxmB9oMR8qP7',
-            amount: 0.8e8
-          }],
-          feePerKb: 100e2,
-          message: 'some message',
-          customData: 'some custom data',
-          payProUrl: 'http:/fakeurl.com',
-        };
-        server.createTx(txOpts, function(err, tx) {
-          should.not.exist(err);
-          should.exist(tx);
-          tx.payProUrl.should.equal('http:/fakeurl.com');
-          done();
-        });
-      });
-    });
-  });
-
   describe('Push notifications', function() {
     var server, wallet;
     beforeEach(function(done) {
@@ -10156,32 +10096,6 @@ describe('Wallet service', function() {
         });
       });
     });
-
-    it('should decode ouput data correctly to get invoice value when paypro', function(done) {
-      const ts = TO_SAT['usdc'];
-      server.createAddress({}, from => {
-        helpers.stubUtxos(server, wallet, [1, 1], { tokenAddress: TOKENS[0] }, function() {
-          var txOpts = {
-            coin: 'usdc_e',
-            payProUrl: 'payProUrl',
-            outputs: [{
-              toAddress: addressStr,
-              amount: 0,
-              data: '0xb6b4af05000000000000000000000000000000000000000000000000000939f52e7b500000000000000000000000000000000000000000000000000000000006a5b66d80000000000000000000000000000000000000000000000000000001758d7da01d546ec66322bb962a8ba8c9c7c1b2ea37f0e4d5e92dfcd938796eeb41fb4aaa6efe746af63df9f38740a10c477b055f4f96fb26962d8d4050dac6d68280c28b60000000000000000000000000000000000000000000000000000000000000001cd7f7eb38ca6bd66b9006c66e42c1400f1921e5134adf77fcf577c267c9210a1d3230a734142b8810a7a7244f14da12fc052904fd68e885ce955f74ed57250bd50000000000000000000000000000000000000000000000000000000000000000'
-            }],
-            from,
-            tokenAddress: TOKENS[0]
-          };
-          txOpts = Object.assign(txOpts);
-          server.createTx(txOpts, function(err, tx) {
-            should.exist(err);
-            err.code.should.equal('INSUFFICIENT_FUNDS');
-            err.message.should.equal('Insufficient funds');
-            done();
-          });
-        });
-      });
-    });
   });
 
   describe('ERC20 createTx (DUCX)', function() {
@@ -10238,33 +10152,6 @@ describe('Wallet service', function() {
                 done();
               });
             });
-          });
-        });
-      });
-    });
-
-    it('should decode ouput data correctly to get invoice value when paypro', function(done) {
-      const ts = TO_SAT['usdc'];
-      server.createAddress({}, from => {
-        helpers.stubUtxos(server, wallet, [1, 1], { tokenAddress: TOKENS[0] }, function() {
-          var txOpts = {
-            chain: 'ducx',
-            coin: 'usdc_m',
-            payProUrl: 'payProUrl',
-            outputs: [{
-              toAddress: addressStr,
-              amount: 0,
-              data: '0xb6b4af05000000000000000000000000000000000000000000000000000939f52e7b500000000000000000000000000000000000000000000000000000000006a5b66d80000000000000000000000000000000000000000000000000000001758d7da01d546ec66322bb962a8ba8c9c7c1b2ea37f0e4d5e92dfcd938796eeb41fb4aaa6efe746af63df9f38740a10c477b055f4f96fb26962d8d4050dac6d68280c28b60000000000000000000000000000000000000000000000000000000000000001cd7f7eb38ca6bd66b9006c66e42c1400f1921e5134adf77fcf577c267c9210a1d3230a734142b8810a7a7244f14da12fc052904fd68e885ce955f74ed57250bd50000000000000000000000000000000000000000000000000000000000000000'
-            }],
-            from,
-            tokenAddress: TOKENS[0]
-          };
-          txOpts = Object.assign(txOpts);
-          server.createTx(txOpts, function(err, tx) {
-            should.exist(err);
-            err.code.should.equal('INSUFFICIENT_FUNDS');
-            err.message.should.equal('Insufficient funds');
-            done();
           });
         });
       });

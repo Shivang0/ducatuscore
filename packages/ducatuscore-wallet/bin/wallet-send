@@ -22,7 +22,6 @@ program.on('--help', function() {
   console.log('');
   console.log('    $ wallet-send n2HRFgtoihgAhx1qAEXcdBMjoMvAx7AcDc 500bit');
   console.log('    $ wallet-send mgWeRvUC6d1LRPKtdDbvYEpaUEmApS4XrY 0.2btc "dinner with friends"');
-  console.log('    $ wallet-send https://paypro.url/1234 # will ask for confirmation ');
   console.log('');
 });
 program.parse(process.argv);
@@ -58,7 +57,6 @@ function send(client, address, amount, fee, note, uri) {
     }],
     message: note,
     feeLevel: fee,
-    payProUrl: uri,
   }, function(err, txp) {
     utils.die(err);
     client.publishTxProposal({
@@ -112,32 +110,10 @@ utils.getClient(program, {
     }
   }
 
-  //Send to URI or addr
+  // Grab data from CLI if not set before
+  addr = addr || arg1;
+  amount = amount || utils.parseAmount(args[1]);
+  note = note ||  args[2];
 
-  if (uri) {
-    console.log('Fetching Payment from: ' + uri);
-    client.fetchPayPro({
-      payProUrl: uri,
-    }, function(err, paypro) {
-      if (err) {
-        utils.die(' Failed to fetch payment: ' + (_.isObject(err)? JSON.stringify(err) : err));
-      } else if (!paypro.verified) {
-        utils.die('Failed to verify payment protocol signatures');
-      }
-
-      var amountStr = utils.renderAmount(paypro.amount, coin);
-      confirmDiag(amountStr, paypro.memo, function(confirmed) {
-        if (!confirmed) utils.die('User canceled');
-        send(client, paypro.toAddress, paypro.amount, program.fee, paypro.memo, uri);
-      });
-    });
-  } else {
-
-    // Grab data from CLI if not set before
-    addr = addr || arg1;
-    amount = amount || utils.parseAmount(args[1]);
-    note = note ||  args[2];
-
-    send(client, addr, amount, program.fee, note);
-  }
+  send(client, addr, amount, program.fee, note);
 });

@@ -1022,14 +1022,6 @@ export class WalletService implements IWalletService {
     return this.parsedClientVersion;
   }
 
-  _clientSupportsPayProRefund() {
-    const version = this._parseClientVersion();
-    if (!version) return false;
-    if (version.agent != 'bwc') return true;
-    if (version.major < 1 || (version.major == 1 && version.minor < 2)) return false;
-    return true;
-  }
-
   static _getCopayerHash(name, xPubKey, requestPubKey) {
     return [name, xPubKey, requestPubKey].join('|');
   }
@@ -1867,7 +1859,6 @@ export class WalletService implements IWalletService {
    * @param {number} opts.feePerKb - Optional. Specify the fee per KB for this TX (in satoshi).
    * @param {string} opts.excludeUnconfirmedUtxos[=false] - Optional. Do not use UTXOs of unconfirmed transactions as inputs
    * @param {string} opts.returnInputs[=false] - Optional. Return the list of UTXOs that would be included in the tx.
-   * @param {string} opts.usePayPro[=false] - Optional. Use fee estimation for paypro
    * @param {string} opts.from - Optional. Specify the sender ETH address.
    * @returns {Object} sendMaxInfo
    */
@@ -2332,7 +2323,6 @@ export class WalletService implements IWalletService {
    * @param {number} opts.feePerKb - Optional. Specify the fee per KB for this TX (in satoshi).
    * @param {string} opts.changeAddress - Optional. Use this address as the change address for the tx. The address should belong to the wallet. In the case of singleAddress wallets, the first main address will be used.
    * @param {Boolean} opts.sendMax - Optional. Send maximum amount of funds that make sense under the specified fee/feePerKb conditions. (defaults to false).
-   * @param {string} opts.payProUrl - Optional. Paypro URL for peers to verify TX
    * @param {Boolean} opts.excludeUnconfirmedUtxos[=false] - Optional. Do not use UTXOs of unconfirmed transactions as inputs
    * @param {Boolean} opts.dryRun[=false] - Optional. Simulate the action but do not change server state.
    * @param {Array} opts.inputs - Optional. Inputs for this TX
@@ -2464,7 +2454,6 @@ export class WalletService implements IWalletService {
                     changeAddress,
                     feeLevel: opts.feeLevel,
                     feePerKb,
-                    payProUrl: opts.payProUrl,
                     walletM: wallet.m,
                     walletN: wallet.n,
                     excludeUnconfirmedUtxos: !!opts.excludeUnconfirmedUtxos,
