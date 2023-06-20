@@ -88,11 +88,17 @@ class ChainProxy {
       // TODO add a warning that we are not including chain
       let normalizedChain = coin.toLowerCase();
       if (
-        Constants.BITPAY_SUPPORTED_ETH_ERC20[normalizedChain.toUpperCase()] ||
+        Constants.DUCATUSCORE_SUPPORTED_ETH_ERC20[normalizedChain.toUpperCase()] ||
         !Constants.CHAINS[normalizedChain.toUpperCase()]
       ) {
         // default to eth if it's an ETH ERC20 or if we don't know the chain
         normalizedChain = 'eth';
+      } else if (
+        Constants.DUCATUSCORE_SUPPORTED_DUCX_DRC20[normalizedChain.toUpperCase()] ||
+        !Constants.CHAINS[normalizedChain.toUpperCase()]
+      ) {
+        // default to eth if it's an ETH ERC20 or if we don't know the chain
+        normalizedChain = 'ducx';
       }
       return normalizedChain;
     } catch (err) {

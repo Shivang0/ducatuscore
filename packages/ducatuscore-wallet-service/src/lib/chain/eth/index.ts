@@ -199,7 +199,7 @@ export class EthChain implements IChain {
         if (opts.multiSendContractAddress) {
           try {
             const data = this.encodeContractParameters(
-              Constants.BITPAY_CONTRACTS.MULTISEND,
+              Constants.DUCATUSCORE_CONTRACTS.MULTISEND,
               { addresses: outputAddresses, amounts: outputAmounts },
               opts
             );
@@ -303,14 +303,14 @@ export class EthChain implements IChain {
   }
 
   encodeContractParameters(contract, params, opts) {
-    if (contract === Constants.BITPAY_CONTRACTS.MULTISEND) {
+    if (contract === Constants.DUCATUSCORE_CONTRACTS.MULTISEND) {
       const web3 = new Web3();
       return {
         addresses: web3.eth.abi.encodeParameter('address[]', params.addresses),
         amounts: web3.eth.abi.encodeParameter('uint256[]', params.amounts),
         method: opts.tokenAddress ? 'sendErc20' : 'sendEth',
         tokenAddress: opts.tokenAddress,
-        type: Constants.BITPAY_CONTRACTS.MULTISEND
+        type: Constants.DUCATUSCORE_CONTRACTS.MULTISEND
       };
     }
   }

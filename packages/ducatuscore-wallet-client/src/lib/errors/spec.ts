@@ -73,7 +73,7 @@ var errorSpec = [
   },
   {
     name: 'INSUFFICIENT_DUCX_FEE',
-    message: 'Your linked POLYGON wallet does not have enough DUCX for fee.'
+    message: 'Your linked DucatusX wallet does not have enough DUCX for fee.'
   },
   {
     name: 'LOCKED_FUNDS',
@@ -87,7 +87,7 @@ var errorSpec = [
   {
     name: 'LOCKED_DUCX_FEE',
     message:
-      'Your POLYGON linked wallet funds are locked by pending spend proposals.'
+      'Your DucatusX linked wallet funds are locked by pending spend proposals.'
   },
   {
     name: 'DUST_AMOUNT',

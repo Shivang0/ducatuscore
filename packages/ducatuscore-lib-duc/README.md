@@ -1,9 +1,5 @@
 # Bitcore Lib
 
-[![NPM Package](https://img.shields.io/npm/v/bitcore-lib.svg?style=flat-square)](https://www.npmjs.org/package/bitcore-lib)
-[![Build Status](https://img.shields.io/travis/bitpay/bitcore-lib.svg?branch=master&style=flat-square)](https://travis-ci.org/bitpay/bitcore-lib)
-[![Coverage Status](https://img.shields.io/coveralls/bitpay/bitcore-lib.svg?style=flat-square)](https://coveralls.io/r/bitpay/bitcore-lib)
-
 **A pure and powerful JavaScript Bitcoin library.**
 
 ## Principles
@@ -22,7 +18,7 @@ bower install bitcore-lib
 
 ## Documentation
 
-The complete docs are hosted here: [bitcore documentation](https://github.com/bitpay/bitcore). There's also a [bitcore API reference](https://github.com/bitpay/bitcore/blob/master/packages/bitcore-node/docs/api-documentation.md) available generated from the JSDocs of the project, where you'll find low-level details on each bitcore utility.
+The complete docs are hosted here: bitcore documentation. There's also a bitcore API reference available generated from the JSDocs of the project, where you'll find low-level details on each bitcore utility.
 
 ## Examples
 

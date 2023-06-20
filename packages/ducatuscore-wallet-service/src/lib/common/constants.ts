@@ -2,7 +2,7 @@
 import * as CWC from '@ducatus/ducatuscore-crypto';
 
 export const Constants = {
-  COINS: {
+  CHAINS: {
     BTC: 'btc',
     BCH: 'bch',
     ETH: 'eth',
@@ -142,7 +142,7 @@ export const Constants = {
   ETH_TOKEN_OPTS: CWC.Constants.ETH_TOKEN_OPTS,
   DUCX_TOKEN_OPTS: CWC.Constants.DUCX_TOKEN_OPTS,
 
-  BITPAY_CONTRACTS: {
+  DUCATUSCORE_CONTRACTS: {
     MULTISEND: 'MULTISEND'
   },
 

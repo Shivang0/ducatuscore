@@ -67,9 +67,3 @@ gulp test
 
 You can also run just the Node.js tests with `gulp test:node`, just the browser tests with `gulp test:browser`
 or create a test coverage report (you can open `coverage/lcov-report/index.html` to visualize it) with `gulp coverage`.
-
-## Security
-
-We're using Ducatuscore in production, as are many others, but please use common sense when doing anything related to finances! We take no responsibility for your implementation decisions.
-
-If you find a security issue, please email security@bitpay.com.

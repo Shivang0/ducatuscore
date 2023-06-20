@@ -45,8 +45,14 @@ export class Utils {
       ) {
         // default to eth if it's an ETH ERC20 or if we don't know the chain
         normalizedChain = 'eth';
+      } else if (
+        Constants.DUCATUSCORE_SUPPORTED_DUCX_DRC20.includes(normalizedChain) ||
+        !Constants.CHAINS.includes(normalizedChain)
+      ) {
+        normalizedChain = 'ducx';
+      } else {
+        return normalizedChain;
       }
-      return normalizedChain;
     } catch (_) {
       return 'btc'; // coin should always exist but most unit test don't have it -> return btc as default
     }
@@ -461,7 +467,8 @@ export class Utils {
         multisigContractAddress,
         multiSendContractAddress,
         isTokenSwap,
-        gasLimit
+        gasLimit,
+        tokenId
       } = txp;
       const recipients = outputs.map(output => {
         return {
@@ -479,12 +486,18 @@ export class Utils {
       // If it is a token swap its an already created ERC20 transaction so we skip it and go directly to ETH transaction create
       const isERC20 = tokenAddress && !isTokenSwap;
       const isMULTISIG = multisigContractAddress;
+      const isERC721 = isERC20 && tokenId;
       const chainName = chain.toUpperCase();
-      const _chain = isMULTISIG
-        ? chainName + 'MULTISIG'
-        : isERC20
-        ? chainName + 'ERC20'
-        : chainName;
+
+      let _chain = isERC721
+        ? chainName + 'ERC721'
+        : isMULTISIG
+          ? chainName + 'MULTISIG'
+          : isERC20
+            ? chainName.toLowerCase() === 'ducx'
+              ? chainName + 'DRC20'
+              : chainName + 'ERC20'
+            : chainName;
 
       if (multiSendContractAddress) {
         let multiSendParams = {

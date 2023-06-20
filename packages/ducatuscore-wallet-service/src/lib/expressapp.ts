@@ -76,7 +76,6 @@ export class ExpressApp {
 
     this.app.use((req, res, next) => {
       if (config.maintenanceOpts.maintenanceMode === true) {
-        // send a 503 error, with a message to the bitpay status page
         let errorCode = 503;
         let errorMessage = 'DWS down for maintenance';
         res.status(503).send({ code: errorCode, message: errorMessage });
@@ -283,53 +282,6 @@ export class ExpressApp {
     function SetPublicCache(res: express.Response, seconds: number) {
       res.setHeader('Cache-Control', `public, max-age=${seconds}, stale-if-error=${10 * seconds}`);
     }
-
-    // retrieve latest version of copay
-    router.get('/latest-version', async (req, res) => {
-      SetPublicCache(res, 10 * ONE_MINUTE);
-      try {
-        res.setHeader('User-Agent', 'copay');
-        var options = {
-          uri: 'https://api.github.com/repos/bitpay/wallet/releases/latest',
-          headers: {
-            'User-Agent': 'Copay'
-          },
-          json: true
-        };
-
-        let server;
-        try {
-          server = getServer(req, res);
-        } catch (ex) {
-          return returnError(ex, res, req);
-        }
-        server.storage.checkAndUseGlobalCache(
-          'latest-copay-version',
-          Defaults.COPAY_VERSION_CACHE_DURATION,
-          async (err, version) => {
-            if (err) {
-              res.send(err);
-            }
-            if (version) {
-              res.json({ version });
-            } else {
-              try {
-                const htmlString = await rp(options);
-                if (htmlString['tag_name']) {
-                  server.storage.storeGlobalCache('latest-copay-version', htmlString['tag_name'], err => {
-                    res.json({ version: htmlString['tag_name'] });
-                  });
-                }
-              } catch (err) {
-                res.send(err);
-              }
-            }
-          }
-        );
-      } catch (err) {
-        res.send(err);
-      }
-    });
 
     // DEPRECATED
     router.post('/v1/wallets/', createWalletLimiter, (req, res) => {

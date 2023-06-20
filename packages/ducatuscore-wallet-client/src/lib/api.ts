@@ -1688,7 +1688,6 @@ export class API extends EventEmitter {
   }
 
   /**
-   * Create advertisement for bitpay app - (limited to marketing staff)
    * @param opts - options
    */
   createAdvertisement(opts, cb) {
@@ -1706,7 +1705,6 @@ export class API extends EventEmitter {
   }
 
   /**
-   * Get advertisements for bitpay app - (limited to marketing staff)
    * @param opts - options
    * @param opts.testing - if set, fetches testing advertisements
    */
@@ -1725,7 +1723,6 @@ export class API extends EventEmitter {
   }
 
   /**
-   * Get advertisements for bitpay app, for specified country - (limited to marketing staff)
    * @param opts - options
    * @param opts.country - if set, fetches ads by Country
    */

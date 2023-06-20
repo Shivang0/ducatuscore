@@ -10137,7 +10137,7 @@ describe('Wallet service', function() {
           server.createTx(txOpts, function(err, tx) {
             should.exist(err);
             err.code.should.equal('INSUFFICIENT_DUCX_FEE');
-            err.message.should.equal('Your linked POLYGON wallet does not have enough DUCX for fee. RequiredFee: 3999999999999990000');
+            err.message.should.equal('Your linked DucatusX wallet does not have enough DUCX for fee. RequiredFee: 3999999999999990000');
             err.messageData.should.deep.equal({ requiredFee: 3999999999999990000 });
             server.getBalance({ tokenAddress: txOpts.tokenAddress }, function(err, tokenBalance) {
               should.not.exist(err);

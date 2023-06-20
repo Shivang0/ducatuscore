@@ -69,6 +69,22 @@ export const Constants = {
     'euroc',
     'usdt'
   ],
+  DUCATUSCORE_SUPPORTED_DUCX_DRC20: [
+    'jamasy',
+    'nuyasa',
+    'sunoba',
+    'dscmed',
+    'pog1',
+    'wde',
+    'mdxb',
+    'g.o.l.d.',
+    'jwan',
+    'tkf',
+    'AA+',
+    'QMN',
+    'mpe',
+    'balisol'
+  ],
 
   CHAINS: ['btc', 'bch', 'eth', 'duc', 'ducx', 'xrp'],
   UTXO_CHAINS: ['btc', 'bch', 'duc'],

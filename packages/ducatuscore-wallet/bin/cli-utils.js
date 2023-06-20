@@ -113,7 +113,7 @@ Utils.getClient = function(args, opts, cb) {
   opts = opts || {};
 
   var filename = args.file || process.env['WALLET_FILE'] || process.env['HOME'] + '/.wallet.json';
-  var host = args.host || 'https://dws.bitpay.com/';
+  var host = args.host || 'https://localhost:3232';
 
   var storage = new FileStorage({
     filename: filename,

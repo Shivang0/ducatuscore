@@ -262,7 +262,7 @@ export class PushNotificationsService {
                     title,
                     body
                   };
-                  const custom_uri = `bitpay://wallet?walletId=${walletId}&tokenAddress=${tokenAddress}&multisigContractAddress=${multisigContractAddress}&copayerId=${copayerId}&coin=${coin}&chain=${chain}&network=${network}&notification_type=${notification_type}&title=${title}&body=${body}`;
+                  const custom_uri = `ducauts://wallet?walletId=${walletId}&tokenAddress=${tokenAddress}&multisigContractAddress=${multisigContractAddress}&copayerId=${copayerId}&coin=${coin}&chain=${chain}&network=${network}&notification_type=${notification_type}&title=${title}&body=${body}`;
                   notificationData = {
                     external_user_ids: [sub.externalUserId],
                     messages: {

@@ -24,7 +24,7 @@ const errors = {
   LOCKED_DUCX_FEE: 'Your linked DUCX wallet does not have enough DUCX for fee',
   HISTORY_LIMIT_EXCEEDED: 'Requested page limit is above allowed maximum',
   MAIN_ADDRESS_GAP_REACHED: 'Maximum number of consecutive addresses without activity reached',
-  NETWORK_SUSPENDED: '$network operations are currently suspended. Please check status.bitpay.com for further updates.',
+  NETWORK_SUSPENDED: '$network operations are currently suspended.',
   NOT_AUTHORIZED: 'Not authorized',
   TOO_MANY_KEYS: 'Too many keys registered',
   TX_ALREADY_BROADCASTED: 'The transaction proposal is already broadcasted',

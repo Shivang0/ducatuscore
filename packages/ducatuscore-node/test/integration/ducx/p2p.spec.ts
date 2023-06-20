@@ -62,7 +62,7 @@ async function sendTransaction(from, to, amount, web3, wallet, nonce = 0) {
   await web3.eth.sendSignedTransaction(signedTx);
 }
 
-describe('Polygon', function() {
+describe('Ducx', function() {
   const suite = this;
   this.timeout(50000);
 

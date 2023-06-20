@@ -3,7 +3,7 @@
 **A standardized API to interact with multiple blockchain networks**
 
 Currently supporting:
-**[Bitcoin](https://bitcoin.org/), [Bitcoin Cash](https://bitcoincash.org/), [Ripple](https://ripple.com/), [Ethereum](https://ethereum.org/) and [Polygon](https://polygon.technology/)**
+**[Bitcoin](https://bitcoin.org/), [Bitcoin Cash](https://bitcoincash.org/), [Ripple](https://ripple.com/), [Ethereum](https://ethereum.org/) and [Ducatus](https://google.com/)**
 
 
 ## Getting Started
