@@ -7,6 +7,7 @@ var dwc = require('@ducatus/ducatuscore-wallet-client');
 var Ducatuscore_ = {
   bch: dwc.DucatuscoreCash,
   btc: dwc.Ducatuscore,
+  duc: dwc.DucatuscoreDuc,
 };  
 
 program = utils.configureCommander(program);

@@ -8,7 +8,7 @@ program = utils.configureCommander(program);
 
 program
   .option('-t, --testnet', 'Create a Testnet Extended Private Key')
-  .option('-c, --coin <coin>', 'coin (btc/bch)')
+  .option('-c, --coin <coin>', 'coin (btc/bch/duc)')
   .option('-p, --password', 'Encrypt wallet. Will ask password interactively')
   .parse(process.argv);
 
