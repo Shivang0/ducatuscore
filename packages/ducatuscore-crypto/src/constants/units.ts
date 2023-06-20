@@ -186,5 +186,159 @@ export let UNITS = {
       maxDecimals: 6,
       minDecimals: 2
     }
+  },
+  jamasy: {
+    toSatoshis: 1e8,
+    full: {
+      maxDecimals: 8,
+      minDecimals: 8
+    },
+    short: {
+      maxDecimals: 8,
+      minDecimals: 2
+    }
+  },
+  nuyasa: {
+    toSatoshis: 1e8,
+    full: {
+      maxDecimals: 8,
+      minDecimals: 8
+    },
+    short: {
+      maxDecimals: 8,
+      minDecimals: 2
+    }
+  },
+  sunoba: {
+    toSatoshis: 1e8,
+    full: {
+      maxDecimals: 8,
+      minDecimals: 8
+    },
+    short: {
+      maxDecimals: 8,
+      minDecimals: 2
+    }
+  },
+  dscmed: {
+    toSatoshis: 1e8,
+    full: {
+      maxDecimals: 8,
+      minDecimals: 8
+    },
+    short: {
+      maxDecimals: 8,
+      minDecimals: 2
+    }
+  },
+  pog1: {
+    toSatoshis: 1e8,
+    full: {
+      maxDecimals: 8,
+      minDecimals: 8
+    },
+    short: {
+      maxDecimals: 8,
+      minDecimals: 2
+    }
+  },
+  wde: {
+    toSatoshis: 1e8,
+    full: {
+      maxDecimals: 8,
+      minDecimals: 8
+    },
+    short: {
+      maxDecimals: 8,
+      minDecimals: 2
+    }
+  },
+  mdxb: {
+    toSatoshis: 1e8,
+    full: {
+      maxDecimals: 8,
+      minDecimals: 8
+    },
+    short: {
+      maxDecimals: 8,
+      minDecimals: 2
+    }
+  },
+  'g.o.l.d.': {
+    toSatoshis: 1e18,
+    full: {
+      maxDecimals: 6,
+      minDecimals: 6
+    },
+    short: {
+      maxDecimals: 6,
+      minDecimals: 2
+    }
+  },
+  jwan: {
+    toSatoshis: 1e8,
+    full: {
+      maxDecimals: 8,
+      minDecimals: 8
+    },
+    short: {
+      maxDecimals: 8,
+      minDecimals: 2
+    }
+  },
+  tkf: {
+    toSatoshis: 1e8,
+    full: {
+      maxDecimals: 8,
+      minDecimals: 8
+    },
+    short: {
+      maxDecimals: 8,
+      minDecimals: 2
+    }
+  },
+  'aa+': {
+    toSatoshis: 1e5,
+    full: {
+      maxDecimals: 5,
+      minDecimals: 5
+    },
+    short: {
+      maxDecimals: 5,
+      minDecimals: 2
+    }
+  },
+  qmn: {
+    toSatoshis: 1e3,
+    full: {
+      maxDecimals: 3,
+      minDecimals: 3
+    },
+    short: {
+      maxDecimals: 3,
+      minDecimals: 2
+    }
+  },
+  mpe: {
+    toSatoshis: 1e8,
+    full: {
+      maxDecimals: 8,
+      minDecimals: 8
+    },
+    short: {
+      maxDecimals: 8,
+      minDecimals: 2
+    }
+  },
+  balisol: {
+    toSatoshis: 1e2,
+    full: {
+      maxDecimals: 2,
+      minDecimals: 2
+    },
+    short: {
+      maxDecimals: 2,
+      minDecimals: 2
+    }
   }
 };

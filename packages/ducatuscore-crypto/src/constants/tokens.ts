@@ -68,46 +68,82 @@ export let ETH_TOKEN_OPTS = {
 };
 
 export let DUCX_TOKEN_OPTS = {
-  '0x2791bca1f2de4661ed88a30c99a7a9449aa84174': {
-    name: 'USD Coin (PoS)',
-    symbol: 'USDC',
-    decimals: 6,
-    address: '0x2791bca1f2de4661ed88a30c99a7a9449aa84174'
+  '0xa9CB8e18E4C2C0a1C9Bf4367E7115165ed7e41F0': {
+    name: 'JAMASY',
+    symbol: 'JAMASY',
+    decimal: 8,
+    address: '0xa9CB8e18E4C2C0a1C9Bf4367E7115165ed7e41F0'
   },
-  '0xdab529f40e671a1d4bf91361c21bf9f0c9712ab7': {
-    name: 'binance-usd',
-    symbol: 'BUSD',
-    decimals: 18,
-    address: '0xdab529f40e671a1d4bf91361c21bf9f0c9712ab7'
+  '0x3D30806b1E1F021Fe12DF506C3A1F96CfB94464a': {
+    name: 'NUYASA',
+    symbol: 'NUYASA',
+    decimal: 8,
+    address: '0x3D30806b1E1F021Fe12DF506C3A1F96CfB94464a'
   },
-  '0x8f3cf7ad23cd3cadbd9735aff958023239c6a063': {
-    name: '(PoS) Dai Stablecoin',
-    symbol: 'DAI',
-    decimals: 18,
-    address: '0x8f3cf7ad23cd3cadbd9735aff958023239c6a063'
+  '0xB7A7221E37d12A8Ea92468F283422B16DbC364D9': {
+    name: 'SUNOBA',
+    symbol: 'SUNOBA',
+    decimal: 8,
+    address: '0xB7A7221E37d12A8Ea92468F283422B16DbC364D9'
   },
-  '0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6': {
-    name: '(PoS) Wrapped BTC',
-    symbol: 'WBTC',
-    decimals: 8,
-    address: '0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6'
+  '0x14460383feFFE73eA1FB4F0F11B941F44c17bDD2': {
+    name: 'DSCMED',
+    symbol: 'DSCMED',
+    decimal: 8,
+    address: '0x14460383feFFE73eA1FB4F0F11B941F44c17bDD2'
   },
-  '0x6f8a06447ff6fcf75d803135a7de15ce88c1d4ec': {
-    name: 'SHIBA INU (PoS)',
-    symbol: 'SHIB',
-    decimals: 18,
-    address: '0x6f8a06447ff6fcf75d803135a7de15ce88c1d4ec'
+  '0x511e1f8e872c3fe9b3fCefEf58ec7FE4E8130Cc1': {
+    name: 'POG1',
+    symbol: 'POG1',
+    decimal: 8,
+    address: '0x511e1f8e872c3fe9b3fCefEf58ec7FE4E8130Cc1'
   },
-  '0xb7b31a6bc18e48888545ce79e83e06003be70930': {
-    name: 'ApeCoin (PoS)',
-    symbol: 'APE',
-    decimals: 18,
-    address: '0xb7b31a6bc18e48888545ce79e83e06003be70930'
+  '0x17CaCa02DDf472F62bFED5165FACf7A6B5C72926': {
+    name: 'WDE',
+    symbol: 'WDE',
+    decimal: 8,
+    address: '0x17CaCa02DDf472F62bFED5165FACf7A6B5C72926'
   },
-  '0xc2132d05d31c914a87c6611c10748aeb04b58e8f': {
-    name: 'Tether USD',
-    symbol: 'USDT',
-    decimals: 6,
-    address: '0xc2132d05d31c914a87c6611c10748aeb04b58e8f'
+  '0x60DFde24CdE54df342E52a72248B2bD54e0ea4A5': {
+    name: 'MDXB',
+    symbol: 'MDXB',
+    decimal: 8,
+    address: '0x60DFde24CdE54df342E52a72248B2bD54e0ea4A5'
+  },
+  '0xFCb965D9Da10A15eb87B3Da539383997ce6fA597': {
+    name: 'Jwan',
+    symbol: 'Jwan',
+    decimal: 8,
+    address: '0xFCb965D9Da10A15eb87B3Da539383997ce6fA597'
+  },
+  '0xA75185edc9745B000379e8304deBA5DeAbB39f30': {
+    name: 'Takaful',
+    symbol: 'TKF',
+    decimal: 8,
+    address: '0xA75185edc9745B000379e8304deBA5DeAbB39f30'
+  },
+  '0x986083CD47dBBC931585D2FE2330FD29B3e849b0': {
+    name: 'AA+',
+    symbol: 'AA+',
+    decimal: 5,
+    address: '0x986083CD47dBBC931585D2FE2330FD29B3e849b0'
+  },
+  '0x9Ddc5c88e27231c3DF4424ABd7508c70f748fc4A': {
+    name: 'Queen Margherita Napoli',
+    symbol: 'QMN',
+    decimal: 3,
+    address: '0x9Ddc5c88e27231c3DF4424ABd7508c70f748fc4A'
+  },
+  '0x212bbB33b6A56a7Ee0819dd82bE01c285F64Fb49': {
+    name: 'My Planet Earth',
+    symbol: 'MPE',
+    decimal: 8,
+    address: '0x212bbB33b6A56a7Ee0819dd82bE01c285F64Fb49'
+  },
+  '0x519cb2e8f165c2fc2297f544639c71af33dae148': {
+    name: 'BaliSol',
+    symbol: 'BALISOL',
+    decimal: 2,
+    address: '0x519cb2e8f165c2fc2297f544639c71af33dae148'
   }
 };
