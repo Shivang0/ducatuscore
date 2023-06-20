@@ -16,7 +16,7 @@ import { EVMTransactionStorage } from '../../../src/providers/chain-state/evm/mo
 import { StreamWalletTransactionsParams } from '../../../src/types/namespaces/ChainStateProvider';
 import { intAfterHelper, intBeforeHelper } from '../../helpers/integration';
 
-describe('Polygon/DUCX API', function() {
+describe('DucatusX/DUCX API', function() {
   const chain = 'DUCX';
   const network = 'regtest';
 

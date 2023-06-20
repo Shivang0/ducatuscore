@@ -10,6 +10,8 @@ The modules in this table will automatically register with `ducatuscore-node` if
 | ETH            | ethereum       | ./ethereum     |
 | BCH            | bitcoin-cash   | ./bitcoin-cash |
 | XRP            | ripple         | ./ripple       |
+| DUC            | ducatus        | ./ducatus      |
+| DUCX           | ducatusx       | ./ducx         |
 
 If there is a custom or third-party module you'd like to use, follow the example below.
 
