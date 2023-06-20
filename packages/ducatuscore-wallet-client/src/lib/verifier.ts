@@ -136,6 +136,7 @@ export class Verifier {
       return false;
     if (_.isNumber(args.feePerKb) && txp.feePerKb != args.feePerKb)
       return false;
+    if (!strEqual(txp.payProUrl, args.payProUrl)) return false;
 
     var decryptedMessage = null;
     try {
@@ -219,18 +220,55 @@ export class Verifier {
     return true;
   }
 
+  static checkPaypro(txp, payproOpts) {
+    var toAddress, amount, feeRate;
+
+    if (parseInt(txp.version) >= 3) {
+      toAddress = txp.outputs[0].toAddress;
+      amount = txp.amount;
+      if (txp.feePerKb) {
+        feeRate = txp.feePerKb / 1024;
+      }
+    } else {
+      toAddress = txp.toAddress;
+      amount = txp.amount;
+    }
+
+    if (amount != _.sumBy(payproOpts.instructions, 'amount')) return false;
+
+    if (txp.coin == 'btc' && toAddress != payproOpts.instructions[0].toAddress)
+      return false;
+
+    // Workaround for cashaddr/legacy address problems...
+    if (
+      txp.coin == 'bch' &&
+      new BCHAddress(toAddress).toString() !=
+        new BCHAddress(payproOpts.instructions[0].toAddress).toString()
+    )
+      return false;
+
+    // this generates problems...
+    //  if (feeRate && payproOpts.requiredFeeRate &&
+    //      feeRate < payproOpts.requiredFeeRate)
+    //  return false;
+
+    return true;
+  }
+
   /**
    * Check transaction proposal
    *
    * @param {Function} credentials
    * @param {Object} txp
-   * @param {Object} Optional
+   * @param {Object} Optional: paypro
    * @param {Boolean} isLegit
    */
   static checkTxProposal(credentials, txp, opts) {
     opts = opts || {};
 
     if (!this.checkTxProposalSignature(credentials, txp)) return false;
+
+    if (opts.paypro && !this.checkPaypro(txp, opts.paypro)) return false;
 
     return true;
   }

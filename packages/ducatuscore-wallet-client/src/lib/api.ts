@@ -70,7 +70,6 @@ export class API extends EventEmitter {
   // Expose ducatuscore
   static Ducatuscore = CWC.DucatuscoreLib;
   static DucatuscoreCash = CWC.DucatuscoreLibCash;
-  static DucatuscoreDuc = CWC.DucatuscoreLibDuc;
 
   constructor(opts?) {
     super();
@@ -1417,6 +1416,7 @@ export class API extends EventEmitter {
     args.message =
       API._encryptMessage(opts.message, this.credentials.sharedEncryptingKey) ||
       null;
+    args.payProUrl = opts.payProUrl || null;
     args.isTokenSwap = opts.isTokenSwap || null;
     args.replaceTxByFee = opts.replaceTxByFee || null;
     _.each(args.outputs, o => {
@@ -1442,6 +1442,7 @@ export class API extends EventEmitter {
   // * @param {number} opts.feePerKb - Optional. Specify the fee per KB for this TX (in satoshi).
   // * @param {string} opts.changeAddress - Optional. Use this address as the change address for the tx. The address should belong to the wallet. In the case of singleAddress wallets, the first main address will be used.
   // * @param {Boolean} opts.sendMax - Optional. Send maximum amount of funds that make sense under the specified fee/feePerKb conditions. (defaults to false).
+  // * @param {string} opts.payProUrl - Optional. Paypro URL for peers to verify TX
   // * @param {Boolean} opts.excludeUnconfirmedUtxos[=false] - Optional. Do not use UTXOs of unconfirmed transactions as inputs
   // * @param {Boolean} opts.dryRun[=false] - Optional. Simulate the action but do not change server state.
   // * @param {Array} opts.inputs - Optional. Inputs for this TX
@@ -1659,6 +1660,20 @@ export class API extends EventEmitter {
       this._processTxps(txps);
       async.every(
         txps,
+        (txp, acb) => {
+          if (opts.doNotVerify) return acb(true);
+          this.getPayProV2(txp)
+            .then(paypro => {
+              var isLegit = Verifier.checkTxProposal(this.credentials, txp, {
+                paypro
+              });
+
+              return acb(isLegit);
+            })
+            .catch(err => {
+              return acb(err);
+            });
+        },
         isLegit => {
           if (!isLegit) return cb(new Errors.SERVER_COMPROMISED());
 
