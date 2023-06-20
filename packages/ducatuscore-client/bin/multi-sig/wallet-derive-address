@@ -105,7 +105,7 @@ async function importAddressesToWallet(path, addresses) {
 
 const main = async () => {
   const { path, file, input, prompt, importToWallet, m, network, exportToFile, depth, currency } = program;
-  if (!currency || !['BTC', 'BCH'].includes(currency)) {
+  if (!currency || !['BTC', 'BCH', 'DUC'].includes(currency)) {
     throw new Error('Invalid currency. Currency must be BTC or BCH');
   }
   let keyInput = [];
