@@ -1,5 +1,5 @@
-import baseX from 'base-x';
 import Ducatuscore from '@ducatus/ducatuscore-lib';
+import baseX from 'base-x';
 import { IValidation } from '..';
 
 const RIPPLE_ALPHABET = 'rpshnaf39wBUDNEGHJKLM4PQRST7VWXYZ2bcdeCg65jkm8oFqi1tuvAxyz';

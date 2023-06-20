@@ -1,7 +1,7 @@
 import Web3 from 'web3';
 import { AbiItem } from 'web3-utils';
-import { ERC20Abi } from '../erc20/abi';
 import { DUCXTxProvider } from '../ducx';
+import { ERC20Abi } from '../erc20/abi';
 const { toBN } = Web3.utils;
 
 export class DUCXERC20TxProvider extends DUCXTxProvider {

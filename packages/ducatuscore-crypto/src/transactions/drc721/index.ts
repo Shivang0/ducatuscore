@@ -1,6 +1,6 @@
 import Web3 from 'web3';
-import { ERC721Abi } from './abi';
 import { DUCXTxProvider } from '../ducx';
+import { ERC721Abi } from './abi';
 
 export class DRC721TxProvider extends DUCXTxProvider {
   getERC721Contract(tokenContractAddress: string) {
@@ -23,7 +23,7 @@ export class DRC721TxProvider extends DUCXTxProvider {
     tokenId?: number;
   }) {
     const { tokenAddress } = params;
-    const data = this.encodeData({ 
+    const data = this.encodeData({
       recipients: params.recipients,
       tokenAddress: params.tokenAddress,
       from: params.from,

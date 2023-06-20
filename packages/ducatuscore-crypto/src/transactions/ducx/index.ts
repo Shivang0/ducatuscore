@@ -28,7 +28,7 @@ export class DUCXTxProvider {
         params.chainId = 0x6773;
         break;
     }
-    
+
     const { recipients, nonce, gasPrice, data, gasLimit, chainId = 0x6773 } = params;
     const { address, amount } = recipients[0];
 

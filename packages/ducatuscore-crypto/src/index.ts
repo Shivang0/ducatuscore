@@ -5,12 +5,12 @@ import Web3 from 'web3';
 import Deriver from './derivation';
 import Transactions from './transactions';
 import Validation from './validation';
-export { 
+export {
   DucatuscoreLib,
-  DucatuscoreLibCash, 
-  DucatuscoreLibDuc, 
+  DucatuscoreLibCash,
+  DucatuscoreLibDuc,
   Deriver,
-  Transactions, 
-  Validation, 
-  Web3 
+  Transactions,
+  Validation,
+  Web3
 };

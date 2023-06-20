@@ -1,5 +1,5 @@
 export let UNITS = {
-  btc: {
+  "btc": {
     toSatoshis: 100000000,
     full: {
       maxDecimals: 8,
@@ -10,7 +10,7 @@ export let UNITS = {
       minDecimals: 2
     }
   },
-  bch: {
+  "bch": {
     toSatoshis: 100000000,
     full: {
       maxDecimals: 8,
@@ -21,7 +21,7 @@ export let UNITS = {
       minDecimals: 2
     }
   },
-  eth: {
+  "eth": {
     toSatoshis: 1e18,
     full: {
       maxDecimals: 8,
@@ -32,7 +32,7 @@ export let UNITS = {
       minDecimals: 2
     }
   },
-  ducx: {
+  "ducx": {
     toSatoshis: 1e18,
     full: {
       maxDecimals: 8,
@@ -43,7 +43,7 @@ export let UNITS = {
       minDecimals: 2
     }
   },
-  xrp: {
+  "xrp": {
     toSatoshis: 1e6,
     full: {
       maxDecimals: 6,
@@ -54,7 +54,7 @@ export let UNITS = {
       minDecimals: 2
     }
   },
-  busd: {
+  "busd": {
     toSatoshis: 1e18,
     full: {
       maxDecimals: 8,
@@ -65,7 +65,7 @@ export let UNITS = {
       minDecimals: 2
     }
   },
-  dai: {
+  "dai": {
     toSatoshis: 1e18,
     full: {
       maxDecimals: 8,
@@ -76,7 +76,7 @@ export let UNITS = {
       minDecimals: 2
     }
   },
-  wbtc: {
+  "wbtc": {
     toSatoshis: 1e8,
     full: {
       maxDecimals: 8,
@@ -87,7 +87,7 @@ export let UNITS = {
       minDecimals: 2
     }
   },
-  usdc: {
+  "usdc": {
     toSatoshis: 1e6,
     full: {
       maxDecimals: 8,
@@ -98,7 +98,7 @@ export let UNITS = {
       minDecimals: 2
     }
   },
-  usdp: {
+  "usdp": {
     toSatoshis: 1e18,
     full: {
       maxDecimals: 8,
@@ -110,7 +110,7 @@ export let UNITS = {
     }
   },
   // backwards compatibility
-  pax: {
+  "pax": {
     toSatoshis: 1e18,
     full: {
       maxDecimals: 8,
@@ -121,7 +121,7 @@ export let UNITS = {
       minDecimals: 2
     }
   },
-  gusd: {
+  "gusd": {
     toSatoshis: 1e2,
     full: {
       maxDecimals: 8,
@@ -132,7 +132,7 @@ export let UNITS = {
       minDecimals: 2
     }
   },
-  bit: {
+  "bit": {
     toSatoshis: 100,
     full: {
       maxDecimals: 2,
@@ -143,7 +143,7 @@ export let UNITS = {
       minDecimals: 0
     }
   },
-  shib: {
+  "shib": {
     toSatoshis: 1e18,
     full: {
       maxDecimals: 8,
@@ -154,7 +154,7 @@ export let UNITS = {
       minDecimals: 2
     }
   },
-  ape: {
+  "ape": {
     toSatoshis: 1e18,
     full: {
       maxDecimals: 8,
@@ -165,7 +165,7 @@ export let UNITS = {
       minDecimals: 2
     }
   },
-  euroc: {
+  "euroc": {
     toSatoshis: 1e6,
     full: {
       maxDecimals: 8,
@@ -176,7 +176,7 @@ export let UNITS = {
       minDecimals: 2
     }
   },
-  usdt: {
+  "usdt": {
     toSatoshis: 1e6,
     full: {
       maxDecimals: 8,
@@ -187,7 +187,7 @@ export let UNITS = {
       minDecimals: 2
     }
   },
-  jamasy: {
+  "jamasy": {
     toSatoshis: 1e8,
     full: {
       maxDecimals: 8,
@@ -198,7 +198,7 @@ export let UNITS = {
       minDecimals: 2
     }
   },
-  nuyasa: {
+  "nuyasa": {
     toSatoshis: 1e8,
     full: {
       maxDecimals: 8,
@@ -209,7 +209,7 @@ export let UNITS = {
       minDecimals: 2
     }
   },
-  sunoba: {
+  "sunoba": {
     toSatoshis: 1e8,
     full: {
       maxDecimals: 8,
@@ -220,7 +220,7 @@ export let UNITS = {
       minDecimals: 2
     }
   },
-  dscmed: {
+  "dscmed": {
     toSatoshis: 1e8,
     full: {
       maxDecimals: 8,
@@ -231,7 +231,7 @@ export let UNITS = {
       minDecimals: 2
     }
   },
-  pog1: {
+  "pog1": {
     toSatoshis: 1e8,
     full: {
       maxDecimals: 8,
@@ -242,7 +242,7 @@ export let UNITS = {
       minDecimals: 2
     }
   },
-  wde: {
+  "wde": {
     toSatoshis: 1e8,
     full: {
       maxDecimals: 8,
@@ -253,7 +253,7 @@ export let UNITS = {
       minDecimals: 2
     }
   },
-  mdxb: {
+  "mdxb": {
     toSatoshis: 1e8,
     full: {
       maxDecimals: 8,
@@ -275,7 +275,7 @@ export let UNITS = {
       minDecimals: 2
     }
   },
-  jwan: {
+  "jwan": {
     toSatoshis: 1e8,
     full: {
       maxDecimals: 8,
@@ -286,7 +286,7 @@ export let UNITS = {
       minDecimals: 2
     }
   },
-  tkf: {
+  "tkf": {
     toSatoshis: 1e8,
     full: {
       maxDecimals: 8,
@@ -308,7 +308,7 @@ export let UNITS = {
       minDecimals: 2
     }
   },
-  qmn: {
+  "qmn": {
     toSatoshis: 1e3,
     full: {
       maxDecimals: 3,
@@ -319,7 +319,7 @@ export let UNITS = {
       minDecimals: 2
     }
   },
-  mpe: {
+  "mpe": {
     toSatoshis: 1e8,
     full: {
       maxDecimals: 8,
@@ -330,7 +330,7 @@ export let UNITS = {
       minDecimals: 2
     }
   },
-  balisol: {
+  "balisol": {
     toSatoshis: 1e2,
     full: {
       maxDecimals: 2,

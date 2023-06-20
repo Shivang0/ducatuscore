@@ -1,8 +1,8 @@
 import { BchValidation } from './bch';
 import { BtcValidation } from './btc';
-import { EthValidation } from './eth';
 import { DucValidation } from './duc';
 import { DucxValidation } from './ducx';
+import { EthValidation } from './eth';
 import { XrpValidation } from './xrp';
 
 export interface IValidation {
