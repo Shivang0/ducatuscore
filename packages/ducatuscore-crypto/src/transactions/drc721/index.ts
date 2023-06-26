@@ -5,7 +5,7 @@ import { ERC721Abi } from './abi';
 export class DRC721TxProvider extends DUCXTxProvider {
   getERC721Contract(tokenContractAddress: string) {
     const web3 = new Web3();
-    //@ts-ignore
+    // @ts-ignore
     const contract = new web3.eth.Contract(ERC721Abi, tokenContractAddress);
     return contract;
   }
