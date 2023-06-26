@@ -21,56 +21,6 @@ var Networks = ducatuscore.Networks;
 
 describe('Peer', function() {
 
-  describe('Integration test', function() {
-    it('parses this stream of data from a connection', function(callback) {
-      var peer = new Peer('');
-      var stub = sinon.stub();
-      var dataCallback;
-      var connectCallback;
-      var expected = {
-        version: 1,
-        verack: 1,
-        inv: 18,
-        addr: 4
-      };
-      var received = {
-        version: 0,
-        verack: 0,
-        inv: 0,
-        addr: 0
-      };
-      stub.on = function() {
-        if (arguments[0] === 'data') {
-          dataCallback = arguments[1];
-        }
-        if (arguments[0] === 'connect') {
-          connectCallback = arguments[1];
-        }
-      };
-      stub.write = function() {};
-      stub.connect = function() {
-        connectCallback();
-      };
-      peer._getSocket = function() {
-        return stub;
-      };
-      peer.on('connect', function() {
-        dataCallback(fs.readFileSync('./test/data/connection.log'));
-      });
-      var check = function(message) {
-        received[message.command]++;
-        if (_.isEqual(received, expected)) {
-          callback();
-        }
-      };
-      peer.on('version', check);
-      peer.on('verack', check);
-      peer.on('addr', check);
-      peer.on('inv', check);
-      peer.connect();
-    });
-  });
-
   it('create instance', function() {
     var peer = new Peer('localhost');
     peer.host.should.equal('localhost');

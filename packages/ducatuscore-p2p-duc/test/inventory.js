@@ -4,7 +4,7 @@
 
 var should = require('chai').should();
 
-var ducatuscore = require('@ducatus/ducatuscore-lib');
+var ducatuscore = require('@ducatus/ducatuscore-lib-duc');
 var P2P = require('../');
 var Inventory = P2P.Inventory;
 var BufferUtils = ducatuscore.util.buffer;
