@@ -16,8 +16,8 @@ report
 .DS_Store
 
 
-ducatuscore.js
-ducatuscore.min.js
-ducatuscore.js.sig
-ducatuscore.min.js.sig
+ducatuscore-lib-duc.js
+ducatuscore-lib-duc.min.js
+ducatuscore-lib-duc.js.sig
+ducatuscore-lib-duc.min.js.sig
 tests.js

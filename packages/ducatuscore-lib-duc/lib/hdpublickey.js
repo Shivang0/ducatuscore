@@ -12,9 +12,9 @@ var Network = require('./networks');
 var Point = require('./crypto/point');
 var PublicKey = require('./publickey');
 
-var ducatuscoreErrors = require('./errors');
-var errors = ducatuscoreErrors;
-var hdErrors = ducatuscoreErrors.HDPublicKey;
+var ducatuscoreLibDucErrors = require('./errors');
+var errors = ducatuscoreLibDucErrors;
+var hdErrors = ducatuscoreLibDucErrors.HDPublicKey;
 var assert = require('assert');
 
 var JSUtil = require('./util/js');

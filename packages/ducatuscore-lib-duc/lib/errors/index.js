@@ -42,20 +42,20 @@ var traverseRoot = function(parent, errorsDefinition) {
 };
 
 
-var ducatuscore = {};
-ducatuscore.Error = function() {
+var ducatuscoreLibDuc = {};
+ducatuscoreLibDuc.Error = function() {
   this.message = 'Internal error';
   this.stack = this.message + '\n' + (new Error()).stack;
 };
-ducatuscore.Error.prototype = Object.create(Error.prototype);
-ducatuscore.Error.prototype.name = 'ducatuscore.Error';
+ducatuscoreLibDuc.Error.prototype = Object.create(Error.prototype);
+ducatuscoreLibDuc.Error.prototype.name = 'ducatuscoreLibDuc.Error';
 
 
 var data = require('./spec');
-traverseRoot(ducatuscore.Error, data);
+traverseRoot(ducatuscoreLibDuc.Error, data);
 
-module.exports = ducatuscore.Error;
+module.exports = ducatuscoreLibDuc.Error;
 
 module.exports.extend = function(spec) {
-  return traverseNode(ducatuscore.Error, spec);
+  return traverseNode(ducatuscoreLibDuc.Error, spec);
 };
