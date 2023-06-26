@@ -1,5 +1,5 @@
-import * as async from 'async';
 import { DucatuscoreLib } from '@ducatus/ducatuscore-crypto';
+import * as async from 'async';
 import _ from 'lodash';
 import { IChain, INotificationData } from '..';
 import { Common } from '../../common';

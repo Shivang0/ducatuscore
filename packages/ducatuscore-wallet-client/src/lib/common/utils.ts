@@ -1,10 +1,10 @@
 'use strict';
 
 import {
+  Deriver,
   DucatuscoreLib,
   DucatuscoreLibCash,
   DucatuscoreLibDuc,
-  Deriver,
   Transactions
 } from '@ducatus/ducatuscore-crypto';
 
@@ -334,7 +334,7 @@ export class Utils {
     opts = opts || {};
 
     var u = Constants.UNITS[unit];
-    var precision = opts.fullPrecision ? 'full' : 'short';
+    var precision: string = opts.fullPrecision ? 'full' : 'short';
     var decimals = opts.decimals ? opts.decimals[precision] : u[precision];
     var toSatoshis = opts.toSatoshis ? opts.toSatoshis : u.toSatoshis;
     var amount = clipDecimals(

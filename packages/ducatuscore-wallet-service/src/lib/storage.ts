@@ -679,7 +679,7 @@ export class Storage {
     });
 
     cursor.on('end', () => {
-      logger.log(`Migration to cash address of ${walletId} Finished`);
+      logger.info(`Migration to cash address of ${walletId} Finished`);
       return this.clearWalletCache(walletId, cb);
     });
 

@@ -1,5 +1,5 @@
 {
-  "name": "ducatuscore-client",
+  "name": "@ducatus/ducatuscore-client",
   "description": "Wallet client for Ducatuscore node",
   "version": "10.0.0",
   "main": "./ts_build/index.js",

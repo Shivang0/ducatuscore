@@ -28,8 +28,5 @@
   "dependencies": {
     "@ducatus/ducatuscore-lib": "^10.0.0",
     "unorm": "^1.4.1"
-  },
-  "peerDependencies": {
-    "@ducatus/ducatuscore-lib": "*"
   }
 }

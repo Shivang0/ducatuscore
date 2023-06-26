@@ -1,11 +1,9 @@
 import _ from 'lodash';
-import { findConfig } from '../../utils/findConfig';
-const config = findConfig();
 
 module.exports = {
   name: 'Ducatus',
   url:
-    config && config.productionMode
+   process.env.MODE === 'prod'
       ? 'https://rates.ducatuscoins.com/api/v1/rates/'
       : 'https://ducexpl.rocknblock.io/api/v1/rates/',
   parseFn(raw) {

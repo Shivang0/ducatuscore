@@ -1,6 +1,7 @@
 import * as DucatuscoreLib from '@ducatus/ducatuscore-lib';
 import * as DucatuscoreLibCash from '@ducatus/ducatuscore-lib-cash';
 import * as DucatuscoreLibDuc from '@ducatus/ducatuscore-lib-duc';
+import { Constants } from './constants';
 import Web3 from 'web3';
 import Deriver from './derivation';
 import Transactions from './transactions';
@@ -12,5 +13,6 @@ export {
   Deriver,
   Transactions,
   Validation,
-  Web3
+  Web3,
+  Constants
 };

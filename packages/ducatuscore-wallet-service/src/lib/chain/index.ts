@@ -3,8 +3,8 @@ import { ITxProposal, IWallet, TxProposal } from '../model';
 import { WalletService } from '../server';
 import { BchChain } from './bch';
 import { BtcChain } from './btc';
-import { EthChain } from './eth';
 import { DucxChain } from './ducx';
+import { EthChain } from './eth';
 import { XrpChain } from './xrp';
 
 const Constants = Common.Constants;

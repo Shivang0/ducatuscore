@@ -2,9 +2,10 @@ import * as async from 'async';
 import * as crypto from 'crypto'
 import * as _ from 'lodash';
 import moment from 'moment';
-import logger from './logger';
 import 'source-map-support/register';
+import logger from './logger';
 
+import { Validation } from '@ducatus/ducatuscore-crypto';
 import { BlockChainExplorer } from './blockchainexplorer';
 import { V8 } from './blockchainexplorers/v8';
 import { ChainService } from './chain/index';
@@ -14,6 +15,7 @@ import { FiatRateService } from './fiatrateservice';
 import { Lock } from './lock';
 import { MessageBroker } from './messagebroker';
 import {
+  Advertisement,
   Copayer,
   INotification,
   ITxProposal,
@@ -28,7 +30,6 @@ import {
   Wallet
 } from './model';
 import { Storage } from './storage';
-import { Validation } from '@ducatus/ducatuscore-crypto';
 
 const config = require('../config');
 const Uuid = require('uuid');
@@ -3767,7 +3768,7 @@ export class WalletService implements IWalletService {
 
     this.getExchangerTxs(coin, network, tx_hashes, (err, swappedTxs = []) => {
       if (err) {
-        log.error(`getExchangerTxs is failed. Coin: ${coin} Network: ${network} ${err} `);
+        logger.error(`getExchangerTxs is failed. Coin: ${coin} Network: ${network} ${err} `);
         return cb(null, txs);
       }
 

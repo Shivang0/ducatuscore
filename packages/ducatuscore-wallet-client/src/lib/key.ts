@@ -2,9 +2,9 @@
 
 var $ = require('preconditions').singleton();
 import {
+  Deriver,
   DucatuscoreLib,
   DucatuscoreLibCash,
-  Deriver,
   Transactions
 } from '@ducatus/ducatuscore-crypto';
 import * as _ from 'lodash';

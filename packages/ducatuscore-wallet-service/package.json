@@ -78,7 +78,8 @@
     "ts-node": "^8.0.3",
     "tslint": "^5.14.0",
     "typescript": "^4.9.4",
-    "typescript-eslint-parser": "^22.0.0"
+    "typescript-eslint-parser": "^22.0.0",
+    "big.js": "^6.1.1"
   },
   "ducatuscoreNode": "./ducatuscorenode"
 }
