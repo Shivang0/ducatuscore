@@ -178,13 +178,13 @@ export class DucxChain implements IChain {
             } else if (inGasLimit) {
               output.gasLimit = inGasLimit;
             } else if (opts.tokenAddress) {
-              output.gasLimit = Defaults.DEFAULT_DRC20_GAS_LIMIT;
+              output.gasLimit = Defaults.DEFAULT_DUCX_ERC20_GAS_LIMIT;
             } else {
               output.gasLimit = Defaults.DEFAULT_DUCX_GAS_LIMIT;
             }
           } catch (err) {
             if (opts.tokenAddress) {
-              output.gasLimit = Defaults.DEFAULT_DRC20_GAS_LIMIT;
+              output.gasLimit = Defaults.DEFAULT_DUCX_ERC20_GAS_LIMIT;
             } else if (opts.isContractCall) {
               output.gasLimit = Defaults.DEFAULT_DUCX_CONTRACT_GAS_LIMIT;
             } else {
@@ -229,7 +229,7 @@ export class DucxChain implements IChain {
     const isERC20 = tokenAddress && !payProUrl;
     const isERC721 = isERC20 && tokenId;
 
-    let chain = isERC721 ? 'ERC721' : isERC20 ? 'DRC20' : 'DUCX';
+    let chain = isERC721 ? 'DUCXERC721' : isERC20 ? 'DUCXERC20' : 'DUCX';
 
     const recipients = outputs.map(output => {
       return {
@@ -281,7 +281,7 @@ export class DucxChain implements IChain {
   }
 
   getDefaultGasLimit(opts) {
-    let defaultGasLimit = opts.tokenAddress ? Defaults.DEFAULT_DRC20_GAS_LIMIT : Defaults.DEFAULT_DUCX_GAS_LIMIT;
+    let defaultGasLimit = opts.tokenAddress ? Defaults.DEFAULT_DUCX_ERC20_GAS_LIMIT : Defaults.DEFAULT_DUCX_GAS_LIMIT;
     return defaultGasLimit;
   }
 
@@ -457,7 +457,7 @@ export class DucxChain implements IChain {
     let multisigContractAddress;
     let address;
     let amount;
-    if (tx.abiType && tx.abiType.type === 'DRC20') {
+    if (tx.abiType && tx.abiType.type === 'ERC20') {
       tokenAddress = tx.to;
       address = Web3.utils.toChecksumAddress(tx.abiType.params[0].value);
       amount = tx.abiType.params[1].value; 

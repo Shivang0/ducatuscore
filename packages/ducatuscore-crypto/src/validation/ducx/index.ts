@@ -7,7 +7,7 @@ export class DucxValidation extends EthValidation {
       return false;
     }
     const address = this.extractAddress(addressUri);
-    const ducxPrefix = /ducx/i.exec(addressUri);
+    const ducxPrefix = /ducatusx/i.exec(addressUri);
     return !!ducxPrefix && utils.isAddress(address);
   }
 

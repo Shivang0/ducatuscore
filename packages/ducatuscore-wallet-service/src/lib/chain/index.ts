@@ -94,7 +94,7 @@ class ChainProxy {
         // default to eth if it's an ETH ERC20 or if we don't know the chain
         normalizedChain = 'eth';
       } else if (
-        Constants.DUCATUSCORE_SUPPORTED_DUCX_DRC20[normalizedChain.toUpperCase()] ||
+        Constants.DUCATUSCORE_SUPPORTED_DUCX_ERC20[normalizedChain.toUpperCase()] ||
         !Constants.CHAINS[normalizedChain.toUpperCase()]
       ) {
         // default to eth if it's an ETH ERC20 or if we don't know the chain

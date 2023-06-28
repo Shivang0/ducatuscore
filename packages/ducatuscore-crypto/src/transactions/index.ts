@@ -1,7 +1,7 @@
 import { BCHTxProvider } from './bch';
 import { BTCTxProvider } from './btc';
-import { DRC20TxProvider } from './drc20';
-import { DRC721TxProvider } from './drc721';
+import { DUCXERC20TxProvider } from './ducx-erc20';
+import { DUCXERC721TxProvider } from './ducx-erc721';
 import { DUCTxProvider } from './duc';
 import { DUCXTxProvider } from './ducx';
 import { ERC20TxProvider } from './erc20';
@@ -17,8 +17,8 @@ const providers = {
   ETHMULTISIG: new ETHMULTISIGTxProvider(),
   DUC: new DUCTxProvider(),
   DUCX: new DUCXTxProvider(),
-  DRC20: new DRC20TxProvider(),
-  DRC721: new DRC721TxProvider(),
+  DUCXERC20: new DUCXERC20TxProvider(),
+  DUCXERC721: new DUCXERC721TxProvider(),
   XRP: new XRPTxProvider()
 };
 

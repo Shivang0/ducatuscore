@@ -9,7 +9,8 @@ export const Paths = {
   },
   DUC: {
     mainnet: "m/44'/0'/",
-    livenet: "m/44'/0'/"
+    livenet: "m/44'/0'/",
+    testnet: "m/44'/0'/"
   },
   ETH: {
     mainnet: "m/44'/60'/",

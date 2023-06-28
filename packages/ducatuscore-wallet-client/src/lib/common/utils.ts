@@ -46,7 +46,7 @@ export class Utils {
         // default to eth if it's an ETH ERC20 or if we don't know the chain
         normalizedChain = 'eth';
       } else if (
-        Constants.DUCATUSCORE_SUPPORTED_DUCX_DRC20.includes(normalizedChain) ||
+        Constants.DUCATUSCORE_SUPPORTED_DUCX_ERC20.includes(normalizedChain) ||
         !Constants.CHAINS.includes(normalizedChain)
       ) {
         normalizedChain = 'ducx';
@@ -494,9 +494,7 @@ export class Utils {
         : isMULTISIG
           ? chainName + 'MULTISIG'
           : isERC20
-            ? chainName.toLowerCase() === 'ducx'
-              ? chainName + 'DRC20'
-              : chainName + 'ERC20'
+            ? chainName + 'ERC20'
             : chainName;
 
       if (multiSendContractAddress) {

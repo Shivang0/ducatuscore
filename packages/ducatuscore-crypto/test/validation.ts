@@ -10,14 +10,16 @@ describe('Address Validation', () => {
   // BCH
   const bchAddress = 'qr8uujscckc56ancdkmqnyyl2rx6pnp24gmdfrf8qd';
   const bchTestLegacyAddress = 'mms6yCDGo3fDdapguTSMtCyF9XGfWJpD6H';
+  // DUC
+  const ducAddress = 'LvCJKhuwKUaHUgkR43zxHQgws7gvYj779h';
+
+  // DUCX
+  const ducxAddress = 'f2431991Da05A2816B8Fc441B2C224B85cAaACDb';
+  const prefixDucxAddress = '0xf2431991Da05A2816B8Fc441B2C224B85cAaACDb';
 
   // ETH
   const ethAddress = '37d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08A';
   const prefixEthAddress = '0x37d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08A';
-
-  // DUCX
-  const ducxAddress = '37d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08A';
-  const prefixDucxAddress = '0x37d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08A';
 
   // XRP
   const xrpAddress = 'rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh';
@@ -25,7 +27,10 @@ describe('Address Validation', () => {
   // Uri
   const btcUri = 'bitcoin:1NuKwkDtCymgA1FNLUBaUWLD8s4kdKWvgn';
   const bchUri = 'bitcoincash:pp8skudq3x5hzw8ew7vzsw8tn4k8wxsqsv0lt0mf3g';
-
+  const ducUri = 'ducatus:LvCJKhuwKUaHUgkR43zxHQgws7gvYj779h';
+  const ducxUri = 'ducatusx:0xf2431991Da05A2816B8Fc441B2C224B85cAaACDb';
+  const ducxUriParams = 'ducatusx:0xf2431991Da05A2816B8Fc441B2C224B85cAaACDb?value=123&gasPrice=123&gas=123&gasLimit=123';
+  const ducxUriSingleParam = 'ducatusx:0xf2431991Da05A2816B8Fc441B2C224B85cAaACDb?value=123';
   const ethUri = 'ethereum:0x37d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08A';
   const ethUriParams = 'ethereum:0x37d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08A?value=123&gasPrice=123&gas=123&gasLimit=123';
   const ethUriSingleParam = 'ethereum:0x37d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08A?value=123';
@@ -34,24 +39,22 @@ describe('Address Validation', () => {
   const xrpUri = 'ripple:rEqj9WKSH7wEkPvWf6b4gCi26Y3F7HbKUF';
   const xrpUriParams = 'ripple:rEqj9WKSH7wEkPvWf6b4gCi26Y3F7HbKUF?amount=123456&dt=123456';
   const xrpUriSingleParam = 'ripple:rEqj9WKSH7wEkPvWf6b4gCi26Y3F7HbKUF?amount=123456';
-  const ducxUri = 'ducx:0x37d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08A';
-  const ducxUriParams = 'ducx:0x37d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08A?value=123&gasPrice=123&gas=123&gasLimit=123';
-  const ducxUriSingleParam = 'ducx:0x37d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08A?value=123';
 
   // Invalid Address
   const invalidBtcAddress = '1NuKwkDtCymgA1FNLUBaUWLD8s4kKWvgn';
   const invalidBchAddress = 'r8uujscckc56ancdkmqnyyl2rx6pnp24gmdfrf8qd';
+  const invalidDucAddress = 'LYgDcZ3oW3aZBhZUyiC84fb99hyUPVxLw';
   const invalidEthAddress = '37d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08';
+  const invalidDucxAddress = '37d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08';
   const invalidXrpAddress = 'rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTH';
-  const invalidDucxAddress = '57d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08';
 
   // Invalid Uri
   const invalidEthPrefix = '0x37d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08A';
-  const invalidXrpPrefix = 'rEqj9WKSH7wEkPvWf6b4gCi26Y3F7HbKUF';
   const invalidDucxPrefix = '0x37d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08A';
+  const invalidXrpPrefix = 'rEqj9WKSH7wEkPvWf6b4gCi26Y3F7HbKUF';
   const invalidEthUriParams = 'ethereum:0x37d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08A?value=invalid&gasLimit=123&gas=123';
+  const invalidDucxUriParams = 'ducatusx:0x37d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08A?value=invalid&gasLimit=123&gas=123';
   const invalidXrpUriParams = 'ripple:rEqj9WKSH7wEkPvWf6b4gCi26Y3F7HbKUF?amount=invalid&dt=123';
-  const invalidDucxUriParams = 'ducx:0x37d7B3bBD88EFdE6a93cF74D2F5b0385D3E3B08A?value=invalid&gasLimit=123&gas=123';
 
   it('should be able to validate an BTC address', async () => {
     const isValidAddress = await Validation.validateAddress('BTC', 'mainnet', btcAddress);
@@ -67,6 +70,11 @@ describe('Address Validation', () => {
     expect(isValidTestLegacyAddress).to.equal(true);
   });
 
+  it('should be able to validate an DUC address', async () => {
+    const isValidAddress = await Validation.validateAddress('DUC', 'mainnet', ducAddress);
+    expect(isValidAddress).to.equal(true);
+  });
+
   it('should be able to validate an ETH address', async () => {
     const isValidAddress = await Validation.validateAddress('ETH', 'mainnet', ethAddress);
     const isValidPrefixAddress = await Validation.validateAddress('ETH', 'mainnet', prefixEthAddress);
@@ -74,16 +82,16 @@ describe('Address Validation', () => {
     expect(isValidPrefixAddress).to.equal(true);
   });
 
-  it('should be able to validate an XRP address', async () => {
-    const isValidAddress = await Validation.validateAddress('XRP', 'mainnet', xrpAddress);
-    expect(isValidAddress).to.equal(true);
-  });
-
   it('should be able to validate an DUCX address', async () => {
     const isValidAddress = await Validation.validateAddress('DUCX', 'mainnet', ducxAddress);
     const isValidPrefixAddress = await Validation.validateAddress('DUCX', 'mainnet', prefixDucxAddress);
     expect(isValidAddress).to.equal(true);
     expect(isValidPrefixAddress).to.equal(true);
+  });
+
+  it('should be able to validate an XRP address', async () => {
+    const isValidAddress = await Validation.validateAddress('XRP', 'mainnet', xrpAddress);
+    expect(isValidAddress).to.equal(true);
   });
 
   it('should be able to validate an BTC Uri', async () => {
@@ -100,6 +108,11 @@ describe('Address Validation', () => {
     expect(isValidTestUri).to.equal(true);
   });
 
+  it('should be able to validate an DUC Uri', async () => {
+    const isValidUri = await Validation.validateUri('DUC', ducUri);
+    expect(isValidUri).to.equal(true);
+  });
+
   it('should be able to validate an ETH Uri', async () => {
     const isValidUri = await Validation.validateUri('ETH', ethUri);
     const isValidUriParams = await Validation.validateUri('ETH', ethUriParams);
@@ -109,19 +122,19 @@ describe('Address Validation', () => {
     expect(isValidUriSingleParam).to.equal(true);
   });
 
-  it('should be able to validate an XRP Uri', async () => {
-    const isValidUri = await Validation.validateUri('XRP', xrpUri);
-    const isValidUriParams = await Validation.validateUri('XRP', xrpUriParams);
-    const isValidUriSingleParam = await Validation.validateUri('XRP', xrpUriSingleParam);
+  it('should be able to validate an DUCX Uri', async () => {
+    const isValidUri = await Validation.validateUri('DUCX', ducxUri);
+    const isValidUriParams = await Validation.validateUri('DUCX', ducxUriParams);
+    const isValidUriSingleParam = await Validation.validateUri('DUCX', ducxUriSingleParam);
     expect(isValidUri).to.equal(true);
     expect(isValidUriParams).to.equal(true);
     expect(isValidUriSingleParam).to.equal(true);
   });
 
-  it('should be able to validate an DUCX Uri', async () => {
-    const isValidUri = await Validation.validateUri('DUCX', ducxUri);
-    const isValidUriParams = await Validation.validateUri('DUCX', ducxUriParams);
-    const isValidUriSingleParam = await Validation.validateUri('DUCX', ducxUriSingleParam);
+  it('should be able to validate an XRP Uri', async () => {
+    const isValidUri = await Validation.validateUri('XRP', xrpUri);
+    const isValidUriParams = await Validation.validateUri('XRP', xrpUriParams);
+    const isValidUriSingleParam = await Validation.validateUri('XRP', xrpUriSingleParam);
     expect(isValidUri).to.equal(true);
     expect(isValidUriParams).to.equal(true);
     expect(isValidUriSingleParam).to.equal(true);
@@ -137,13 +150,13 @@ describe('Address Validation', () => {
     expect(inValidAddress).to.equal(false);
   });
 
-  it('should be able to invalidate an incorrect ETH address', async () => {
-    const inValidAddress = await Validation.validateAddress('ETH', 'mainnet', invalidEthAddress);
+  it('should be able to invalidate an incorrect DUC address', async () => {
+    const inValidAddress = await Validation.validateAddress('DUCX', 'mainnet', invalidDucAddress);
     expect(inValidAddress).to.equal(false);
   });
 
-  it('should be able to invalidate an incorrect XRP address', async () => {
-    const inValidAddress = await Validation.validateAddress('XRP', 'mainnet', invalidXrpAddress);
+  it('should be able to invalidate an incorrect ETH address', async () => {
+    const inValidAddress = await Validation.validateAddress('ETH', 'mainnet', invalidEthAddress);
     expect(inValidAddress).to.equal(false);
   });
 
@@ -152,14 +165,29 @@ describe('Address Validation', () => {
     expect(inValidAddress).to.equal(false);
   });
 
+  it('should be able to invalidate an incorrect XRP address', async () => {
+    const inValidAddress = await Validation.validateAddress('XRP', 'mainnet', invalidXrpAddress);
+    expect(inValidAddress).to.equal(false);
+  });
+
   it('should be able to invalidate incorrect ETH Uri params', async () => {
     const inValidEthUri = await Validation.validateUri('ETH', invalidEthUriParams);
     expect(inValidEthUri).to.equal(false);
   });
 
+  it('should be able to invalidate incorrect DUCX Uri params', async () => {
+    const inValidDucxUri = await Validation.validateUri('DUCX', invalidDucxUriParams);
+    expect(inValidDucxUri).to.equal(false);
+  });
+
   it('should be able to invalidate ETH URI without ethereum prefix', async () => {
     const inValidEthPrefix = await Validation.validateUri('ETH', invalidEthPrefix);
     expect(inValidEthPrefix).to.equal(false);
+  });
+
+  it('should be able to invalidate DUCX URI without ethereum prefix', async () => {
+    const inValidDucxPrefix = await Validation.validateUri('DUCX', invalidDucxPrefix);
+    expect(inValidDucxPrefix).to.equal(false);
   });
 
   it('should be able to invalidate incorrect XRP Uri params', async () => {
@@ -170,15 +198,5 @@ describe('Address Validation', () => {
   it('should be able to invalidate XRP URI without ripple prefix', async () => {
     const inValidXrpPrefix = await Validation.validateUri('XRP', invalidXrpPrefix);
     expect(inValidXrpPrefix).to.equal(false);
-  });
-
-  it('should be able to invalidate incorrect DUCX Uri params', async () => {
-    const inValidDucxUri = await Validation.validateUri('DUCX', invalidDucxUriParams);
-    expect(inValidDucxUri).to.equal(false);
-  });
-
-  it('should be able to invalidate DUCX URI without ethereum prefix', async () => {
-    const inValidDucxPrefix = await Validation.validateUri('DUCX', invalidDucxPrefix);
-    expect(inValidDucxPrefix).to.equal(false);
   });
 });

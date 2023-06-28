@@ -1,10 +1,6 @@
 import { ethers } from 'ethers';
-import Web3 from 'web3';
-import { AbiItem } from 'web3-utils';
 import { Key } from '../../derivation';
-import { ERC20Abi } from '../erc20/abi';
 const utils = require('web3-utils');
-const { toBN } = Web3.utils;
 
 export class DUCXTxProvider {
   create(params: {
@@ -29,9 +25,11 @@ export class DUCXTxProvider {
         break;
     }
 
-    const { recipients, nonce, gasPrice, data, gasLimit, chainId = 0x6773 } = params;
+    const { recipients, nonce, gasPrice, data, gasLimit, network } = params;
+    let { chainId } = params;
+    chainId = chainId || this.getChainId(network);
     const { address, amount } = recipients[0];
-
+    
     const txData = {
       nonce: utils.toHex(nonce),
       gasLimit: utils.toHex(gasLimit),
@@ -44,6 +42,20 @@ export class DUCXTxProvider {
       chainId
     };
     return ethers.utils.serializeTransaction(txData);
+  }
+
+  getChainId(network: string) {
+    let chainId = 0x6773;
+    switch (network) {
+      case 'testnet':
+        chainId = 0x6772;
+        break;
+      case 'livenet':
+      case 'mainnet':
+        chainId = 0x6773;
+        break;
+    }
+    return chainId;
   }
 
   getSignatureObject(params: { tx: string; key: Key }) {

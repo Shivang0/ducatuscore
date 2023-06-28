@@ -62,7 +62,7 @@ export const Constants = {
     USDT: 'usdt'
   },
 
-  DUCATUSCORE_SUPPORTED_DUCX_DRC20: {
+  DUCATUSCORE_SUPPORTED_DUCX_ERC20: {
     JAMASY: 'jamasy',
     NUYASA: 'nuyasa',
     SUNOBA: 'sunoba',
