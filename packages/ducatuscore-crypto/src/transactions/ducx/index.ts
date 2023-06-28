@@ -29,7 +29,7 @@ export class DUCXTxProvider {
     let { chainId } = params;
     chainId = chainId || this.getChainId(network);
     const { address, amount } = recipients[0];
-    
+
     const txData = {
       nonce: utils.toHex(nonce),
       gasLimit: utils.toHex(gasLimit),

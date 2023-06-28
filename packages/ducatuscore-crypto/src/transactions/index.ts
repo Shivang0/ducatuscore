@@ -1,9 +1,9 @@
 import { BCHTxProvider } from './bch';
 import { BTCTxProvider } from './btc';
-import { DUCXERC20TxProvider } from './ducx-erc20';
-import { DUCXERC721TxProvider } from './ducx-erc721';
 import { DUCTxProvider } from './duc';
 import { DUCXTxProvider } from './ducx';
+import { DUCXERC20TxProvider } from './ducx-erc20';
+import { DUCXERC721TxProvider } from './ducx-erc721';
 import { ERC20TxProvider } from './erc20';
 import { ETHTxProvider } from './eth';
 import { ETHMULTISIGTxProvider } from './eth-multisig';
