@@ -60,7 +60,7 @@ describe('Wallet', function() {
     it('create BE keys based on xPubkeys', function() {
       var w = Wallet.fromObj(testWallet);
       var a = w.updateBEKeys();
-      w.beAuthPrivateKey2.should.be.equal('7272c172cf48c6306153aa9d7eaa5397bbf71b076a41deaf43e4a194fc76212c');
+      w.beAuthPrivateKey2.should.be.equal('ce7f00c9f245b8a4be1bf9eaff852cf5022d90efbc2df684bbe786b3954438df');
     });
 
     it('key should change depending on the network', function() {
@@ -68,7 +68,7 @@ describe('Wallet', function() {
       t.isTestnet = true;
       var w = Wallet.fromObj(t);
       var a = w.updateBEKeys();
-      w.beAuthPrivateKey2.should.be.equal('de469a81d1df982765044c65ab3cedae0edebaca6a17e29e9addbe71b0cec6e5');
+      w.beAuthPrivateKey2.should.be.equal('5176ada210cdccfad8fa50097563b9276ab35a444cb3f320c46ad0e40c3f41d3');
     });
 
     it('key should depend on xpubs', function() {
@@ -77,7 +77,7 @@ describe('Wallet', function() {
       t.copayers[0].xPubKey = 'xpub661MyMwAqRbcF3Q3BRNic47PusMzQbG3TDmxKJJT2k7vGLg7STrmdfYporfSgmCefUkLDnaQrMrVZf9knKBR9bYkwQxCaEpK611mZV8VNkN';
       var w = Wallet.fromObj(t);
       var a = w.updateBEKeys();
-      w.beAuthPrivateKey2.should.be.equal('16c34ae1b6b6176fb7972204d7aed37494a65878d58928ea8a1331b9995aa7a3');
+      w.beAuthPrivateKey2.should.be.equal('1f5039bbf839d2a2ae1dd30d51a90384d195e392ee8d7e586a1cabcaba8d5b7e');
     });
 
 
