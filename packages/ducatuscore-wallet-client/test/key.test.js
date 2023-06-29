@@ -272,9 +272,9 @@ describe('Key', function() {
         'xprv9s21ZrQH143K2TjT3rF4m5AJcMvCetfQbVjFEx1Rped8qzcMJwbqxv21k3ftL69z7n3gqvvHthkdzbW14gxEFDYQdrRQMub3XdkJyt3GGGc'
       );
       c.xPubKey.should.equal(
-        'xpub6DUean44k773kxbUq8QpSmAPFaNCpk5AzrxbFRAMsNCZBGD15XQVnRJCgNd8GtJVmDyDZh89NPZz1XPQeX5w6bAdLGfSTUuPDEQwBgKxfh1'
+        'xpub6Ct3fiN9qBPfZq6jevhveChexRv4hoF7Nr5XqQ8HjTgV4TfuBXjvzT3Y8on5GonRjdQQ9aq4pGhG2W7nX3jAG7EngJaFVtm6oKmavWJxvHC'
       );
-      c.copayerId.should.equal('bad66ef88ad8dec08e36d576c29b4f091d30197f04e166871e64bf969d08a958');
+      c.copayerId.should.equal('b5f25a2ee9181a18c4335e8247116181a5eeb92ef22cabcce580d3ef3b1fb458');
       c.network.should.equal('livenet');
       c.personalEncryptingKey.should.equal('M4MTmfRZaTtX6izAAxTpJg==');
       should.not.exist(c.walletPrivKey);
@@ -311,7 +311,7 @@ describe('Key', function() {
           n: 1
         });
         c.xPubKey.should.equal(
-          'xpub6CUtFEwZKBEyX6xF4ECdJdfRBBo69ufVgmRpy7oqzWJBSadSZ3vaqvCPNFsarga4UWcgTuoDQL7ZnpgWkUVUAX3oc7ej8qfLEuhMALGvFwX'
+          'xpub6DKPocSjZquomKB9gy9ojtdrDqXvrR4F6JF2zFPGd26NoZw8pq3bd3WZZ3Ax9hReZ6ifKgYfNYyHbmZJcXSurt6BGGaQMeY6L5qQv8HNJeT'
         );
       });
 
@@ -354,9 +354,9 @@ describe('Key', function() {
   describe('#derive', function() {
     it('should derive extended private key from master livenet', function() {
       var c = new Key({ seedType: 'extendedPrivateKey', seedData: 'xprv9s21ZrQH143K3zLpjtB4J4yrRfDTEfbrMa9vLZaTAv5BzASwBmA16mdBmZKpMLssw1AzTnm31HAD2pk2bsnZ9dccxaLD48mRdhtw82XoiBi' });
-      var xpk = c.derive(null, "m/44'/0'/0'").toString();
+      var xpk = c.derive(null, "m/44'/1025'/0'").toString();
       xpk.should.equal(
-        'xprv9xud2WztGSSBPDPDL9RQ3rG3vucRA4BmEnfAdP76bTqtkGCK8VzWjevLw9LsdqwH1PEWiwcjymf1T2FLp12XjwjuCRvcSBJvxDgv1BDTbWY'
+        'xprv9z67bozjdZ1sWeY4P745o8Us8TfqnmK5yEr2mhiK5f33cCa2goaxXNuJdz76qKW4XHtKVyiWYwG3iDtEWZx3DM5jn1nKN1D52GL6CynoHRg'
       );
     });
     it('should derive extended private key from master BIP48 livenet', function() {
@@ -423,7 +423,7 @@ describe('Key', function() {
         coin: 'btc',
         n: 1
       });
-      path.should.equal("m/44'/0'/0'");
+      path.should.equal("m/44'/1025'/0'");
     });
     it('should return path for testnet account 2', function() {
       var c = new Key({ seedType: 'extendedPrivateKey', seedData: 'xprv9s21ZrQH143K3zLpjtB4J4yrRfDTEfbrMa9vLZaTAv5BzASwBmA16mdBmZKpMLssw1AzTnm31HAD2pk2bsnZ9dccxaLD48mRdhtw82XoiBi' });
@@ -470,8 +470,8 @@ describe('Key', function() {
         network: 'livenet',
         n: 1
       });
-      c.copayerId.should.equal('4abffe3e0e52a4cec11ebf966675cb526566919a8a0d5de36d9b2898ee804a58');
-      c1.copayerId.should.equal('911867838cffffc2bbd05e519f1932d56c49b93a908136ce7a17b70573c1c428');
+      c.copayerId.should.equal('c96180f66597775cf28484ee8386627f3d68080fd55a3c9c928e99955b31dfc5');
+      c1.copayerId.should.equal('6e59f47935272d253676ea0b23de48be046cafca310dd0462d11ed5ea608faea');
       c2.copayerId.should.equal('dc9577aa5054563f31047463e25ec52f96c5b1fa93c4b567f2329eb6a66517d0');
     });
 
@@ -484,7 +484,7 @@ describe('Key', function() {
         network: 'livenet',
         n: 1
       });
-      c.copayerId.should.equal('af4e120530f26ffa834739b0eb030093c881bf73f8f893fc6837823325da83f2');
+      c.copayerId.should.equal('d03c75cfd378a286d62723eadfcdba6e35ef4f0e94fb536175e7728a8dfcd989');
 
       var c2 = k.createCredentials(null, {
         coin: 'btc',

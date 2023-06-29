@@ -289,7 +289,7 @@ export class API extends EventEmitter {
       )
         return false;
 
-      xpriv = xpriv.deriveChild("m/44'/0'/0'");
+      xpriv = xpriv.deriveChild("m/44'/1025'/0'");
       if (
         xpriv.toString() !=
         'xprv9xpXFhFpqdQK3TmytPBqXtGSwS3DLjojFhTGht8gwAAii8py5X6pxeBnQ6ehJiyJ6nDjWGJfZ95WxByFXVkDxHXrqu53WCRGypk2ttuqncb'

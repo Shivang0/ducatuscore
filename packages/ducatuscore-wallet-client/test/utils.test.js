@@ -277,7 +277,7 @@ describe('Utils', () => {
   describe('#getProposalHash', () => {
     it('should compute hash for old style proposals', () => {
       var hash = Utils.getProposalHash('msj42CCGruhRsFrGATiUuh25dtxYtnpbTx', 1234, 'the message');
-      hash.should.equal('msj42CCGruhRsFrGATiUuh25dtxYtnpbTx|1234|the message|');
+      hash.should.equal('msj42CCGruhRsFrGATiUuh25dtxYtnpbTx|1234|the message');
     });
     it('should compute hash for arbitrary proposal', () => {
       var header1 = {
