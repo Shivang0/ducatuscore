@@ -4,6 +4,7 @@ import { WalletService } from '../server';
 import { BchChain } from './bch';
 import { BtcChain } from './btc';
 import { DucxChain } from './ducx';
+import { DucChain } from './duc';
 import { EthChain } from './eth';
 import { XrpChain } from './xrp';
 
@@ -71,6 +72,7 @@ const chains: { [chain: string]: IChain } = {
   BCH: new BchChain(),
   ETH: new EthChain(),
   DUCX: new DucxChain(),
+  DUC: new DucChain(),
   XRP: new XrpChain()
 };
 

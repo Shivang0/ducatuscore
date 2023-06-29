@@ -24,7 +24,7 @@ const CUSTOM_TOKENS = ['0x0d8775f648430679a709e98d2b0cb6250d2887ef'];
 
 describe('Push notifications', function() {
   this.timeout(5000);
-  var server, wallet, requestStub, getTokenDataStub, pushNotificationsService, walletId;
+  var server, wallet, requestStub, pushNotificationsService, walletId;
 
 
 
@@ -812,7 +812,6 @@ describe('Push notifications', function() {
             pushNotificationsService = new PushNotificationsService();
             requestStub = sinon.stub(pushNotificationsService, '_makeRequest').callsFake(()=>{});
             requestStub.yields();
-            getTokenDataStub = sinon.stub(pushNotificationsService, 'getTokenData').callsFake(()=>TestData.OneInch_ETH_Tokens.tokens);
             pushNotificationsService.start({
               lockOpts: {},
               messageBroker: server.messageBroker,
