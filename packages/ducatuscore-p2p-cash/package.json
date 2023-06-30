@@ -7,7 +7,7 @@
     "test": "gulp test",
     "coverage": "gulp coverage",
     "build": "gulp",
-    "pub": "npm run build && npm publish"
+    "pub": "npm publish --access public"
   },
   "dependencies": {
     "@ducatus/ducatuscore-lib": "^10.0.0",

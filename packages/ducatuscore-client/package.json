@@ -10,7 +10,7 @@
   "scripts": {
     "build": "npm run compile",
     "clean": "rm -rf ./ts_build",
-    "pub": "npm run compile && npm  publish",
+    "pub": "npm run compile && npm publish --access public",
     "watch": "tsc --watch",
     "compile": "npm run clean && tsc",
     "test": "mocha ./test/unit",

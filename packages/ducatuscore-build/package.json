@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "gulp test",
-    "pub": "npm  publish"
+    "pub": "npm  publish --access public"
   },
   "dependencies": {
     "@kollavarsham/gulp-coveralls": "^0.2.2",

@@ -1,5 +1,5 @@
 {
-  "name": "ductuscore-node",
+  "name": "@ducatus/ducatuscore-node",
   "description": "A blockchain indexing node with extended capabilities using ducatuscore",
   "engines": {
     "node": ">=18.0.0"

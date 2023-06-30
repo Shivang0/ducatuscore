@@ -9,7 +9,6 @@
     "watch": "./node_modules/.bin/lerna run watch --parallel",
     "postinstall": "npm run bootstrap && npm run compile",
     "bootstrap": "./node_modules/.bin/lerna bootstrap",
-    "insight:build": "cd ./packages/insight && npm i && npm run build",
     "node": "cd packages/ducatuscore-node && npm start",
     "dws": "cd packages/ducatuscore-wallet-service && npm start",
     "compile": "./node_modules/.bin/lerna run compile",
@@ -21,19 +20,13 @@
     "test:ducatuscore-wallet": "cd ./packages/ducatuscore-wallet && npm run test",
     "test:ducatuscore-crypto": "cd ./packages/ducatuscore-crypto && npm run test",
     "test:ducatuscore-node": "cd ./packages/ducatuscore-node && npm run test",
-    "test:ducatuscore-node:coverage": "cd ./packages/ducatuscore-node && npm run coverage",
-    "test:ducatuscore-node:int": "cd ./packages/ducatuscore-node && npm run test:integration",
     "test:ducatuscore-lib": "cd ./packages/ducatuscore-lib && npm run test",
     "test:ducatuscore-lib-duc": "cd ./packages/ducatuscore-lib-duc && npm run test",
     "test:ducatuscore-lib-cash": "cd ./packages/ducatuscore-lib-cash && npm run test",
     "test:ducatuscore-p2p": "cd ./packages/ducatuscore-p2p && npm run test",
     "test:ducatuscore-p2p-duc": "cd ./packages/ducatuscore-p2p-duc && npm run test",
     "test:ducatuscore-p2p-cash": "cd ./packages/ducatuscore-p2p-cash && npm run test",
-    "test:ducatuscore-mnemonic": "cd ./packages/ducatuscore-mnemonic && npm run test",
-    "lerna:ci:all": "npx lerna run test:ci --concurrency 1 --stream",
-    "lerna:ci:unit": "npx run test:ci:unit --concurrency 1 --stream",
-    "lerna:ci:integration": "npx run test:ci:integration --concurrency 1 --stream",
-    "lerna:ci:coverage": "npx run coverage --concurrency 1 --stream"
+    "test:ducatuscore-mnemonic": "cd ./packages/ducatuscore-mnemonic && npm run test"
   },
   "config": {
     "commitizen": {
