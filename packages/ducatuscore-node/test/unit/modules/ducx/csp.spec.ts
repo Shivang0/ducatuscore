@@ -10,7 +10,7 @@ import { mockModel } from '../../../helpers';
 
 describe('DUCX Chain State Provider', function() {
   const chain = 'DUCX';
-  const network = 'regtest';
+  const network = 'testnet';
 
   it('should be able to get web3', async () => {
     const sandbox = sinon.createSandbox();

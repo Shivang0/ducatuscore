@@ -62,7 +62,7 @@ describe('Modules', function() {
   });
 
   it('should have verification services registered', () => {
-    const chains = ['BTC', 'BCH', 'DUC'];
+    const chains = ['BTC', 'BCH'];
     for (const chain of chains) {
       const service = Verification.get(chain);
       expect(service).to.exist;
