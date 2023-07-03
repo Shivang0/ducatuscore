@@ -3,23 +3,23 @@ lines?=1000
 compose_dws=sudo docker compose -f docker-compose.dws.yml
 compose_node=sudo docker compose -f docker-compose.node.yml
 
-build-tws:
+build-dws:
 	$(compose_dws) up --build -d
 
-stop-tws:
+stop-dws:
 	$(compose_dws) stop
 
-restart-tws:
+restart-dws:
 	$(compose_dws) stop
 	$(compose_dws) up -d
 
-logs-tws:
+logs-dws:
 	$(compose_dws) logs -f --tail=$(lines)
 
-down-tws:
+down-dws:
 	$(compose_dws) down
 
-destroy-tws:
+destroy-dws:
 	$(compose_dws) down -v
 
 
