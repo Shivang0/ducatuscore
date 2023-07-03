@@ -19,7 +19,7 @@ function builder(options) {
   options.BlockHeader = options.BlockHeader || ducatuscore.BlockHeader;
   options.Transaction = options.Transaction || ducatuscore.Transaction;
   options.MerkleBlock = options.MerkleBlock || ducatuscore.MerkleBlock;
-  options.protocolVersion = options.protocolVersion || 70001;
+  options.protocolVersion = options.protocolVersion || 70002;
 
   var exported = {
     constructors: {

@@ -20,7 +20,7 @@ var Inventory = p2p.Inventory;
 var Block = ducatuscore.Block;
 var Transaction = ducatuscore.Transaction;
 
-// config 
+// config
 var network = process.env.NETWORK === 'testnet' ? Networks.testnet : Networks.livenet;
 var messages = new Messages({
   network: network
