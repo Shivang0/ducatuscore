@@ -3,12 +3,10 @@ services:
   database-dws:
     image: mongo:5.0
     restart: always
-    ports: 
-    - 27018:27017
     networks:
       - ducatuscore-dws-network
     volumes: 
-    - ./.dws_db:/data/dws_db
+      - ./.dws_db:/data/dws_db
 
   ducatuscore-messagebroker:
     build: .
@@ -65,7 +63,7 @@ services:
       - database-dws
       - ducatuscore-messagebroker
     ports:
-      - 3232:3232
+      - 3233:3232
     environment:
       - DB_HOST=database-dws
       - MSG_HOST=ducatuscore-messagebroker
