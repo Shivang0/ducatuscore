@@ -21,7 +21,7 @@ services:
     ports:
       - 3380:3380
     env_file: .env
-    command: 'node ./packages/ducatuscore-service/ts_build/messagebroker/messagebroker.js'
+    command: 'node ./packages/ducatuscore-wallet-service/ts_build/messagebroker/messagebroker.js'
     
   ducatuscore-emailservice:
     build: .
@@ -36,7 +36,7 @@ services:
       - DB_HOST=database-dws
       - MSG_HOST=ducatuscore-messagebroker
     env_file: .env
-    command: 'node ./packages/ducatuscore-service/ts_build/emailservice/emailservice.js'
+    command: 'node ./packages/ducatuscore-wallet-service/ts_build/emailservice/emailservice.js'
 
   ducatuscore-fiatrateservice:
     build: .
@@ -51,7 +51,7 @@ services:
       - DB_HOST=database-dws
       - MSG_HOST=ducatuscore-messagebroker
     env_file: .env
-    command: 'node ./packages/ducatuscore-service/ts_build/fiatrateservice/fiatrateservice.js'
+    command: 'node ./packages/ducatuscore-wallet-service/ts_build/fiatrateservice/fiatrateservice.js'
 
   ducatuscore-dws:
     build: .
@@ -70,7 +70,7 @@ services:
     networks:
       - ducatuscore-dws-network
     env_file: .env
-    command: 'node ./packages/ducatuscore-service/ts_build/dws.js'
+    command: 'node ./packages/ducatuscore-wallet-service/ts_build/dws.js'
 
   # ducatuscore-pushnotificationsservice:
   #   build: .
@@ -83,7 +83,7 @@ services:
   #     - DB_HOST=database-dws
   #     - MSG_HOST=ducatuscore-messagebroker
   #   env_file: .env
-  #   command: 'node ./packages/ducatuscore-service/ts_build/pushnotificationsservice/pushnotificationsservice.js'
+  #   command: 'node ./packages/ducatuscore-wallet-service/ts_build/pushnotificationsservice/pushnotificationsservice.js'
 
   # ducatuscore-bcmonitor:
   #   build: .
@@ -96,7 +96,7 @@ services:
   #     - DB_HOST=ducatuscoree-dws
   #     - MSG_HOST=ducatuscore-messagebroker
   #   env_file: .env
-  #   command: 'node ./packages/ducatuscore-service/ts_build/bcmonitor/bcmonitor.js'
+  #   command: 'node ./packages/ducatuscore-wallet-service/ts_build/bcmonitor/bcmonitor.js'
 
 networks:
   ducatuscore-dws-network:
