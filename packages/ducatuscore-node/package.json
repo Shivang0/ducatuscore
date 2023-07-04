@@ -80,7 +80,7 @@
     "@ducatus/ducatuscore-lib-cash": "^10.0.0",
     "@ducatus/ducatuscore-lib-duc": "^10.0.0",
     "@ducatus/ducatuscore-p2p": "^10.0.0",
-    "@ducatus/ducatuscore-p2p-duc": "^10.0.0",
+    "@ducatus/ducatuscore-p2p-duc": "^10.0.1",
     "@ducatus/ducatuscore-p2p-cash": "^10.0.0",
     "@ducatus/ducatuscore-wallet-client": "^10.0.0",
     "body-parser": "1.18.3",

@@ -1,6 +1,6 @@
 {
   "name": "@ducatus/ducatuscore-p2p-duc",
-  "version": "10.0.0",
+  "version": "10.0.1",
   "description": "Interface to the bitcoin P2P network for ducatuscore",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "test:ci": "npm run test",
     "coverage": "gulp coverage",
     "build": "gulp",
-    "pub": "npm run build && npm publish --access public"
+    "pub": "npm publish --access public"
   },
   "dependencies": {
     "@ducatus/ducatuscore-lib-duc": "^10.0.0",
