@@ -19,7 +19,7 @@ services:
     networks:
       - ducatuscore-dws-network
     ports:
-      - 3380:3380
+      - 3381:3380
     env_file: .env
     command: 'node ./packages/ducatuscore-wallet-service/ts_build/messagebroker/messagebroker.js'
     
