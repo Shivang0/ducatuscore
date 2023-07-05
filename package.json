@@ -17,7 +17,6 @@
     "precommit": "lerna run --concurrency 1 --stream precommit --since master",
     "test:ducatuscore-wallet-service": "cd ./packages/ducatuscore-wallet-service && npm run test",
     "test:ducatuscore-wallet-client": "cd ./packages/ducatuscore-wallet-client && npm run test",
-    "test:ducatuscore-wallet": "cd ./packages/ducatuscore-wallet && npm run test",
     "test:ducatuscore-crypto": "cd ./packages/ducatuscore-crypto && npm run test",
     "test:ducatuscore-node": "cd ./packages/ducatuscore-node && npm run test",
     "test:ducatuscore-lib": "cd ./packages/ducatuscore-lib && npm run test",
