@@ -43,10 +43,11 @@ const Ducatuscore = require('@ducatus/ducatuscore-lib');
 const Ducatuscore_ = {
   btc: Ducatuscore,
   bch: require('@ducatus/ducatuscore-lib-cash'),
-  duc: require('@ducatus/ducatuscore-lib-duc'),
   eth: Ducatuscore,
+  xrp: Ducatuscore,
   ducx: Ducatuscore,
-  xrp: Ducatuscore
+  duc: require('@ducatus/ducatuscore-lib-duc'),
+  
 };
 
 const Utils = Common.Utils;

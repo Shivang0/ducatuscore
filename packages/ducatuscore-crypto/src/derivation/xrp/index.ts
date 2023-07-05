@@ -1,7 +1,7 @@
+import DucatuscoreLib from '@ducatus/ducatuscore-lib';
 import rippleKeypairs from 'ripple-keypairs';
 import { IDeriver } from '..';
 
-import DucatuscoreLib from '@ducatus/ducatuscore-lib';
 
 export class XrpDeriver implements IDeriver {
   deriveAddress(network, xpubkey, addressIndex, isChange) {

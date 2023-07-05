@@ -1,5 +1,4 @@
 import { IDeriver } from '..';
-
 import utils from 'web3-utils';
 
 const DucatuscoreLib = require('@ducatus/ducatuscore-lib');

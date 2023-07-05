@@ -15,10 +15,10 @@ const Constants = Common.Constants,
 const Ducatuscore = {
   btc: require('@ducatus/ducatuscore-lib'),
   bch: require('@ducatus/ducatuscore-lib-cash'),
-  duc: require('@ducatus/ducatuscore-lib-duc'),
-  ducx: require('@ducatus/ducatuscore-lib'),
   eth: require('@ducatus/ducatuscore-lib'),
-  xrp: require('@ducatus/ducatuscore-lib')
+  xrp: require('@ducatus/ducatuscore-lib'),
+  ducx: require('@ducatus/ducatuscore-lib'),
+  duc: require('@ducatus/ducatuscore-lib-duc'),
 };
 
 export interface IWallet {

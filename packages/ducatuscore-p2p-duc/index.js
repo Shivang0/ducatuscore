@@ -1,4 +1,4 @@
-var ducatuscore = require('@ducatus/ducatuscore-lib-duc');
-ducatuscore.P2P = require('./lib');
+var ducatuscoreDuc = require('@ducatus/ducatuscore-lib-duc');
+ducatuscoreDuc.P2P = require('./lib');
 
-module.exports = ducatuscore.P2P;
+module.exports = ducatuscoreDuc.P2P;

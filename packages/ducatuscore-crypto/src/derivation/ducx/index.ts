@@ -1,5 +1,6 @@
 import utils from 'web3-utils';
-const DucatuscoreLib = require('@ducatus/ducatuscore-lib');
 import { EthDeriver } from '../eth';
+const DucatuscoreLib = require('@ducatus/ducatuscore-lib');
+
 
 export class DucxDeriver extends EthDeriver {}

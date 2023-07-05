@@ -1,8 +1,7 @@
 #!/usr/bin/env node
-
+import { Client } from '../lib//blockchainexplorers/v8/client';
 const request = require('request');
 const Ducatuscore = require('@ducatus/ducatuscore-lib');
-import { Client } from '../lib//blockchainexplorers/v8/client';
 
 const coin = process.argv[2];
 

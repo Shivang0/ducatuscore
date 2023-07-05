@@ -1,5 +1,5 @@
-const DucatuscoreLibDuc = require('@ducatus/ducatuscore-lib-duc');
 import { AbstractDucatuscoreLibDeriver } from '../btc';
+const DucatuscoreLibDuc = require('@ducatus/ducatuscore-lib-duc');
 
 export class DucDeriver extends AbstractDucatuscoreLibDeriver {
   ducatuscoreLib = DucatuscoreLibDuc;
