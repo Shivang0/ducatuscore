@@ -65,6 +65,7 @@ export class API extends EventEmitter {
   // Expose ducatuscore
   static Ducatuscore = CWC.DucatuscoreLib;
   static DucatuscoreCash = CWC.DucatuscoreLibCash;
+  static DucatuscoreDuc = CWC.DucatuscoreLibDuc;
 
   constructor(opts?) {
     super();
