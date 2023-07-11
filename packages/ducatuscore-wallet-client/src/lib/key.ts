@@ -8,7 +8,6 @@ import {
   Transactions
 } from '@ducatus/ducatuscore-crypto';
 import * as _ from 'lodash';
-import 'source-map-support/register';
 import { Constants, Utils } from './common';
 import { Credentials } from './credentials';
 
