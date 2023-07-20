@@ -8,7 +8,6 @@ import { Storage } from './storage';
 const $ = require('preconditions').singleton();
 const Defaults = Common.Defaults;
 const Constants = Common.Constants;
-const customCoins = ['duc', 'ducx'];
 
 export class FiatRateService {
   request: request.RequestAPI<any, any, any>;
@@ -61,38 +60,40 @@ export class FiatRateService {
   _fetch(cb?) {
     cb = cb || function() {};
     const coins = Object.values(Constants.DUCATUSCORE_SUPPORTED_COINS);
-    const provider = this.providers[0];
 
-    //    async.each(this.providers, (provider, next) => {
     async.each(
-      coins,
-      (coin, next2) => {
-        const provider = customCoins.includes(coin) ? this.providers[1] : this.providers[0];
-        if (customCoins.includes(coin)) {
-          logger.warn(`Get ${coin} from ${provider.url}`);
-        }
-
-        this._retrieve(provider, coin, (err, res) => {
-          if (err) {
-            logger.warn('Error retrieving data for %o: %o', provider.name + coin, err);
-            return next2();
-          }
-          this.storage.storeFiatRate(coin, res, err => {
-            if (err) {
-              logger.warn('Error storing data for %o: %o', provider.name, err);
-            }
-            return next2();
-          });
-        });
+      this.providers, 
+      (provider, next) => {
+        async.each(
+          coins,
+          (coin, next2) => {
+            this._retrieve(provider, coin, (err, res) => {
+              if (err) {
+                logger.warn('Error retrieving data for %o: %o', provider.name + coin, err);
+                return next2();
+              }
+              this.storage.storeFiatRate(coin, res, err => {
+                if (err) {
+                  logger.warn('Error storing data for %o: %o', provider.name, err);
+                }
+                return next2();
+              });
+            });
+          },
+          next
+        )
       },
-      //        next),
       cb
     );
   }
 
   _retrieve(provider, coin, cb) {
     logger.debug(`Fetching data for ${provider.name} / ${coin}`);
-    const url = customCoins.includes(coin) ? provider.url : provider.url + coin.toUpperCase();
+    
+    const isDucatusProvider = provider.name === 'Ducatus';
+    const url = isDucatusProvider 
+      ? provider.url 
+      : provider.url + coin.toUpperCase();
 
     const handleCoinsRates = (err, res) => {
       if (err || !res) {
@@ -105,7 +106,7 @@ export class FiatRateService {
         return cb(new Error('No parse function for provider ' + provider.name));
       }
       try {
-        const rates = _.filter(provider.parseFn(res), x => _.some(Defaults.FIAT_CURRENCIES, ['code', x.code]));
+        const rates = _.filter(provider.parseFn(res, coin), x => _.some(Defaults.FIAT_CURRENCIES, ['code', x.code]));
         return cb(null, rates);
       } catch (e) {
         return cb(e);
@@ -122,7 +123,7 @@ export class FiatRateService {
     }
     this.request.get(
       {
-        url: customCoins.includes(coin) ? provider.url : provider.url + coin.toUpperCase(),
+        url,
         json: true
       },
       (err, res, body) => handleCoinsRates(err, body)

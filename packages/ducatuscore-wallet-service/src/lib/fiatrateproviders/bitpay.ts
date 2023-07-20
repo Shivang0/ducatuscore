@@ -3,7 +3,7 @@ import _ from 'lodash';
 module.exports = {
   name: 'BitPay',
   url: 'https://bitpay.com/api/rates/',
-  parseFn(raw) {
+  parseFn(raw, coin) {
     const rates = _.compact(
       _.map(raw, d => {
         if (!d.code || !d.rate) return null;
