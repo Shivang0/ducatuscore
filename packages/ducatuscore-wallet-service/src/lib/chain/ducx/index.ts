@@ -1,36 +1,16 @@
 import { Transactions, Validation } from '@ducatus/ducatuscore-crypto';
 import { Web3 } from '@ducatus/ducatuscore-crypto';
-import { Big } from 'big.js';
 import _ from 'lodash';
 import { IAddress } from 'src/lib/model/address';
 import { IChain } from '..';
 import { Common } from '../../common';
 import { ClientError } from '../../errors/clienterror';
 import logger from '../../logger';
-import { ERC20Abi } from '../eth/abi-erc20';
-import { InvoiceAbi } from '../eth/abi-invoice';
 const { toBN } = Web3.utils;
 
 const Constants = Common.Constants;
 const Defaults = Common.Defaults;
 const Errors = require('../../errors/errordefinitions');
-
-function requireUncached(module) {
-  delete require.cache[require.resolve(module)];
-  return require(module);
-}
-
-const Erc20Decoder = requireUncached('abi-decoder');
-Erc20Decoder.addABI(ERC20Abi);
-function getErc20Decoder() {
-  return Erc20Decoder;
-}
-
-const InvoiceDecoder = requireUncached('abi-decoder');
-InvoiceDecoder.addABI(InvoiceAbi);
-function getInvoiceDecoder() {
-  return InvoiceDecoder;
-}
 
 export class DucxChain implements IChain {
   /**
@@ -40,7 +20,7 @@ export class DucxChain implements IChain {
    * @returns {Object} balance - Total amount & locked amount.
    */
   private convertDucatuscoreBalance(ducatuscoreBalance, locked) {
-    const { confirmed, balance } = ducatuscoreBalance;
+    const { unconfirmed, confirmed, balance } = ducatuscoreBalance;
     // we ASUME all locked as confirmed, for ETH.
     const convertedBalance = {
       totalAmount: balance,
@@ -90,7 +70,7 @@ export class DucxChain implements IChain {
       server.getPendingTxs(opts, (err, txps) => {
         if (err) return cb(err);
         // Do not lock eth multisig amount
-        const lockedSum =  _.sumBy(txps, 'amount') || 0;
+        const lockedSum = _.sumBy(txps, 'amount') || 0;
         const convertedBalance = this.convertDucatuscoreBalance(balance, lockedSum);
         server.storage.fetchAddresses(server.walletId, (err, addresses: IAddress[]) => {
           if (err) return cb(err);
@@ -113,24 +93,14 @@ export class DucxChain implements IChain {
   getWalletSendMaxInfo(server, wallet, opts, cb) {
     server.getBalance({}, (err, balance) => {
       if (err) return cb(err);
-
-      const availableAmount = new Big(balance.availableAmount);
-      const feePerKb = new Big(opts.feePerKb);
-      const fee = feePerKb
-        .times(Defaults.DEFAULT_DUCX_GAS_LIMIT)
-        .toNumber()
-        .toFixed();
-      const amount = availableAmount
-        .minus(fee)
-        .toNumber()
-        .toFixed();
-
+      const { totalAmount, availableAmount } = balance;
+      let fee = opts.feePerKb * Defaults.MIN_DUCX_GAS_LIMIT;
       return cb(null, {
         utxosBelowFee: 0,
         amountBelowFee: 0,
-        amount: Number(amount),
+        amount: availableAmount - fee,
         feePerKb: opts.feePerKb,
-        fee: Number(fee)
+        fee
       });
     });
   }
@@ -214,8 +184,13 @@ export class DucxChain implements IChain {
   }
 
   getDucatuscoreTx(txp, opts = { signed: true }) {
-    const { data, outputs, payProUrl, tokenAddress, tokenId } = txp;
-    const isERC20 = tokenAddress && !payProUrl;
+    const {
+      data,
+      outputs,
+      tokenAddress,
+      tokenId
+    } = txp;
+    const isERC20 = tokenAddress;
     const isERC721 = isERC20 && tokenId;
 
     let chain = isERC721 ? 'DUCXERC721' : isERC20 ? 'DUCXERC20' : 'DUCX';
@@ -235,14 +210,12 @@ export class DucxChain implements IChain {
     const unsignedTxs = [];
 
     for (let index = 0; index < recipients.length; index++) {
-      const rawTx = Transactions.create({
-        ...txp,
+      let params = {
         ...recipients[index],
-        chain,
         nonce: Number(txp.nonce) + Number(index),
         recipients: [recipients[index]]
-      });
-      unsignedTxs.push(rawTx);
+      };
+      unsignedTxs.push(Transactions.create({ ...txp, chain, ...params }));
     }
 
     let tx = {
@@ -295,15 +268,14 @@ export class DucxChain implements IChain {
 
   selectTxInputs(server, txp, wallet, opts, cb) {
     server.getBalance(
-      { wallet, tokenAddress: opts.tokenAddress },
+      { wallet, tokenAddress: opts.tokenAddress},
       (err, balance) => {
         if (err) return cb(err);
 
         const { totalAmount, availableAmount } = balance;
 
         const txpTotalAmount = txp.getTotalAmount(opts);
-        const txTotalAmountAndFee = new Big(txpTotalAmount).plus(txp.fee || 0).toNumber();
-        
+
         if (totalAmount < txpTotalAmount) {
           return cb(Errors.INSUFFICIENT_FUNDS);
         } else if (availableAmount < txpTotalAmount) {
@@ -333,13 +305,7 @@ export class DucxChain implements IChain {
               )
             );
           } else {
-            if (totalAmount < txTotalAmountAndFee) {
-              return cb(Errors.INSUFFICIENT_FUNDS);
-            } else if (availableAmount < txTotalAmountAndFee) {
-              return cb(Errors.LOCKED_FUNDS);
-            } else {
-              return cb(this.checkTx(txp));
-            }
+            return cb(this.checkTx(txp));
           }
         }
       }
@@ -406,7 +372,7 @@ export class DucxChain implements IChain {
       throw new Error('Signatures Required');
     }
 
-    const chain = 'ETH'; // TODO use lowercase always to avoid confusion
+    const chain = 'DUCX'; // TODO use lowercase always to avoid confusion
     const unsignedTxs = tx.uncheckedSerialize();
     const signedTxs = [];
     for (let index = 0; index < signatures.length; index++) {
@@ -449,7 +415,7 @@ export class DucxChain implements IChain {
     if (tx.abiType && tx.abiType.type === 'ERC20') {
       tokenAddress = tx.to;
       address = Web3.utils.toChecksumAddress(tx.abiType.params[0].value);
-      amount = tx.abiType.params[1].value; 
+      amount = tx.abiType.params[1].value;
     } else {
       address = tx.to;
       amount = tx.value;

@@ -10072,7 +10072,7 @@ describe('Wallet service', function() {
       sandbox.restore();
     })
 
-   it('should fail with different error for ERC20 txs with insufficient DUcx to cover miner fee', function(done) {
+   it('should fail with different error for ERC20 txs with insufficient DUCX to cover miner fee', function(done) {
       const ts = TO_SAT['usdc'];
       server.createAddress({}, from => {
         helpers.stubUtxos(server, wallet, [1, 1], { tokenAddress: TOKENS[0] }, function() {
