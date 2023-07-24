@@ -159,67 +159,56 @@ export class DucxChain implements IChain {
         let gasPrice = inFeePerKb;
         const { from } = opts;
         const { coin, network } = wallet;
-        let inGasLimit;
+        let inGasLimit = 0; // Per recepient gas limit
+        let gasLimit = 0; // Gas limit for all recepients. used for contract interactions that rollup recepients
+        let fee = 0;
+        const defaultGasLimit = this.getDefaultGasLimit(opts);
+        let outputAddresses = []; // Parameter for MuliSend contract
+        let outputAmounts = []; // Parameter for MuliSend contract
+        let totalValue = toBN(0); // Parameter for MuliSend contract
 
         for (let output of opts.outputs) {
-          try {
-            inGasLimit = await server.estimateGas({
-              coin,
-              network,
-              from,
-              to: opts.tokenAddress || output.toAddress,
-              value: opts.tokenAddress ? 0 : output.amount,
-              data: output.data,
-              gasPrice
-            });
-
-            if (opts.isContractCall) {
-              output.gasLimit = Defaults.DEFAULT_DUCX_CONTRACT_GAS_LIMIT;
-            } else if (inGasLimit) {
-              output.gasLimit = inGasLimit;
-            } else if (opts.tokenAddress) {
-              output.gasLimit = Defaults.DEFAULT_DUCX_ERC20_GAS_LIMIT;
-            } else {
-              output.gasLimit = Defaults.DEFAULT_DUCX_GAS_LIMIT;
+          if (opts.multiSendContractAddress) {
+            outputAddresses.push(output.toAddress);
+            outputAmounts.push(toBN(output.amount));
+            if (!opts.tokenAddress) {
+              totalValue = totalValue.add(toBN(output.amount));
             }
-          } catch (err) {
-            if (opts.tokenAddress) {
-              output.gasLimit = Defaults.DEFAULT_DUCX_ERC20_GAS_LIMIT;
-            } else if (opts.isContractCall) {
-              output.gasLimit = Defaults.DEFAULT_DUCX_CONTRACT_GAS_LIMIT;
-            } else {
-              output.gasLimit = Defaults.DEFAULT_DUCX_GAS_LIMIT;
+            inGasLimit += output.gasLimit ? output.gasLimit : defaultGasLimit;
+            continue;
+          } else if (!output.gasLimit) {
+            try {
+              const to = opts.tokenAddress
+                ? opts.tokenAddress
+                : opts.multisigContractAddress
+                ? opts.multisigContractAddress
+                : output.toAddress;
+              const value = opts.tokenAddress || opts.multisigContractAddress ? 0 : output.amount;
+              inGasLimit = await server.estimateGas({
+                coin,
+                network,
+                from,
+                to,
+                value,
+                data: output.data,
+                gasPrice
+              });
+              output.gasLimit = inGasLimit || defaultGasLimit;
+            } catch (err) {
+              output.gasLimit = defaultGasLimit;
             }
+          } else {
+            inGasLimit = output.gasLimit;
           }
+          if (_.isNumber(opts.fee)) {
+            // This is used for sendmax
+            gasPrice = feePerKb = Number((opts.fee / (inGasLimit || defaultGasLimit)).toFixed());
+          }
+          gasLimit = inGasLimit || defaultGasLimit;
+          fee += feePerKb * gasLimit;
         }
 
-        if (_.isNumber(opts.fee)) {
-          // This is used for sendmax
-          const nFee = new Big(opts.fee);
-          gasPrice = feePerKb = nFee
-            .div(inGasLimit || Defaults.DEFAULT_DUCX_GAS_LIMIT)
-            .toNumber()
-            .toFixed();
-        }
-
-        let gasLimit: number;
-
-        if (opts.isContractCall) {
-          gasLimit = Defaults.DEFAULT_DUCX_CONTRACT_GAS_LIMIT;
-        } else {
-          gasLimit = inGasLimit || Defaults.DEFAULT_DUCX_GAS_LIMIT;
-        }
-
-        opts.fee = new Big(feePerKb)
-          .times(gasLimit)
-          .toNumber()
-          .toFixed();
-
-        return resolve({
-          feePerKb: Number(feePerKb),
-          gasPrice: Number(gasPrice),
-          gasLimit: Number(gasLimit)
-        });
+        return resolve({ feePerKb, gasPrice, gasLimit, fee });
       });
     });
   }
