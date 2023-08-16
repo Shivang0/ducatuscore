@@ -54,8 +54,8 @@ const Config = () => {
 
     storageOpts: {
       mongoDb: {
-        uri: DB_HOST ? `mongodb://${DB_HOST}:27017/tws` : 'mongodb://localhost:27017/tws',
-        dbname: 'tws'
+        uri: DB_HOST ? `mongodb://${DB_HOST}:27017/dws` : 'mongodb://localhost:27017/dws',
+        dbname: 'dws'
       }
     },
     messageBrokerOpts: {
