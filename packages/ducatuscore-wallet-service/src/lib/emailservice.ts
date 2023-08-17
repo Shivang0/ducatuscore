@@ -257,6 +257,7 @@ export class EmailService {
       ducx: 'DUCX',
       xrp: 'XRP',
       usdc: 'USDC',
+      matic: 'MATIC',
       usdp: 'USDP',
       gusd: 'GUSD',
       busd: 'BUSD',

@@ -466,6 +466,7 @@ export class PushNotificationsService {
       duc: 'DUC',
       xrp: 'XRP',
       usdc: 'USDC',
+      matic: 'MATIC',
       usdp: 'USDP',
       gusd: 'GUSD',
       busd: 'BUSD',

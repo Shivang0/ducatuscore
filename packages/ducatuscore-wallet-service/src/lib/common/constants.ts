@@ -30,6 +30,7 @@ export const Constants = {
     WBTC: 'wbtc',
     EUROC: 'euroc',
     USDT: 'usdt',
+    MATIC: 'matic',
     JAMASY: 'jamasy',
     NUYASA: 'nuyasa',
     SUNOBA: 'sunoba',
@@ -48,7 +49,6 @@ export const Constants = {
 
   DUCATUSCORE_SUPPORTED_ETH_ERC20: {
     // backwards compatability
-    DUCX: 'ducx',
     USDC: 'usdc',
     USDP: 'usdp',
     PAX: 'pax', // backwards compatability
@@ -59,7 +59,8 @@ export const Constants = {
     SHIB: 'shib',
     APE: 'ape',
     EUROC: 'euroc',
-    USDT: 'usdt'
+    USDT: 'usdt',
+    MATIC: 'matic'
   },
 
   DUCATUSCORE_SUPPORTED_DUCX_ERC20: {

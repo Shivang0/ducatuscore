@@ -30,6 +30,7 @@ export const Constants = {
     'ducx',
     'xrp',
     'usdc',
+    'matic',
     'usdp',
     'pax', // backwards compatibility
     'gusd',
@@ -57,7 +58,6 @@ export const Constants = {
   ],
 
   DUCATUSCORE_SUPPORTED_ETH_ERC20: [
-    'ducx',
     'usdc',
     'pax',
     'gusd',
@@ -67,7 +67,8 @@ export const Constants = {
     'shib',
     'ape',
     'euroc',
-    'usdt'
+    'usdt',
+    'matic'
   ],
   DUCATUSCORE_SUPPORTED_DUCX_ERC20: [
     'jamasy',

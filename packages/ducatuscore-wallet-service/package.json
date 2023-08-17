@@ -1,7 +1,7 @@
 {
   "name": "@ducatus/ducatuscore-wallet-service",
   "description": "A service for Mutisig HD Bitcoin Wallets",
-  "version": "10.0.3",
+  "version": "10.0.4",
   "main": "ts_build/index.js",
   "types": "./ts_build/index.d.ts",
   "scripts": {
@@ -31,7 +31,7 @@
     "@ducatus/ducatuscore-lib-duc": "10.0.2",
     "body-parser": "1.19.0",
     "compression": "1.7.4",
-    "@ducatus/ducatuscore-crypto": "10.0.3",
+    "@ducatus/ducatuscore-crypto": "10.0.4",
     "email-validator": "1.2.3",
     "ethers": "4.0.0-beta.3",
     "express": "4.17.1",
