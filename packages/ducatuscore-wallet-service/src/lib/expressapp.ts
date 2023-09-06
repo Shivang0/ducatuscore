@@ -1468,6 +1468,30 @@ export class ExpressApp {
       });
     });
 
+    router.get('/v1/chains', (req, res) => {
+      getServerWithAuth(req, res, server => {
+        server.getChainsConfig({}, (err, data) => {
+          if (err) {
+            return returnError(err, res, req);
+          }
+          res.json(data);
+        });
+      });
+    });
+
+    router.get('/v1/chains/:chain/:network', (req, res) => {
+      const chain = req.params.chain;
+      const network = req.params.network;
+      getServerWithAuth(req, res, server => {
+        server.getChainsConfig({}, (err, data) => {
+          if (err) {
+            return returnError(err, res, req);
+          }
+          res.json(data?.[chain]?.[network]);
+        });
+      });
+    });
+
      this.app.use(opts.basePath || '/dws/api', router);
 
     if (config.staticRoot) {

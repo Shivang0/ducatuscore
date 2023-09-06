@@ -10,6 +10,7 @@ import { BlockChainExplorer } from './blockchainexplorer';
 import { V8 } from './blockchainexplorers/v8';
 import { ChainService } from './chain/index';
 import { Common } from './common';
+import { getNodeConfig } from './config/config';
 import { ClientError } from './errors/clienterror';
 import { FiatRateService } from './fiatrateservice';
 import { Lock } from './lock';
@@ -4643,6 +4644,20 @@ export class WalletService implements IWalletService {
         resolve(true);
       });
     });
+  }
+
+  /**
+   * Get chains config.
+   * @param {Object} opts
+   * @returns {Object} balance - Total amount & locked amount.
+   */
+  getChainsConfig(opts, cb) {
+    const foundConfig = getNodeConfig();
+    if (foundConfig) {
+      cb(null, foundConfig.chains);
+    } else {
+      cb(new Error('Node chains config is not found'));
+    }
   }
 }
 

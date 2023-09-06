@@ -82,7 +82,7 @@
     "@ducatus/ducatuscore-p2p": "10.0.2",
     "@ducatus/ducatuscore-p2p-duc": "10.0.3",
     "@ducatus/ducatuscore-p2p-cash": "10.0.2",
-    "@ducatus/ducatuscore-wallet-client": "10.0.6",
+    "@ducatus/ducatuscore-wallet-client": "10.0.7",
     "body-parser": "1.18.3",
     "cors": "2.8.4",
     "@ducatus/crypto-rpc": "^2.0.1",

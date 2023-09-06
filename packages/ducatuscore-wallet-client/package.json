@@ -1,7 +1,7 @@
 {
   "name": "@ducatus/ducatuscore-wallet-client",
   "description": "Client for ducatuscore-wallet-service",
-  "version": "10.0.6",
+  "version": "10.0.7",
   "main": "ts_build/index.js",
   "types": "ts_build/index.d.js",
   "engines": {
@@ -25,7 +25,7 @@
   "devDependencies": {
     "@types/lodash": "^4.14.136",
     "@types/node": "^18.11.18",
-    "@ducatus/ducatuscore-wallet-service": "10.0.4",
+    "@ducatus/ducatuscore-wallet-service": "10.0.5",
     "browserify": "^13.1.0",
     "chai": "^1.9.1",
     "coveralls": "^3.0.2",

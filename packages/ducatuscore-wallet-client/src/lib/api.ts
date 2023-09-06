@@ -3310,4 +3310,15 @@ export class API extends EventEmitter {
       });
     });
   }
+
+  getChains(cb) {
+    $.checkState(this.credentials && this.credentials.isComplete(), 'Failed state: this.credentials at <getChains()>');
+    $.checkArgument(cb);
+
+    this.request.get('/v1/chains/', (err, chains) => {
+      if (err) return cb(err);
+
+      return cb(null, chains);
+    });
+  }
 }
