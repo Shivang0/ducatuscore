@@ -261,7 +261,7 @@ export const Defaults = {
     bch: 10000 * 1000, // 10k sat/b
     eth: 1000000000000, // 50 Gwei,
     duc: 10000 * 1000, // 10k sat/b
-    ducx: 500000000000,
+    ducx: 50000000000000,
     xrp: 1000000000000
   },
 
