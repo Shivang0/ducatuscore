@@ -12,7 +12,8 @@ const {
   EXCHANGER_LIVENET_URL, 
   EXCHANGER_TESTNET_URL,
   DB_HOST, 
-  MSG_HOST
+  MSG_HOST,
+  FCM_KEY,
 } = process.env;
 const defaultMode = 'prod';
 const mode: 'prod' | 'dev' | 'local' = (MODE as 'prod' | 'dev' | 'local') || defaultMode;
@@ -123,9 +124,7 @@ const Config = () => {
       defaultUnit: 'btc',
       subjectPrefix: '',
       pushServerUrl: 'https://fcm.googleapis.com/fcm',
-      pushServerUrlBraze: 'https://rest.iad-05.braze.com',
-      authorizationKey: 'You_have_to_put_something_here',
-      authorizationKeyBraze: 'You_have_to_put_something_here'
+      authorizationKey: FCM_KEY,
     },
     fiatRateServiceOpts: {
       defaultProvider: 'BitPay',

@@ -1458,34 +1458,6 @@ export class Storage {
     );
   }
 
-  storePushNotificationBrazeSub(pushNotificationSub, cb) {
-    this.db.collection(collections.PUSH_NOTIFICATION_SUBS).replaceOne(
-      {
-        copayerId: pushNotificationSub.copayerId,
-        externalUserId: pushNotificationSub.externalUserId
-      },
-      pushNotificationSub,
-      {
-        w: 1,
-        upsert: true
-      },
-      cb
-    );
-  }
-
-  removePushNotificationBrazeSub(copayerId, externalUserId, cb) {
-    this.db.collection(collections.PUSH_NOTIFICATION_SUBS).deleteMany(
-      {
-        copayerId,
-        externalUserId
-      },
-      {
-        w: 1
-      },
-      cb
-    );
-  }
-
   streamActiveTxConfirmationSubs(copayerId: string, txids: string[]) {
     // This should only happens in certain tests.
     if (!this.db) {

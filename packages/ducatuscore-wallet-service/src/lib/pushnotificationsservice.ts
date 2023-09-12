@@ -68,10 +68,8 @@ export interface IPushNotificationService {
   defaultUnit: string;
   subjectPrefix: string;
   pushServerUrl: string;
-  pushServerUrlBraze: string;
   availableLanguages: string;
   authorizationKey: string;
-  authorizationKeyBraze: string;
   messageBroker: any;
 }
 
@@ -82,10 +80,8 @@ export class PushNotificationsService {
   defaultUnit: string;
   subjectPrefix: string;
   pushServerUrl: string;
-  pushServerUrlBraze: string;
   availableLanguages: string;
   authorizationKey: string;
-  authorizationKeyBraze: string;
   storage: Storage;
   messageBroker: any;
 
@@ -118,10 +114,8 @@ export class PushNotificationsService {
     this.subjectPrefix = opts.pushNotificationsOpts.subjectPrefix || '';
     this.pushServerUrl = opts.pushNotificationsOpts.pushServerUrl;
     this.authorizationKey = opts.pushNotificationsOpts.authorizationKey;
-    this.pushServerUrlBraze = opts.pushNotificationsOpts.pushServerUrlBraze;
-    this.authorizationKeyBraze = opts.pushNotificationsOpts.authorizationKeyBraze;
 
-    if (!this.authorizationKey && !this.authorizationKeyBraze)
+    if (!this.authorizationKey)
       return cb(new Error('Missing authorizationKey attribute in configuration.'));
 
     async.parallel(
@@ -306,19 +300,7 @@ export class PushNotificationsService {
               async.each(
                 notifications,
                 (notification: any, next) => {
-                  if (notification && notification.external_user_ids) {
-                    this._makeBrazeRequest(notification, (err, response) => {
-                      if (err) logger.error('An error occurred making a braze push notification request:' + err);
-                      if (response) {
-                        //                      logger.debug('Request status:  ' + response.statusCode);
-                        //                      logger.debug('Request message: ' + response.statusMessage);
-                        //                      logger.debug('Request body:  ' + response.request.body);
-                      }
-                      next();
-                    });
-
-                    // if external_user_ids is not set use old version firebase token
-                  } else if (notification && notification.to) {
+                  if (notification && notification.to) {
                     this._makeRequest(notification, (err, response) => {
                       if (err) logger.error('An error occurred making a firebase push notification request:' + err);
                       if (response) {
@@ -608,8 +590,6 @@ export class PushNotificationsService {
           _.reject(subs, sub => !sub.walletId || sub.token),
           'externalUserId'
         );
-        // if copayerid is associated to externalUserId use Braze subscriptions
-        // avoid multiple notifications
         const allSubs = allSubsWithExternalId.length > 0 ? allSubsWithExternalId : allSubsWithToken;
         logger.info(
           `Sending ${notification.type} [${notification.data.chain || notification.data.coin}/${
@@ -636,8 +616,6 @@ export class PushNotificationsService {
               _.reject(subscriptions, sub => !sub.walletId || sub.token),
               'externalUserId'
             );
-            // if copayerid is associated to externalUserId use Braze subscriptions
-            // avoid multiple notifications
             const allSubs = allSubsWithExternalId.length > 0 ? allSubsWithExternalId : allSubsWithToken;
             return next(err, allSubs);
           });
@@ -659,22 +637,6 @@ export class PushNotificationsService {
         headers: {
           'Content-Type': 'application/json',
           Authorization: 'key=' + this.authorizationKey
-        },
-        body: opts
-      },
-      cb
-    );
-  }
-
-  _makeBrazeRequest(opts, cb) {
-    this.request(
-      {
-        url: this.pushServerUrlBraze + '/messages/send',
-        method: 'POST',
-        json: true,
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + this.authorizationKeyBraze
         },
         body: opts
       },

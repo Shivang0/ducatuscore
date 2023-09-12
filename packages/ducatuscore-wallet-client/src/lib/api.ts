@@ -2245,7 +2245,7 @@ export class API extends EventEmitter {
   // * Subscribe to push notifications.
   // * @param {Object} opts
   // * @param {String} opts.type - Device type (ios or android).
-  // * @param {String} opts.externalUserId - Device token. // Braze
+  // * @param {String} opts.externalUserId - Device token. 
   // * @returns {Object} response - Status of subscription.
   // */
   pushNotificationsSubscribe(opts, cb) {
@@ -2258,7 +2258,7 @@ export class API extends EventEmitter {
 
   // /**
   // * Unsubscribe from push notifications.
-  // * @param {String} externalUserId - Device token. // Braze
+  // * @param {String} externalUserId - Device token.
   // * @return {Callback} cb - Return error if exists
   // */
   pushNotificationsUnsubscribe(externalUserId, cb) {

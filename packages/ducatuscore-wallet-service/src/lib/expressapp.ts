@@ -1357,15 +1357,6 @@ export class ExpressApp {
       });
     });
 
-    router.post('/v2/pushnotifications/subscriptions/', (req, res) => {
-      getServerWithAuth(req, res, server => {
-        server.pushNotificationsBrazeSubscribe(req.body, (err, response) => {
-          if (err) return returnError(err, res, req);
-          res.json(response);
-        });
-      });
-    });
-
     // DEPRECATED
     router.delete('/v1/pushnotifications/subscriptions/', (req, res) => {
       logDeprecated(req);
@@ -1389,18 +1380,6 @@ export class ExpressApp {
       };
       getServerWithAuth(req, res, server => {
         server.pushNotificationsUnsubscribe(opts, (err, response) => {
-          if (err) return returnError(err, res, req);
-          res.json(response);
-        });
-      });
-    });
-
-    router.delete('/v3/pushnotifications/subscriptions/:externalUserId', (req, res) => {
-      const opts = {
-        externalUserId: req.params['externalUserId']
-      };
-      getServerWithAuth(req, res, server => {
-        server.pushNotificationsBrazeUnsubscribe(opts, (err, response) => {
           if (err) return returnError(err, res, req);
           res.json(response);
         });
