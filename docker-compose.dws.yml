@@ -79,6 +79,8 @@ services:
     links:
       - database-dws
       - ducatuscore-messagebroker
+    networks:
+      - ducatuscore-dws-network
     environment:
       - DB_HOST=database-dws
       - MSG_HOST=ducatuscore-messagebroker
