@@ -119,7 +119,6 @@ const Config = () => {
       socketApiKey: 'socketApiKey'
     },
     pushNotificationsOpts: {
-      templatePath: 'templates',
       defaultLanguage: 'en',
       defaultUnit: 'btc',
       subjectPrefix: '',
