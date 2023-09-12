@@ -107,7 +107,7 @@ export class PushNotificationsService {
     };
 
     this.templatePath = path.normalize(
-      (opts.pushNotificationsOpts.templatePath || __dirname + '../../templates') + '/'
+      (opts.pushNotificationsOpts.templatePath || __dirname + '../../../templates') + '/'
     );
     this.defaultLanguage = opts.pushNotificationsOpts.defaultLanguage || 'en';
     this.defaultUnit = opts.pushNotificationsOpts.defaultUnit || 'btc';
