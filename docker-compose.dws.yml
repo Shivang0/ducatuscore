@@ -72,18 +72,18 @@ services:
     env_file: .env
     command: 'node ./packages/ducatuscore-wallet-service/ts_build/dws.js'
 
-  # ducatuscore-pushnotificationsservice:
-  #   build: .
-  #   restart: always
-  #   image: ducatuscore-pushnotificationsservice
-  #   links:
-  #     - database-dws
-  #     - ducatuscore-messagebroker
-  #   environment:
-  #     - DB_HOST=database-dws
-  #     - MSG_HOST=ducatuscore-messagebroker
-  #   env_file: .env
-  #   command: 'node ./packages/ducatuscore-wallet-service/ts_build/pushnotificationsservice/pushnotificationsservice.js'
+  ducatuscore-pushnotificationsservice:
+    build: .
+    restart: always
+    image: ducatuscore-pushnotificationsservice
+    links:
+      - database-dws
+      - ducatuscore-messagebroker
+    environment:
+      - DB_HOST=database-dws
+      - MSG_HOST=ducatuscore-messagebroker
+    env_file: .env
+    command: 'node ./packages/ducatuscore-wallet-service/ts_build/pushnotificationsservice/pushnotificationsservice.js'
 
   # ducatuscore-bcmonitor:
   #   build: .
