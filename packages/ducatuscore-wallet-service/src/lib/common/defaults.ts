@@ -319,5 +319,7 @@ export const Defaults = {
      { code: 'NZD', name: 'New Zealand Dollar' }
    ],
 
-  NEW_BLOCK_THROTTLE_TIME_MIN: 5
+  NEW_BLOCK_THROTTLE_TIME_MIN: 5,
+
+  DUCX_CONTRACTS: ['0xd62680378AdeD4277f74ac69fd1A4518586bDd08', '0x82019a24091bb67c53C558132E44e74E28aa1c75']
 };

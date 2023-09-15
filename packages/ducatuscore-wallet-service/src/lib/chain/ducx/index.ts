@@ -54,10 +54,7 @@ export class DucxChain implements IChain {
     const bc = server._getBlockchainExplorer(wallet.chain || wallet.coin, wallet.network);
 
     if (opts.tokenAddress) {
-      const isSwapContract = Boolean(
-        '0xd62680378AdeD4277f74ac69fd1A4518586bDd08' === opts.tokenAddress ||
-          '0x82019a24091bb67c53C558132E44e74E28aa1c75' === opts.tokenAddress
-      );
+      const isSwapContract = Defaults.DUCX_CONTRACTS.includes(opts.tokenAddress);
       if (!isSwapContract) {
         wallet.tokenAddress = opts.tokenAddress;
       }
@@ -69,7 +66,7 @@ export class DucxChain implements IChain {
       }
       server.getPendingTxs(opts, (err, txps) => {
         if (err) return cb(err);
-        // Do not lock eth multisig amount
+        // Do not lock ducx multisig amount
         const lockedSum = _.sumBy(txps, 'amount') || 0;
         const convertedBalance = this.convertDucatuscoreBalance(balance, lockedSum);
         server.storage.fetchAddresses(server.walletId, (err, addresses: IAddress[]) => {
@@ -243,8 +240,13 @@ export class DucxChain implements IChain {
   }
 
   getDefaultGasLimit(opts) {
-    let defaultGasLimit = opts.tokenAddress ? Defaults.DEFAULT_DUCX_ERC20_GAS_LIMIT : Defaults.DEFAULT_DUCX_GAS_LIMIT;
-    return defaultGasLimit;
+    if (opts.isContractCall) {
+      return Defaults.DEFAULT_DUCX_CONTRACT_GAS_LIMIT;
+    } else if (opts.tokenAddress) {
+      return Defaults.DEFAULT_DUCX_ERC20_GAS_LIMIT;
+    }
+
+    return Defaults.DEFAULT_DUCX_GAS_LIMIT;
   }
 
   convertFeePerKb(p, feePerKb) {

@@ -1,7 +1,7 @@
 {
   "name": "@ducatus/ducatuscore-wallet-service",
   "description": "A service for Mutisig HD Bitcoin Wallets",
-  "version": "10.0.6",
+  "version": "10.0.7",
   "main": "ts_build/index.js",
   "types": "./ts_build/index.d.ts",
   "scripts": {
