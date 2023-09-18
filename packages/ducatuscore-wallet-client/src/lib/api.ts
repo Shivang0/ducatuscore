@@ -2249,7 +2249,7 @@ export class API extends EventEmitter {
   // * @returns {Object} response - Status of subscription.
   // */
   pushNotificationsSubscribe(opts, cb) {
-    var url = '/v2/pushnotifications/subscriptions/';
+    var url = '/v1/pushnotifications/subscriptions/';
     this.request.post(url, opts, (err, response) => {
       if (err) return cb(err);
       return cb(null, response);
@@ -2262,7 +2262,7 @@ export class API extends EventEmitter {
   // * @return {Callback} cb - Return error if exists
   // */
   pushNotificationsUnsubscribe(externalUserId, cb) {
-    var url = '/v3/pushnotifications/subscriptions/' + externalUserId;
+    var url = '/v2/pushnotifications/subscriptions/' + externalUserId;
     this.request.delete(url, cb);
   }
 
