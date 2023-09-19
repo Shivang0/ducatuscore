@@ -60,8 +60,8 @@ export let ETH_TOKEN_OPTS = {
     address: '0x4d224452801aced8b2f0aebe155379bb5d594381'
   },
   '0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0': {
-    name: 'Ducx Token',
-    symbol: 'DUCX',
+    name: 'Matic Token',
+    symbol: 'MATIC',
     decimals: 18,
     address: '0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0'
   },
