@@ -90,7 +90,7 @@ export class BlockchainMonitor {
             ) {
               explorer = opts.blockchainExplorers[pair.chain][pair.network];
             } else {
-              let config: { url?: string; provider?: any } = {};
+              let config: { wsUrl?: string; provider?: any } = {};
               if (
                 opts.blockchainExplorerOpts &&
                 opts.blockchainExplorerOpts[pair.chain] &&
@@ -105,7 +105,7 @@ export class BlockchainMonitor {
                 provider: config.provider,
                 chain: pair.chain,
                 network: pair.network,
-                url: config.url,
+                url: config.wsUrl,
                 userAgent: WalletService.getServiceVersion()
               });
             }

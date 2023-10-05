@@ -2,13 +2,12 @@ import _ from 'lodash';
 import { logger } from './lib/logger';
 
 const { 
-  MODE, 
-  DUCX_NODE_PROD_URL, 
-  DUCX_NODE_DEV_URL, 
-  DUCX_NODE_LOCAL_URL, 
-  DUC_NODE_PROD_URL, 
-  DUC_NODE_DEV_URL, 
-  DUC_NODE_LOCAL_URL, 
+  DUCX_NODE_URL, 
+  DUC_NODE_URL,
+  DUCX_NODE_PROTOCOL,
+  DUC_NODE_PROTOCOL, 
+  DUCX_WS_NODE_PROTOCOL,
+  DUC_WS_NODE_PROTOCOL,
   EXCHANGER_LIVENET_URL, 
   EXCHANGER_TESTNET_URL,
   DB_HOST, 
@@ -16,18 +15,10 @@ const {
   FCM_KEY,
   SOCKET_API_KEY,
 } = process.env;
-const defaultMode = 'prod';
-const mode: 'prod' | 'dev' | 'local' = (MODE as 'prod' | 'dev' | 'local') || defaultMode;
-const ducxNode = {
-  prod: DUCX_NODE_PROD_URL || 'https://ducapi.rocknblock.io',
-  dev: DUCX_NODE_DEV_URL || 'http://localhost:3000',
-  local: DUCX_NODE_LOCAL_URL || 'http://localhost:3000'
-};
-const ducNode = {
-  prod: DUC_NODE_PROD_URL || 'https://ducapi.rocknblock.io',
-  dev: DUC_NODE_DEV_URL || 'http://localhost:3000',
-  local: DUC_NODE_LOCAL_URL || 'http://localhost:3000'
-};
+const ducxNode = `${DUCX_NODE_PROTOCOL}://${DUCX_NODE_URL}` || 'http://localhost:3000';
+const ducNode = `${DUC_NODE_PROTOCOL}://${DUC_NODE_URL}` || 'http://localhost:3000';
+const ducxNodeWs = `${DUCX_WS_NODE_PROTOCOL}://${DUCX_NODE_URL}` || 'ws://localhost:3000';
+const ducNodeWs = `${DUC_WS_NODE_PROTOCOL}://${DUC_NODE_URL}` || 'ws://localhost:3000';
 
 const Config = () => {
   let defaultConfig = {
@@ -69,52 +60,64 @@ const Config = () => {
     blockchainExplorerOpts: {
       btc: {
         livenet: {
-          url: 'https://api.bitcore.io'
+          url: 'https://api.bitcore.io',
+          wsUrl:'https://api.bitcore.io'
         },
         testnet: {
           url: 'https://api.bitcore.io',
+          wsUrl:'https://api.bitcore.io',
           regtestEnabled: false
         }
       },
       bch: {
         livenet: {
-          url: 'https://api.bitcore.io'
+          url: 'https://api.bitcore.io',
+          wsUrl:'https://api.bitcore.io'
         },
         testnet: {
-          url: 'https://api.bitcore.io'
+          url: 'https://api.bitcore.io',
+          wsUrl:'https://api.bitcore.io'
         }
       },
       eth: {
         livenet: {
-          url: 'https://api-eth.bitcore.io'
+          url: 'https://api-eth.bitcore.io',
+          wsUrl:'https://api-eth.bitcore.io'
         },
         testnet: {
-          url: 'https://api-eth.bitcore.io'
+          url: 'https://api-eth.bitcore.io',
+          wsUrl:'https://api-eth.bitcore.io'
         }
       },
       duc: {
         livenet: {
-          url: ducxNode[mode]
+          url: ducNode,
+          wsUrl: ducNodeWs
         },
         testnet: {
-          url: ducxNode[mode],
+          url: ducNode,
+          wsUrl: ducNodeWs,
           regtestEnabled: false
         }
       },
       ducx: {
         livenet: {
-          url: ducxNode[mode]
+          url: ducxNode,
+          wsUrl: ducxNodeWs
         },
         testnet: {
-          url: ducxNode[mode]
+          url: ducxNode,
+          wsUrl: ducxNodeWs
         }
       },
       xrp: {
         livenet: {
-          url: 'https://api-xrp.bitcore.io'
+          url: 'https://api-xrp.bitcore.io',
+          wsUrl:'https://api-xrp.bitcore.io'
         },
         testnet: {
-          url: 'https://api-xrp.bitcore.io'
+          url: 'https://api-xrp.bitcore.io',
+          wsUrl:'https://api-xrp.bitcore.io'
         }
       },
       socketApiKey: SOCKET_API_KEY,
