@@ -14,6 +14,7 @@ const {
   DB_HOST, 
   MSG_HOST,
   FCM_KEY,
+  SOCKET_API_KEY,
 } = process.env;
 const defaultMode = 'prod';
 const mode: 'prod' | 'dev' | 'local' = (MODE as 'prod' | 'dev' | 'local') || defaultMode;
@@ -116,7 +117,7 @@ const Config = () => {
           url: 'https://api-xrp.bitcore.io'
         }
       },
-      socketApiKey: 'socketApiKey'
+      socketApiKey: SOCKET_API_KEY,
     },
     pushNotificationsOpts: {
       defaultLanguage: 'en',

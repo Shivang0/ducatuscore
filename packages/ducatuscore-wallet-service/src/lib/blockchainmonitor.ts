@@ -64,12 +64,8 @@ export class BlockchainMonitor {
       [
         done => {
           this.explorers = {
-            btc: {},
-            bch: {},
-            eth: {},
             duc: {},
             ducx: {},
-            xrp: {}
           };
 
           const chainNetworkPairs = [];

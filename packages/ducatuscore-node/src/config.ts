@@ -79,7 +79,7 @@ const Config = function(): ConfigType {
       },
       p2p: {},
       socket: {
-        dwsKeys: []
+        dwsKeys: process.env.DWS_KEYS ? process.env.DWS_KEYS.split(',') : [],
       },
       storage: {}
     }
