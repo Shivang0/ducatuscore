@@ -1,4 +1,4 @@
-FROM node:18-bullseye
+FROM node:16.13.2
 
 RUN set -x \
     && node -v \
