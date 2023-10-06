@@ -4,27 +4,25 @@ import { logger } from './lib/logger';
 const { 
   DUCX_NODE_URL, 
   DUC_NODE_URL,
-  DUCX_NODE_PROTOCOL,
-  DUC_NODE_PROTOCOL, 
-  DUCX_WS_NODE_PROTOCOL,
-  DUC_WS_NODE_PROTOCOL,
   EXCHANGER_LIVENET_URL, 
   EXCHANGER_TESTNET_URL,
   DB_HOST, 
   MSG_HOST,
   FCM_KEY,
   SOCKET_API_KEY,
+  DWS_PORT,
+  MSG_PORT
 } = process.env;
-const ducxNode = `${DUCX_NODE_PROTOCOL}://${DUCX_NODE_URL}` || 'http://localhost:3000';
-const ducNode = `${DUC_NODE_PROTOCOL}://${DUC_NODE_URL}` || 'http://localhost:3000';
-const ducxNodeWs = `${DUCX_WS_NODE_PROTOCOL}://${DUCX_NODE_URL}` || 'ws://localhost:3000';
-const ducNodeWs = `${DUC_WS_NODE_PROTOCOL}://${DUC_NODE_URL}` || 'ws://localhost:3000';
+const ducxNode = `http://${DUCX_NODE_URL}` || 'http://localhost:3000';
+const ducNode = `http://${DUC_NODE_URL}` || 'http://localhost:3000';
+const ducxNodeWs = `ws://${DUCX_NODE_URL}` || 'ws://localhost:3000';
+const ducNodeWs = `ws://${DUC_NODE_URL}` || 'ws://localhost:3000';
 
 const Config = () => {
   let defaultConfig = {
     basePath: '/dws/api',
     disableLogs: false,
-    port: 3232,
+    port: DWS_PORT,
     exchangerUrl: {
       livenet: EXCHANGER_LIVENET_URL || 'https://www.ducatuscoins.com',
       testnet: EXCHANGER_TESTNET_URL || 'https://devducatus.rocknblock.io'
@@ -54,7 +52,7 @@ const Config = () => {
     messageBrokerOpts: {
       //  To use message broker server, uncomment this:
       messageBrokerServer: {
-        url: MSG_HOST ? `http://${MSG_HOST}:3380` : 'http://localhost:3380'
+        url: MSG_HOST ? `http://${MSG_HOST}:${MSG_PORT}` : 'http://localhost:3380'
       }
     },
     blockchainExplorerOpts: {

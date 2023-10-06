@@ -3,8 +3,7 @@ services:
   database-dws:
     image: mongo:5.0
     restart: always
-    networks:
-      - ducatuscore-dws-network
+    network_mode: "host"  
     volumes: 
       - ./.dws_db:/data/dws_db
 
@@ -12,14 +11,7 @@ services:
     build: .
     restart: always
     image: ducatuscore-messagebroker
-    links:
-      - database-dws
-    environment:
-      - DB_HOST=database-dws
-    networks:
-      - ducatuscore-dws-network
-    ports:
-      - 3381:3380
+    network_mode: "host"
     env_file: .env
     command: 'node ./packages/ducatuscore-wallet-service/ts_build/messagebroker/messagebroker.js'
     
@@ -27,14 +19,7 @@ services:
     build: .
     restart: always
     image: ducatuscore-emailservice
-    links:
-      - database-dws
-      - ducatuscore-messagebroker
-    networks:
-      - ducatuscore-dws-network
-    environment:
-      - DB_HOST=database-dws
-      - MSG_HOST=ducatuscore-messagebroker
+    network_mode: "host"  
     env_file: .env
     command: 'node ./packages/ducatuscore-wallet-service/ts_build/emailservice/emailservice.js'
 
@@ -42,14 +27,7 @@ services:
     build: .
     restart: always
     image: ducatuscore-fiatrateservice
-    links:
-      - database-dws
-      - ducatuscore-messagebroker
-    networks:
-      - ducatuscore-dws-network
-    environment:
-      - DB_HOST=database-dws
-      - MSG_HOST=ducatuscore-messagebroker
+    network_mode: "host"  
     env_file: .env
     command: 'node ./packages/ducatuscore-wallet-service/ts_build/fiatrateservice/fiatrateservice.js'
 
@@ -59,16 +37,7 @@ services:
     image: ducatuscore-dws
     volumes: 
       - ./.dws:/data/dws_db
-    links:
-      - database-dws
-      - ducatuscore-messagebroker
-    ports:
-      - 3233:3232
-    environment:
-      - DB_HOST=database-dws
-      - MSG_HOST=ducatuscore-messagebroker
-    networks:
-      - ducatuscore-dws-network
+    network_mode: "host"  
     env_file: .env
     command: 'node ./packages/ducatuscore-wallet-service/ts_build/dws.js'
 
@@ -76,14 +45,7 @@ services:
     build: .
     restart: always
     image: ducatuscore-pushnotificationsservice
-    links:
-      - database-dws
-      - ducatuscore-messagebroker
-    networks:
-      - ducatuscore-dws-network
-    environment:
-      - DB_HOST=database-dws
-      - MSG_HOST=ducatuscore-messagebroker
+    network_mode: "host"  
     env_file: .env
     command: 'node ./packages/ducatuscore-wallet-service/ts_build/pushnotificationsservice/pushnotificationsservice.js'
 
@@ -91,18 +53,6 @@ services:
     build: .
     restart: always
     image: ducatuscore-bcmonitor
-    links:
-      - database-dws
-      - ducatuscore-messagebroker
-    networks:
-      - ducatuscore-dws-network
-    environment:
-      - DB_HOST=database-dws
-      - MSG_HOST=ducatuscore-messagebroker
+    network_mode: "host"
     env_file: .env
     command: 'node ./packages/ducatuscore-wallet-service/ts_build/bcmonitor/bcmonitor.js'
-
-networks:
-  ducatuscore-dws-network:
-    name: ducatuscore-dws-network
-    driver: bridge

@@ -2,7 +2,7 @@
 import io from 'socket.io';
 import logger from '../lib/logger';
 
-const DEFAULT_PORT = 3380;
+const DEFAULT_PORT = process.env.MSG_PORT || 3380;
 
 const opts = {
   port: parseInt(process.argv[2]) || DEFAULT_PORT
