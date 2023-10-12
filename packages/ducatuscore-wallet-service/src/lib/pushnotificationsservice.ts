@@ -211,6 +211,9 @@ export class PushNotificationsService {
                 const coin = chain; // backwards compatibility
                 const network = notification?.data?.network;
 
+                const title = sub?.plain?.subject;
+                const body = sub?.plain?.body;
+                const custom_uri = `ducatus://wallet?walletId=${walletId}&tokenAddress=${tokenAddress}&multisigContractAddress=${multisigContractAddress}&copayerId=${copayerId}&coin=${coin}&chain=${chain}&network=${network}&notification_type=${notification_type}&title=${title}&body=${body}`;
                 if (sub.token) {
                   notificationData = {
                     to: sub.token,
@@ -224,7 +227,8 @@ export class PushNotificationsService {
                       notification_type,
                       coin, // not really coin value it's chain
                       chain,
-                      network
+                      network,
+                      custom_uri
                     }
                   };
 
@@ -242,8 +246,6 @@ export class PushNotificationsService {
                 }
 
                 if (sub.externalUserId) {
-                  const title = sub?.plain?.subject;
-                  const body = sub?.plain?.body;
                   const extras = {
                     walletId,
                     copayerId,
@@ -256,7 +258,6 @@ export class PushNotificationsService {
                     title,
                     body
                   };
-                  const custom_uri = `ducauts://wallet?walletId=${walletId}&tokenAddress=${tokenAddress}&multisigContractAddress=${multisigContractAddress}&copayerId=${copayerId}&coin=${coin}&chain=${chain}&network=${network}&notification_type=${notification_type}&title=${title}&body=${body}`;
                   notificationData = {
                     external_user_ids: [sub.externalUserId],
                     messages: {
