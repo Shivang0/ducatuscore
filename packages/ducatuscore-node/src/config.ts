@@ -66,7 +66,7 @@ const Config = function(): ConfigType {
     services: {
       api: {
         rateLimiter: {
-          disabled: false,
+          disabled: process.env.DISABLED_RATE_LIMITER === 'true' ? true : false,
           whitelist: process.env.NODE_WHITE_LIST ? process.env.NODE_WHITE_LIST.split(',') : ['::ffff:127.0.0.1', '::1']
         },
         wallets: {
