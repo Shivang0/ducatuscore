@@ -1,5 +1,5 @@
-const host = process.env.DWC_DB_HOST || 'localhost';
-const port = process.env.DWC_DB_PORT || '27017';
+const host = process.env.DB_HOST || 'localhost';
+const port = process.env.DB_PORT || '27017';
 const dbname = 'dwc_test';
 var config = {
   mongoDb: {
