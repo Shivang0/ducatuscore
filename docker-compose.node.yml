@@ -22,7 +22,7 @@ services:
       - 8100:8100
       - 3001:3000
     environment:
-      - DB_HOST=database-node
+      - NODE_DB_HOST=database-node
     env_file: .env
     command: npm run node
 
