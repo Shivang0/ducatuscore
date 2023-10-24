@@ -11,7 +11,7 @@ var level = new LevelStorage({
 var mongo = new MongoStorage();
 mongo.connect({
     mongoDb: {
-      uri: 'mongodb://localhost:27017/dws',
+      uri: `mongodb://${process.env.DWS_DB_HOST}:${process.env.DWS_DB_PORT}/dws`,
     }
   },
   function(err) {
