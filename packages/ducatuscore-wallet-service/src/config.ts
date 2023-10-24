@@ -6,7 +6,8 @@ const {
   DUC_NODE_URL,
   EXCHANGER_LIVENET_URL, 
   EXCHANGER_TESTNET_URL,
-  DB_HOST, 
+  DWS_DB_HOST,
+  DWS_DB_PORT, 
   MSG_HOST,
   FCM_KEY,
   SOCKET_API_KEY,
@@ -45,7 +46,7 @@ const Config = () => {
 
     storageOpts: {
       mongoDb: {
-        uri: DB_HOST ? `mongodb://${DB_HOST}:27017/dws` : 'mongodb://localhost:27017/dws',
+        uri: DWS_DB_HOST ? `mongodb://${DWS_DB_HOST}:${DWS_DB_PORT}/dws` : 'mongodb://localhost:27017/dws',
         dbname: 'dws'
       }
     },
